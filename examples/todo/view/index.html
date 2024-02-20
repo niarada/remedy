@@ -1,13 +1,41 @@
 <!doctype html>
 <html>
-  <head>
-    <title>Hoodoo - TODO</title>
-  </head>
-  <body>
-    <div class="flex flex-col items-center gap-2 p-4">
-      <h1>TODO</h1>
-      <todo-add></todo-add>
-      <todo-list></todo-list>
-    </div>
-  </body>
+    <head>
+        <title>todos</title>
+        <link rel="stylesheet" href="/base.css">
+    </head>
+    <body>
+        <section class="todoapp">
+            <header class="header">
+                <h1>todos</h1>
+                <input
+                    class="new-todo"
+                    placeholder="What needs to be done?"
+                    autofocus
+                    hx-get="/todo/list"
+                    hx-target=".todo-list"
+                    name="text"
+                >
+            </header>
+            <main class="main" style="display: block;">
+                <div class="toggle-all-container">
+                    <input class="toggle-all" type="checkbox">
+                    <label class="toggle-all-label" for="toggle-all">Mark all as complete</label>
+                </div>
+                <todo-list></todo-list>
+            </main>
+            <todo-footer></todo-footer>
+        </section>
+        <footer class="info">
+            <p>Double-click to edit a todo</p>
+            <p>
+                Created by
+                <a href="https://github.com/moonlight-pm">moonlight(pm)</a>
+            </p>
+            <p>
+                Part of
+                <a href="http://todomvc.com">TodoMVC</a>
+            </p>
+        </footer>
+    </body>
 </html>

@@ -9,3 +9,4 @@
 - Pattern for passing through normal html attributes to view.
 - Typing and validation of component props.
 - Custom sse streams.
+- In dev, reload components when files added or removed.

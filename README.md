@@ -1,5 +1,7 @@
 # Experimental micro-backend for htmx/bun development.
 
+## Status: pre-alpha
+
 ```
 bun i
 bun todo:dev
@@ -17,6 +19,7 @@ bun todo:dev
 1. Single back-end.
 1. No static site rendering.
 1. No apis.
+1. No JSX.
 
 ## Goals
 
