@@ -4,6 +4,7 @@ if (!(await data.exists())) {
         "data.json",
         JSON.stringify(
             {
+                filter: "all",
                 items: [],
             },
             null,
@@ -14,12 +15,16 @@ if (!(await data.exists())) {
 
 interface Model {
     items: Item[];
+    filter: Filter;
 }
 
 interface Item {
+    id: number;
     text: string;
     done: boolean;
 }
+
+export type Filter = "all" | "active" | "completed";
 
 export const model: Model = JSON.parse(await Bun.file("data.json").text());
 

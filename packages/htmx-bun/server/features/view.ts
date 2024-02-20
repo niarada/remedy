@@ -8,7 +8,7 @@ interface Element {
     pathname: string;
     tag: string;
     content?: string;
-    template?: (attrs: Record<string, string>) => Promise<string> | string;
+    template?: (attrs: Record<string, string>) => Promise<string | undefined> | string | undefined;
 }
 
 export default async function (options: ServerOptions): Promise<ServerFeature> {
@@ -34,7 +34,7 @@ export default async function (options: ServerOptions): Promise<ServerFeature> {
                 // requests for root, and I suppose there is some shared memory issue?
                 await reloadElement(element);
             }
-            let content = element.content ?? "";
+            let content = element.content;
 
             if (element.template) {
                 if (el.selfClosing) {
@@ -52,9 +52,14 @@ export default async function (options: ServerOptions): Promise<ServerFeature> {
                     // XXX: Figure out how to raise error here to return a 500.
                 }
             }
+            if (!content) {
+                el.remove();
+                return;
+            }
             const re = new RegExp(`<${element.tag}[^-]`);
             if (content.match(re)) {
                 warn("view", `Recursive view: '${element.tag}', removing...`);
+                console.log(content);
                 el.remove();
                 return;
             }

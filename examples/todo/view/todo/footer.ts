@@ -1,26 +1,65 @@
 import { html } from "htmx-bun";
-import { model } from "~/lib/model";
+import { Filter, model, saveModel } from "~/lib/model";
 
-export default function () {
-    const left = model.items.filter((item) => !item.done).length;
+export default function (attrs: { clear?: string, filter?: Filter }) {
+    if (attrs.clear) {
+        model.items = model.items.filter((item) => !item.done);
+        saveModel();
+    }
+
+    if (attrs.filter) {
+        model.filter = attrs.filter;
+        saveModel();
+    }
+
+    const remaining = model.items.filter((item) => !item.done).length;
+
     return html`
-        <footer class="footer" style="display: block;">
+        ${attrs.clear && html`
+            <todo-toggle-all></todo-toggle-all>
+            <todo-list></todo-list>
+        `}
+        ${attrs.filter && html`
+            <todo-list></todo-list>
+        `}
+        <footer
+            id="todo-footer"
+            hx-swap-oob="true"
+            class="footer"
+            style="display: ${model.items.length === 0 ? "none" : "block"};"
+        >
             <span class="todo-count">
-                <strong>${left}</strong>
-                item${left === 1 ? "" : "s"} left
+                <strong>${remaining}</strong>
+                item${remaining === 1 ? "" : "s"} left
             </span>
             <ul class="filters">
                 <li>
-                    <a href="#/" class="selected">All</a>
+                    <a
+                        hx-get="/todo/footer?filter=all"
+                        href="#"
+                        class="${model.filter === "all" ? "selected" : ""}"
+                    >All</a>
                 </li>
                 <li>
-                    <a href="#/active">Active</a>
+                    <a
+                        hx-get="/todo/footer?filter=active"
+                        href="#"
+                        class="${model.filter === "active" ? "selected" : ""}"
+                    >Active</a>
                 </li>
                 <li>
-                    <a href="#/completed">Completed</a>
+                    <a
+                        hx-get="/todo/footer?filter=completed"
+                        href="#"
+                        class="${model.filter === "completed" ? "selected" : ""}"
+                    >Completed</a>
                 </li>
             </ul>
-            <button class="clear-completed" style="display: none;"></button>
+            <button
+                hx-get="/todo/footer?clear=true"
+                class="clear-completed"
+                style="display: ${remaining !== model.items.length ? "block" : "none"};"
+            >Clear completed</button>
         </footer>
     `;
 }

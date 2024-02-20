@@ -8,20 +8,10 @@
         <section class="todoapp">
             <header class="header">
                 <h1>todos</h1>
-                <input
-                    class="new-todo"
-                    placeholder="What needs to be done?"
-                    autofocus
-                    hx-get="/todo/list"
-                    hx-target=".todo-list"
-                    name="text"
-                >
+                <todo-add></todo-add>
             </header>
             <main class="main" style="display: block;">
-                <div class="toggle-all-container">
-                    <input class="toggle-all" type="checkbox">
-                    <label class="toggle-all-label" for="toggle-all">Mark all as complete</label>
-                </div>
+                <todo-toggle-all></todo-toggle-all>
                 <todo-list></todo-list>
             </main>
             <todo-footer></todo-footer>
@@ -30,7 +20,7 @@
             <p>Double-click to edit a todo</p>
             <p>
                 Created by
-                <a href="https://github.com/moonlight-pm">moonlight(pm)</a>
+                <a href="https://github.com/moonlight-pm/htmx-bun">moonlight(pm)</a>
             </p>
             <p>
                 Part of
