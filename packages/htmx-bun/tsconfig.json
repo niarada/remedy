@@ -1,15 +1,20 @@
 {
-  "compilerOptions": {
-    "lib": ["ESNext"],
-    "module": "ESNext",
-    "target": "ESNext",
-    "moduleResolution": "bundler",
-    "noEmit": true,
-    "allowImportingTsExtensions": true,
-    "moduleDetection": "force",
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true
-  },
-  "include": ["./bin", "./server"]
+    "compilerOptions": {
+        "lib": [
+            "ESNext"
+        ],
+        "module": "ESNext",
+        "target": "ESNext",
+        "moduleResolution": "bundler",
+        "noEmit": true,
+        "allowImportingTsExtensions": true,
+        "moduleDetection": "force",
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "skipLibCheck": true
+    },
+    "include": [
+        "./bin",
+        "./server"
+    ]
 }

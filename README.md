@@ -4,7 +4,7 @@
 
 ```
 bun i
-bun todo:dev
+bun examples:todo
 ```
 
 ## Principles

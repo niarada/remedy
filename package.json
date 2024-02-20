@@ -1,12 +1,11 @@
 {
-  "name": "htmx-bun-repo",
-  "private": true,
-  "scripts": {
-    "todo:dev": "cd examples/todo && bun --hot ../../packages/htmx-bun/bin/htmx-bun.ts"
-  },
-  "workspaces": ["packages/*", "examples/*"],
-  "dependencies": {
-    "todomvc-app-css": "^2.4.3",
-    "todomvc-common": "^1.0.5"
-  }
+    "name": "htmx-bun-repo",
+    "private": true,
+    "scripts": {
+        "examples:todo": "cd examples/todo && bun --hot ../../packages/htmx-bun/bin/htmx-bun.ts"
+    },
+    "workspaces": [
+        "packages/*",
+        "examples/*"
+    ]
 }
