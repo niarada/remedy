@@ -11,7 +11,6 @@ export default async function (attrs: { id: string; toggle?: string, destroy?: s
     if (attrs.toggle) {
         item.done = !item.done;
         await saveModel();
-        return html`<todo-footer></todo-footer>`;
     }
     if (attrs.destroy) {
         model.items = model.items.filter((it) => it.id !== id);
@@ -23,16 +22,21 @@ export default async function (attrs: { id: string; toggle?: string, destroy?: s
         await saveModel();
     }
     return html`
+        ${attrs.toggle && html`<todo-footer></todo-footer>`}
         <li
             hx-trigger="dblclick"
             hx-get="/todo/item?id=${id}&edit=true"
-            hx-on::after-request="this.querySelector('input.edit').focus();this.querySelector('input.edit').setSelectionRange(999,999)"
-            class="${attrs.edit ? "editing" : ""}"
+            hx-on::after-request="
+                this.querySelector('input.edit')?.focus();
+                this.querySelector('input.edit')?.setSelectionRange(999,999);
+            "
+            class="${attrs.edit ? "editing" : ""} ${item.done ? "completed" : ""}"
         >
             <div class="view">
                 <input
                     hx-get="/todo/item?id=${id}&toggle=true"
-                    hx-swap="none"
+                    hx-target="closest li"
+                    hx-swap="outerHTML"
                     class="toggle"
                     type="checkbox"
                     autocomplete="off"
@@ -45,7 +49,7 @@ export default async function (attrs: { id: string; toggle?: string, destroy?: s
                     hx-swap="delete"
                     class="destroy"></button>
             </div>
-            <input
+            ${attrs.edit && html`<input
                 hx-get="/todo/item?id=${id}"
                 hx-target="closest li"
                 hx-swap="outerHTML"
@@ -53,7 +57,7 @@ export default async function (attrs: { id: string; toggle?: string, destroy?: s
                 class="edit"
                 name="text"
                 value="${item.text}"
-            >
+            >`}
         </li>
     `
 }

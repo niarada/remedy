@@ -1,3 +1,6 @@
+# Bugs:
+- Item focus doesn't remain when toggled.
+
 # Thoughts
 - Out of band swaps are confusing, though they work well.
   - Eliminate them, or find a pattern for them that isn't confusing.
