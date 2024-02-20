@@ -2,12 +2,10 @@
 - Better locating of static feature files to serve.
 - Caching of static resources.
 - Cache tailwind.
-- Build framework.
 - Fontsource integration.
-- In dev, reload view elements when file structure changes (add, remove, etc)
 - Deal with segfault on Safari, or probably just general multi-asynchronous fetch against root.
 - Use a better html formatter.
-- Replace or impliment new html rewriter to allow for support of self-closing tags and slots.
+- Replace or implement new html rewriter to allow for support of self-closing tags and slots.
 - Pattern for passing through normal html attributes to view.
-- Automatically add component name as class name to all top level elements in view.
-- Provide a means for custom sse streams.
+- Typing and validation of component props.
+- Custom sse streams.
