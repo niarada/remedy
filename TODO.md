@@ -1,9 +1,6 @@
-- Use a project root config/env rather than assuming cwd.
-- Better locating of static feature files to serve.
 - Caching of static resources.
 - Cache tailwind.
 - Fontsource integration.
-- Deal with segfault on Safari, or probably just general multi-asynchronous fetch against root.
 - Use a better html formatter.
 - Replace or implement new html rewriter to allow for support of self-closing tags and slots.
 - Pattern for passing through normal html attributes to view.

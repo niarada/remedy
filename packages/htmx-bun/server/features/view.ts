@@ -47,11 +47,6 @@ export default async function (options: ServerOptions): Promise<ServerFeature> {
             if (!element) {
                 return;
             }
-            // if (options?.features?.dev) {
-            //     // XXX: This is causing a segfault when testing in Safari, as it sends two rapid-fire
-            //     // requests for root, and I suppose there is some shared memory issue?
-            //     await reloadElement(element);
-            // }
             let content = element.content;
 
             if (element.template) {
