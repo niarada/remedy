@@ -1,8 +1,8 @@
 import chalk from "chalk";
 import { URL } from "url";
+import { walkHtml } from "~/lib/html";
+import { debug, error, info, warn } from "~/lib/log";
 import { ServerFeature } from "../features";
-import { walkHtml } from "../html";
-import { debug, error, info, warn } from "../log";
 
 export function buildFetch(features: ServerFeature[]) {
     function transform(html: string) {

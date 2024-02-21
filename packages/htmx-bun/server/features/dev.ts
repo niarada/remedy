@@ -1,7 +1,7 @@
 import EventEmitter from "events";
+import { info } from "~/lib/log";
+import { watch } from "~/lib/watch";
 import { ServerFeature } from ".";
-import { info } from "../log";
-import { watch } from "../watch";
 
 export default function (): ServerFeature {
     const emitter = new EventEmitter();

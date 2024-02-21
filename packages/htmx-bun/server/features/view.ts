@@ -1,9 +1,9 @@
 import { Glob } from "bun";
 import { existsSync, mkdir } from "fs";
+import { debug, error, info, warn } from "~/lib/log";
+import { ServerOptions } from "~/lib/options";
+import { watch } from "~/lib/watch";
 import { ServerFeature } from ".";
-import { debug, error, info, warn } from "../log";
-import { ServerOptions } from "../options";
-import { watch } from "../watch";
 
 interface Element {
     path: string;

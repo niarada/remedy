@@ -6,11 +6,7 @@ export default function (): ServerFeature {
             const url = new URL(request.url);
 
             if (url.pathname === "/_htmx") {
-                const file = Bun.file(
-                    `${
-                        import.meta.dir
-                    }/../../../../node_modules/htmx.org/dist/htmx.js`,
-                );
+                const file = Bun.file(require.resolve("htmx.org"));
                 return new Response(file, {
                     headers: {
                         "Content-Type": file.type,

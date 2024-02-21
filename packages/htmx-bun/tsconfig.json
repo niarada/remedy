@@ -9,7 +9,11 @@
         "moduleDetection": "force",
         "strict": true,
         "forceConsistentCasingInFileNames": true,
-        "skipLibCheck": true
+        "skipLibCheck": true,
+        "baseUrl": ".",
+        "paths": {
+            "~/*": ["./*"]
+        }
     },
-    "include": ["./global.d.ts", "./index.ts", "./bin", "./server"]
+    "include": ["./**/*.ts"]
 }

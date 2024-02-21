@@ -1,8 +1,8 @@
 import { mergeDeepWith } from "ramda";
+import { info } from "~/lib/log";
+import defaultOptions, { ServerOptions } from "~/lib/options";
 import { buildFeatures } from "./features";
 import { buildFetch } from "./fetch";
-import { info } from "./log";
-import defaultOptions, { ServerOptions } from "./options";
 
 export async function serve() {
     info("server", "Initializing server...");

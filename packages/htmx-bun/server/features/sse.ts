@@ -1,3 +1,4 @@
+import { dirname } from "path";
 import { ServerFeature } from ".";
 
 export default function (): ServerFeature {
@@ -7,9 +8,7 @@ export default function (): ServerFeature {
 
             if (url.pathname === "/_sse") {
                 const file = Bun.file(
-                    `${
-                        import.meta.dir
-                    }/../../../../node_modules/htmx.org/dist/ext/sse.js`,
+                    `${dirname(require.resolve("htmx.org"))}/ext/sse.js`,
                 );
                 return new Response(file, {
                     headers: {

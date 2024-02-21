@@ -1,6 +1,6 @@
-import { Element } from "../html";
-import { info } from "../log";
-import { ServerOptions } from "../options";
+import { Element } from "~/lib/html";
+import { info } from "~/lib/log";
+import { ServerOptions } from "~/lib/options";
 
 export type FeatureFactory = (
     options: ServerOptions,
