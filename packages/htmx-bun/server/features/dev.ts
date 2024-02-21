@@ -1,22 +1,24 @@
 import EventEmitter from "events";
-import { watch } from "fs";
 import { ServerFeature } from ".";
+import { info } from "../log";
+import { watch } from "../watch";
 
 export default function (): ServerFeature {
-    const watchers = new Set();
     const emitter = new EventEmitter();
 
-    watchers.add(
-        watch(`${import.meta.dir}/../..`, { recursive: true }, () => {
-            emitter.emit("refresh");
-        }),
-    );
+    // XXX: This watcher should be disabled for user installs, but it's harmless.
+    //      Use something like FRAMEWORK_DEV=1
+    info("dev", "watching framework directory...");
+    watch(`${import.meta.dir}/../..`, () => {
+        info("dev", "framework changed, sending refresh event...");
+        emitter.emit("refresh");
+    })
 
-    watchers.add(
-        watch("view", { recursive: true }, () => {
-            emitter.emit("refresh");
-        }),
-    );
+    info("dev", "watching 'view' directory...");
+    watch("view", () => {
+        info("dev", "view changed, sending refresh event...");
+        emitter.emit("refresh");
+    });
 
     return {
         async fetch(request) {
@@ -62,8 +64,6 @@ export default function (): ServerFeature {
             }
         },
         element(element) {
-            if (element.tagName === "body") {
-            }
             if (element.tagName === "head") {
                 element.append(`<script type="module" src="/_dev" defer></script>\n`, {
                     html: true,

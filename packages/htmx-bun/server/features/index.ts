@@ -18,8 +18,8 @@ export async function buildFeatures(options: ServerOptions) {
     const features: ServerFeature[] = [];
 
     for (const name of Object.keys(options.features!) as FeaturesKey[]) {
-        info("feature", name);
         if (options.features![name]) {
+            info("server", `enabling feature '${name}'`);
             features.push(
                 await (await import(`../features/${name}`)).default(options),
             );

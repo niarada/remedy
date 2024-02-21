@@ -2,11 +2,6 @@
 
 ## Status: pre-alpha
 
-```
-bun i
-bun examples:todo
-```
-
 ## Principles
 
 1. All views are partials.
@@ -29,3 +24,36 @@ bun examples:todo
     1. Alpine
     1. Tailwind
     1. Fontsource
+
+## Run an example
+
+```sh
+git clone https://github.com/moonlight-pm/htmx-bun
+cd htmx-bun
+bun i
+bun examples:todo
+```
+
+## Start fresh
+
+```sh
+mkdir my-project
+cd my-project
+echo "{}" > package.json
+bun i https://gitpkg.now.sh/moonlight-pm/htmx-bun/packages/htmx-bun
+bunx htmx-bun
+```
+
+Now, start dropping files in the `view` directory.  Tailwind will whine if you don't use it.  You can disable tailwind by placing a file called `options.ts` in your project that looks something like this:
+
+```ts
+import { ServerOptions } from "htmx-bun/server/options";
+
+export default {
+    features: {
+        tailwind: false,
+    },
+} satisfies ServerOptions;
+```
+
+You'll need to restart the server after adding or changing `options.ts`.

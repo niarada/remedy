@@ -5,8 +5,11 @@ import { info } from "./log";
 import defaultOptions, { ServerOptions } from "./options";
 
 export async function serve() {
-    const userOptions = ((await import(`${process.cwd()}/options.ts`))?.default ??
-        {}) as ServerOptions;
+    info("server", "Initializing server...");
+    let userOptions: ServerOptions = {};
+    if (await Bun.file("options.ts").exists()) {
+        userOptions = (await import(`${process.cwd()}/options.ts`)).default;
+    }
     const options = mergeDeepWith((_, b) => b, defaultOptions, userOptions);
     const features = await buildFeatures(options);
     const fetch = buildFetch(features);
