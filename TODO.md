@@ -6,8 +6,6 @@
 - Pattern for passing through normal html attributes to view.
 - Typing and validation of component props.
 - Custom sse streams.
-- In dev, reload components when files added or removed.
-- Allow views to return nothing.
 - Allow views to return headers.  Or provide mechanism for setting htmx headers.
 - Allow throwing http status codes, or returning them.
 - Facilitate returning hx trigger events.
