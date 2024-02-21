@@ -71,11 +71,6 @@ export default function (): ServerFeature {
                     src: "/_dev",
                     defer: "",
                 });
-                element.append("script", {
-                    type: "module",
-                    src: "/_dev_stream",
-                    defer: "",
-                });
             }
         },
     };

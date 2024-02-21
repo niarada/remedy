@@ -2,7 +2,8 @@ import { html } from "htmx-bun";
 import { model, saveModel } from "~/lib/model";
 
 export default async function (attrs: { toggle?: string }) {
-    const checked = (model.items.filter((it) => it.done).length === model.items.length);
+    const checked =
+        model.items.filter((it) => it.done).length === model.items.length;
     if (attrs.toggle) {
         for (const item of model.items) {
             item.done = !checked;
@@ -11,7 +12,7 @@ export default async function (attrs: { toggle?: string }) {
         return html`
             <todo-list></todo-list>
             <todo-footer></todo-footer>
-        `
+        `;
     }
     return html`
         <div id="toggle-all-container" hx-swap-oob="true" class="toggle-all-container">
@@ -29,5 +30,5 @@ export default async function (attrs: { toggle?: string }) {
                 for="toggle-all"
             >Mark all as complete</label>
         </div>
-    `
+    `;
 }
