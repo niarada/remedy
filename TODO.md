@@ -1,6 +1,8 @@
+- Better node_module searching for static dist files (like htmx.js), so it works in user install.
 - Caching of static resources.
 - Cache tailwind.
 - Fontsource integration.
+- Fontawesome integration, or some other icon best practice.
 - Use a better html formatter.
 - Replace or implement new html rewriter to allow for support of self-closing tags and slots.
 - Pattern for passing through normal html attributes to view.
@@ -9,3 +11,7 @@
 - Allow views to return headers.  Or provide mechanism for setting htmx headers.
 - Allow throwing http status codes, or returning them.
 - Facilitate returning hx trigger events.
+- Clone more examples:
+  - https://thefullstack.network/
+  - https://github.com/gothinkster/realworld
+  - https://github.com/hirotaka/bulletproof-vue

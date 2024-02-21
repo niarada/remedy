@@ -1,21 +1,16 @@
 import chalk from "chalk";
-import format from "html-format";
 import { URL } from "url";
 import { ServerFeature } from "../features";
+import { walkHtml } from "../html";
 import { debug, error, info, warn } from "../log";
 
 export function buildFetch(features: ServerFeature[]) {
-    const rewriter = new HTMLRewriter();
-    rewriter.on("*", {
-        element(element) {
-            for (const feature of features) {
-                feature.element?.(element);
-            }
-        },
-    });
-
     function transform(html: string) {
-        return format(rewriter.transform(html));
+        return walkHtml(html, (node) => {
+            for (const feature of features) {
+                feature.element?.(node);
+            }
+        }) as string;
     }
 
     return async (request: Request) => {

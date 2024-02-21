@@ -7,7 +7,8 @@ export default function (): ServerFeature {
 
             if (url.pathname === "/_sse") {
                 const file = Bun.file(
-                    `${import.meta.dir
+                    `${
+                        import.meta.dir
                     }/../../../../node_modules/htmx.org/dist/ext/sse.js`,
                 );
                 return new Response(file, {
@@ -18,9 +19,11 @@ export default function (): ServerFeature {
             }
         },
         element(element) {
-            if (element.tagName === "head") {
-                element.append(`<script src="/_sse" defer></script>\n`, {
-                    html: true,
+            if (element.tag === "head") {
+                element.append("script", {
+                    type: "module",
+                    src: "/_sse",
+                    defer: "",
                 });
             }
         },

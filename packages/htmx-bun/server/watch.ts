@@ -1,12 +1,15 @@
-import { FSWatcher, watch as nodeWatch } from "fs";
+import { WatchListener, watch as nodeWatch } from "fs";
 
-const watchers = new Map<string, FSWatcher>();
+// In bun, on hot reload, watchers are not cleared and hang around.  Keep track of
+// them so that we can close them when reload occurs.
+if (!global.watchers) {
+    global.watchers = [];
+}
 
-export function watch(path: string, fn: (event: string, path: string) => Promise<void> | void) {
-    let watcher = watchers.get(path);
-    if (!watcher) {
-        watcher = nodeWatch(path, { recursive: true });
-        watchers.set(path, watcher);
-    }
-    watcher.addListener("change", fn);
+for (const watcher of watchers) {
+    watcher.close();
+}
+
+export function watch(path: string, fn: WatchListener<string>) {
+    watchers.push(nodeWatch(path, { recursive: true }, fn));
 }

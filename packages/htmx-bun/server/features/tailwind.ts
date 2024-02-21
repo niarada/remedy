@@ -32,13 +32,11 @@ export default function (): ServerFeature {
             }
         },
         element(element) {
-            if (element.tagName === "head") {
-                element.append(
-                    `<link rel="stylesheet" href="/_tailwind" />\n`,
-                    {
-                        html: true,
-                    },
-                );
+            if (element.tag === "head") {
+                element.append("link", {
+                    rel: "stylesheet",
+                    href: "/_tailwind",
+                });
             }
         },
     };

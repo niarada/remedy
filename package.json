@@ -4,8 +4,8 @@
     "scripts": {
         "examples:todo": "cd examples/todo && bun --hot ../../packages/htmx-bun/bin/htmx-bun.ts"
     },
-    "workspaces": [
-        "packages/*",
-        "examples/*"
-    ]
+    "workspaces": ["packages/*", "examples/*"],
+    "dependencies": {
+        "@biomejs/biome": "^1.5.3"
+    }
 }

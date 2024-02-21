@@ -1,8 +1,6 @@
 {
     "compilerOptions": {
-        "lib": [
-            "ESNext"
-        ],
+        "lib": ["ESNext"],
         "module": "ESNext",
         "target": "ESNext",
         "moduleResolution": "bundler",
@@ -13,8 +11,5 @@
         "forceConsistentCasingInFileNames": true,
         "skipLibCheck": true
     },
-    "include": [
-        "./bin",
-        "./server"
-    ]
+    "include": ["./global.d.ts", "./index.ts", "./bin", "./server"]
 }

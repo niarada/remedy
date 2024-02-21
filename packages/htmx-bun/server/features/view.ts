@@ -10,7 +10,9 @@ interface Element {
     pathname: string;
     tag: string;
     content?: string;
-    template?: (attrs: Record<string, string>) => Promise<string | undefined> | string | undefined;
+    template?: (
+        attrs: Record<string, string>,
+    ) => Promise<string | undefined> | string | undefined;
 }
 
 export default async function (options: ServerOptions): Promise<ServerFeature> {
@@ -21,18 +23,24 @@ export default async function (options: ServerOptions): Promise<ServerFeature> {
     if (options?.features?.dev) {
         info("view", "watching 'view' directory...");
         watch("view", async (_, path) => {
+            if (!path) {
+                return;
+            }
             const element = elements.find((it) => it.path === path);
             if (element) {
                 if (existsSync(`view/${element.path}`)) {
                     reloadElement(element);
                 } else {
-                    info("view", `unloading 'view/${element.path}' (<${element.tag}>)`);
+                    info(
+                        "view",
+                        `unloading 'view/${element.path}' (<${element.tag}>)`,
+                    );
                     elements.splice(elements.indexOf(element), 1);
                 }
             } else {
                 buildElement(elements, path);
             }
-        })
+        });
     }
     // debug("view", "element regexp", elementRegex);
     // A special rewriter is required to facilitate recursion over the rendered view tree.
@@ -72,7 +80,6 @@ export default async function (options: ServerOptions): Promise<ServerFeature> {
             const re = new RegExp(`<${element.tag}[^-]`);
             if (content.match(re)) {
                 warn("view", `Recursive view: '${element.tag}', removing...`);
-                console.log(content);
                 el.remove();
                 return;
             }
@@ -116,8 +123,8 @@ export default async function (options: ServerOptions): Promise<ServerFeature> {
 async function buildElements() {
     const elements: Element[] = [];
     if (!existsSync("view")) {
-        info("view", "creating 'view' directory")
-        mkdir('view', { recursive: true }, () => { })
+        info("view", "creating 'view' directory");
+        mkdir("view", { recursive: true }, () => {});
     }
     for await (const path of new Glob("**/*.{html,ts}").scan("view")) {
         await buildElement(elements, path);

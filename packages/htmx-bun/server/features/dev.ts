@@ -6,17 +6,18 @@ import { watch } from "../watch";
 export default function (): ServerFeature {
     const emitter = new EventEmitter();
 
-    // XXX: This watcher should be disabled for user installs, but it's harmless.
-    //      Use something like FRAMEWORK_DEV=1
+    // XXX: Verify this is not being picked up in a user installed version.
+    //      (probably need to exclude .env in files)
     info("dev", "watching framework directory...");
-    watch(`${import.meta.dir}/../..`, () => {
-        info("dev", "framework changed, sending refresh event...");
-        emitter.emit("refresh");
-    })
+    if (process.env.FRAMEWORK_DEV) {
+        watch(`${import.meta.dir}/../../`, () => {
+            emitter.emit("refresh");
+        });
+    }
 
     info("dev", "watching 'view' directory...");
     watch("view", () => {
-        info("dev", "view changed, sending refresh event...");
+        info("dev", "Sending refresh...");
         emitter.emit("refresh");
     });
 
@@ -64,9 +65,16 @@ export default function (): ServerFeature {
             }
         },
         element(element) {
-            if (element.tagName === "head") {
-                element.append(`<script type="module" src="/_dev" defer></script>\n`, {
-                    html: true,
+            if (element.tag === "head") {
+                element.append("script", {
+                    type: "module",
+                    src: "/_dev",
+                    defer: "",
+                });
+                element.append("script", {
+                    type: "module",
+                    src: "/_dev_stream",
+                    defer: "",
                 });
             }
         },

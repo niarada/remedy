@@ -7,7 +7,9 @@ export default function (): ServerFeature {
 
             if (url.pathname === "/_htmx") {
                 const file = Bun.file(
-                    `${import.meta.dir}/../../../../node_modules/htmx.org/dist/htmx.js`,
+                    `${
+                        import.meta.dir
+                    }/../../../../node_modules/htmx.org/dist/htmx.js`,
                 );
                 return new Response(file, {
                     headers: {
@@ -17,9 +19,11 @@ export default function (): ServerFeature {
             }
         },
         element(element) {
-            if (element.tagName === "head") {
-                element.append(`<script src="/_htmx" defer></script>\n`, {
-                    html: true,
+            if (element.tag === "head") {
+                element.append("script", {
+                    type: "module",
+                    src: "/_htmx",
+                    defer: "",
                 });
             }
         },

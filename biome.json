@@ -1,0 +1,25 @@
+{
+    "files": {
+        "ignore": []
+    },
+    "formatter": {
+        "indentStyle": "space",
+        "indentWidth": 4
+    },
+    "linter": {
+        "rules": {
+            "style": {
+                "noNonNullAssertion": "off"
+            },
+            "a11y": {
+                "all": false
+            },
+            "suspicious": {
+                "noUnsafeDeclarationMerging": "off"
+            }
+        }
+    },
+    "organizeImports": {
+        "enabled": false
+    }
+}

@@ -1,3 +1,4 @@
+import { Element } from "../html";
 import { info } from "../log";
 import { ServerOptions } from "../options";
 
@@ -9,7 +10,7 @@ export interface ServerFeature {
     fetch?: (
         request: Request,
     ) => Promise<Response | undefined> | Response | undefined;
-    element?: (element: HTMLRewriterTypes.Element) => void;
+    element?: (element: Element) => void;
 }
 
 type FeaturesKey = keyof ServerOptions["features"];
