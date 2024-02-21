@@ -20,8 +20,7 @@ export default async function (options: ServerOptions): Promise<ServerFeature> {
     );
     if (options?.features?.dev) {
         info("view", "watching 'view' directory...");
-        watch("view", async (event, path) => {
-            console.log(event);
+        watch("view", async (_, path) => {
             const element = elements.find((it) => it.path === path);
             if (element) {
                 if (existsSync(`view/${element.path}`)) {
