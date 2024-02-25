@@ -1,7 +1,12 @@
-import { CodeMapping, LanguagePlugin, VirtualCode } from "@volar/language-core";
+import {
+    CodeMapping,
+    LanguagePlugin,
+    VirtualCode,
+    forEachEmbeddedCode,
+} from "@volar/language-core";
 import { Diagnostic, DiagnosticSeverity } from "@volar/language-server/node";
 import { ServicePlugin } from "@volar/language-service";
-import { IScriptSnapshot } from "typescript";
+import { IScriptSnapshot, ScriptKind } from "typescript";
 import { HtmlVirtualCode } from "./html";
 import { TypeScriptVirtualCode } from "./typescript";
 
@@ -11,11 +16,31 @@ export const montanaLanguage: LanguagePlugin = {
             return new MontanaVirtualCode(id, snapshot);
         }
     },
-    updateVirtualCode(id, code: MontanaVirtualCode, snapshot) {
+    updateVirtualCode(_id, code: MontanaVirtualCode, snapshot) {
         if (code.languageId === "montana") {
             code.update(snapshot);
             return code;
         }
+    },
+    typescript: {
+        extraFileExtensions: [
+            {
+                extension: "mt",
+                isMixedContent: true,
+                scriptKind: ScriptKind.Deferred,
+            },
+        ],
+        getScript(rootCode) {
+            for (const code of forEachEmbeddedCode(rootCode)) {
+                if (code.languageId === "typescript") {
+                    return {
+                        code,
+                        extension: ".ts",
+                        scriptKind: ScriptKind.TS,
+                    };
+                }
+            }
+        },
     },
 };
 
@@ -85,8 +110,8 @@ export const montanaService: ServicePlugin = {
     create(context) {
         return {
             name: "montana",
-            provideDiagnostics(document, token) {
-                const [code, other] = context.documents.getVirtualCodeByUri(
+            provideDiagnostics(document) {
+                const [code] = context.documents.getVirtualCodeByUri(
                     document.uri,
                 );
                 if (code.languageId === "montana") {
@@ -115,10 +140,6 @@ export const montanaService: ServicePlugin = {
                     }
                     return diagnostics;
                 }
-            },
-
-            provideDocumentFormattingEdits(document, formatRange, options) {
-                return null;
             },
         };
     },

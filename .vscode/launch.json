@@ -10,7 +10,6 @@
                 "--extensionDevelopmentPath=${workspaceRoot}/packages/vscode",
                 "--folder-uri=${workspaceRoot}/examples/todo"
             ],
-            "outFiles": ["${workspaceRoot}/packages/vscode/dist/**/*.js"],
             "autoAttachChildProcesses": true
         }
     ]
