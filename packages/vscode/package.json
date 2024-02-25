@@ -1,0 +1,69 @@
+{
+    "name": "montana",
+    "displayName": "Montana",
+    "description": "Language support for Montana",
+    "categories": ["Programming Languages", "Formatters", "Linters"],
+    "keywords": ["montana", "htmx", "bun", "node", "typescript", "javascript"],
+    "icon": "assets/icon-light.png",
+    "version": "0.0.0",
+    "publisher": "moonlight-pm",
+    "engines": {
+        "vscode": "^1.86.0"
+    },
+    "main": "./dist/extension.js",
+    "contributes": {
+        "languages": [
+            {
+                "id": "montana",
+                "aliases": ["Montana", "montana"],
+                "extensions": [".mt"],
+                "configuration": "./grammars/montana.json",
+                "icon": {
+                    "light": "./assets/icon-dark.png",
+                    "dark": "./assets/icon-light.png"
+                }
+            }
+        ],
+        "grammars": [
+            {
+                "language": "montana",
+                "scopeName": "source.montana",
+                "path": "./grammars/montana.tmLanguage.json",
+                "embeddedLanguages": {
+                    "meta.embedded.block.typescript": "typescript",
+                    "meta.embedded.block.html": "html"
+                },
+                "unbalancedBracketScopes": [
+                    "keyword.operator.relational",
+                    "storage.type.function.arrow",
+                    "keyword.operator.bitwise.shift",
+                    "meta.brace.angle",
+                    "punctuation.definition.tag"
+                ]
+            }
+        ],
+        "configuration": {
+            "type": "object",
+            "title": "Montana language server configuration",
+            "properties": {
+                "montana.trace.server": {
+                    "scope": "window",
+                    "type": "string",
+                    "enum": ["off", "messages", "verbose"],
+                    "default": "off",
+                    "description": "Traces the communication between VS Code and the language server."
+                }
+            }
+        }
+    },
+    "dependencies": {
+        "@biomejs/biome": "^1.5.3",
+        "@types/node": "^20.11.20",
+        "@types/vscode": "^1.86.0",
+        "@volar/vscode": "^2.0.4",
+        "typescript": "^5.3.3",
+        "volar-service-html": "^0.0.30",
+        "volar-service-typescript": "^0.0.30",
+        "vscode-languageclient": "^9.0.1"
+    }
+}

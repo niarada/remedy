@@ -1,0 +1,31 @@
+{
+    "name": "Montana",
+    "scopeName": "source.montana",
+    "patterns": [
+        {
+            "begin": "\\A",
+            "end": "(^---\\s*$)",
+            "endCaptures": {
+                "1": {
+                    "name": "comment"
+                }
+            },
+            "contentName": "meta.embedded.block.typescript",
+            "patterns": [
+                {
+                    "include": "source.ts"
+                }
+            ]
+        },
+        {
+            "begin": "",
+            "end": "",
+            "contentName": "meta.embedded.block.html",
+            "patterns": [
+                {
+                    "include": "text.html.basic"
+                }
+            ]
+        }
+    ]
+}
