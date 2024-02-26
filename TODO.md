@@ -18,4 +18,6 @@
 - How does one instruct copilot/codium to give completions based on document sub-mode.
 - Support better clarity in alpine attributes, syntax highlighting, dispense with quotes, etc.
 - Template fragments: https://htmx.org/essays/template-fragments/
--
+- HTML content and attribute interpolation
+- Multiple <server> blocks (currently, embedded typescript is broken for subsequent blocks)
+- Targetable partials / fragments (that is, specifying a near partial rather than knowning its rendered tag)

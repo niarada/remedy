@@ -28,7 +28,7 @@
             {
                 "language": "montana",
                 "scopeName": "source.montana",
-                "path": "./grammars/montana.tmLanguage.json",
+                "path": "./dist/montana.tmLanguage.json",
                 "embeddedLanguages": {
                     "meta.embedded.block.typescript": "typescript",
                     "meta.embedded.block.html": "html"

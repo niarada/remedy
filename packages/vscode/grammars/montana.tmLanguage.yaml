@@ -1,0 +1,29 @@
+name: Montana
+scopeName: source.montana
+patterns:
+  - include: "#root"
+repository:
+  root:
+    contentName: meta.embedded.block.html
+    patterns:
+      - include: "#server"
+      - include: "#interpolation"
+      - include: "#attributes-interpolated"
+      - include: text.html.basic
+  server:
+    begin: "<server>"
+    beginCaptures:
+      0: {name: constant.regexp}
+    end: "</server>"
+    endCaptures:
+      0: {name: constant.regexp}
+    contentName: meta.embedded.block.typescript
+    patterns: [include: source.ts]
+  # interpolation:
+  #   patterns:
+  #     - begin: \{
+  #       end: \}
+  #       beginCaptures: { 0: { name: punctuation.section.embedded.begin } }
+  #       endCaptures: { 0: { name: punctuation.section.embedded.end } }
+  #       contentName: meta.embedded.block.typescript
+  #       patterns: [include: source.ts]

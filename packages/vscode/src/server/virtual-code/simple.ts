@@ -1,15 +1,17 @@
 import { CodeMapping, VirtualCode } from "@volar/language-core";
 import { IScriptSnapshot } from "typescript";
 
-export class HtmlVirtualCode implements VirtualCode {
-    id: string;
-    languageId = "html";
+export class SimpleVirtualCode implements VirtualCode {
     snapshot: IScriptSnapshot;
     mappings: CodeMapping[];
     embeddedCodes = [];
 
-    constructor(parentId: string, offset: number, text: string) {
-        this.id = `${parentId}:html`;
+    constructor(
+        public id: string,
+        public languageId: string,
+        offset: number,
+        text: string,
+    ) {
         this.snapshot = {
             getText: (start, end) => text.slice(start, end),
             getLength: () => text.length,
