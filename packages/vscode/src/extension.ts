@@ -1,4 +1,5 @@
-import { getTsdk } from "@volar/vscode";
+import * as serverProtocol from "@volar/language-server/protocol";
+import { createLabsInfo, getTsdk } from "@volar/vscode";
 import { Uri } from "vscode";
 import { LanguageClient, TransportKind } from "vscode-languageclient/node";
 
@@ -36,7 +37,12 @@ export async function activate(context) {
             },
         },
     );
-    client.start();
+    await client.start();
+
+    const labs = createLabsInfo(serverProtocol);
+    labs.addLanguageClient(client);
+
+    return labs.extensionExports;
 }
 
 export function deactivate() {
