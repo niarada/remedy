@@ -1,12 +1,10 @@
-<server>
-    // XXX: Extension needs to follow tsconfig paths
-    // import { model } from "~/lib/model";
-    import { model } from "../../lib/model";
-    // Extension needs to notice this const usage.
-    const items = model.items.filter((item) => (
-        model.filter === "all" || (model.filter === "active" && !item.done) || (model.filter === "completed" && item.done)
-    ));
-</server>
+// XXX: Extension needs to follow tsconfig paths
+// import { model } from "~/lib/model";
+import { model } from "../../lib/model";
+// Extension needs to notice this const usage.
+const items = model.items.filter((item) => (
+    model.filter === "all" || (model.filter === "active" && !item.done) || (model.filter === "completed" && item.done)
+));
 
 <ul id="todo-list" hx-swap-oob="true" class="todo-list">
     <todo-item for="item of items" id={item.id} />

@@ -2,10 +2,7 @@
  * This file is just a scratch pad for use with the vscode-bun debugger.
  */
 
-import { TemplateRegister } from "./view/register";
+import { Source } from "./view/source";
 
-const register = new TemplateRegister("./view/__fixtures__");
-await register.initialize();
-const view = register.get("root").present();
-const html = await view.render();
-console.log(html);
+const source = new Source("view/__fixtures__/kitchen.part");
+await source.compile();

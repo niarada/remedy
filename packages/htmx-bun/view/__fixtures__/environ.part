@@ -1,5 +1,3 @@
-<server>
-    const why = "He first loved us."
-</server>
+const why = "He first loved us."
 
 <div>{why}</div>

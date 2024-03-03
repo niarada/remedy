@@ -55,9 +55,10 @@ export class Source {
         return attributes;
     }
 
-    private async disentangle(text: string) {
-        this.#html = parseHtml(text);
-        const code: string[] = [];
+    async disentangle(text: string) {
+        const beginHtml = text.search(/^<!?\w+/m);
+        const code: string[] = [text.slice(0, beginHtml)];
+        this.#html = parseHtml(text.slice(beginHtml));
         await transformHtml(this.#html, async (node, { visitEachChild }) => {
             if (node.type === "element") {
                 if (node.tag === "server") {

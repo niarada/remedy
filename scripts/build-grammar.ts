@@ -1,8 +1,8 @@
 import { watch } from "fs";
 import yaml from "js-yaml";
 
-const source = "packages/vscode/grammars/montana.tmLanguage.yaml";
-const target = "packages/vscode/dist/montana.tmLanguage.json";
+const source = "packages/vscode/grammars/htmx-bun.tmLanguage.yaml";
+const target = "packages/vscode/dist/htmx-bun.tmLanguage.json";
 
 async function build() {
     console.log(`Building '${target}'...`);

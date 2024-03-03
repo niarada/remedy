@@ -1,27 +1,25 @@
-<server>
-    import { html } from "htmx-bun";
-    import { type Filter, model, saveModel } from "~/lib/model";
+import { html } from "htmx-bun";
+import { type Filter, model, saveModel } from "~/lib/model";
 
-    interface Attributes {
-        clear?: string;
-        filter?: Filter;
-    }
+interface Attributes {
+    clear?: string;
+    filter?: Filter;
+}
 
-    if (Attributes.clear) {
-        model.items = model.items.filter((item) => !item.done);
-        saveModel();
-        Helper.oob("todo-list");
-        Helper.oob("todo-toggle");
-    }
+if (Attributes.clear) {
+    model.items = model.items.filter((item) => !item.done);
+    saveModel();
+    Helper.oob("todo-list");
+    Helper.oob("todo-toggle");
+}
 
-    if (Attributes.filter) {
-        model.filter = Attributes.filter;
-        saveModel();
-        Helper.oob("todo-list");
-    }
+if (Attributes.filter) {
+    model.filter = Attributes.filter;
+    saveModel();
+    Helper.oob("todo-list");
+}
 
-    const remaining = model.items.filter((item) => !item.done).length;
-</server>
+const remaining = model.items.filter((item) => !item.done).length;
 
 <footer
     id="todo-footer"

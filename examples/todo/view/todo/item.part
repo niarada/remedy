@@ -1,37 +1,35 @@
-<server>
-    import { model, saveModel } from "~/lib/model";
+import { model, saveModel } from "~/lib/model";
 
-    interface Attributes {
-        id: number;
-        toggle?: boolean;
-        text?: text;
-        destroy?: boolean;
-    }
+interface Attributes {
+    id: number;
+    toggle?: boolean;
+    text?: text;
+    destroy?: boolean;
+}
 
-    const id = Attributes.id;
-    const item = model.items.find((it) => it.id === id);
+const id = Attributes.id;
+const item = model.items.find((it) => it.id === id);
 
-    if (Attributes.toggle) {
-        item.done = !item.done;
-        await saveModel();
-        Helper.oob('todo-footer');
-        Helper.oob('todo-toggle');
-        Helper.oob('todo-list');
-        Helper.cancelRender();
-    }
+if (Attributes.toggle) {
+    item.done = !item.done;
+    await saveModel();
+    Helper.oob('todo-footer');
+    Helper.oob('todo-toggle');
+    Helper.oob('todo-list');
+    Helper.cancelRender();
+}
 
-    if (Attributes.text) {
-        item.text = Attributes.text;
-        await saveModel();
-    }
+if (Attributes.text) {
+    item.text = Attributes.text;
+    await saveModel();
+}
 
-    if (Attributes.destroy) {
-        model.items = model.items.filter((it) => it.id !== id);
-        await saveModel();
-        Helper.cancelRender();
-        Helper.oob('todo-footer');
-    }
-</server>
+if (Attributes.destroy) {
+    model.items = model.items.filter((it) => it.id !== id);
+    await saveModel();
+    Helper.cancelRender();
+    Helper.oob('todo-footer');
+}
 
 <li
     hx-trigger="dblclick"

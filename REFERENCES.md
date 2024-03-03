@@ -1,1 +1,2 @@
 - [Unveiling Bun’s Potential with TypeScript](https://blog.stackademic.com/unveiling-buns-potential-with-typescript-1ca01e150595)
+- [Writing a TextMate Grammar: Some Lessons Learned](https://www.apeth.com/nonblog/stories/textmatebundle.html)
