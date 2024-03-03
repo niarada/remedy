@@ -1,0 +1,17 @@
+<server>
+    const items = [
+        { id: 1, name: "Love" },
+        { id: 2, name: "Joy" },
+        { id: 3, name: "Peace" },
+        { id: 4, name: "Patience" },
+        { id: 5, name: "Kindness" },
+        { id: 6, name: "Goodness" },
+        { id: 7, name: "Faithfulness" },
+        { id: 8, name: "Gentleness" },
+        { id: 9, name: "Self-control" },
+    ];
+</server>
+
+<ul>
+    <todo-item for="item of items" id={item.id} name={item.name} />
+</ul>

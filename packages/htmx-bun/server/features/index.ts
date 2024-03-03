@@ -1,16 +1,17 @@
-import { Element } from "~/lib/html";
+import { HtmlTransformer } from "~/lib/html";
 import { info } from "~/lib/log";
-import { ServerOptions } from "~/lib/options";
+import { ServerOptions } from "~/server/options";
 
 export type FeatureFactory = (
     options: ServerOptions,
 ) => Promise<ServerFeature> | ServerFeature;
 
 export interface ServerFeature {
+    name: string;
     fetch?: (
         request: Request,
     ) => Promise<Response | undefined> | Response | undefined;
-    element?: (element: Element) => void;
+    transform?: HtmlTransformer;
 }
 
 type FeaturesKey = keyof ServerOptions["features"];

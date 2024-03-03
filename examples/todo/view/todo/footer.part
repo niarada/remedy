@@ -1,0 +1,69 @@
+<server>
+    import { html } from "htmx-bun";
+    import { type Filter, model, saveModel } from "~/lib/model";
+
+    interface Attributes {
+        clear?: string;
+        filter?: Filter;
+    }
+
+    if (Attributes.clear) {
+        model.items = model.items.filter((item) => !item.done);
+        saveModel();
+        Helper.oob("todo-list");
+        Helper.oob("todo-toggle");
+    }
+
+    if (Attributes.filter) {
+        model.filter = Attributes.filter;
+        saveModel();
+        Helper.oob("todo-list");
+    }
+
+    const remaining = model.items.filter((item) => !item.done).length;
+</server>
+
+<footer
+    id="todo-footer"
+    hx-swap-oob="true"
+    class="footer"
+    style="display: {model.items.length === 0 ? 'none' : 'block'};"
+>
+    <span class="todo-count">
+        <strong>{remaining}</strong>
+        item{remaining === 1 ? "" : "s"} left
+    </span>
+    <ul class="filters">
+        <li>
+            <a
+                hx-get="/todo/footer?filter=all"
+                hx-swap="none"
+                href="#"
+                class="{model.filter === 'all' ? 'selected' : ''}"
+            >All</a>
+        </li>
+        <li>
+            <a
+                hx-get="/todo/footer?filter=active"
+                hx-swap="none"
+                href="#"
+                class="{model.filter === 'active' ? 'selected' : ''}"
+            >Active</a>
+        </li>
+        <li>
+            <a
+                hx-get="/todo/footer?filter=completed"
+                hx-swap="none"
+                href="#"
+                class="{model.filter === 'completed' ? 'selected' : ''}"
+            >Completed</a>
+        </li>
+    </ul>
+    <button
+        hx-get="/todo/footer?clear=true"
+        hx-target="closest footer"
+        hx-swap="outerHTML"
+        class="clear-completed"
+        style="display: {remaining !== model.items.length ? 'block' : 'none'};"
+    >Clear completed</button>
+</footer>

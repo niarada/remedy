@@ -1,0 +1,11 @@
+<server>
+    import { readFileSync } from "fs";
+
+    interface Attributes {
+        foo: string;
+    }
+    const id = 1;
+    const bar = foo;
+</server>
+
+<li id="{id}">{bar}</li>

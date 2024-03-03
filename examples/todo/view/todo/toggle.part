@@ -1,0 +1,35 @@
+<server>
+    import { model, saveModel } from "~/lib/model";
+
+    interface Attributes {
+        toggle?: boolean;
+    }
+
+    const checked = model.items.filter((it) => it.done).length === model.items.length;
+
+    if (Attributes.toggle) {
+        for (const item of model.items) {
+            item.done = !checked;
+        }
+        await saveModel();
+        Helper.cancelRender();
+        Helper.oob('todo-list');
+        Helper.oob('todo-footer');
+    }
+</server>
+
+<div id="toggle-all-container" hx-swap-oob="true" class="toggle-all-container">
+    <input
+        id="toggle-all"
+        class="toggle-all"
+        type="checkbox"
+        autocomplete="off"
+        checked={checked}
+    />
+    <label
+        hx-get="/todo/toggle?toggle=true"
+        hx-swap="none"
+        class="toggle-all-label"
+        for="toggle-all"
+    >Mark all as complete</label>
+</div>

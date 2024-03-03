@@ -1,7 +1,13 @@
+import { createHtmlElement } from "~/lib/html";
 import { ServerFeature } from ".";
+
+export interface HtmxOptions {
+    debug?: boolean;
+}
 
 export default function (): ServerFeature {
     return {
+        name: "htmx",
         async fetch(request) {
             const url = new URL(request.url);
 
@@ -14,14 +20,16 @@ export default function (): ServerFeature {
                 });
             }
         },
-        element(element) {
-            if (element.tag === "head") {
-                element.append("script", {
-                    type: "module",
-                    src: "/_htmx",
-                    defer: "",
-                });
+        async transform(node) {
+            if (node.type === "element" && node.tag === "head") {
+                node.children.push(
+                    createHtmlElement(node, "script", {
+                        type: "module",
+                        src: "/_htmx",
+                    }),
+                );
             }
+            return node;
         },
     };
 }

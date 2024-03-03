@@ -1,7 +1,6 @@
 import { mergeDeepWith } from "ramda";
 import { info } from "~/lib/log";
-import defaultOptions, { ServerOptions } from "~/lib/options";
-import { buildFeatures } from "./features";
+import defaultOptions, { ServerOptions } from "~/server/options";
 import { buildFetch } from "./fetch";
 
 export async function serve() {
@@ -11,8 +10,7 @@ export async function serve() {
         userOptions = (await import(`${process.cwd()}/options.ts`)).default;
     }
     const options = mergeDeepWith((_, b) => b, defaultOptions, userOptions);
-    const features = await buildFeatures(options);
-    const fetch = buildFetch(features);
+    const fetch = await buildFetch(options);
 
     Bun.serve({
         port: options.port,

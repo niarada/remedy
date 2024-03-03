@@ -3,10 +3,8 @@
 - Fontsource integration.
 - Fontawesome integration, or some other icon best practice.
   - https://www.nerdfonts.com/
-- Use a better html formatter.
-- Replace or implement new html rewriter to allow for support of self-closing tags and slots.
 - Pattern for passing through normal html attributes to view.
-- Typing and validation of component props.
+- Validation of element props.
 - Custom sse streams.
 - Allow views to return headers.  Or provide mechanism for setting htmx headers.
 - Allow throwing http status codes, or returning them.
@@ -15,9 +13,12 @@
   - https://thefullstack.network/
   - https://github.com/gothinkster/realworld
   - https://github.com/hirotaka/bulletproof-vue
-- How does one instruct copilot/codium to give completions based on document sub-mode.
 - Support better clarity in alpine attributes, syntax highlighting, dispense with quotes, etc.
 - Template fragments: https://htmx.org/essays/template-fragments/
-- HTML content and attribute interpolation
 - Multiple <server> blocks (currently, embedded typescript is broken for subsequent blocks)
+- Maybe: Remove <server> block, just start in TS mode until we hit a <\w
 - Targetable partials / fragments (that is, specifying a near partial rather than knowning its rendered tag)
+- A solution to use oobs without having to specify an id -- with some generated id one might suppose.
+- Memoize identical $exps
+- Backticks in a partial source completely jack it up.
+- Use a prefix on custom attributes, e.g. "mx-for" instead of "for".

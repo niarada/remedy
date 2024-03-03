@@ -9,13 +9,15 @@
     "linter": {
         "rules": {
             "style": {
-                "noNonNullAssertion": "off"
+                "noNonNullAssertion": "off",
+                "noParameterAssign": "off"
             },
             "a11y": {
                 "all": false
             },
             "suspicious": {
-                "noUnsafeDeclarationMerging": "off"
+                "noUnsafeDeclarationMerging": "off",
+                "noAssignInExpressions": "off"
             }
         }
     },

@@ -18,7 +18,7 @@ export const montanaLanguage: LanguagePlugin = {
     typescript: {
         extraFileExtensions: [
             {
-                extension: "mt",
+                extension: "part",
                 isMixedContent: true,
                 scriptKind: ScriptKind.Deferred,
             },

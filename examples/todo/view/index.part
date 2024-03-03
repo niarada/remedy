@@ -8,13 +8,13 @@
         <section class="todoapp">
             <header class="header">
                 <h1>todos</h1>
-                <todo-add></todo-add>
+                <todo-add />
             </header>
             <main class="main" style="display: block;">
-                <todo-toggle-all></todo-toggle-all>
-                <todo-list></todo-list>
+                <todo-toggle />
+                <todo-list />
             </main>
-            <todo-footer></todo-footer>
+            <todo-footer />
         </section>
         <footer class="info">
             <p>Double-click to edit a todo</p>

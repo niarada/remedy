@@ -1,13 +1,16 @@
 {
-    "name": "htmx-bun-repo",
-    "private": true,
-    "scripts": {
-        "examples:todo": "cd examples/todo && bun --hot ../../packages/htmx-bun/bin/htmx-bun.ts",
-        "build:grammar": "bun scripts/build-grammar.ts"
-    },
-    "workspaces": ["packages/*", "examples/*"],
-    "dependencies": {
-        "@biomejs/biome": "^1.5.3",
-        "js-yaml": "^4.1.0"
-    }
+  "name": "htmx-bun-repo",
+  "private": true,
+  "scripts": {
+    "examples:todo": "cd examples/todo && bun --hot -r ../../packages/htmx-bun/view/plugin.ts ../../packages/htmx-bun/bin/htmx-bun.ts",
+    "build:grammar": "bun scripts/build-grammar.ts",
+    "test:view": "cd packages/htmx-bun && bun run test"
+  },
+  "workspaces": ["packages/*", "examples/*"],
+  "dependencies": {
+    "@biomejs/biome": "^1.5.3",
+    "@types/js-yaml": "^4.0.9",
+    "js-yaml": "^4.1.0",
+    "xregexp": "^5.1.1"
+  }
 }
