@@ -4,7 +4,7 @@
 - Fontawesome integration, or some other icon best practice.
   - https://www.nerdfonts.com/
 - Pattern for passing through normal html attributes to view.
-- Validation of element props.
+- Validation of element attributes.
 - Custom sse streams.
 - Allow views to return headers.  Or provide mechanism for setting htmx headers.
 - Allow throwing http status codes, or returning them.
@@ -15,10 +15,12 @@
   - https://github.com/hirotaka/bulletproof-vue
 - Support better clarity in alpine attributes, syntax highlighting, dispense with quotes, etc.
 - Template fragments: https://htmx.org/essays/template-fragments/
-- Multiple <server> blocks (currently, embedded typescript is broken for subsequent blocks)
-- Maybe: Remove <server> block, just start in TS mode until we hit a <\w
 - Targetable partials / fragments (that is, specifying a near partial rather than knowning its rendered tag)
 - A solution to use oobs without having to specify an id -- with some generated id one might suppose.
 - Memoize identical $exps
 - Backticks in a partial source completely jack it up.
 - Use a prefix on custom attributes, e.g. "mx-for" instead of "for".
+- htmx support in editor.
+- SAX support for bracketed attributes with spaces in them e.g. { expression }.
+- Double-quotes in bracketed code e.g. { "expression" }.
+- Syntax highlighting and language support in expressions.
