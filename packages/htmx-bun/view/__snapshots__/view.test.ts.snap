@@ -1,0 +1,35 @@
+// Bun Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`interpolated composition 1 1`] = `
+"<ul>
+    <todo-item id="1" name="Love"></todo-item>
+    <todo-item id="2" name="Joy"></todo-item>
+    <todo-item id="3" name="Peace"></todo-item>
+    <todo-item id="4" name="Patience"></todo-item>
+    <todo-item id="5" name="Kindness"></todo-item>
+    <todo-item id="6" name="Goodness"></todo-item>
+    <todo-item id="7" name="Faithfulness"></todo-item>
+    <todo-item id="8" name="Gentleness"></todo-item>
+    <todo-item id="9" name="Self-control"></todo-item>
+</ul>
+"
+`;
+
+exports[`interpolated composition 2 1`] = `
+"<html>
+    <body>
+        <ul>
+            <li id="1">Love</li>
+            <li id="2">Joy</li>
+            <li id="3">Peace</li>
+            <li id="4">Patience</li>
+            <li id="5">Kindness</li>
+            <li id="6">Goodness</li>
+            <li id="7">Faithfulness</li>
+            <li id="8">Gentleness</li>
+            <li id="9">Self-control</li>
+        </ul>
+    </body>
+</html>
+"
+`;

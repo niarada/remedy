@@ -1,10 +1,12 @@
 import autoprefixer from "autoprefixer";
 import postcss from "postcss";
 import tailwind from "tailwindcss";
+import { createHtmlElement } from "~/lib/html";
 import { ServerFeature } from ".";
 
 export default function (): ServerFeature {
     return {
+        name: "tailwind",
         async fetch(request) {
             const url = new URL(request.url);
 
@@ -31,13 +33,16 @@ export default function (): ServerFeature {
                 });
             }
         },
-        element(element) {
-            if (element.tag === "head") {
-                element.append("link", {
-                    rel: "stylesheet",
-                    href: "/_tailwind",
-                });
+        async transform(node) {
+            if (node.type === "element" && node.tag === "head") {
+                node.children.push(
+                    createHtmlElement(node, "link", {
+                        rel: "stylesheet",
+                        href: "/_tailwind",
+                    }),
+                );
             }
+            return node;
         },
     };
 }

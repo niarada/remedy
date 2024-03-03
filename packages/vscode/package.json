@@ -16,7 +16,7 @@
             {
                 "id": "montana",
                 "aliases": ["Montana", "montana"],
-                "extensions": [".mt"],
+                "extensions": [".part"],
                 "configuration": "./grammars/montana.json",
                 "icon": {
                     "light": "./assets/icon-dark.png",

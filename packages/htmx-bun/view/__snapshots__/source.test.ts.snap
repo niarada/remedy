@@ -1,0 +1,16 @@
+// Bun Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`compile 1`] = `
+"import { readFileSync } from "fs";
+interface Attributes {
+    foo: string;
+}
+export async function $run(Helper: Helper, Attributes: Attributes) {
+    const id = 1;
+    const bar = foo;
+    const $exp0 = (env) => (env.id);
+    const $exp1 = (env) => (env.bar);
+    return { Helper, Attributes, readFileSync, id, bar, $exp0, $exp1 };
+}
+"
+`;

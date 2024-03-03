@@ -1,0 +1,11 @@
+<server>
+    interface Attributes {
+        text: string;
+        value: number;
+    }
+
+    const localtext = Attributes.text;
+</server>
+
+<div>{localtext}</div>
+<div>{typeof value === "number"}</div>

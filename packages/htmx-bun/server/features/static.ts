@@ -2,6 +2,7 @@ import { ServerFeature } from ".";
 
 export default function (): ServerFeature {
     return {
+        name: "static",
         async fetch(request) {
             const url = new URL(request.url);
             const file = Bun.file(`view${url.pathname}`);

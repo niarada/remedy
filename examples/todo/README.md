@@ -1,5 +1,6 @@
 # Bugs:
 - Item focus doesn't remain when toggled.
+- Edit input focus not working due to htmx event not firing.
 
 # Thoughts
 - Out of band swaps are confusing, though they work well.

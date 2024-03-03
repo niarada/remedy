@@ -1,24 +1,26 @@
+import { HtmxOptions } from "./features/htmx";
+
 export interface ServerOptions {
     port?: number;
     features?: ServerOptionsFeatures;
 }
 
 interface ServerOptionsFeatures {
-    tailwind?: boolean;
-    htmx?: boolean;
-    sse?: boolean;
-    view?: boolean;
     static?: boolean;
+    tailwind?: boolean;
+    htmx?: HtmxOptions;
+    sse?: boolean;
     dev?: boolean;
 }
 
 const options = {
     port: 4321,
     features: {
-        tailwind: true,
-        htmx: true,
+        tailwind: false,
+        htmx: {
+            debug: false,
+        },
         sse: true,
-        view: true,
         static: true,
         dev: import.meta.env.NODE_ENV === "development",
     },
