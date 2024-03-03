@@ -44,16 +44,4 @@ bun i https://gitpkg.now.sh/moonlight-pm/htmx-bun/packages/htmx-bun
 bunx htmx-bun
 ```
 
-Now, start dropping files in the `view` directory.  Tailwind will whine if you don't use it.  You can disable tailwind by placing a file called `options.ts` in your project that looks something like this:
-
-```ts
-import { ServerOptions } from "htmx-bun/server/options";
-
-export default {
-    features: {
-        tailwind: false,
-    },
-} satisfies ServerOptions;
-```
-
-You'll need to restart the server after adding or changing `options.ts`.
+Now, start dropping files in the `view` directory.
