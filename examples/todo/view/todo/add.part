@@ -1,19 +1,17 @@
-<server>
-    import { model, saveModel } from '~/lib/model';
+import { model, saveModel } from '~/lib/model';
 
-    interface Attributes {
-        text: string;
-    }
+interface Attributes {
+    text: string;
+}
 
-    if (Attributes.text) {
-        const id = model.items.reduce((id, it) => Math.max(id, it.id), 0) + 1;
-        model.items.push({ id, text: Attributes.text, done: false });
-        await saveModel();
-        Helper.cancelRender();
-        Helper.oob('todo-list');
-        Helper.oob('todo-footer');
-    }
-</server>
+if (Attributes.text) {
+    const id = model.items.reduce((id, it) => Math.max(id, it.id), 0) + 1;
+    model.items.push({ id, text: Attributes.text, done: false });
+    await saveModel();
+    Helper.cancelRender();
+    Helper.oob('todo-list');
+    Helper.oob('todo-footer');
+}
 
 <input
     hx-get="/todo/add"
@@ -24,5 +22,5 @@
     autofocus
     autocomplete="off"
     name="text"
-    value=""
+    value="{foobar}"
 >

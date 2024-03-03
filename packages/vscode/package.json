@@ -1,9 +1,9 @@
 {
-    "name": "montana",
-    "displayName": "Montana",
-    "description": "Language support for Montana",
+    "name": "htmx-bun",
+    "displayName": "htmx-bun",
+    "description": "Language support for htmx-bun",
     "categories": ["Programming Languages", "Formatters", "Linters"],
-    "keywords": ["montana", "htmx", "bun", "node", "typescript", "javascript"],
+    "keywords": ["htmx-bun", "htmx", "bun", "node", "typescript", "javascript"],
     "icon": "assets/icon-light.png",
     "version": "0.0.0",
     "publisher": "moonlight-pm",
@@ -14,10 +14,10 @@
     "contributes": {
         "languages": [
             {
-                "id": "montana",
-                "aliases": ["Montana", "montana"],
+                "id": "htmx-bun",
+                "aliases": ["htmx-bun"],
                 "extensions": [".part"],
-                "configuration": "./grammars/montana.json",
+                "configuration": "./grammars/htmx-bun.json",
                 "icon": {
                     "light": "./assets/icon-dark.png",
                     "dark": "./assets/icon-light.png"
@@ -26,9 +26,9 @@
         ],
         "grammars": [
             {
-                "language": "montana",
-                "scopeName": "source.montana",
-                "path": "./dist/montana.tmLanguage.json",
+                "language": "htmx-bun",
+                "scopeName": "source.part",
+                "path": "./dist/htmx-bun.tmLanguage.json",
                 "embeddedLanguages": {
                     "meta.embedded.block.typescript": "typescript",
                     "meta.embedded.block.html": "html"
@@ -46,7 +46,7 @@
             "type": "object",
             "title": "Montana language server configuration",
             "properties": {
-                "montana.trace.server": {
+                "htmx-bun.trace.server": {
                     "scope": "window",
                     "type": "string",
                     "enum": ["off", "messages", "verbose"],

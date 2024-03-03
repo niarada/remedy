@@ -1,22 +1,20 @@
-<server>
-    import { model, saveModel } from "~/lib/model";
+import { model, saveModel } from "~/lib/model";
 
-    interface Attributes {
-        toggle?: boolean;
+interface Attributes {
+    toggle?: boolean;
+}
+
+const checked = model.items.filter((it) => it.done).length === model.items.length;
+
+if (Attributes.toggle) {
+    for (const item of model.items) {
+        item.done = !checked;
     }
-
-    const checked = model.items.filter((it) => it.done).length === model.items.length;
-
-    if (Attributes.toggle) {
-        for (const item of model.items) {
-            item.done = !checked;
-        }
-        await saveModel();
-        Helper.cancelRender();
-        Helper.oob('todo-list');
-        Helper.oob('todo-footer');
-    }
-</server>
+    await saveModel();
+    Helper.cancelRender();
+    Helper.oob('todo-list');
+    Helper.oob('todo-footer');
+}
 
 <div id="toggle-all-container" hx-swap-oob="true" class="toggle-all-container">
     <input
