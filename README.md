@@ -37,10 +37,7 @@ bun examples:todo
 ## Start fresh
 
 ```sh
-mkdir my-project
-cd my-project
-echo "{}" > package.json
-bun i https://gitpkg.now.sh/moonlight-pm/htmx-bun/packages/htmx-bun
+mkdir my-project && cd my-project
 bunx htmx-bun
 ```
 
