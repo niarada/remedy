@@ -8,7 +8,7 @@
 1. All views are partials
 1. All partials are accessible by route.
 1. All partials produce html, or nothing.
-1. Parials resolve to custom element tag names, with optional custom attributes, and are re-usable, similar to compoents.
+1. Partials resolve to custom element tag names, with optional custom attributes, and are re-usable, similar to compoents.
 1. Partials written in typescript/javascript and/or html
 1. Bun is runtime.
 1. Single back-end.
