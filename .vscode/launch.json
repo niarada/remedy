@@ -27,8 +27,23 @@
             "type": "bun",
             "request": "launch",
             "name": "Debug Example: Todo",
-            "program": "${workspaceRoot}/packages/htmx-bun/bin/htmx-bun.ts",
+            "program": "${workspaceRoot}/packages/htmx-bun/server/index.ts",
+            "runtimeArgs": [
+                "-r",
+                "${workspaceRoot}/packages/htmx-bun/view/plugin.ts"
+            ],
             "cwd": "${workspaceRoot}/examples/todo"
+        },
+        {
+            "type": "bun",
+            "request": "launch",
+            "name": "Debug Example: Docs",
+            "program": "${workspaceRoot}/packages/htmx-bun/server/index.ts",
+            "runtimeArgs": [
+                "-r",
+                "${workspaceRoot}/packages/htmx-bun/view/plugin.ts"
+            ],
+            "cwd": "${workspaceRoot}/examples/docs"
         },
         {
             "type": "bun",

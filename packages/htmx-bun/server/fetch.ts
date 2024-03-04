@@ -43,7 +43,7 @@ export async function buildFetch(options: ServerOptions) {
 
         if (!response) {
             const tag = (url.pathname.slice(1) || "root").replace(/\//g, "-");
-            if (/^[a-z][-a-z0-9]+$/.test(tag)) {
+            if (/^[a-z][-a-z0-9]+$/.test(tag) && register.get(tag)) {
                 const view = register.get(tag).present();
                 const attributes: Record<string, string> = {};
                 url.searchParams.forEach((value, name) => {
