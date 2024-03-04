@@ -27,3 +27,5 @@
 - Double-quotes in bracketed code e.g. { "expression" }.
 - Syntax highlighting and language support in expressions.
 - Compile to single binary.
+- More integrations:
+  - expressive-code.com

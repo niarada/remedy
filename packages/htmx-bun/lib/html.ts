@@ -1,5 +1,5 @@
 import { SAXParser } from "parse5-sax-parser";
-import { formatHtml } from "~/lib/format";
+import { warn } from "./log";
 
 /**
  * An array of void tag names.
@@ -145,34 +145,6 @@ export function parseHtml(html: string): HtmlFragment {
     return stack[0] as HtmlFragment;
 }
 
-export async function printHtmlSyntaxTree(node: HtmlNode): Promise<string> {
-    node = structuredClone(node);
-    function visit(node: HtmlNode): string {
-        switch (node.type) {
-            case "fragment":
-                return node.children.map(visit).join("");
-            case "doctype":
-                return "<!DOCTYPE html>";
-            case "element":
-                if (node.tag === "input") {
-                    node.attrs = node.attrs.filter((attr) =>
-                        attr.name === "checked" && attr.value === "false"
-                            ? undefined
-                            : attr,
-                    );
-                }
-                return `<${node.tag}${node.attrs
-                    .map((attr) => ` ${attr.name}="${attr.value}"`)
-                    .join("")}>${node.children.map(visit).join("")}${
-                    node.void ? "" : `</${node.tag}>`
-                }`;
-            case "text":
-                return node.content;
-        }
-    }
-    return formatHtml(visit(node));
-}
-
 export type HtmlVisitResponse = HtmlNode | (HtmlNode | undefined)[] | undefined;
 
 type VisitFunctions = {
@@ -217,4 +189,96 @@ export function attributesToObject(attrs: HtmlElementAttribute[]) {
         obj[attr.name] = attr.value;
     }
     return obj;
+}
+
+export function formatHtml(htmlOrNode: string | HtmlNode): string {
+    const html =
+        typeof htmlOrNode === "string"
+            ? parseHtml(htmlOrNode)
+            : structuredClone(htmlOrNode);
+    const text: string[] = [];
+    let indent = 0;
+    function visit(node: HtmlNode) {
+        if (
+            (node.type === "element" &&
+                !["markdown", "pre", "code"].includes(node.tag)) ||
+            node.type === "fragment"
+        ) {
+            node.children = node.children.filter(
+                (child) =>
+                    !(child.type === "text" && child.content.trim() === ""),
+            );
+        }
+        if (node.type === "fragment") {
+            for (const child of node.children) {
+                visit(child);
+            }
+        } else if (node.type === "doctype") {
+            text.push("<!DOCTYPE html>");
+        } else if (node.type === "element") {
+            if (node.tag === "input") {
+                node.attrs = node.attrs.filter((attr) =>
+                    attr.name === "checked" && attr.value === "false"
+                        ? undefined
+                        : attr,
+                );
+            }
+            text.push(
+                `${" ".repeat(indent)}<${node.tag}${node.attrs
+                    .map((attr) => ` ${attr.name}="${attr.value}"`)
+                    .join("")}>${
+                    node.children.length === 0 && !node.void ? "" : "\n"
+                }`,
+            );
+            indent += 4;
+            for (const child of node.children) {
+                visit(child);
+            }
+            indent -= 4;
+            text.push(
+                `${
+                    node.void
+                        ? ""
+                        : `${
+                              node.children.length === 0
+                                  ? ""
+                                  : " ".repeat(indent)
+                          }</${node.tag}>\n`
+                }`,
+            );
+        } else if (node.type === "text") {
+            const lines = node.content
+                .split("\n")
+                .filter((it) => it.trim() !== "");
+            if (lines.length === 0) {
+                return;
+            }
+            if (node.parent.type === "element") {
+                if (node.parent.tag === "markdown") {
+                    const initialIndent = lines[0].search(/\S/);
+                    while (lines.length > 0) {
+                        if (lines[0].search(/\S/) < initialIndent) {
+                            warn(
+                                "markdown",
+                                "All lines must be indented at least the same amount as the first line.",
+                            );
+                            text.push(`${lines.shift()!}\n`);
+                        } else {
+                            text.push(
+                                `${lines.shift()!.slice(initialIndent)}\n`,
+                            );
+                        }
+                    }
+                    return;
+                }
+                if (["pre", "code"].includes(node.parent.tag)) {
+                    text.push(node.content);
+                    return;
+                }
+            }
+            text.push(`${" ".repeat(indent)}${lines.join("\n").trim()}\n`);
+        }
+    }
+    visit(html);
+    return `${text.join("").trim()}\n`;
 }

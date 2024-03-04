@@ -1,3 +1,8 @@
 <markdown class="prose-slate prose-invert">
     # Introduction
+
+    ```js
+    const foo = '1';
+
+    ```
 </markdown>

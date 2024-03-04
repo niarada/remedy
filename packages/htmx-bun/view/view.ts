@@ -1,9 +1,9 @@
+import { formatHtml } from "~/lib/html";
 import {
     HtmlFragment,
     HtmlTransformer,
     attributesToObject,
     parseHtml,
-    printHtmlSyntaxTree,
     transformHtml,
 } from "../lib/html";
 import { Helper } from "./helper";
@@ -29,7 +29,7 @@ export class View {
         if (!this.#assembled) {
             await this.assemble(attributes);
         }
-        return await printHtmlSyntaxTree(this.#html);
+        return formatHtml(this.#html);
     }
 
     async assemble(attributes: Record<string, unknown> = {}) {
