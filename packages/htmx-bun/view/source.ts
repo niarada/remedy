@@ -38,9 +38,9 @@ export class Source {
         await this.disentangle(text);
         this.transformCode();
         return formatTypeScript(`
-            ${await this.code()}
+            ${this.code()}
             export const html = ${JSON.stringify(this.html())};
-            export const code = ${JSON.stringify(await this.code())};
+            export const code = ${JSON.stringify(this.code())};
             export const attributes = ${JSON.stringify(this.attributes)};
         `);
     }
@@ -57,7 +57,7 @@ export class Source {
      * Returns the TypeScript code, minus a few items.
      * @returns The TypeScript code.
      */
-    private async code() {
+    private code() {
         return ts.createPrinter().printFile(this.#code);
     }
 
