@@ -1,6 +1,6 @@
 import { Glob } from "bun";
 import { resolve } from "path";
-import { warn } from "~/lib/log";
+import { error, warn } from "~/lib/log";
 import { Template, TemplateModule } from "./template";
 
 export class TemplateRegister {
@@ -41,9 +41,16 @@ export class TemplateRegister {
         if (this.templates[tag]) {
             delete require.cache[absoluteFilePath];
         }
-        const module = (await import(absoluteFilePath)) as TemplateModule;
-        const view = new Template(this, tag, path, module);
-        this.templates[tag] = view;
+        try {
+            const module = (await import(absoluteFilePath)) as TemplateModule;
+            const view = new Template(this, tag, path, module);
+            this.templates[tag] = view;
+        } catch (e) {
+            error("view", `Failed to load '${path}'`);
+            // @ts-ignore
+            console.log(e.cause.toString());
+            return;
+        }
     }
 
     get(tag: string) {

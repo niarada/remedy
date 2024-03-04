@@ -22,6 +22,7 @@
 - Use a prefix on custom attributes, e.g. "mx-for" instead of "for".
 - htmx support in editor.
 - SAX support for bracketed attributes with spaces in them e.g. { expression }.
+  - rehype may have this (https://github.com/rehypejs/rehype)
 - Double-quotes in bracketed code e.g. { "expression" }.
 - Syntax highlighting and language support in expressions.
 - Compile to single binary.
