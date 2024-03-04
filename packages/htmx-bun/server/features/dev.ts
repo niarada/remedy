@@ -53,7 +53,7 @@ export default function (options: ServerOptions): ServerFeature {
                 }
                 return new Response(
                     //product.outputs[0],
-                    await formatTypeScript(content),
+                    formatTypeScript(content),
                     {
                         headers: {
                             // "Content-Type": product.outputs[0].type,

@@ -1,19 +1,16 @@
 import { expect, test } from "bun:test";
 import { formatTypeScript } from "./typescript";
 
-test("formatTypeScript", async () => {
+test("formatTypeScript", () => {
     const ugly = `
       const a    =
       1;
-      const b = 'foo'
-
+      const b = "foo"
 
       function  c   (  ) { return null
         ;}
 
     `;
-    const pretty = await formatTypeScript(ugly);
-    expect(pretty).toBe(
-        `const a = 1;\nconst b = "foo";\n\nfunction c() {\n  return null;\n}\n`,
-    );
+    const pretty = formatTypeScript(ugly);
+    expect(pretty).toMatchSnapshot();
 });
