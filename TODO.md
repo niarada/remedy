@@ -24,3 +24,4 @@
 - SAX support for bracketed attributes with spaces in them e.g. { expression }.
 - Double-quotes in bracketed code e.g. { "expression" }.
 - Syntax highlighting and language support in expressions.
+- Compile to single binary.
