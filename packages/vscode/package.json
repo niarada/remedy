@@ -4,10 +4,7 @@
     "description": "Language support for htmx-bun",
     "categories": ["Programming Languages", "Formatters", "Linters"],
     "keywords": ["htmx-bun", "htmx", "bun", "node", "typescript", "javascript"],
-    "icon": {
-        "light": "./assets/icon-dark.png",
-        "dark": "./assets/icon-light.png"
-    },
+    "icon": "./assets/icon-light.png",
     "version": "0.0.1",
     "publisher": "moonlight-pm",
     "engines": {
