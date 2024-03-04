@@ -223,29 +223,36 @@ export function formatHtml(htmlOrNode: string | HtmlNode): string {
                         : attr,
                 );
             }
-            text.push(
-                `${" ".repeat(indent)}<${node.tag}${node.attrs
-                    .map((attr) => ` ${attr.name}="${attr.value}"`)
-                    .join("")}>${
-                    node.children.length === 0 && !node.void ? "" : "\n"
-                }`,
-            );
-            indent += 4;
+            if (node.tag !== "code") {
+                text.push(" ".repeat(indent));
+            }
+            text.push("<");
+            text.push(node.tag);
+            for (const attr of node.attrs) {
+                text.push(` ${attr.name}="${attr.value}"`);
+            }
+            text.push(">");
+            if (
+                node.children.length > 0 &&
+                !["code", "pre"].includes(node.tag)
+            ) {
+                text.push("\n");
+            }
+            indent += 2;
             for (const child of node.children) {
                 visit(child);
             }
-            indent -= 4;
-            text.push(
-                `${
-                    node.void
-                        ? ""
-                        : `${
-                              node.children.length === 0
-                                  ? ""
-                                  : " ".repeat(indent)
-                          }</${node.tag}>\n`
-                }`,
-            );
+            indent -= 2;
+            if (
+                !node.void &&
+                node.children.length > 0 &&
+                !["code", "pre"].includes(node.tag)
+            ) {
+                text.push(" ".repeat(indent));
+            }
+            if (!node.void) {
+                text.push(`</${node.tag}>\n`);
+            }
         } else if (node.type === "text") {
             const lines = node.content
                 .split("\n")
@@ -272,7 +279,7 @@ export function formatHtml(htmlOrNode: string | HtmlNode): string {
                     return;
                 }
                 if (["pre", "code"].includes(node.parent.tag)) {
-                    text.push(node.content);
+                    text.push(node.content.trim());
                     return;
                 }
             }
