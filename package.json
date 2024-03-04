@@ -3,6 +3,7 @@
     "private": true,
     "scripts": {
         "examples:todo": "cd examples/todo && bun --hot -r ../../packages/htmx-bun/view/plugin.ts ../../packages/htmx-bun/server/index.ts",
+        "examples:docs": "cd examples/docs && bun --hot -r ../../packages/htmx-bun/view/plugin.ts ../../packages/htmx-bun/server/index.ts",
         "build:grammar": "bun scripts/build-grammar.ts",
         "test:view": "cd packages/htmx-bun && bun run test"
     },

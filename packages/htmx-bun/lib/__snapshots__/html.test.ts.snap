@@ -1,0 +1,38 @@
+// Bun Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`formatHtml 1`] = `
+"<div>
+    <span>
+        Muppim, Huppim and Ard
+    </span>
+</div>
+"
+`;
+
+exports[`parse and print 1`] = `
+"<div>
+    <h1 class="monk">
+        Test
+    </h1>
+    <p>
+        Test
+    </p>
+</div>
+"
+`;
+
+exports[`embedded fragment 1`] = `
+"<div>
+    <span></span>
+</div>
+"
+`;
+
+exports[`transform 1`] = `
+"<div>
+    <h1 class="priest">
+        Priest
+    </h1>
+</div>
+"
+`;

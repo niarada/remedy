@@ -1,14 +1,14 @@
 import * as ts from "typescript";
 import { matchRecursive } from "xregexp";
-import { formatTypeScript } from "~/lib/format";
 import {
     HtmlFragment,
     HtmlText,
     createHtmlFragment,
+    formatHtml,
     parseHtml,
-    printHtmlSyntaxTree,
     transformHtml,
 } from "~/lib/html";
+import { formatTypeScript } from "~/lib/typescript";
 
 /**
  * The Source class is responsible for reading an htmx-bun partial `.part` file,
@@ -37,11 +37,9 @@ export class Source {
         const text = await Bun.file(this.path).text();
         await this.disentangle(text);
         this.transformCode();
-        // console.log(await this.code());
-        // console.log(await this.html());
         return await formatTypeScript(`
             ${await this.code()}
-            export const html = ${JSON.stringify(await this.html())};
+            export const html = ${JSON.stringify(this.html())};
             export const code = ${JSON.stringify(await this.code())};
             export const attributes = ${JSON.stringify(this.attributes)};
         `);
@@ -51,8 +49,8 @@ export class Source {
      * Returns the serialized HTML
      * @returns The serialized HTML.
      */
-    private async html() {
-        return await printHtmlSyntaxTree(this.#html);
+    private html() {
+        return formatHtml(this.#html);
     }
 
     /**

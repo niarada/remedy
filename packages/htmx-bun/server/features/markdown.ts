@@ -1,7 +1,4 @@
-import rehypeStringify from "rehype-stringify";
-import remarkParse from "remark-parse";
-import remarkRehype from "remark-rehype";
-import { unified } from "unified";
+import markdown from "markdown-it";
 import {
     HtmlElement,
     HtmlText,
@@ -22,13 +19,12 @@ export default function (): ServerFeature {
                             | HtmlText
                             | undefined
                     )?.content ?? "";
-                const html = String(
-                    await unified()
-                        .use(remarkParse)
-                        .use(remarkRehype)
-                        .use(rehypeStringify)
-                        .process(content),
-                );
+                if (!content) {
+                    return node;
+                }
+                const md = markdown();
+                // TODO: integrate https://shiki.style/
+                const html = markdown().render(content);
                 const attrs = attributesToObject(node.attrs);
                 return createHtmlElement(
                     node.parent,
