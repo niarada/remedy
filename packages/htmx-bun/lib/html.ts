@@ -134,7 +134,7 @@ export function parseHtml(html: string): HtmlFragment {
 
     parser.on("text", (text) => {
         const parent = stack[stack.length - 1] as HtmlParent;
-        parent.children.push(createHtmlText(parent, text.text));
+        addText(text.text);
     });
 
     parser.on("endTag", (tag) => {
@@ -251,29 +251,47 @@ export function formatHtml(htmlOrNode: string | HtmlNode): string {
                 text.push(" ".repeat(indent));
             }
             if (!node.void) {
-                text.push(`</${node.tag}>\n`);
+                text.push(`</${node.tag}>`);
+            }
+            if (node.tag !== "code") {
+                text.push("\n");
             }
         } else if (node.type === "text") {
-            const lines = node.content
-                .split("\n")
-                .filter((it) => it.trim() !== "");
+            const lines = node.content.split("\n");
             if (lines.length === 0) {
                 return;
             }
             if (node.parent.type === "element") {
                 if (node.parent.tag === "markdown") {
-                    const initialIndent = lines[0].search(/\S/);
+                    let initialIndent = 0;
                     while (lines.length > 0) {
-                        if (lines[0].search(/\S/) < initialIndent) {
+                        // const line = lines.shift()!;
+                        if (lines[0].trim() === "") {
+                            lines.shift();
+                            continue;
+                        }
+                        initialIndent = lines[0].search(/\S/);
+                        break;
+                    }
+                    while (lines.length > 0) {
+                        if (lines[lines.length - 1].trim() === "") {
+                            lines.pop();
+                            continue;
+                        }
+                        break;
+                    }
+                    for (const line of lines) {
+                        if (
+                            line.trim() !== "" &&
+                            line.search(/\S/) < initialIndent
+                        ) {
                             warn(
                                 "markdown",
                                 "All lines must be indented at least the same amount as the first line.",
                             );
-                            text.push(`${lines.shift()!}\n`);
+                            text.push(`${line}\n`);
                         } else {
-                            text.push(
-                                `${lines.shift()!.slice(initialIndent)}\n`,
-                            );
+                            text.push(`${line.slice(initialIndent)}\n`);
                         }
                     }
                     return;
