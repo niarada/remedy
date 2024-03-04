@@ -10,14 +10,29 @@ import {
     transformHtml,
 } from "~/lib/html";
 
+/**
+ * The Source class is responsible for reading an htmx-bun partial `.part` file,
+ * disentangling into script and html parts, and returning the source code that
+ * will be resolved by the loader in `./plugin.ts`.
+ */
 export class Source {
     #html!: HtmlFragment;
     #code!: ts.SourceFile;
     #attributes?: ts.InterfaceDeclaration;
     #expressionIndex = 0;
 
+    /**
+     * Creates a new instance of the Source class.
+     * @param path The path of the source.
+     */
     constructor(public path: string) {}
 
+    /**
+     * This function encapsulates all the steps
+     * for turning raw `.part` source code into TypeScript that will then be loaded
+     * as a module by the loader in `./plugin.ts`.
+     * @returns The TypeScript source code for the partial.
+     */
     async compile() {
         const text = await Bun.file(this.path).text();
         await this.disentangle(text);
@@ -32,15 +47,23 @@ export class Source {
         `);
     }
 
-    async html() {
+    /**
+     * Returns the serialized HTML
+     * @returns The serialized HTML.
+     */
+    private async html() {
         return await printHtmlSyntaxTree(this.#html);
     }
 
-    async code() {
+    /**
+     * Returns the TypeScript code, minus a few items.
+     * @returns The TypeScript code.
+     */
+    private async code() {
         return ts.createPrinter().printFile(this.#code);
     }
 
-    get attributes() {
+    private get attributes() {
         const attributes: Attributes = [];
         if (this.#attributes) {
             for (const member of this.#attributes.members) {
@@ -55,7 +78,14 @@ export class Source {
         return attributes;
     }
 
-    async disentangle(text: string) {
+    /**
+     * Splits the source text in half, parses the HTML, walks the HTML tree looking for expressions,
+     * replacing them with generated identifiers, and creates functions to later retrieve their values,
+     * for interpolation.
+     * @param text - The text to be disentangled.
+     * @returns void
+     */
+    private async disentangle(text: string) {
         const beginHtml = text.search(/^<!?\w+/m);
         const code: string[] = [text.slice(0, beginHtml)];
         this.#html = parseHtml(text.slice(beginHtml));
@@ -82,6 +112,14 @@ export class Source {
         );
     }
 
+    /**
+     * Seeks expressions in the given text and generates functions to later interpolate
+     * runtime values.
+     *
+     * @param code - The array to store the generated code.
+     * @param text - The text to search for expressions.
+     * @returns The modified text with expressions replaced by generated identifier.
+     */
     private matchExpressions(code: string[], text: string) {
         for (const expression of matchRecursive(text, "\\{", "\\}", "g")) {
             const $exp = `$exp${this.#expressionIndex++}`;
@@ -95,6 +133,15 @@ export class Source {
         return text;
     }
 
+    /**
+     * Transforms the given expression by replacing identifiers with property access expressions
+     * that access the "env" object.  The interpolation functions generated in `matchExpressions`
+     * take and `env` object, that is the scope of the partial code.  So we amend the expressions to
+     * access the `env` object.
+     *
+     * @param expression - The expression to transform.
+     * @returns The transformed expression.
+     */
     private transformExpression(expression: string) {
         const source = ts.createSourceFile(
             "",
@@ -144,6 +191,15 @@ export class Source {
         );
     }
 
+    /**
+     * Final transformation of the TypeScript source, figuring out what identifiers need to be
+     * pulled into the local scope, that we can then pass to the interpolation functions.
+     *
+     * We're also extracting out the partials Attributes interface, if it has one, so we can use
+     * that information at runtime.  We also stub Attribute and Helper locals, these will be passed
+     * to the function that encloses the partial code, provided to it's local namespace.
+     * @private
+     */
     private transformCode() {
         const locals: string[] = ["Helper", "Attributes"];
         const transformer: ts.TransformerFactory<ts.SourceFile> = (context) => {
@@ -242,6 +298,9 @@ export class Source {
     }
 }
 
+/**
+ * Represents an attribute for a partia/tag.
+ */
 export interface Attribute {
     name: string;
     type: string;
