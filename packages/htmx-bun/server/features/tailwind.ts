@@ -1,6 +1,9 @@
+import typography from "@tailwindcss/typography";
 import autoprefixer from "autoprefixer";
+import { existsSync } from "fs";
 import postcss from "postcss";
-import tailwind from "tailwindcss";
+import { mergeDeepWith } from "ramda";
+import tailwind, { Config as TailwindConfig } from "tailwindcss";
 import { createHtmlElement } from "~/lib/html";
 import { ServerFeature } from ".";
 
@@ -9,19 +12,25 @@ export default function (): ServerFeature {
         name: "tailwind",
         async fetch(request) {
             const url = new URL(request.url);
-
+            let config: TailwindConfig = {
+                content: ["./view/**/*.part"],
+                plugins: [typography],
+            };
+            if (existsSync("tailwind.config.ts")) {
+                config = mergeDeepWith(
+                    (_, b) => b,
+                    config,
+                    (await import(`${process.cwd()}/tailwind.config.ts`))
+                        .default,
+                );
+            }
             if (url.pathname === "/_tailwind") {
                 const css = `
                     @import "tailwindcss/base";
                     @import "tailwindcss/components";
                     @import "tailwindcss/utilities";
                 `;
-                const processor = postcss([
-                    autoprefixer,
-                    tailwind({
-                        content: ["./view/**/*.{html,ts}"],
-                    }),
-                ]);
+                const processor = postcss([autoprefixer, tailwind(config)]);
                 const result = await processor.process(css, {
                     from: "<builtin>",
                 });

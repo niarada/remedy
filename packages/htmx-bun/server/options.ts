@@ -8,6 +8,7 @@ export interface ServerOptions {
 interface ServerOptionsFeatures {
     static?: boolean;
     tailwind?: boolean;
+    markdown?: boolean;
     htmx?: HtmxOptions;
     sse?: boolean;
     dev?: boolean;
@@ -17,6 +18,7 @@ const options = {
     port: 4321,
     features: {
         tailwind: false,
+        markdown: false,
         htmx: {
             debug: false,
         },
