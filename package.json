@@ -6,6 +6,10 @@
         "build:grammar": "bun scripts/build-grammar.ts",
         "test:view": "cd packages/htmx-bun && bun run test"
     },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/moonlight-pm/htmx-bun.git"
+    },
     "workspaces": ["packages/*", "examples/*"],
     "dependencies": {
         "@biomejs/biome": "^1.5.3",

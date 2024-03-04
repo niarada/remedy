@@ -4,13 +4,26 @@
     "description": "Language support for htmx-bun",
     "categories": ["Programming Languages", "Formatters", "Linters"],
     "keywords": ["htmx-bun", "htmx", "bun", "node", "typescript", "javascript"],
-    "icon": "assets/icon-light.png",
-    "version": "0.0.0",
+    "icon": {
+        "light": "./assets/icon-dark.png",
+        "dark": "./assets/icon-light.png"
+    },
+    "version": "0.0.1",
     "publisher": "moonlight-pm",
     "engines": {
         "vscode": "^1.86.0"
     },
-    "main": "./dist/extension.js",
+    "license": "0BSD",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/moonlight-pm/htmx-bun.git"
+    },
+    "scripts": {
+        "xvscode:prepublish": "npm run esbuild-base -- --minify",
+        "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
+        "esbuild": "npm run esbuild-base -- --sourcemap",
+        "esbuild-watch": "npm run esbuild-base -- --sourcemap --watch"
+    },
     "contributes": {
         "languages": [
             {
@@ -57,13 +70,12 @@
         }
     },
     "dependencies": {
-        "@biomejs/biome": "^1.5.3",
-        "@types/node": "^20.11.20",
-        "@types/vscode": "^1.86.0",
-        "@volar/vscode": "^2.0.4",
+        "@types/node": "^20.11.24",
+        "@types/vscode": "^1.87.0",
+        "@volar/vscode": "^2.1.0",
         "typescript": "^5.3.3",
-        "volar-service-html": "^0.0.30",
-        "volar-service-typescript": "^0.0.30",
+        "volar-service-html": "^0.0.31",
+        "volar-service-typescript": "^0.0.31",
         "vscode-languageclient": "^9.0.1"
     }
 }
