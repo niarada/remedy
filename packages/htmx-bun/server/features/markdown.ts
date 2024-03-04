@@ -2,7 +2,13 @@ import rehypeStringify from "rehype-stringify";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import { unified } from "unified";
-import { HtmlText, parseHtml } from "~/lib/html";
+import {
+    HtmlElement,
+    HtmlText,
+    attributesToObject,
+    createHtmlElement,
+    parseHtml,
+} from "~/lib/html";
 import { ServerFeature } from ".";
 
 export default function (): ServerFeature {
@@ -23,7 +29,13 @@ export default function (): ServerFeature {
                         .use(rehypeStringify)
                         .process(content),
                 );
-                return parseHtml(html).children;
+                const attrs = attributesToObject(node.attrs);
+                return createHtmlElement(
+                    node.parent,
+                    "article",
+                    { class: `prose ${attrs.class ?? ""}` },
+                    ...(parseHtml(html).children as (HtmlText | HtmlElement)[]),
+                );
             }
             return node;
         },
