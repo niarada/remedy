@@ -1,5 +1,5 @@
 {
-    "name": "htmx-bun",
+    "name": "htmx-bun-vscode",
     "displayName": "htmx-bun",
     "description": "Language support for htmx-bun",
     "categories": ["Programming Languages", "Formatters", "Linters"],

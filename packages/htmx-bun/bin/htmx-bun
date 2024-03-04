@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+bun -r ./node_modules/htmx-bun/view/plugin.ts ./node_modules/htmx-bun/server/index.ts
