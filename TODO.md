@@ -1,3 +1,4 @@
+- Layouts/slots
 - Caching of static resources.
 - Cache tailwind.
 - Fontsource integration.

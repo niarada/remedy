@@ -48,7 +48,10 @@ export class TemplateRegister {
         } catch (e) {
             error("view", `Failed to load '${path}'`);
             // @ts-ignore
-            console.log(e.cause.toString());
+            const cause = e.cause?.toString();
+            if (cause) {
+                console.log(cause);
+            }
             return;
         }
     }
