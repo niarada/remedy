@@ -1,11 +1,7 @@
-import { format } from "prettier";
+import * as ts from "typescript";
 
-export async function formatTypeScript(code: string): Promise<string> {
-    return format(code, {
-        parser: "typescript",
-        semi: true,
-        singleQuote: false,
-        trailingComma: "all",
-        arrowParens: "always",
-    });
+export function formatTypeScript(code: string): string {
+    const source = ts.createSourceFile("", code, ts.ScriptTarget.Latest, true);
+    const printer = ts.createPrinter();
+    return printer.printFile(source);
 }

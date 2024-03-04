@@ -1,0 +1,10 @@
+// Bun Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`formatTypeScript 1`] = `
+"const a = 1;
+const b = "foo";
+function c() {
+    return null;
+}
+"
+`;

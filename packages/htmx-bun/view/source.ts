@@ -37,7 +37,7 @@ export class Source {
         const text = await Bun.file(this.path).text();
         await this.disentangle(text);
         this.transformCode();
-        return await formatTypeScript(`
+        return formatTypeScript(`
             ${await this.code()}
             export const html = ${JSON.stringify(this.html())};
             export const code = ${JSON.stringify(await this.code())};
