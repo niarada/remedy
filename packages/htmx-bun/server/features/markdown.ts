@@ -22,8 +22,6 @@ export default function (): ServerFeature {
                 if (!content) {
                     return node;
                 }
-                const md = markdown();
-                // TODO: integrate https://shiki.style/
                 const html = markdown().render(content);
                 const attrs = attributesToObject(node.attrs);
                 return createHtmlElement(
