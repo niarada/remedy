@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+    <head>
+        <title>htmx-bun: documenation</title>
+    </head>
+    <body class="flex flex-col bg-slate-700 text-white p-2">
+        <header class="flex items-center gap-4 pb-2 mb-6 border-b border-b-slate-500">
+            <img src="/icon-light.png" class="h-8 w-8" />
+            <div class="font-bold">htmx-bun</div>
+        </header>
+        <main class="flex gap-32">
+            <nav>
+                <ul class="flex flex-col gap-1 cursor-pointer">
+                    <li hx-get="/article/introduction" hx-target="next .article">Introduction</li>
+                    <li hx-get="/article/installation" hx-target="next .article">Installation</li>
+                    <li hx-get="/article/options" hx-target="next .article">Options</li>
+                    <li hx-get="/article/editor" hx-target="next .article">Editor Support</li>
+                    <li hx-get="/article/partials" hx-target="next .article">Partials</li>
+                    <li hx-get="/article/integrations" hx-target="next .article">Integrations</li>
+                    <li hx-get="/article/roadmap" hx-target="next .article">Roadmap</li>
+                </ul>
+            </nav>
+            <div class="article">
+                <article-introduction />
+            </div>
+        </main>
+    </body>
+</html>
