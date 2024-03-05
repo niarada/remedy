@@ -1,4 +1,4 @@
-import { formatHtml } from "~/lib/html";
+import { HtmlElement, formatHtml } from "~/lib/html";
 import {
     HtmlFragment,
     HtmlTransformer,
@@ -10,13 +10,17 @@ import { Helper } from "./helper";
 import { Template } from "./template";
 
 export class View {
+    #template: Template;
+    #subview?: View;
     #assembled = false;
     #html: HtmlFragment;
     #locals: Record<string, unknown> = {};
     #helper: Helper;
     #attributes: Record<string, unknown> = {};
 
-    constructor(public template: Template) {
+    constructor(template: Template, subview?: View) {
+        this.#template = template;
+        this.#subview = subview;
         this.#html = parseHtml(template.html);
         this.#helper = new Helper();
     }
@@ -33,13 +37,21 @@ export class View {
     }
 
     async assemble(attributes: Record<string, unknown> = {}) {
+        await this.#subview?.assemble();
         this.#assembled = true;
         this.#attributes = this.coerceAttributes(attributes);
-        this.#locals = await this.template.run(this.#helper, attributes);
+        this.#locals = await this.#template.run(this.#helper, attributes);
         await transformHtml(
             this.#html,
             async (node, { visitEachChild, visitNode }) => {
                 if (node.type === "element") {
+                    if (node.tag === "slot") {
+                        if (this.#subview) {
+                            return this.#subview.children;
+                        }
+                        return ((await visitEachChild(node)) as HtmlElement)
+                            .children;
+                    }
                     // Handling the 'for' attribute
                     const iterator = node.attrs.find(
                         (attr) => attr.name === "for",
@@ -67,7 +79,7 @@ export class View {
                             return children.flat();
                         }
                     }
-                    const subtemplate = this.template.register.get(node.tag);
+                    const subtemplate = this.#template.register.get(node.tag);
                     if (subtemplate) {
                         const subview = subtemplate.present();
                         await subview.assemble(attributesToObject(node.attrs));
@@ -135,7 +147,7 @@ export class View {
     }
 
     coerceAttributes(attributes: Record<string, unknown>) {
-        for (const attribute of this.template.attributes) {
+        for (const attribute of this.#template.attributes) {
             if (attribute.type === "number") {
                 attributes[attribute.name] = Number(attributes[attribute.name]);
             } else if (attribute.type === "boolean") {

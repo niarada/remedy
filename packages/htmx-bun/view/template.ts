@@ -50,56 +50,14 @@ export class Template {
         const result = await fn(helper, attributes);
         return result;
     }
-
-    /**
-     * Interpolates the specified name in the template using the provided environment.
-     * @param name - The name to interpolate.
-     * @param env - The environment object.
-     * @returns The interpolated string.
-     */
-    // interpolate(name: string, env: Record<string, unknown>) {
-    //     const fn = this.module[name] as (
-    //         env: Record<string, unknown>,
-    //     ) => string;
-    //     if (fn) {
-    //         return fn(env);
-    //     }
-    //     // XXX: Raise error
-    //     error(`No interpolation function found for ${name}`);
-    //     return "";
-    // }
-
     /**
      * Creates a new view using this template.
      * @returns The created view.
      */
-    present() {
-        return new View(this);
+    present(subview?: View): View {
+        // const subview = subtemplate
+        //     ? this.register.get(subtemplate)?.present()
+        //     : undefined;
+        return new View(this, subview);
     }
-
-    /**
-     * Discovers and extracts the interpolation functions from the template module.
-     * @returns An array of extract objects.
-     */
-    // extracts(): Extract[] {
-    //     const results = [];
-    //     const extRe = /\$ext\d+/g;
-    //     let match: RegExpExecArray | null;
-    //     while ((match = extRe.exec(this.module.html)) !== null) {
-    //         results.push({
-    //             name: match[0],
-    //             fn: this.module[match[0]],
-    //         } as Extract);
-    //     }
-    //     return results;
-    // }
 }
-
-/**
- * Represents an extracted template interpolation.
- * @interface Extract
- */
-// interface Extract {
-//     name: string;
-//     fn: () => unknown;
-// }
