@@ -6,5 +6,5 @@ const source1 = `
 `;
 test("parser", () => {
     const ast = parsePartial(source1);
-    console.log(ast);
+    // console.log(ast);
 });
