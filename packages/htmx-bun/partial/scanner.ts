@@ -23,6 +23,10 @@ export function scanPartial(source: string): Token[] {
     return scanner.scan(source);
 }
 
+export function htmlStartIndex(source: string) {
+    return source.search(/^<\w+/m);
+}
+
 class Scanner {
     source = "";
     position = 0;
@@ -30,7 +34,7 @@ class Scanner {
 
     scan(source: string): Token[] {
         this.source = source;
-        this.position = this.source.search(/^<\w+/m);
+        this.position = htmlStartIndex(source);
         if (this.position === -1) {
             throw new Error(
                 "Syntax Error: No elements found\nThe html section must begin with an element at the beginning of a line.",

@@ -1,9 +1,15 @@
-import { HtmlElement, HtmlElementAttributeValue, HtmlNode, voids } from "./ast";
+import {
+    HtmlElement,
+    HtmlElementAttributeValue,
+    HtmlFragment,
+    HtmlNode,
+    voids,
+} from "./ast";
 import { Token, TokenType, scanPartial } from "./scanner";
 
 export function parsePartial(source: string) {
     const parser = new Parser(source);
-    return parser.parse();
+    return parser.parse() as HtmlFragment;
 }
 
 class Parser {
