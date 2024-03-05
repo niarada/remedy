@@ -1,11 +1,22 @@
 <markdown class="prose-slate prose-invert">
     # Installation
 
-    To just get started from right where you are, run:
+    You do this:
 
     ```
     $ bunx htmx-bun
     ```
 
-    This will create a `view` folder that you can begin working in.
+    A `view` folder is created for you, and you can start dropping in static files, and create htmx-bun *partials* (`.part` files).
+
+    A more traditional approach might be:
+
+    ```
+    $ mkdir my-project && cd my-project
+    $ echo "{}" > package.json
+    $ bun i htmx-bun
+    $ bunx htmx-bun
+    ```
+
+    `.part` files are resolved as TypeScript, so you might want to add a `tsconfig.json` file to your project.
 </markdown>
