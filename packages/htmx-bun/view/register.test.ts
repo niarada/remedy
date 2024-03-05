@@ -17,7 +17,7 @@ test("reload", async () => {
     await register.initialize();
     expect(register.get("reload")?.html).toMatchSnapshot();
     await Bun.write(testPath, testContent2);
-    await register.reload("reload");
+    await register.reload("reload.part");
     expect(register.get("reload")?.html).toMatchSnapshot();
     unlinkSync(testPath);
 });

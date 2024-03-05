@@ -9,7 +9,7 @@ exports[`reload 1`] = `
 
 exports[`reload 2`] = `
 "<div>
-  Reload Test 1
+  Reload Test 2
 </div>
 "
 `;
