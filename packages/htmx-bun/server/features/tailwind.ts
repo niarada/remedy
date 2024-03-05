@@ -13,7 +13,7 @@ export default function (): ServerFeature {
         async fetch(request) {
             const url = new URL(request.url);
             let config: TailwindConfig = {
-                content: ["./view/**/*.part"],
+                content: ["./public/**/*.part"],
                 plugins: [typography],
                 safelist: [
                     {

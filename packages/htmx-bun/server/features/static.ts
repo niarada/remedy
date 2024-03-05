@@ -5,7 +5,7 @@ export default function (): ServerFeature {
         name: "static",
         async fetch(request) {
             const url = new URL(request.url);
-            const file = Bun.file(`view${url.pathname}`);
+            const file = Bun.file(`public${url.pathname}`);
 
             if (await file.exists()) {
                 return new Response(file, {

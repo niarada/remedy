@@ -6,7 +6,7 @@ import { buildFetch } from "./fetch";
 
 info("server", "Initializing server...");
 
-mkdirSync("view", { recursive: true });
+mkdirSync("public", { recursive: true });
 let userOptions: ServerOptions = {};
 if (await Bun.file("options.ts").exists()) {
     userOptions = (await import(`${process.cwd()}/options.ts`)).default;

@@ -9,12 +9,12 @@ import { buildFeatures } from "./features";
 
 export async function buildFetch(options: ServerOptions) {
     const features = await buildFeatures(options);
-    const register = new TemplateRegister("view");
+    const register = new TemplateRegister("public");
     await register.initialize();
 
     if (options?.features?.dev) {
-        info("server", "watching 'view' directory...");
-        watch("view", async (_, path) => {
+        info("server", "watching 'public' directory...");
+        watch("public", async (_, path) => {
             if (!path || !path?.endsWith(".part")) {
                 return;
             }
