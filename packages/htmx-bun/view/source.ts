@@ -97,7 +97,14 @@ export class Source {
                     attr.value = this.matchExpressions(code, attr.value);
                 }
             } else if (node.type === "text") {
-                node.content = this.matchExpressions(code, node.content);
+                if (
+                    !(
+                        node.parent.type === "element" &&
+                        ["markdown", "script"].includes(node.parent.tag)
+                    )
+                ) {
+                    node.content = this.matchExpressions(code, node.content);
+                }
             }
             await visitEachChild(node);
             return node;

@@ -1,25 +1,17 @@
 <markdown class="prose-slate prose-invert">
     # Introduction
 
-    Having made a few opinionated choices, this framework aims to provide that shortest route between and empty folder and a working website.
-
-    You do this:
-
-    ```
-    $ bunx htmx-bun
-    ```
-
-    A `view` folder is created for you, and you can start dropping in static files, and create htmx-bun *partials* (`.part` files).
+    Having made a few opinionated choices, this framework aims to provide the shortest route between an empty folder and a finished site.
 
     Principles that guide the framework:
 
     1. [HATEOAS](https://htmx.org/essays/hateoas/)
     1. All views are partials
-    1. All partials are accessible by route.
-    1. All partials produce html, or nothing.
-    1. Partials resolve to custom element tag names, with optional custom attributes, and are re-usable, similar to components in other frameworks.
-    1. Partials are written in typescript/javascript and/or html.
+    1. Partials are a mix of script and html.
+    1. Partials are accessible by route.
+    1. Partials emit html, or nothing.
+    1. Partials are composable.
     1. Bun is the runtime.
-    1. No apis.
+    1. No APIs.
     1. No JSX.
 </markdown>
