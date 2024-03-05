@@ -1,0 +1,94 @@
+// Bun Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`scanner 1`] = `
+[
+  {
+    "position": 1,
+    "type": "OpenAngleBracket",
+    "value": "<",
+  },
+  {
+    "position": 2,
+    "type": "Identifier",
+    "value": "item",
+  },
+  {
+    "position": 6,
+    "type": "Whitespace",
+    "value": " ",
+  },
+  {
+    "position": 7,
+    "type": "Identifier",
+    "value": "id",
+  },
+  {
+    "position": 9,
+    "type": "Equal",
+    "value": "=",
+  },
+  {
+    "position": 10,
+    "type": "String",
+    "value": ""1"",
+  },
+  {
+    "position": 13,
+    "type": "Whitespace",
+    "value": " ",
+  },
+  {
+    "position": 14,
+    "type": "Identifier",
+    "value": "class",
+  },
+  {
+    "position": 19,
+    "type": "Equal",
+    "value": "=",
+  },
+  {
+    "position": 20,
+    "type": "Expression",
+    "value": "{item.class}",
+  },
+  {
+    "position": 32,
+    "type": "CloseAngleBracket",
+    "value": ">",
+  },
+  {
+    "position": 33,
+    "type": "Expression",
+    "value": "{item.name}",
+  },
+  {
+    "position": 44,
+    "type": "OpenAngleBracket",
+    "value": "<",
+  },
+  {
+    "position": 45,
+    "type": "Slash",
+    "value": "/",
+  },
+  {
+    "position": 46,
+    "type": "Identifier",
+    "value": "item",
+  },
+  {
+    "position": 50,
+    "type": "CloseAngleBracket",
+    "value": ">",
+  },
+  {
+    "position": 51,
+    "type": "Text",
+    "value": 
+"
+"
+,
+  },
+]
+`;
