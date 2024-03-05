@@ -1,6 +1,6 @@
 import { Glob } from "bun";
 import { resolve } from "path";
-import { error, info, warn } from "~/lib/log";
+import { error, warn } from "~/lib/log";
 import { Template, TemplateModule } from "./template";
 
 export class TemplateRegister {
@@ -25,7 +25,7 @@ export class TemplateRegister {
                 );
                 continue;
             }
-            info("register", `registering partial at '${path}'`);
+            // info("register", `registering partial at '${path}'`);
             await this.reload(path);
         }
     }
@@ -45,6 +45,8 @@ export class TemplateRegister {
             const cause = e.cause?.toString();
             if (cause) {
                 console.log(cause);
+            } else {
+                console.log(e);
             }
             return;
         }
