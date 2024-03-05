@@ -1,29 +1,25 @@
-# Experimental micro-backend for htmx/bun development.
+ **htmx-bun** is a *Hypermedia Server* hosted on the [Bun](https://bun.sh) runtime with [Htmx](https://htmx.org) as a first-class integration.
 
-## Status: pre-alpha
 
-## Principles
+### Status: pre-alpha
+
+
+## Mission:
+
+*To make building web sites fast, fun, and uncomplicated.*
+
+### Influences:
 
 1. [HATEOAS](https://htmx.org/essays/hateoas/)
+1. [Hypermedia Systems](https://hypermedia.systems/)
+
+### Design principles:
+
 1. All views are partials
-1. All partials are accessible by route.
-1. All partials produce html, or nothing.
-1. Partials resolve to custom element tag names, with optional custom attributes, and are re-usable, similar to components.
-1. Partials written in typescript/javascript and/or html
-1. Bun is runtime.
-1. Single back-end.
-1. No apis.
-1. No JSX.
-
-## Goals
-
-1. Extremely fast implementation of prototypes.
-1. Common integrations provided, opt-in.
-    1. Htmx w/ SSE
-    1. Alpine
-    1. Tailwind
-    1. Fontsource
-1. Easy plugin interface for further integrations.
+1. Partials are a mix of script and html.
+1. Partials are accessible by route.
+1. Partials emit html, or nothing.
+1. Partials are composable.
 
 ## Run an example
 
@@ -41,7 +37,7 @@ mkdir my-project && cd my-project
 bunx htmx-bun
 ```
 
-Now, start dropping files in the `view` directory.
+Now, start dropping files in the `public` directory.
 
 ## Partials
 

@@ -7,7 +7,7 @@
     $ bunx htmx-bun
     ```
 
-    A `view` folder is created for you, and you can start dropping in static files, and create htmx-bun *partials* (`.part` files).
+    A `public` folder is created for you, and you can start dropping in static files, and create htmx-bun *partials* (`.part` files).
 
     A more traditional start might be:
 

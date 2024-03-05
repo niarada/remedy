@@ -6,7 +6,7 @@
         "examples:docs": "cd examples/docs && bun --hot -r ../../packages/htmx-bun/view/plugin.ts ../../packages/htmx-bun/server/index.ts",
         "build:grammar": "bun scripts/build-grammar.ts",
         "tests:htmx-bun": "cd packages/htmx-bun && bun tests",
-        "clear-snapshots": "find . ! -path \"*node_modules*\" -name __snapshots__ | xargs rm -rf",
+        "clear-snapshots": "find . ! -path \"*node_modules*\" -name __snapshots__ | xargs rm -rf"
     },
     "repository": {
         "type": "git",

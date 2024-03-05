@@ -19,8 +19,8 @@ export default function (options: ServerOptions): ServerFeature {
         });
     }
 
-    info("dev", "watching 'view' directory...");
-    watch("view", () => {
+    info("dev", "watching 'public' directory...");
+    watch("public", () => {
         info("dev", "Sending refresh...");
         emitter.emit("refresh");
     });

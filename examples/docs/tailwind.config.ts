@@ -1,3 +1,3 @@
 export default {
-    content: ["./view/**/*.part"],
+    content: ["./public/**/*.part"],
 };
