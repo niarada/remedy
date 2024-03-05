@@ -14,14 +14,16 @@
                     <li hx-get="/article/introduction" hx-target="next .article">Introduction</li>
                     <li hx-get="/article/installation" hx-target="next .article">Installation</li>
                     <li hx-get="/article/options" hx-target="next .article">Options</li>
-                    <li hx-get="/article/editor" hx-target="next .article">Editor Support</li>
+                    <li hx-get="/article/editor-support" hx-target="next .article">Editor Support</li>
                     <li hx-get="/article/partials" hx-target="next .article">Partials</li>
                     <li hx-get="/article/integrations" hx-target="next .article">Integrations</li>
                     <li hx-get="/article/roadmap" hx-target="next .article">Roadmap</li>
                 </ul>
             </nav>
             <div class="article">
-                <article-introduction />
+                <slot>
+                    <introduction />
+                </slot>
             </div>
         </main>
     </body>

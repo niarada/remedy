@@ -1,0 +1,11 @@
+<markdown class="prose-slate prose-invert">
+    # Installation
+
+    To just get started from right where you are, run:
+
+    ```
+    $ bunx htmx-bun
+    ```
+
+    This will create a `view` folder that you can begin working in.
+</markdown>

@@ -4,6 +4,7 @@ import { debug, error, info, warn } from "~/lib/log";
 import { watch } from "~/lib/watch";
 import { ServerOptions } from "~/server/options";
 import { TemplateRegister } from "~/view/register";
+import { View } from "~/view/view";
 import { buildFeatures } from "./features";
 
 export async function buildFetch(options: ServerOptions) {
@@ -17,12 +18,8 @@ export async function buildFetch(options: ServerOptions) {
             if (!path || !path?.endsWith(".part")) {
                 return;
             }
-            let tag = path.slice(0, -5).replace(/\//g, "-");
-            if (tag === "index") {
-                tag = "root";
-            }
-            info("server", "reloading tag", tag);
-            register.reload(tag);
+            info("server", `reloading partial '${path}'`);
+            register.reload(path);
         });
     }
 
@@ -42,34 +39,10 @@ export async function buildFetch(options: ServerOptions) {
         }
 
         if (!response) {
-            const tag = (url.pathname.slice(1) || "root").replace(/\//g, "-");
-            if (/^[a-z][-a-z0-9]+$/.test(tag) && register.get(tag)) {
-                const view = register.get(tag).present();
-                const attributes: Record<string, string> = {};
-                url.searchParams.forEach((value, name) => {
-                    attributes[name] = value;
-                });
-                if (view) {
-                    let content = "";
-                    await view.assemble(attributes);
-                    if (!view.helper.renderCanceled) {
-                        for (const feature of features) {
-                            if (feature.transform) {
-                                await view.transform(feature.transform);
-                            }
-                        }
-                        content = await view.render();
-                    }
-                    for (const oob of view.helper.oobs) {
-                        const oobView = register.get(oob.tag).present();
-                        content += await oobView.render(oob.attributes);
-                    }
-                    response = new Response(content, {
-                        headers: {
-                            "Content-Type": "text/html;charset=utf-8",
-                        },
-                    });
-                }
+            if (request.headers.get("HX-Request")) {
+                response = await renderPartial(request);
+            } else {
+                response = await renderFull(request);
             }
         }
 
@@ -80,18 +53,77 @@ export async function buildFetch(options: ServerOptions) {
             });
         }
 
-        // if (response.headers.get("Content-Type")?.startsWith("text/html")) {
-        //     response = new Response(transform(await response.text()), {
-        //         status: response.status,
-        //         statusText: response.statusText,
-        //         headers: response.headers,
-        //     });
-        // }
-
         log(url, response, Math.floor((Bun.nanoseconds() - time) / 1000000));
 
         return response;
     };
+
+    async function renderPartial(
+        request: Request,
+    ): Promise<Response | undefined> {
+        const url = new URL(request.url);
+        const tag = (url.pathname.slice(1) || "root").replace(/\//g, "-");
+        if (/^[a-z][-a-z0-9]+$/.test(tag) && register.get(tag)) {
+            const view = register.get(tag)?.present();
+            if (!view) {
+                return;
+            }
+            const attributes: Record<string, string> = {};
+            url.searchParams.forEach((value, name) => {
+                attributes[name] = value;
+            });
+            if (view) {
+                let content = "";
+                await view.assemble(attributes);
+                if (!view.helper.renderCanceled) {
+                    await featureTransforms(view);
+                    content = await view.render();
+                }
+                for (const oob of view.helper.oobs) {
+                    const oobView = register.get(oob.tag)?.present();
+                    if (!oobView) {
+                        warn("view", `OOB view not found: ${oob.tag}`);
+                        continue;
+                    }
+                    content += await oobView.render(oob.attributes);
+                }
+                return new Response(content, {
+                    headers: {
+                        "Content-Type": "text/html;charset=utf-8",
+                    },
+                });
+            }
+        }
+    }
+
+    async function renderFull(request: Request): Promise<Response | undefined> {
+        const url = new URL(request.url);
+        const pathway = url.pathname.slice(1).split("/").filter(Boolean);
+        let view: View | undefined;
+        for (let i = 0; i < pathway.length; i++) {
+            const tag = pathway.slice(i, pathway.length + 1 - 1).join("-");
+            view = register.get(tag)?.present(view) || view;
+        }
+        view = register.get("root")?.present(view);
+        if (!view) {
+            return;
+        }
+        await view.assemble();
+        await featureTransforms(view);
+        return new Response(await view.render(), {
+            headers: {
+                "Content-Type": "text/html;charset=utf-8",
+            },
+        });
+    }
+
+    async function featureTransforms(view: View) {
+        for (const feature of features) {
+            if (feature.transform) {
+                await view.transform(feature.transform);
+            }
+        }
+    }
 }
 
 function log(url: URL, response: Response, duration: number) {

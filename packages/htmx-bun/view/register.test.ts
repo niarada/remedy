@@ -15,9 +15,9 @@ test("reload", async () => {
     await Bun.write(testPath, testContent1);
     const register = new TemplateRegister("./view/__fixtures__");
     await register.initialize();
-    expect(register.get("reload").html).toMatchSnapshot();
+    expect(register.get("reload")?.html).toMatchSnapshot();
     await Bun.write(testPath, testContent2);
     await register.reload("reload");
-    expect(register.get("reload").html).toMatchSnapshot();
+    expect(register.get("reload")?.html).toMatchSnapshot();
     unlinkSync(testPath);
 });

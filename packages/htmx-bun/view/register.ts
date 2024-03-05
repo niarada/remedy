@@ -1,6 +1,6 @@
 import { Glob } from "bun";
 import { resolve } from "path";
-import { error, warn } from "~/lib/log";
+import { error, info, warn } from "~/lib/log";
 import { Template, TemplateModule } from "./template";
 
 export class TemplateRegister {
@@ -13,13 +13,7 @@ export class TemplateRegister {
 
     async initialize() {
         for await (const path of new Glob("**/*.part").scan(this.base)) {
-            let tag = path.replace(/\.part/g, "").replace(/\//g, "-");
-            if (tag === "index") {
-                tag = "root";
-            }
-            if (tag.endsWith("-index")) {
-                tag = tag.replace(/-index$/, "");
-            }
+            const tag = tagFromPath(path);
             if (this.templates[tag]) {
                 warn(
                     "view",
@@ -31,20 +25,20 @@ export class TemplateRegister {
                 );
                 continue;
             }
-            await this.reload(tag);
+            info("register", `registering partial at '${path}'`);
+            await this.reload(path);
         }
     }
 
-    async reload(tag: string) {
-        const path = tag === "root" ? "index" : tag.replace(/-/g, "/");
-        const absoluteFilePath = resolve(`${this.base}/${path}.part`);
+    async reload(path: string) {
+        const tag = tagFromPath(path);
+        const absoluteFilePath = resolve(`${this.base}/${path}`);
         if (this.templates[tag]) {
             delete require.cache[absoluteFilePath];
         }
         try {
             const module = (await import(absoluteFilePath)) as TemplateModule;
-            const view = new Template(this, tag, path, module);
-            this.templates[tag] = view;
+            this.templates[tag] = new Template(this, tag, path, module);
         } catch (e) {
             error("view", `Failed to load '${path}'`);
             // @ts-ignore
@@ -56,7 +50,22 @@ export class TemplateRegister {
         }
     }
 
-    get(tag: string) {
+    get(tag: string): Template | undefined {
         return this.templates[tag];
     }
+}
+
+function tagFromPath(path: string) {
+    let tag = path
+        .split("/")
+        .filter((it) => !/^\(.*\)$/.test(it))
+        .join("-")
+        .replace(/\.part/g, "");
+    if (tag === "index") {
+        tag = "root";
+    }
+    if (tag.endsWith("-index")) {
+        tag = tag.replace(/-index$/, "");
+    }
+    return tag;
 }
