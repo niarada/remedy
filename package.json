@@ -5,7 +5,8 @@
         "examples:todo": "cd examples/todo && bun --hot -r ../../packages/htmx-bun/view/plugin.ts ../../packages/htmx-bun/server/index.ts",
         "examples:docs": "cd examples/docs && bun --hot -r ../../packages/htmx-bun/view/plugin.ts ../../packages/htmx-bun/server/index.ts",
         "build:grammar": "bun scripts/build-grammar.ts",
-        "test:view": "cd packages/htmx-bun && bun run test"
+        "tests:htmx-bun": "cd packages/htmx-bun && bun tests",
+        "clear-snapshots": "find . ! -path \"*node_modules*\" -name __snapshots__ | xargs rm -rf",
     },
     "repository": {
         "type": "git",

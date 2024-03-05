@@ -2,14 +2,14 @@
 
 exports[`reload 1`] = `
 "<div>
-    Reload Test 1
+  Reload Test 1
 </div>
 "
 `;
 
 exports[`reload 2`] = `
 "<div>
-    Reload Test 2
+  Reload Test 1
 </div>
 "
 `;
