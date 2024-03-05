@@ -24,7 +24,7 @@ const options = {
         htmx: {
             debug: false,
         },
-        sse: true,
+        sse: false,
         static: true,
         dev: import.meta.env.NODE_ENV === "development",
     },

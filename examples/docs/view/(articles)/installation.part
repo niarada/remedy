@@ -9,7 +9,7 @@
 
     A `view` folder is created for you, and you can start dropping in static files, and create htmx-bun *partials* (`.part` files).
 
-    A more traditional approach might be:
+    A more traditional start might be:
 
     ```
     $ mkdir my-project && cd my-project
@@ -17,6 +17,4 @@
     $ bun i htmx-bun
     $ bunx htmx-bun
     ```
-
-    `.part` files are resolved as TypeScript, so you might want to add a `tsconfig.json` file to your project.
 </markdown>
