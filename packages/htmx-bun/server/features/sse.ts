@@ -25,7 +25,6 @@ export default function (): ServerFeature {
                     createHtmlElement(node, "script", {
                         type: "module",
                         src: "/_sse",
-                        defer: "",
                     }),
                 );
             }

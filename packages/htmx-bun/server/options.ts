@@ -6,17 +6,19 @@ export interface ServerOptions {
 }
 
 interface ServerOptionsFeatures {
-    static?: boolean;
+    fontawesome?: boolean;
     tailwind?: boolean;
     markdown?: boolean;
     htmx?: HtmxOptions;
     sse?: boolean;
+    static?: boolean;
     dev?: boolean;
 }
 
 const options = {
     port: 4321,
     features: {
+        fontawesome: false,
         tailwind: false,
         markdown: false,
         htmx: {
