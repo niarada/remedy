@@ -16,11 +16,10 @@ export async function buildFetch(options: ServerOptions) {
     if (options?.features?.dev) {
         info("server", "watching 'public' directory...");
         watch("public", async (_, path) => {
-            if (!path || !path?.endsWith(".part")) {
-                return;
+            if (/\.(part|md)$/.test(path ?? "")) {
+                info("server", `reloading '${path}'`);
+                register.load(path!);
             }
-            info("server", `reloading partial '${path}'`);
-            register.load(path);
         });
     }
 
