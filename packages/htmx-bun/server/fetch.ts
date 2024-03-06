@@ -110,7 +110,7 @@ export async function buildFetch(options: ServerOptions) {
         }
         await view.assemble();
         await featureTransforms(view);
-        return new Response(await view.render(), {
+        return new Response(`<!doctype html>\n${await view.render()}`, {
             headers: {
                 "Content-Type": "text/html;charset=utf-8",
             },
