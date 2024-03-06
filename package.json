@@ -2,8 +2,8 @@
     "name": "htmx-bun-repo",
     "private": true,
     "scripts": {
-        "examples:todo": "cd examples/todo && ../../packages/htmx-bun/bin/htmx-bun",
-        "examples:docs": "cd examples/docs && ../../packages/htmx-bun/bin/htmx-bun",
+        "examples:todo": "cd examples/todo && ../../packages/htmx-bun/bin/htmx-bun-hot",
+        "examples:docs": "cd examples/docs && ../../packages/htmx-bun/bin/htmx-bun-hot",
         "build:grammar": "bun scripts/build-grammar.ts",
         "tests:htmx-bun": "cd packages/htmx-bun && bun tests",
         "clear-snapshots": "find . ! -path \"*node_modules*\" -name __snapshots__ | xargs rm -rf"

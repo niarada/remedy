@@ -1,0 +1,4 @@
+#!/usr/bin/env -S bun --hot
+
+import "../plugins";
+import "../server";
