@@ -7,7 +7,7 @@ export class TemplateRegister {
     templates: Record<string, Template> = {};
 
     constructor(
-        // Base path for the view tree
+        // Base path for loading templates.
         public base: string,
     ) {}
 
@@ -16,21 +16,21 @@ export class TemplateRegister {
             const tag = tagFromPath(path);
             if (this.templates[tag]) {
                 warn(
-                    "view",
+                    "register",
                     `Duplicate tag '${tag}' defined in '${this.base}/${path}'`,
                 );
                 warn(
-                    "view",
+                    "register",
                     `Using '${this.base}/${this.templates[tag].path}'`,
                 );
                 continue;
             }
             // info("register", `registering partial at '${path}'`);
-            await this.reload(path);
+            await this.load(path);
         }
     }
 
-    async reload(path: string) {
+    async load(path: string) {
         const tag = tagFromPath(path);
         const absoluteFilePath = resolve(`${this.base}/${path}`);
         if (this.templates[tag]) {
@@ -40,7 +40,7 @@ export class TemplateRegister {
             const module = (await import(absoluteFilePath)) as TemplateModule;
             this.templates[tag] = new Template(this, tag, path, module);
         } catch (e) {
-            error("view", `Failed to load '${path}'`);
+            error("register", `Failed to load '${path}'`);
             // @ts-ignore
             const cause = e.cause?.toString();
             if (cause) {
@@ -50,6 +50,16 @@ export class TemplateRegister {
             }
             return;
         }
+        return this.templates[tag];
+    }
+
+    /**
+     * Use this for testing only.
+     * @param tag
+     * @returns
+     */
+    async _present(tag: string) {
+        return (await this.load(pathFromTag(tag)))!.present();
     }
 
     get(tag: string): Template | undefined {
@@ -70,4 +80,8 @@ function tagFromPath(path: string) {
         tag = tag.replace(/-index$/, "");
     }
     return tag;
+}
+
+function pathFromTag(tag: string) {
+    return `${tag.replace(/-/g, "/")}.part`;
 }

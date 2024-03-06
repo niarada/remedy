@@ -6,4 +6,4 @@ interface Attributes {
 const id = 1;
 const bar = foo;
 
-<li id="{id}">{bar}</li>
+<li id={id}>{bar}</li>

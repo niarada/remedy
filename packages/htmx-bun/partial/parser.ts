@@ -53,60 +53,67 @@ class Parser {
 
     parseNext() {
         switch (this.token.type) {
-            case TokenType.Whitespace:
+            case TokenType.Whitespace: {
                 this.position++;
                 break;
-            case TokenType.Identifier:
-                if (this.offsetTypeIs(-1, TokenType.OpenAngleBracket)) {
-                    const element: HtmlElement = {
-                        type: "element",
-                        parent: this.top,
-                        tag: this.token.value,
-                        void: voids.includes(this.token.value),
-                        attrs: [],
-                        children: [],
-                    };
-                    this.top.children.push(element);
-                    this.stack.push(element);
-                    this.position++;
-                } else {
-                    const name = this.token.value;
-                    this.position += 2;
-                    this.token.type;
-                    const value: HtmlElementAttributeValue =
-                        this.offset(0).type === TokenType.String
-                            ? {
-                                  type: "text",
-                                  content: this.token.value.slice(1, -1),
-                              }
-                            : {
-                                  type: "expression",
-                                  content: this.token.value.slice(1, -1),
-                              };
-                    this.top.attrs.push({ name, value });
-                    this.position++;
-                }
-                break;
-            case TokenType.OpenAngleBracket:
+            }
+            case TokenType.TagName: {
+                const element: HtmlElement = {
+                    type: "element",
+                    parent: this.top,
+                    tag: this.token.value,
+                    void: voids.includes(this.token.value),
+                    attrs: [],
+                    children: [],
+                };
+                this.top.children.push(element);
+                this.stack.push(element);
                 this.position++;
                 break;
-            case TokenType.CloseAngleBracket:
-                if (!this.offsetTypeIs(-1, TokenType.Identifier)) {
+            }
+            case TokenType.AttributeName: {
+                const name = this.token.value;
+                this.position += 2;
+                this.token.type;
+                const value: HtmlElementAttributeValue =
+                    this.offset(0).type === TokenType.String
+                        ? {
+                              type: "text",
+                              content: this.token.value.slice(1, -1),
+                          }
+                        : {
+                              type: "expression",
+                              content: this.token.value.slice(1, -1),
+                          };
+                this.top.attrs.push({ name, value });
+                this.position++;
+                break;
+            }
+            case TokenType.OpenAngleBracket: {
+                this.position++;
+                break;
+            }
+            case TokenType.CloseAngleBracket: {
+                if (!this.offsetTypeIs(-1, TokenType.TagName)) {
                     if (this.top.void) {
                         this.stack.pop();
                     }
                 }
                 this.position++;
                 break;
-            case TokenType.Slash:
+            }
+            case TokenType.Slash: {
                 this.stack.pop();
                 this.position += 2;
                 break;
-            case TokenType.Equal:
+            }
+            case TokenType.Equal: {
                 break;
-            case TokenType.String:
+            }
+            case TokenType.String: {
                 break;
-            case TokenType.Expression:
+            }
+            case TokenType.Expression: {
                 this.top.children.push({
                     parent: this.top,
                     type: "expression",
@@ -114,7 +121,8 @@ class Parser {
                 });
                 this.position++;
                 break;
-            case TokenType.Text:
+            }
+            case TokenType.Text: {
                 this.top.children.push({
                     parent: this.top,
                     type: "text",
@@ -122,6 +130,7 @@ class Parser {
                 });
                 this.position++;
                 break;
+            }
         }
     }
 

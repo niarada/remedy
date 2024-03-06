@@ -5,19 +5,19 @@ import { TemplateRegister } from "./register";
 test("initialize", async () => {
     const register = new TemplateRegister("./view/__fixtures__");
     await register.initialize();
-    expect(register.get("root")).toBeDefined();
+    expect(register.get("kitchen")).toBeDefined();
 });
 
 test("reload", async () => {
     const testPath = "./view/__fixtures__/reload.part";
-    const testContent1 = "<div>Reload Test 1</div>\n";
-    const testContent2 = "<div>Reload Test 2</div>\n";
+    const testContent1 = "<div>Reload Test 1</div>";
+    const testContent2 = "<div>Reload Test 2</div>";
     await Bun.write(testPath, testContent1);
     const register = new TemplateRegister("./view/__fixtures__");
     await register.initialize();
     expect(register.get("reload")?.html).toMatchSnapshot();
     await Bun.write(testPath, testContent2);
-    await register.reload("reload.part");
+    await register.load("reload.part");
     expect(register.get("reload")?.html).toMatchSnapshot();
     unlinkSync(testPath);
 });

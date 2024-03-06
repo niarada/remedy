@@ -3,87 +3,163 @@
 exports[`scanner 1`] = `
 [
   {
-    "position": 1,
+    "position": 14,
     "type": "OpenAngleBracket",
     "value": "<",
   },
   {
-    "position": 2,
-    "type": "Identifier",
+    "position": 15,
+    "type": "TagName",
     "value": "item",
   },
   {
-    "position": 6,
+    "position": 19,
     "type": "Whitespace",
     "value": " ",
   },
   {
-    "position": 7,
-    "type": "Identifier",
+    "position": 20,
+    "type": "AttributeName",
     "value": "id",
   },
   {
-    "position": 9,
+    "position": 22,
     "type": "Equal",
     "value": "=",
   },
   {
-    "position": 10,
+    "position": 23,
     "type": "String",
     "value": ""1"",
   },
   {
-    "position": 13,
+    "position": 26,
     "type": "Whitespace",
     "value": " ",
   },
   {
-    "position": 14,
-    "type": "Identifier",
+    "position": 27,
+    "type": "AttributeName",
     "value": "class",
   },
   {
-    "position": 19,
+    "position": 32,
     "type": "Equal",
     "value": "=",
   },
   {
-    "position": 20,
+    "position": 33,
     "type": "Expression",
     "value": "{item.class}",
   },
   {
-    "position": 32,
+    "position": 45,
+    "type": "Whitespace",
+    "value": " ",
+  },
+  {
+    "position": 46,
+    "type": "AttributeName",
+    "value": "hx-on::before-request",
+  },
+  {
+    "position": 67,
+    "type": "Equal",
+    "value": "=",
+  },
+  {
+    "position": 68,
+    "type": "String",
+    "value": ""foo"",
+  },
+  {
+    "position": 73,
     "type": "CloseAngleBracket",
     "value": ">",
   },
   {
-    "position": 33,
+    "position": 74,
     "type": "Expression",
     "value": "{item.name}",
   },
   {
-    "position": 44,
+    "position": 85,
     "type": "OpenAngleBracket",
     "value": "<",
   },
   {
-    "position": 45,
+    "position": 86,
     "type": "Slash",
     "value": "/",
   },
   {
-    "position": 46,
-    "type": "Identifier",
+    "position": 87,
+    "type": "TagName",
     "value": "item",
   },
   {
-    "position": 50,
+    "position": 91,
     "type": "CloseAngleBracket",
     "value": ">",
   },
   {
-    "position": 51,
+    "position": 92,
+    "type": "Text",
+    "value": 
+"
+"
+,
+  },
+  {
+    "position": 93,
+    "type": "OpenAngleBracket",
+    "value": "<",
+  },
+  {
+    "position": 94,
+    "type": "TagName",
+    "value": "input",
+  },
+  {
+    "position": 99,
+    "type": "CloseAngleBracket",
+    "value": ">",
+  },
+  {
+    "position": 100,
+    "type": "Text",
+    "value": 
+"
+"
+,
+  },
+  {
+    "position": 101,
+    "type": "OpenAngleBracket",
+    "value": "<",
+  },
+  {
+    "position": 102,
+    "type": "TagName",
+    "value": "div",
+  },
+  {
+    "position": 105,
+    "type": "Whitespace",
+    "value": " ",
+  },
+  {
+    "position": 106,
+    "type": "Slash",
+    "value": "/",
+  },
+  {
+    "position": 107,
+    "type": "CloseAngleBracket",
+    "value": ">",
+  },
+  {
+    "position": 108,
     "type": "Text",
     "value": 
 "

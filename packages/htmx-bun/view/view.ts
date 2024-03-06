@@ -1,11 +1,8 @@
-import { HtmlElement, formatHtml } from "~/lib/html";
-import {
-    HtmlFragment,
-    HtmlTransformer,
-    attributesToObject,
-    parseHtml,
-    transformHtml,
-} from "../lib/html";
+import { warn } from "~/lib/log";
+import { HtmlElement, HtmlFragment } from "~/partial/ast";
+import { parsePartial } from "~/partial/parser";
+import { printHtml } from "~/partial/printer";
+import { HtmlTransformVisitor, transformHtml } from "~/partial/transform";
 import { Helper } from "./helper";
 import { Template } from "./template";
 
@@ -21,7 +18,7 @@ export class View {
     constructor(template: Template, subview?: View) {
         this.#template = template;
         this.#subview = subview;
-        this.#html = parseHtml(template.html);
+        this.#html = parsePartial(template.html);
         this.#helper = new Helper();
     }
 
@@ -30,15 +27,22 @@ export class View {
     }
 
     async render(attributes: Record<string, unknown> = {}): Promise<string> {
-        if (!this.#assembled) {
-            await this.assemble(attributes);
-        }
-        return formatHtml(this.#html);
+        await this.assemble(attributes);
+        return printHtml(this.#html);
     }
 
+    /**
+     * Final assembly of a view based on its template, attributes, locals, and subview if any.
+     * This is where the parial script code is run.
+     *
+     * @param attributes - The attributes to be used during assembly.
+     */
     async assemble(attributes: Record<string, unknown> = {}) {
-        await this.#subview?.assemble();
+        if (this.#assembled) {
+            return;
+        }
         this.#assembled = true;
+        await this.#subview?.assemble();
         this.#attributes = this.coerceAttributes(attributes);
         this.#locals = await this.#template.run(this.#helper, attributes);
         await transformHtml(
@@ -52,86 +56,84 @@ export class View {
                         return ((await visitEachChild(node)) as HtmlElement)
                             .children;
                     }
-                    // Handling the 'for' attribute
-                    const iterator = node.attrs.find(
-                        (attr) => attr.name === "for",
-                    );
-                    if (iterator) {
-                        // Matches something like "item of items"
-                        const match = iterator.value.match(
-                            /([^\s]+)\s+of\s+([^\s]+)/,
+                    // Handling the 'each' iterator
+                    // XXX: Extract this at some point
+                    const each = this.expressAttributeValue(
+                        node,
+                        "mx-each",
+                    ) as unknown[];
+                    const as = this.expressAttributeValue(
+                        node,
+                        "mx-as",
+                    ) as string;
+                    if (each && !as) {
+                        warn(
+                            "view",
+                            `Missing 'mx-as' attribute in 'mx-each' iterator for ${node.tag}`,
                         );
-                        if (match) {
-                            const list = this.#locals[match[2]] as unknown[];
-                            const children = [];
-                            for (const item of list) {
-                                const child = structuredClone(node);
-                                child.attrs = child.attrs.filter(
-                                    (attr) => attr.name !== "for",
-                                );
-                                for (const attr of child.attrs) {
-                                    attr.value = this.interpolate(attr.value, {
-                                        [match[1]]: item,
-                                    });
-                                }
-                                children.push(await visitNode(child));
-                            }
-                            return children.flat();
+                    } else if (!each && as) {
+                        warn(
+                            "view",
+                            `Unused 'mx-as' attribute for ${node.tag}`,
+                        );
+                    } else if (each && !Array.isArray(each)) {
+                        warn(
+                            "view",
+                            `Invalid 'mx-each' attribute for ${node.tag}, not an Array`,
+                        );
+                    } else if (each) {
+                        const children = [];
+                        for (const item of each) {
+                            const child = structuredClone(node);
+                            child.attrs = child.attrs.filter(
+                                (attr) =>
+                                    !["mx-each", "mx-as"].includes(attr.name),
+                            );
+                            this.interpolateAttributesToText(child, {
+                                [as]: item,
+                            });
+                            children.push(await visitNode(child));
                         }
+                        return children.flat();
                     }
                     const subtemplate = this.#template.register.get(node.tag);
                     if (subtemplate) {
                         const subview = subtemplate.present();
-                        await subview.assemble(attributesToObject(node.attrs));
+                        await subview.assemble(
+                            this.expressAttributesAsText(node),
+                        );
                         return subview.children;
                     }
-                    for (const attr of node.attrs) {
-                        attr.value = this.interpolate(attr.value);
-                    }
-                } else if (node.type === "text") {
-                    node.content = this.interpolate(node.content);
+                    this.interpolateAttributesToText(node);
+                } else if (node.type === "expression") {
+                    return {
+                        parent: node.parent,
+                        type: "text",
+                        content: String(this.express(node.content)),
+                    };
                 }
                 return await visitEachChild(node);
             },
         );
     }
 
-    private interpolate(text: string, env: Record<string, unknown> = {}) {
-        return text.replace(/\$exp\d+/g, (match) => {
-            try {
-                const value = this.interpolationValue(match, env);
-                return (value as object).toString();
-            } catch (e) {
-                // error(
-                //     `Error interpolating ${match}:`,
-                //     this.#locals[match]!.toString(),
-                // );
-                return "";
-            }
-        });
-    }
-
-    private interpolationValue(
-        exp: string,
-        env: Record<string, unknown> = {},
-    ): unknown {
-        const expression = this.#locals[exp];
-        if (expression) {
-            return (expression as (env: Record<string, unknown>) => unknown)(
-                Object.assign({}, this.#attributes, this.#locals, env),
-            );
-        }
-    }
-
+    /**
+     * Gets all top level nodes in the html tree.
+     */
     private get children() {
         return this.#html.children;
     }
 
-    async transform(transformer: HtmlTransformer) {
+    /**
+     * Transforms the HTML using the provided visitor.  Used by feature middleware.
+     *
+     * @param visit - The visitor function to apply to each HTML node.
+     */
+    async transform(visit: HtmlTransformVisitor) {
         await transformHtml(
             this.#html,
             async (node, { visitEachChild, visitNode }) => {
-                const results = await transformer(node, {
+                const results = await visit(node, {
                     visitEachChild,
                     visitNode,
                 });
@@ -146,6 +148,12 @@ export class View {
         );
     }
 
+    /**
+     * Coerces an object of attributes to the types specified in the template, if any.
+     *
+     * @param attributes - The attributes to be coerced.
+     * @returns The coerced attributes.
+     */
     coerceAttributes(attributes: Record<string, unknown>) {
         for (const attribute of this.#template.attributes) {
             if (attribute.type === "number") {
@@ -157,5 +165,71 @@ export class View {
             }
         }
         return attributes;
+    }
+
+    /**
+     * Interpolates the attributes of an HTML element.
+     * Replaces attribute expressions with their evaluated results.
+     *
+     * @param node - The HTML element node.
+     */
+    interpolateAttributesToText(
+        node: HtmlElement,
+        additionalScope: Record<string, unknown> = {},
+    ) {
+        for (const attr of node.attrs) {
+            if (attr.value.type === "expression") {
+                attr.value = {
+                    type: "text",
+                    content: String(
+                        this.express(attr.value.content, additionalScope),
+                    ),
+                };
+            }
+        }
+    }
+
+    /**
+     * Converts an element's attributes into an object, evaluating expressions in
+     * this view's scope.  This is useful for passing attributes to subviews.
+     * @param attrs The attributes for an element on this node.
+     * @returns An object of the nodes attributes evaluated.
+     */
+    expressAttributesAsText(node: HtmlElement) {
+        const obj: Record<string, string> = {};
+        for (const attr of node.attrs) {
+            obj[attr.name] =
+                attr.value.type === "text"
+                    ? attr.value.content
+                    : String(this.express(attr.value.content));
+        }
+        return obj;
+    }
+
+    expressAttributeValue(node: HtmlElement, name: string): unknown {
+        for (const attr of node.attrs) {
+            if (attr.name === name) {
+                return attr.value.type === "text"
+                    ? attr.value.content
+                    : this.express(attr.value.content);
+            }
+        }
+    }
+
+    /**
+     * Evaluates the given expression in the context of the view.
+     *
+     * @param expression - The expression to evaluate.
+     * @param additionalScope - Additional scope to use when evaluating the expression.
+     * @returns The result of evaluating the expression.
+     */
+    express(
+        expression: string,
+        additionalScope: Record<string, unknown> = {},
+    ): unknown {
+        const express = new Function("$scope", `return ${expression}`);
+        return express(
+            Object.assign({}, this.#attributes, this.#locals, additionalScope),
+        );
     }
 }
