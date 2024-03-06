@@ -1,3 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bun
 
-bun -r ./node_modules/htmx-bun/plugins/partial.ts ./node_modules/htmx-bun/server/index.ts
+import "../plugins";
+import "../server";
