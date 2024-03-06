@@ -188,25 +188,6 @@ class Scanner {
         }
         return true;
     }
-    // private matchAttributeString() {
-    //     const position = this.position;
-    //     if (this.source[this.position] !== '"') {
-    //         return;
-    //     }
-    //     this.position++;
-    //     while (
-    //         !this.peekCharacter('{"') &&
-    //         this.position < this.source.length
-    //     ) {
-    //         this.position++;
-    //     }
-    //     if (!this.match)
-    //         if (position === this.position) {
-    //             return;
-    //         }
-    //     this.token(TokenType.Text, position);
-    //     return true;
-    // }
 
     private matchContent() {
         while (
