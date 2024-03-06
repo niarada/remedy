@@ -11,5 +11,5 @@ const items = [
 ];
 
 <ul>
-    <todo-item for="item of items" id={item.id} name={item.name} />
+    <todo-item mx-each={items} mx-as="item" id={item.id} name={item.name} />
 </ul>

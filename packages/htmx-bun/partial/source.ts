@@ -18,7 +18,7 @@ export type Attributes = Attribute[];
 /**
  * The Source class is responsible for reading an htmx-bun partial `.part` file,
  * disentangling into script and html parts, and returning the source code that
- * will be resolved by the loader in `./plugin.ts`.
+ * will be resolved by the loader in `plugins/partial.ts`.
  */
 export class Source {
     #text!: string;

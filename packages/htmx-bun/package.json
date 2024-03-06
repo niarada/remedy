@@ -12,7 +12,7 @@
         "!**/*.test.ts"
     ],
     "scripts": {
-        "tests": "bun test -r view/plugin.ts",
+        "tests": "bun test -r plugins/partial.ts",
         "prepublish": "cp ../../README.md .",
         "postpublish": "rm README.md"
     },

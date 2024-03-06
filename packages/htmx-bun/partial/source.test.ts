@@ -22,5 +22,4 @@ test("compile", async () => {
     const target = await source.compile();
     // console.log(target);
     expect(target).toMatchSnapshot();
-    // expect(await source.code()).toMatchSnapshot();
 });

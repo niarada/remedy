@@ -2,8 +2,6 @@ export class Helper {
     #oobs: Oob[] = [];
     #renderCanceled = false;
 
-    // constructor() {}
-
     oob(tag: string, attributes: Record<string, unknown>) {
         this.#oobs.push({ tag, attributes });
     }

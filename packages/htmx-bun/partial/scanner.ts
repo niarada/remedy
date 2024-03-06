@@ -2,7 +2,8 @@ import { voids } from "./ast";
 
 export enum TokenType {
     Whitespace = "Whitespace",
-    Identifier = "Identifier",
+    TagName = "TagName",
+    AttributeName = "AttributeName",
     OpenAngleBracket = "OpenAngleBracket",
     CloseAngleBracket = "CloseAngleBracket",
     Slash = "Slash",
@@ -56,7 +57,6 @@ class Scanner {
             position,
             value: this.source.slice(position, this.position),
         };
-        // console.log(token);
         this.tokens.push(token);
     }
 
@@ -76,16 +76,20 @@ class Scanner {
         ) {
             return;
         }
-        if (!this.matchIdentifier()) {
+        if (!this.matchTagName()) {
             this.error("Expected tag name");
         }
         const tag = this.ultimate!.value;
         this.matchWhitespace();
         this.matchAttributes();
+        let selfClosing = false;
+        if (this.matchCharacterType(TokenType.Slash, "/")) {
+            selfClosing = true;
+        }
         if (!this.matchCharacterType(TokenType.CloseAngleBracket, ">")) {
             this.error("Expected closing brace");
         }
-        if (voids.includes(tag)) {
+        if (voids.includes(tag) || selfClosing) {
             return;
         }
         this.matchContent();
@@ -98,21 +102,21 @@ class Scanner {
         return (
             this.matchCharacterType(TokenType.OpenAngleBracket, "<") &&
             this.matchCharacterType(TokenType.Slash, "/") &&
-            this.matchIdentifier() &&
+            this.matchTagName() &&
             this.ultimate!.value === tag &&
             this.matchCharacterType(TokenType.CloseAngleBracket, ">")
         );
     }
 
     private matchAttributes() {
-        while (this.source[this.position] !== ">") {
+        while (!this.peekCharacter("/>")) {
             this.matchAttribute();
             this.matchWhitespace();
         }
     }
 
     private matchAttribute() {
-        if (!this.matchIdentifier()) {
+        if (!this.matchAttributeName()) {
             this.error("Expected attribute name");
         }
         if (!this.matchCharacterType(TokenType.Equal, "=")) {
@@ -123,16 +127,28 @@ class Scanner {
         }
     }
 
-    private matchIdentifier() {
+    private matchTagName() {
         const position = this.position;
         const match = this.source
             .slice(this.position)
             .match(/^[a-z]+(-[a-z]+)*/);
         if (match) {
             this.position += match[0].length;
-            this.token(TokenType.Identifier, position);
+            this.token(TokenType.TagName, position);
+            return true;
         }
-        return true;
+    }
+
+    private matchAttributeName() {
+        const position = this.position;
+        const match = this.source
+            .slice(this.position)
+            .match(/^[a-z]+((:|::|-)[a-z]+)*/);
+        if (match) {
+            this.position += match[0].length;
+            this.token(TokenType.AttributeName, position);
+            return true;
+        }
     }
 
     private matchString() {

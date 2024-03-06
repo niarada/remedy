@@ -19,7 +19,7 @@ export async function buildFetch(options: ServerOptions) {
                 return;
             }
             info("server", `reloading partial '${path}'`);
-            register.reload(path);
+            register.load(path);
         });
     }
 
