@@ -4,7 +4,8 @@ import { scanPartial } from "./scanner";
 const source1 = `
 cosnt a = 1;
 <item id="1" class={item.class} hx-on::before-request="foo">{item.name}</item>
-<input>
+<h1>Header</h1>
+<input focus>
 <div />
 `;
 test("scanner", () => {

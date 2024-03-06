@@ -118,40 +118,32 @@ exports[`scanner 1`] = `
   {
     "position": 94,
     "type": "TagName",
-    "value": "input",
+    "value": "h1",
   },
   {
-    "position": 99,
+    "position": 96,
     "type": "CloseAngleBracket",
     "value": ">",
   },
   {
-    "position": 100,
+    "position": 97,
     "type": "Text",
-    "value": 
-"
-"
-,
+    "value": "Header",
   },
   {
-    "position": 101,
+    "position": 103,
     "type": "OpenAngleBracket",
     "value": "<",
   },
   {
-    "position": 102,
-    "type": "TagName",
-    "value": "div",
+    "position": 104,
+    "type": "Slash",
+    "value": "/",
   },
   {
     "position": 105,
-    "type": "Whitespace",
-    "value": " ",
-  },
-  {
-    "position": 106,
-    "type": "Slash",
-    "value": "/",
+    "type": "TagName",
+    "value": "h1",
   },
   {
     "position": 107,
@@ -160,6 +152,72 @@ exports[`scanner 1`] = `
   },
   {
     "position": 108,
+    "type": "Text",
+    "value": 
+"
+"
+,
+  },
+  {
+    "position": 109,
+    "type": "OpenAngleBracket",
+    "value": "<",
+  },
+  {
+    "position": 110,
+    "type": "TagName",
+    "value": "input",
+  },
+  {
+    "position": 115,
+    "type": "Whitespace",
+    "value": " ",
+  },
+  {
+    "position": 116,
+    "type": "AttributeName",
+    "value": "focus",
+  },
+  {
+    "position": 121,
+    "type": "CloseAngleBracket",
+    "value": ">",
+  },
+  {
+    "position": 122,
+    "type": "Text",
+    "value": 
+"
+"
+,
+  },
+  {
+    "position": 123,
+    "type": "OpenAngleBracket",
+    "value": "<",
+  },
+  {
+    "position": 124,
+    "type": "TagName",
+    "value": "div",
+  },
+  {
+    "position": 127,
+    "type": "Whitespace",
+    "value": " ",
+  },
+  {
+    "position": 128,
+    "type": "Slash",
+    "value": "/",
+  },
+  {
+    "position": 129,
+    "type": "CloseAngleBracket",
+    "value": ">",
+  },
+  {
+    "position": 130,
     "type": "Text",
     "value": 
 "

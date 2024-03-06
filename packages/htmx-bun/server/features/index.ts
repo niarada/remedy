@@ -1,5 +1,5 @@
-import { HtmlTransformer } from "~/lib/html";
 import { info } from "~/lib/log";
+import { HtmlTransformVisitor } from "~/partial/transform";
 import { ServerOptions } from "~/server/options";
 
 export type FeatureFactory = (
@@ -11,7 +11,7 @@ export interface ServerFeature {
     fetch?: (
         request: Request,
     ) => Promise<Response | undefined> | Response | undefined;
-    transform?: HtmlTransformer;
+    transform?: HtmlTransformVisitor;
 }
 
 type FeaturesKey = keyof ServerOptions["features"];

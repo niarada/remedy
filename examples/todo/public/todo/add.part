@@ -22,5 +22,4 @@ if (Attributes.text) {
     autofocus
     autocomplete="off"
     name="text"
-    value="{foobar}"
 >

@@ -27,6 +27,10 @@ export function printHtml(htmlOrNode: string | HtmlNode): string {
             text.push("<");
             text.push(node.tag);
             for (const attr of node.attrs) {
+                if (attr.value.type === "void") {
+                    text.push(` ${attr.name}`);
+                    continue;
+                }
                 const value =
                     attr.value.type === "expression"
                         ? `{${attr.value.content}}`

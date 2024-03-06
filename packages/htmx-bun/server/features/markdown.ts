@@ -1,11 +1,6 @@
 import markdown from "markdown-it";
-import {
-    HtmlElement,
-    HtmlText,
-    attributesToObject,
-    createHtmlElement,
-    parseHtml,
-} from "~/lib/html";
+import { HtmlElement, HtmlText, createHtmlElement } from "~/partial/ast";
+import { parsePartial } from "~/partial/parser";
 import { ServerFeature } from ".";
 
 export default function (): ServerFeature {
@@ -23,12 +18,17 @@ export default function (): ServerFeature {
                     return node;
                 }
                 const html = markdown().render(content);
-                const attrs = attributesToObject(node.attrs);
+                const cls =
+                    node.attrs.find((attr) => attr.name === "class")?.value ??
+                    "";
                 return createHtmlElement(
                     node.parent,
                     "article",
-                    { class: `prose ${attrs.class ?? ""}` },
-                    ...(parseHtml(html).children as (HtmlText | HtmlElement)[]),
+                    { class: `prose ${cls}` },
+                    ...(parsePartial(html).children as (
+                        | HtmlText
+                        | HtmlElement
+                    )[]),
                 );
             }
             return node;

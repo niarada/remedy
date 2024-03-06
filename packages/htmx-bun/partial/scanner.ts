@@ -120,7 +120,8 @@ class Scanner {
             this.error("Expected attribute name");
         }
         if (!this.matchCharacterType(TokenType.Equal, "=")) {
-            this.error("Expected equal sign");
+            // this.error("Expected equal sign");
+            return;
         }
         if (!this.matchString() && !this.matchExpression()) {
             this.error("Expected attribute value");
@@ -131,7 +132,7 @@ class Scanner {
         const position = this.position;
         const match = this.source
             .slice(this.position)
-            .match(/^[a-z]+(-[a-z]+)*/);
+            .match(/^[a-z][a-z0-9]*(-[a-z]+)*/);
         if (match) {
             this.position += match[0].length;
             this.token(TokenType.TagName, position);
