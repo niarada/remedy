@@ -1,4 +1,4 @@
-import { Register, Template } from "../register";
+import { Register, Template, View } from "../register";
 import { Helper } from "./helper";
 import { Attributes } from "./source";
 import { PartialView } from "./view";
@@ -55,7 +55,7 @@ export class PartialTemplate implements Template {
      * @param subview An optional subview, which will be slotted.
      * @returns The created view.
      */
-    present(subview?: PartialView): PartialView {
+    present(subview?: View): PartialView {
         return new PartialView(this, subview);
     }
 }
