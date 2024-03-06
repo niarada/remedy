@@ -6,22 +6,24 @@ import { createHtmlElement } from "~/view/partial/ast";
 import { ServerFeature } from ".";
 import { ServerOptions } from "../options";
 
-export default function (options: ServerOptions): ServerFeature {
-    const emitter = new EventEmitter();
+if (!global.emitter) {
+    global.emitter = new EventEmitter();
+}
 
+export default function (options: ServerOptions): ServerFeature {
     // XXX: Verify this is not being picked up in a user installed version.
     //      (probably need to exclude .env in files)
     info("dev", "watching framework directory...");
     if (process.env.FRAMEWORK_DEV) {
         watch(`${import.meta.dir}/../../`, () => {
-            info("dev", "Sending refresh...");
+            info("dev", "sending refresh...");
             emitter.emit("refresh");
         });
     }
 
     info("dev", "watching 'public' directory...");
     watch("public", () => {
-        info("dev", "Sending refresh...");
+        info("dev", "sending refresh...");
         emitter.emit("refresh");
     });
 
