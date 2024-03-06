@@ -1,3 +1,6 @@
+/**
+ * A Helper is injected into partials to help them control various aspects of the request.
+ */
 export class Helper {
     #oobs: Oob[] = [];
     #renderCanceled = false;

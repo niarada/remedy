@@ -1,6 +1,6 @@
 import markdown from "markdown-it";
-import { HtmlElement, HtmlText, createHtmlElement } from "~/partial/ast";
-import { parsePartial } from "~/partial/parser";
+import { HtmlElement, HtmlText, createHtmlElement } from "~/view/partial/ast";
+import { parsePartial } from "~/view/partial/parser";
 import { ServerFeature } from ".";
 
 export default function (): ServerFeature {

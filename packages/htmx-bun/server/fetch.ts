@@ -3,13 +3,14 @@ import { URL } from "url";
 import { debug, error, info, warn } from "~/lib/log";
 import { watch } from "~/lib/watch";
 import { ServerOptions } from "~/server/options";
-import { TemplateRegister } from "~/view/register";
-import { View } from "~/view/view";
+import { MarkdownTemplate } from "~/view/markdown/template";
+import { PartialView } from "~/view/partial/view";
+import { Register, View } from "~/view/register";
 import { buildFeatures } from "./features";
 
 export async function buildFetch(options: ServerOptions) {
     const features = await buildFeatures(options);
-    const register = new TemplateRegister("public");
+    const register = new Register("public");
     await register.initialize();
 
     if (options?.features?.dev) {
@@ -75,17 +76,21 @@ export async function buildFetch(options: ServerOptions) {
             if (view) {
                 let content = "";
                 await view.assemble(attributes);
-                if (!view.helper.renderCanceled) {
-                    await featureTransforms(view);
-                    content = await view.render();
-                }
-                for (const oob of view.helper.oobs) {
-                    const oobView = register.get(oob.tag)?.present();
-                    if (!oobView) {
-                        warn("view", `OOB view not found: ${oob.tag}`);
-                        continue;
+                if (view instanceof PartialView) {
+                    if (!view.helper.renderCanceled) {
+                        await featureTransforms(view);
+                        content = await view.render();
                     }
-                    content += await oobView.render(oob.attributes);
+                    for (const oob of view.helper.oobs) {
+                        const oobView = register.get(oob.tag)?.present();
+                        if (!oobView || !(oobView instanceof PartialView)) {
+                            warn("view", `OOB view not found: ${oob.tag}`);
+                            continue;
+                        }
+                        content += await oobView.render(oob.attributes);
+                    }
+                } else {
+                    content = await view.render();
                 }
                 return new Response(content, {
                     headers: {
@@ -100,16 +105,24 @@ export async function buildFetch(options: ServerOptions) {
         const url = new URL(request.url);
         const pathway = url.pathname.slice(1).split("/").filter(Boolean);
         let view: View | undefined;
+
         for (let i = 0; i < pathway.length; i++) {
             const tag = pathway.slice(i, pathway.length + 1 - 1).join("-");
-            view = register.get(tag)?.present(view) || view;
+            view = presentComposition(tag, view);
         }
-        view = register.get("root")?.present(view);
+
+        view = presentComposition("root", view);
+
         if (!view) {
             return;
         }
+
         await view.assemble();
-        await featureTransforms(view);
+
+        if (view instanceof PartialView) {
+            await featureTransforms(view);
+        }
+
         return new Response(`<!doctype html>\n${await view.render()}`, {
             headers: {
                 "Content-Type": "text/html;charset=utf-8",
@@ -117,7 +130,30 @@ export async function buildFetch(options: ServerOptions) {
         });
     }
 
-    async function featureTransforms(view: View) {
+    function presentComposition(tag: string, leaf: View | undefined) {
+        const template = register.get(tag);
+        if (template) {
+            if (leaf && template instanceof MarkdownTemplate) {
+                error(
+                    "view",
+                    "Bad composition, markdown views don't have slots.",
+                );
+            }
+            if (leaf) {
+                if (template instanceof MarkdownTemplate) {
+                    error(
+                        "view",
+                        "Bad composition, markdown views don't have slots.",
+                    );
+                    return template.present();
+                }
+                return template.present(leaf);
+            }
+            return template.present();
+        }
+    }
+
+    async function featureTransforms(view: PartialView) {
         for (const feature of features) {
             if (feature.transform) {
                 await view.transform(feature.transform);

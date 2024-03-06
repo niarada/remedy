@@ -1,7 +1,7 @@
 import { expect, test } from "bun:test";
-import { TemplateRegister } from "./register";
+import { Register } from "../register";
 
-const register = new TemplateRegister("./view/__fixtures__");
+const register = new Register("./view/__fixtures__");
 
 test("render", async () => {
     const view = await register._present("todo-item");

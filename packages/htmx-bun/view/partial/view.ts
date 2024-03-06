@@ -1,13 +1,14 @@
 import { error, warn } from "~/lib/log";
-import { HtmlElement, HtmlFragment, createHtmlText } from "~/partial/ast";
-import { parsePartial } from "~/partial/parser";
-import { concatAttributeValue, printHtml } from "~/partial/printer";
-import { HtmlTransformVisitor, transformHtml } from "~/partial/transform";
+import { HtmlElement, HtmlFragment, createHtmlText } from "~/view/partial/ast";
+import { parsePartial } from "~/view/partial/parser";
+import { concatAttributeValue, printHtml } from "~/view/partial/printer";
+import { HtmlTransformVisitor, transformHtml } from "~/view/partial/transform";
+import { View } from "../register";
 import { Helper } from "./helper";
-import { Template } from "./template";
+import { PartialTemplate } from "./template";
 
-export class View {
-    #template: Template;
+export class PartialView {
+    #template: PartialTemplate;
     #subview?: View;
     #assembled = false;
     #html: HtmlFragment;
@@ -15,7 +16,7 @@ export class View {
     #helper: Helper;
     #attributes: Record<string, unknown> = {};
 
-    constructor(template: Template, subview?: View) {
+    constructor(template: PartialTemplate, subview?: View) {
         this.#template = template;
         this.#subview = subview;
         this.#html = parsePartial(template.html);
@@ -37,7 +38,7 @@ export class View {
      *
      * @param attributes - The attributes to be used during assembly.
      */
-    async assemble(attributes: Record<string, unknown> = {}) {
+    async assemble(attributes = {}) {
         if (this.#assembled) {
             return;
         }
@@ -119,7 +120,7 @@ export class View {
     /**
      * Gets all top level nodes in the html tree.
      */
-    private get children() {
+    get children() {
         return this.#html.children;
     }
 

@@ -16,11 +16,10 @@ export interface Attribute {
 export type Attributes = Attribute[];
 
 /**
- * The Source class is responsible for reading an htmx-bun partial `.part` file,
- * disentangling into script and html parts, and returning the source code that
- * will be resolved by the loader in `plugins/partial.ts`.
+ * The PartialSource class is responsible for reading an htmx-bun partial `.part` file,
+ * disentangling into script and html parts, and returning the source code as TypeScript.
  */
-export class Source {
+export class PartialSource {
     #text!: string;
     #html!: HtmlFragment;
     #code!: ts.SourceFile;
@@ -39,7 +38,7 @@ export class Source {
      * @param path The path of the source.
      */
     static async fromPath(path: string) {
-        return new Source(await Bun.file(path).text());
+        return new PartialSource(await Bun.file(path).text());
     }
 
     /**
@@ -61,7 +60,7 @@ export class Source {
         this.transformCode();
         return [
             `export const attributes = ${JSON.stringify(this.attributes)};`,
-            `export const html = \`${this.html}\`;`,
+            `export const html = ${JSON.stringify(this.html)};`,
             "",
             this.code,
         ].join("\n");

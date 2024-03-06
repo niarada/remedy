@@ -12,7 +12,7 @@
         "!**/*.test.ts"
     ],
     "scripts": {
-        "tests": "bun test -r plugins/partial.ts"
+        "tests": "bun test -r plugins/index.ts"
     },
     "repository": {
         "type": "git",
