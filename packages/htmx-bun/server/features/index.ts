@@ -1,5 +1,5 @@
 import { info } from "~/lib/log";
-import { HtmlTransformVisitor } from "~/partial/transform";
+import { HtmlTransformVisitor } from "~/view/partial/transform";
 import { ServerOptions } from "~/server/options";
 
 export type FeatureFactory = (

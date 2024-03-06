@@ -17,6 +17,24 @@ test("void tag", () => {
 const source3 = `<div class="foo {item.cls} baz" id={id}></div>\n`;
 test("complex attribute", () => {
     const ast = parsePartial(source3);
-    console.log(printHtml(ast));
     expect(printHtml(ast)).toBe(source3);
+});
+
+const source4 = `<html>
+    <head>
+        <title>htmx-bun: documenation</title>
+    </head>
+    <body class="flex flex-col bg-slate-700 text-white p-2">
+        <header class="flex justify-between items-center gap-4 pb-2 mb-6 border-b border-b-slate-500">
+            <a class="flex items-center gap-4" href="/">
+                <img src="/assets/icon-light.png" class="h-8 w-8">
+                <div class="font-bold">htmx-bun</div>
+            </a>
+        </header>
+    </body>
+</html>
+`;
+test("void tags in there", () => {
+    const ast = parsePartial(source4);
+    expect(printHtml(ast)).toBe(source4);
 });

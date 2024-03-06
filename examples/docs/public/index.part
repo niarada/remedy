@@ -1,7 +1,7 @@
-<!doctype html>
 <html>
     <head>
         <title>htmx-bun: documenation</title>
+        <link rel="icon" type="image/png" href="/assets/icon-light.png">
     </head>
     <body class="flex flex-col bg-slate-700 text-white p-2">
         <header class="flex justify-between items-center gap-4 pb-2 mb-6 border-b border-b-slate-500">
@@ -13,7 +13,7 @@
                 <i class="text-2xl fa-brands fa-github" />
             </a>
         </header>
-        <main class="flex gap-32"  hx-boost=".article">
+        <main class="flex gap-32"  hx-boost="article">
             <nav>
                 <ul class="flex flex-col gap-1 cursor-pointer">
                     <li><a href="/introduction">Introduction</a></li>
@@ -25,11 +25,11 @@
                     <li><a href="/roadmap">Roadmap</a></li>
                 </ul>
             </nav>
-            <div class="article">
+            <article class="prose prose-slate prose-invert">
                 <slot>
                     <introduction />
                 </slot>
-            </div>
+            </article>
         </main>
     </body>
 </html>

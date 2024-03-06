@@ -96,7 +96,7 @@ class Parser {
                     this.position++;
                 }
                 this.top.attrs.push({ name, value });
-                this.position++;
+                // this.position++;
                 break;
             }
             case TokenType.OpenAngleBracket: {
@@ -104,10 +104,11 @@ class Parser {
                 break;
             }
             case TokenType.CloseAngleBracket: {
-                if (!this.offsetTypeIs(-1, TokenType.TagName)) {
-                    if (this.top.void) {
-                        this.stack.pop();
-                    }
+                if (
+                    this.offsetTypeIs(-1, TokenType.Slash) ||
+                    (!this.offsetTypeIs(-1, TokenType.TagName) && this.top.void)
+                ) {
+                    this.stack.pop();
                 }
                 this.position++;
                 break;

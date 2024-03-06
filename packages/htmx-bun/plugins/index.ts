@@ -1,1 +1,1 @@
-import "./partial";
+import "./loaders";

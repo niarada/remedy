@@ -1,12 +1,12 @@
-import { Attributes } from "~/partial/source";
+import { Register, Template } from "../register";
 import { Helper } from "./helper";
-import { TemplateRegister } from "./register";
-import { View } from "./view";
+import { Attributes } from "./source";
+import { PartialView } from "./view";
 
 /**
  * Wraps an imported partial module.
  */
-export interface TemplateModule extends Record<string, unknown> {
+export interface PartialModule {
     attributes: Attributes;
     html: string;
     default: (
@@ -15,15 +15,12 @@ export interface TemplateModule extends Record<string, unknown> {
     ) => Record<string, unknown>;
 }
 
-/**
- * Represents a template used for rendering views.
- */
-export class Template {
+export class PartialTemplate implements Template {
     constructor(
-        public register: TemplateRegister,
+        public register: Register,
         public tag: string,
         public path: string,
-        public module: TemplateModule,
+        public module: PartialModule,
     ) {}
 
     /**
@@ -58,7 +55,7 @@ export class Template {
      * @param subview An optional subview, which will be slotted.
      * @returns The created view.
      */
-    present(subview?: View): View {
-        return new View(this, subview);
+    present(subview?: PartialView): PartialView {
+        return new PartialView(this, subview);
     }
 }

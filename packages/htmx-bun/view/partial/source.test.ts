@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { Source } from "./source";
+import { PartialSource } from "./source";
 
 const source1 = `
 interface Attributes {
@@ -18,7 +18,7 @@ const items = [{ id: 1, name: "one" }, { id: 2, name: "two" }];
 </ul>
 `;
 test("compile", async () => {
-    const source = new Source(source1);
+    const source = new PartialSource(source1);
     const target = await source.compile();
     // console.log(target);
     expect(target).toMatchSnapshot();
