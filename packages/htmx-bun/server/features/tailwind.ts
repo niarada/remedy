@@ -15,11 +15,6 @@ export default function (): ServerFeature {
             let config: TailwindConfig = {
                 content: ["./public/**/*.part"],
                 plugins: [typography],
-                safelist: [
-                    {
-                        pattern: /^prose$/,
-                    },
-                ],
             };
             if (existsSync("tailwind.config.ts")) {
                 config = mergeDeepWith(
