@@ -75,22 +75,26 @@ class Parser {
             case TokenType.AttributeName: {
                 const name = this.token.value;
                 if (!this.offsetTypeIs(1, TokenType.Equal)) {
-                    this.top.attrs.push({ name, value: { type: "void" } });
+                    this.top.attrs.push({ name, value: [] });
                     this.position++;
                     break;
                 }
                 this.position += 2;
-                this.token.type;
-                const value: HtmlElementAttributeValue =
-                    this.offset(0).type === TokenType.String
-                        ? {
-                              type: "text",
-                              content: this.token.value.slice(1, -1),
-                          }
-                        : {
-                              type: "expression",
-                              content: this.token.value.slice(1, -1),
-                          };
+                const value: HtmlElementAttributeValue[] = [];
+                while (true) {
+                    const type = this.offset(0).type;
+                    if (type === TokenType.Text) {
+                        value.push({ type: "text", content: this.token.value });
+                    } else if (type === TokenType.Expression) {
+                        value.push({
+                            type: "expression",
+                            content: this.token.value.slice(1, -1),
+                        });
+                    } else {
+                        break;
+                    }
+                    this.position++;
+                }
                 this.top.attrs.push({ name, value });
                 this.position++;
                 break;
@@ -114,9 +118,6 @@ class Parser {
                 break;
             }
             case TokenType.Equal: {
-                break;
-            }
-            case TokenType.String: {
                 break;
             }
             case TokenType.Expression: {

@@ -13,3 +13,10 @@ test("void tag", () => {
     const ast = parsePartial(source2);
     expect(printHtml(ast)).toBe(source2);
 });
+
+const source3 = `<div class="foo {item.cls} baz" id={id}></div>\n`;
+test("complex attribute", () => {
+    const ast = parsePartial(source3);
+    console.log(printHtml(ast));
+    expect(printHtml(ast)).toBe(source3);
+});

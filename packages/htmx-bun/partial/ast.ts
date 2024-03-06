@@ -48,7 +48,7 @@ export type HtmlElement = {
 
 export type HtmlElementAttribute = {
     name: string;
-    value: HtmlElementAttributeValue;
+    value: HtmlElementAttributeValue[];
 };
 
 export type HtmlElementAttributeText = {
@@ -61,22 +61,18 @@ export type HtmlElementAttributeExpression = {
     content: string;
 };
 
-export type HtmlElementAttributeVoid = {
-    type: "void";
-};
-
 export type HtmlNode = HtmlFragment | HtmlElement | HtmlText | HtmlExpression;
 export type HtmlParent = HtmlFragment | HtmlElement;
 export type HtmlElementAttributeValue =
     | HtmlElementAttributeText
-    | HtmlElementAttributeExpression
-    | HtmlElementAttributeVoid;
+    | HtmlElementAttributeExpression;
 
 export const createHtmlFragment = (
     parent?: HtmlParent,
     ...children: HtmlNode[]
 ): HtmlFragment => ({
     type: "fragment",
+    parent,
     children,
 });
 
@@ -94,7 +90,7 @@ export const createHtmlElement = (
         ? attrs
         : Object.entries(attrs).map(([name, value]) => ({
               name,
-              value: { type: "text", content: String(value) },
+              value: [{ type: "text", content: String(value) }],
           })),
     children,
 });

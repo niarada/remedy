@@ -1,7 +1,7 @@
 import { error, warn } from "~/lib/log";
 import { HtmlElement, HtmlFragment, createHtmlText } from "~/partial/ast";
 import { parsePartial } from "~/partial/parser";
-import { printHtml } from "~/partial/printer";
+import { concatAttributeValue, printHtml } from "~/partial/printer";
 import { HtmlTransformVisitor, transformHtml } from "~/partial/transform";
 import { Helper } from "./helper";
 import { Template } from "./template";
@@ -177,13 +177,16 @@ export class View {
         additionalScope: Record<string, unknown> = {},
     ) {
         for (const attr of node.attrs) {
-            if (attr.value.type === "expression") {
-                attr.value = {
-                    type: "text",
-                    content: String(
-                        this.express(attr.value.content, additionalScope),
-                    ),
-                };
+            for (let i = 0; i < attr.value.length; i++) {
+                const value = attr.value[i];
+                if (value.type === "expression") {
+                    attr.value[i] = {
+                        type: "text",
+                        content: String(
+                            this.express(value.content, additionalScope),
+                        ),
+                    };
+                }
             }
         }
     }
@@ -196,13 +199,17 @@ export class View {
      */
     expressAttributesAsText(node: HtmlElement) {
         const obj: Record<string, string> = {};
-        for (const attr of node.attrs) {
-            obj[attr.name] =
-                attr.value.type === "text"
-                    ? attr.value.content
-                    : attr.value.type === "expression"
-                      ? String(this.express(attr.value.content))
-                      : "true";
+        const attrs = structuredClone(node.attrs);
+        for (const attr of attrs) {
+            for (let i = 0; i < attr.value.length; i++) {
+                if (attr.value[i].type === "expression") {
+                    attr.value[i] = {
+                        type: "text",
+                        content: String(this.express(attr.value[i].content)),
+                    };
+                }
+            }
+            obj[attr.name] = concatAttributeValue(attr) || "true";
         }
         return obj;
     }
@@ -210,11 +217,23 @@ export class View {
     expressAttributeValue(node: HtmlElement, name: string): unknown {
         for (const attr of node.attrs) {
             if (attr.name === name) {
-                return attr.value.type === "text"
-                    ? attr.value.content
-                    : attr.value.type === "expression"
-                      ? this.express(attr.value.content)
-                      : true;
+                if (
+                    attr.value.length === 1 &&
+                    attr.value[0].type === "expression"
+                ) {
+                    return this.express(attr.value[0].content);
+                }
+                const copy = structuredClone(attr);
+                for (let i = 0; i < copy.value.length; i++) {
+                    const value = copy.value[i];
+                    if (value.type === "expression") {
+                        attr.value[i] = {
+                            type: "text",
+                            content: String(this.express(value.content)),
+                        };
+                    }
+                }
+                return concatAttributeValue(copy) || "true";
             }
         }
     }
