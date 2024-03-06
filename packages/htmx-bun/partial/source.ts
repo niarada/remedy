@@ -106,10 +106,12 @@ export class Source {
             }
             if (node.type === "element") {
                 for (const attr of node.attrs) {
-                    if (attr.value.type === "expression") {
-                        attr.value.content = this.transformExpression(
-                            attr.value.content,
-                        );
+                    for (const value of attr.value) {
+                        if (value.type === "expression") {
+                            value.content = this.transformExpression(
+                                value.content,
+                            );
+                        }
                     }
                 }
                 visitEachChild(node);

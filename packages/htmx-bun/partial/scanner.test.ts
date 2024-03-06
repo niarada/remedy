@@ -12,3 +12,15 @@ test("scanner", () => {
     const tokens = scanPartial(source1);
     expect(tokens).toMatchSnapshot();
 });
+
+const source2 = `
+const item = {
+    cls: 'bar';
+}
+
+<div class="foo {item.cls} baz" />
+`;
+test("complex attributes", () => {
+    const tokens = scanPartial(source2);
+    expect(tokens).toMatchSnapshot();
+});

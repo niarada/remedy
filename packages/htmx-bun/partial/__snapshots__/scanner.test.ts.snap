@@ -28,9 +28,9 @@ exports[`scanner 1`] = `
     "value": "=",
   },
   {
-    "position": 23,
-    "type": "String",
-    "value": ""1"",
+    "position": 24,
+    "type": "Text",
+    "value": "1",
   },
   {
     "position": 26,
@@ -68,9 +68,9 @@ exports[`scanner 1`] = `
     "value": "=",
   },
   {
-    "position": 68,
-    "type": "String",
-    "value": ""foo"",
+    "position": 69,
+    "type": "Text",
+    "value": "foo",
   },
   {
     "position": 73,
@@ -218,6 +218,74 @@ exports[`scanner 1`] = `
   },
   {
     "position": 130,
+    "type": "Text",
+    "value": 
+"
+"
+,
+  },
+]
+`;
+
+exports[`complex attributes 1`] = `
+[
+  {
+    "position": 35,
+    "type": "OpenAngleBracket",
+    "value": "<",
+  },
+  {
+    "position": 36,
+    "type": "TagName",
+    "value": "div",
+  },
+  {
+    "position": 39,
+    "type": "Whitespace",
+    "value": " ",
+  },
+  {
+    "position": 40,
+    "type": "AttributeName",
+    "value": "class",
+  },
+  {
+    "position": 45,
+    "type": "Equal",
+    "value": "=",
+  },
+  {
+    "position": 47,
+    "type": "Text",
+    "value": "foo ",
+  },
+  {
+    "position": 51,
+    "type": "Expression",
+    "value": "{item.cls}",
+  },
+  {
+    "position": 61,
+    "type": "Text",
+    "value": " baz",
+  },
+  {
+    "position": 66,
+    "type": "Whitespace",
+    "value": " ",
+  },
+  {
+    "position": 67,
+    "type": "Slash",
+    "value": "/",
+  },
+  {
+    "position": 68,
+    "type": "CloseAngleBracket",
+    "value": ">",
+  },
+  {
+    "position": 69,
     "type": "Text",
     "value": 
 "

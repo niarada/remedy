@@ -1,4 +1,4 @@
-import { HtmlNode } from "./ast";
+import { HtmlElementAttribute, HtmlNode } from "./ast";
 import { parsePartial } from "./parser";
 import { walkHtml } from "./transform";
 
@@ -18,8 +18,7 @@ export function printHtml(htmlOrNode: string | HtmlNode): string {
             if (node.tag === "input") {
                 node.attrs = node.attrs.filter((attr) =>
                     attr.name === "checked" &&
-                    attr.value.type === "text" &&
-                    attr.value.content === "false"
+                    concatAttributeValue(attr) === "false"
                         ? undefined
                         : attr,
                 );
@@ -27,14 +26,17 @@ export function printHtml(htmlOrNode: string | HtmlNode): string {
             text.push("<");
             text.push(node.tag);
             for (const attr of node.attrs) {
-                if (attr.value.type === "void") {
+                if (attr.value.length === 0) {
                     text.push(` ${attr.name}`);
                     continue;
                 }
-                const value =
-                    attr.value.type === "expression"
-                        ? `{${attr.value.content}}`
-                        : `"${attr.value.content}"`;
+                let value = `"${concatAttributeValue(attr)}"`;
+                if (
+                    attr.value.length === 1 &&
+                    attr.value[0].type === "expression"
+                ) {
+                    value = value.slice(1, -1);
+                }
                 text.push(` ${attr.name}=${value}`);
             }
             text.push(">");
@@ -54,4 +56,15 @@ export function printHtml(htmlOrNode: string | HtmlNode): string {
         }
     });
     return `${text.join("").trim()}\n`;
+}
+
+export function concatAttributeValue(attr: HtmlElementAttribute) {
+    return attr.value
+        .map((value) => {
+            if (value.type === "text") {
+                return value.content;
+            }
+            return `{${value.content}}`;
+        })
+        .join("");
 }

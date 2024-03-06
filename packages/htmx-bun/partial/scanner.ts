@@ -8,7 +8,6 @@ export enum TokenType {
     CloseAngleBracket = "CloseAngleBracket",
     Slash = "Slash",
     Equal = "Equal",
-    String = "String",
     Expression = "Expression",
     Text = "Text",
 }
@@ -108,6 +107,18 @@ class Scanner {
         );
     }
 
+    private matchTagName() {
+        const position = this.position;
+        const match = this.source
+            .slice(this.position)
+            .match(/^[a-z][a-z0-9]*(-[a-z]+)*/);
+        if (match) {
+            this.position += match[0].length;
+            this.token(TokenType.TagName, position);
+            return true;
+        }
+    }
+
     private matchAttributes() {
         while (!this.peekCharacter("/>")) {
             this.matchAttribute();
@@ -120,23 +131,10 @@ class Scanner {
             this.error("Expected attribute name");
         }
         if (!this.matchCharacterType(TokenType.Equal, "=")) {
-            // this.error("Expected equal sign");
             return;
         }
-        if (!this.matchString() && !this.matchExpression()) {
+        if (!this.matchAttributeValue()) {
             this.error("Expected attribute value");
-        }
-    }
-
-    private matchTagName() {
-        const position = this.position;
-        const match = this.source
-            .slice(this.position)
-            .match(/^[a-z][a-z0-9]*(-[a-z]+)*/);
-        if (match) {
-            this.position += match[0].length;
-            this.token(TokenType.TagName, position);
-            return true;
         }
     }
 
@@ -152,19 +150,63 @@ class Scanner {
         }
     }
 
-    private matchString() {
-        const position = this.position;
-        if (this.source[this.position] !== '"') {
+    private matchAttributeValue() {
+        if (this.matchExpression()) {
+            return true;
+        }
+        if (!this.peekCharacter('"')) {
             return;
         }
         this.position++;
-        while (this.source[this.position] !== '"') {
-            this.position++;
+        const position = this.position;
+        this.matchAttributeText();
+        if (!this.peekCharacter('"')) {
+            this.error("Expected closing quote");
+            return;
         }
         this.position++;
-        this.token(TokenType.String, position);
         return true;
     }
+
+    private matchAttributeText(): true | undefined {
+        const position = this.position;
+        while (
+            !this.peekCharacter('{"') &&
+            this.position < this.source.length
+        ) {
+            this.position++;
+        }
+        if (position !== this.position) {
+            this.token(TokenType.Text, position);
+        }
+        if (this.peekCharacter("{")) {
+            this.matchExpression();
+            return this.matchAttributeText();
+        }
+        if (position === this.position) {
+            return;
+        }
+        return true;
+    }
+    // private matchAttributeString() {
+    //     const position = this.position;
+    //     if (this.source[this.position] !== '"') {
+    //         return;
+    //     }
+    //     this.position++;
+    //     while (
+    //         !this.peekCharacter('{"') &&
+    //         this.position < this.source.length
+    //     ) {
+    //         this.position++;
+    //     }
+    //     if (!this.match)
+    //         if (position === this.position) {
+    //             return;
+    //         }
+    //     this.token(TokenType.Text, position);
+    //     return true;
+    // }
 
     private matchContent() {
         while (
