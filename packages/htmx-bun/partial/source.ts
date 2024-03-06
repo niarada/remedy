@@ -161,6 +161,12 @@ export class Source {
                                 node,
                             );
                         }
+                        if (ts.isBinaryExpression(node.parent)) {
+                            return context.factory.createPropertyAccessExpression(
+                                context.factory.createIdentifier("$scope"),
+                                node,
+                            );
+                        }
                     }
                     return ts.visitEachChild(node, visit, context);
                 };

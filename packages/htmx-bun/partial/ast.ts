@@ -61,48 +61,49 @@ export type HtmlElementAttributeExpression = {
     content: string;
 };
 
+export type HtmlElementAttributeVoid = {
+    type: "void";
+};
+
 export type HtmlNode = HtmlFragment | HtmlElement | HtmlText | HtmlExpression;
 export type HtmlParent = HtmlFragment | HtmlElement;
 export type HtmlElementAttributeValue =
     | HtmlElementAttributeText
-    | HtmlElementAttributeExpression;
+    | HtmlElementAttributeExpression
+    | HtmlElementAttributeVoid;
 
-// export const createHtmlFragment = (
-//     parent?: HtmlParent,
-//     ...children: HtmlNode[]
-// ): HtmlFragment => ({
-//     type: "fragment",
-//     children,
-// });
+export const createHtmlFragment = (
+    parent?: HtmlParent,
+    ...children: HtmlNode[]
+): HtmlFragment => ({
+    type: "fragment",
+    children,
+});
 
-// export const createHtmlElement = (
-//     parent: HtmlParent,
-//     tag: string,
-//     attrs: HtmlElementAttribute[] | Record<string, unknown> = [],
-//     ...children: (HtmlElement | HtmlText)[]
-// ): HtmlElement => ({
-//     type: "element",
-//     parent,
-//     tag,
-//     void: voids.includes(tag),
-//     attrs: Array.isArray(attrs)
-//         ? attrs
-//         : Object.entries(attrs).map(
-//               ([name, value]) => ({ name, value }) as HtmlElementAttribute,
-//           ),
-//     children,
-// });
+export const createHtmlElement = (
+    parent: HtmlParent,
+    tag: string,
+    attrs: HtmlElementAttribute[] | Record<string, unknown> = [],
+    ...children: (HtmlElement | HtmlText)[]
+): HtmlElement => ({
+    type: "element",
+    parent,
+    tag,
+    void: voids.includes(tag),
+    attrs: Array.isArray(attrs)
+        ? attrs
+        : Object.entries(attrs).map(([name, value]) => ({
+              name,
+              value: { type: "text", content: String(value) },
+          })),
+    children,
+});
 
-// export const createHtmlText = (
-//     parent: HtmlParent,
-//     content: string,
-// ): HtmlText => ({
-//     type: "text",
-//     parent,
-//     content,
-// });
-
-// export const createHtmlDoctype = (parent: HtmlFragment): HtmlDoctype => ({
-//     type: "doctype",
-//     parent,
-// });
+export const createHtmlText = (
+    parent: HtmlParent,
+    content: string,
+): HtmlText => ({
+    type: "text",
+    parent,
+    content,
+});

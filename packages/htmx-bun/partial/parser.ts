@@ -3,6 +3,7 @@ import {
     HtmlElementAttributeValue,
     HtmlFragment,
     HtmlNode,
+    createHtmlFragment,
     voids,
 } from "./ast";
 import { Token, TokenType, scanPartial } from "./scanner";
@@ -21,7 +22,7 @@ class Parser {
     constructor(source: string) {
         this.source = source;
         this.tokens = scanPartial(this.source);
-        this.stack = [{ type: "fragment", children: [] }];
+        this.stack = [createHtmlFragment()];
     }
 
     get top(): HtmlElement {
@@ -73,6 +74,11 @@ class Parser {
             }
             case TokenType.AttributeName: {
                 const name = this.token.value;
+                if (!this.offsetTypeIs(1, TokenType.Equal)) {
+                    this.top.attrs.push({ name, value: { type: "void" } });
+                    this.position++;
+                    break;
+                }
                 this.position += 2;
                 this.token.type;
                 const value: HtmlElementAttributeValue =

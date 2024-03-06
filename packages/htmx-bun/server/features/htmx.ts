@@ -1,4 +1,4 @@
-import { createHtmlElement } from "~/lib/html";
+import { createHtmlElement } from "~/partial/ast";
 import { ServerFeature } from ".";
 
 export interface HtmxOptions {

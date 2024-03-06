@@ -1,5 +1,5 @@
-import { warn } from "~/lib/log";
-import { HtmlElement, HtmlFragment } from "~/partial/ast";
+import { error, warn } from "~/lib/log";
+import { HtmlElement, HtmlFragment, createHtmlText } from "~/partial/ast";
 import { parsePartial } from "~/partial/parser";
 import { printHtml } from "~/partial/printer";
 import { HtmlTransformVisitor, transformHtml } from "~/partial/transform";
@@ -106,11 +106,10 @@ export class View {
                     }
                     this.interpolateAttributesToText(node);
                 } else if (node.type === "expression") {
-                    return {
-                        parent: node.parent,
-                        type: "text",
-                        content: String(this.express(node.content)),
-                    };
+                    return createHtmlText(
+                        node.parent,
+                        String(this.express(node.content)),
+                    );
                 }
                 return await visitEachChild(node);
             },
@@ -201,7 +200,9 @@ export class View {
             obj[attr.name] =
                 attr.value.type === "text"
                     ? attr.value.content
-                    : String(this.express(attr.value.content));
+                    : attr.value.type === "expression"
+                      ? String(this.express(attr.value.content))
+                      : "true";
         }
         return obj;
     }
@@ -211,7 +212,9 @@ export class View {
             if (attr.name === name) {
                 return attr.value.type === "text"
                     ? attr.value.content
-                    : this.express(attr.value.content);
+                    : attr.value.type === "expression"
+                      ? this.express(attr.value.content)
+                      : true;
             }
         }
     }
@@ -227,9 +230,23 @@ export class View {
         expression: string,
         additionalScope: Record<string, unknown> = {},
     ): unknown {
-        const express = new Function("$scope", `return ${expression}`);
-        return express(
-            Object.assign({}, this.#attributes, this.#locals, additionalScope),
+        const $scope = Object.assign(
+            {},
+            this.#attributes,
+            this.#locals,
+            additionalScope,
         );
+        const express = new Function("$scope", `return ${expression}`);
+        try {
+            return express($scope);
+        } catch (e) {
+            error(
+                "view",
+                `Error evaluating expression in '${this.#template.path}': ${expression}`,
+            );
+            console.log("$scope:", $scope);
+            console.log(e);
+            return undefined;
+        }
     }
 }

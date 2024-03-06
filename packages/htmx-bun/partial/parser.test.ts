@@ -8,7 +8,7 @@ test("parser", () => {
     expect(printHtml(ast)).toBe(source1);
 });
 
-const source2 = `<div><input id="i"></div>\n`;
+const source2 = `<div><input id="i" focus></div>\n`;
 test("void tag", () => {
     const ast = parsePartial(source2);
     expect(printHtml(ast)).toBe(source2);

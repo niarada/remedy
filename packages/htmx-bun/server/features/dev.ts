@@ -1,8 +1,8 @@
 import EventEmitter from "events";
-import { createHtmlElement } from "~/lib/html";
 import { info } from "~/lib/log";
 import { formatTypeScript } from "~/lib/typescript";
 import { watch } from "~/lib/watch";
+import { createHtmlElement } from "~/partial/ast";
 import { ServerFeature } from ".";
 import { ServerOptions } from "../options";
 
