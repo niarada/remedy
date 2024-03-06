@@ -2,9 +2,10 @@ import { mkdirSync } from "fs";
 import { mergeDeepWith } from "ramda";
 import { info } from "~/lib/log";
 import defaultOptions, { ServerOptions } from "~/server/options";
+import pkg from "../package.json";
 import { buildFetch } from "./fetch";
 
-info("server", "Initializing server...");
+info("server", `htmx-bun ${pkg.version}`);
 
 mkdirSync("public", { recursive: true });
 let userOptions: ServerOptions = {};
@@ -19,4 +20,4 @@ Bun.serve({
     fetch,
 });
 
-info("server", `Listening on port ${options.port}`);
+info("server", `listening on port ${options.port}`);
