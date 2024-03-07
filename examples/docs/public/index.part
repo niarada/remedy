@@ -18,10 +18,11 @@
                 <ul class="flex flex-col gap-1 cursor-pointer">
                     <li><a href="/introduction">Introduction</a></li>
                     <li><a href="/installation">Installation</a></li>
+                    <li><a href="/partials">Partials</a></li>
+                    <li><a href="/routing">Routing</a></li>
+                    <li><a href="/integrations">Integrations</a></li>
                     <li><a href="/options">Options</a></li>
                     <li><a href="/editor-support">Editor Support</a></li>
-                    <li><a href="/partials">Partials</a></li>
-                    <li><a href="/integrations">Integrations</a></li>
                     <li><a href="/roadmap">Roadmap</a></li>
                 </ul>
             </nav>
