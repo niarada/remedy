@@ -10,21 +10,20 @@ import { ServerFeature } from ".";
 export default function (): ServerFeature {
     return {
         name: "tailwind",
-        async fetch(request) {
-            const url = new URL(request.url);
-            let config: TailwindConfig = {
-                content: ["./public/**/*.part"],
-                plugins: [typography],
-            };
-            if (existsSync("tailwind.config.ts")) {
-                config = mergeDeepWith(
-                    (_, b) => b,
-                    config,
-                    (await import(`${process.cwd()}/tailwind.config.ts`))
-                        .default,
-                );
-            }
-            if (url.pathname === "/_tailwind") {
+        async intercede(context) {
+            if (context.url.pathname === "/_tailwind") {
+                let config: TailwindConfig = {
+                    content: ["./public/**/*.part"],
+                    plugins: [typography],
+                };
+                if (existsSync("tailwind.config.ts")) {
+                    config = mergeDeepWith(
+                        (_, b) => b,
+                        config,
+                        (await import(`${process.cwd()}/tailwind.config.ts`))
+                            .default,
+                    );
+                }
                 const css = `
                     @import "tailwindcss/base";
                     @import "tailwindcss/components";

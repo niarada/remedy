@@ -5,10 +5,8 @@ import { ServerFeature } from ".";
 export default function (): ServerFeature {
     return {
         name: "sse",
-        async fetch(request) {
-            const url = new URL(request.url);
-
-            if (url.pathname === "/_sse") {
+        async intercede(context) {
+            if (context.url.pathname === "/_sse") {
                 const file = Bun.file(
                     `${dirname(require.resolve("htmx.org"))}/ext/sse.js`,
                 );

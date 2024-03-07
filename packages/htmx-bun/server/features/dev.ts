@@ -1,27 +1,20 @@
 import EventEmitter from "events";
+import { formatTypeScript } from "~/lib/format";
 import { info } from "~/lib/log";
-import { formatTypeScript } from "~/lib/typescript";
 import { watch } from "~/lib/watch";
 import { createHtmlElement } from "~/view/partial/ast";
 import { ServerFeature } from ".";
 import { ServerOptions } from "../options";
 
-if (!global.emitter) {
-    global.emitter = new EventEmitter();
-}
-
 export default function (options: ServerOptions): ServerFeature {
-    // XXX: Verify this is not being picked up in a user installed version.
-    //      (probably need to exclude .env in files)
-    info("dev", "watching framework directory...");
-    if (process.env.FRAMEWORK_DEV) {
-        watch(`${import.meta.dir}/../../`, () => {
-            info("dev", "sending refresh...");
-            emitter.emit("refresh");
-        });
+    if (!global.emitter) {
+        global.emitter = new EventEmitter();
+    } else {
+        info("dev", "sending refresh...");
+        emitter.emit("refresh");
     }
 
-    info("dev", "watching 'public' directory...");
+    info("dev", "watching for changes...");
     watch("public", () => {
         info("dev", "sending refresh...");
         emitter.emit("refresh");
@@ -29,14 +22,8 @@ export default function (options: ServerOptions): ServerFeature {
 
     return {
         name: "dev",
-        async fetch(request) {
-            const url = new URL(request.url);
-            const pathname = url.pathname;
-
-            if (pathname === "/_dev") {
-                // const product = await Bun.build({
-                //     entrypoints: [`${import.meta.dir}/../../client/dev.ts`],
-                // });
+        async intercede(context) {
+            if (context.url.pathname === "/_dev") {
                 let content = `
                     new EventSource("/_dev_stream").addEventListener("refresh", (event) => {
                         location.reload();
@@ -53,20 +40,14 @@ export default function (options: ServerOptions): ServerFeature {
                         });
                     `;
                 }
-                return new Response(
-                    //product.outputs[0],
-                    formatTypeScript(content),
-                    {
-                        headers: {
-                            // "Content-Type": product.outputs[0].type,
-                            "Content-Type":
-                                "application/javascript; charset=utf-8",
-                        },
+                return new Response(formatTypeScript(content), {
+                    headers: {
+                        "Content-Type": "application/javascript; charset=utf-8",
                     },
-                );
+                });
             }
 
-            if (pathname === "/_dev_stream") {
+            if (context.url.pathname === "/_dev_stream") {
                 return new Response(
                     new ReadableStream({
                         type: "direct",
@@ -75,7 +56,7 @@ export default function (options: ServerOptions): ServerFeature {
                                 controller.write("event: refresh\ndata:\n\n");
                             };
                             emitter.on("refresh", client);
-                            while (!request.signal.aborted) {
+                            while (!context.request.signal.aborted) {
                                 await Bun.sleep(1000);
                             }
                             emitter.off("refresh", client);

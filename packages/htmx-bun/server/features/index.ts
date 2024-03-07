@@ -1,6 +1,7 @@
 import { info } from "~/lib/log";
-import { HtmlTransformVisitor } from "~/view/partial/transform";
+import { Context } from "~/server/context";
 import { ServerOptions } from "~/server/options";
+import { HtmlTransformVisitor } from "~/view/partial/transform";
 
 export type FeatureFactory = (
     options: ServerOptions,
@@ -8,8 +9,8 @@ export type FeatureFactory = (
 
 export interface ServerFeature {
     name: string;
-    fetch?: (
-        request: Request,
+    intercede?: (
+        context: Context,
     ) => Promise<Response | undefined> | Response | undefined;
     transform?: HtmlTransformVisitor;
 }

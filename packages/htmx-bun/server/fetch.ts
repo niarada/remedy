@@ -1,12 +1,14 @@
 import chalk from "chalk";
+import { P, match } from "ts-pattern";
 import { URL } from "url";
-import { debug, error, info, warn } from "~/lib/log";
+import { error, info, warn } from "~/lib/log";
 import { watch } from "~/lib/watch";
-import { ServerOptions } from "~/server/options";
 import { MarkdownTemplate } from "~/view/markdown/template";
 import { PartialView } from "~/view/partial/view";
 import { Register, View } from "~/view/register";
+import { Context } from "./context";
 import { buildFeatures } from "./features";
+import { ServerOptions } from "./options";
 
 export async function buildFetch(options: ServerOptions) {
     const features = await buildFeatures(options);
@@ -25,46 +27,42 @@ export async function buildFetch(options: ServerOptions) {
 
     return async (request: Request) => {
         const time = Bun.nanoseconds();
-        const url = new URL(request.url);
-
-        let response: Response | undefined;
+        const context = new Context(request);
 
         for (const feature of features) {
-            if (feature.fetch) {
-                response = await feature.fetch(request);
-                if (response) {
+            if (feature.intercede) {
+                context.response = await feature.intercede(context);
+                if (context.response) {
                     break;
                 }
             }
         }
 
-        if (!response) {
+        if (!context.response) {
             if (request.headers.get("HX-Request")) {
-                response = await renderPartial(request);
+                await renderPartial(context);
             } else {
-                response = await renderFull(request);
+                await renderFull(context);
             }
         }
 
-        if (!response) {
-            response = new Response(null, {
+        if (!context.response) {
+            context.response = new Response(null, {
                 status: 404,
                 statusText: "Not Found",
             });
         }
 
-        log(url, response, Math.floor((Bun.nanoseconds() - time) / 1000000));
+        log(context, Math.floor((Bun.nanoseconds() - time) / 1000000));
 
-        return response;
+        return context.response;
     };
 
-    async function renderPartial(
-        request: Request,
-    ): Promise<Response | undefined> {
-        const url = new URL(request.url);
+    async function renderPartial(context: Context) {
+        const url = new URL(context.request.url);
         const tag = (url.pathname.slice(1) || "root").replace(/\//g, "-");
         if (/^[a-z][-a-z0-9]+$/.test(tag) && register.get(tag)) {
-            const view = register.get(tag)?.present();
+            const view = register.get(tag)?.present(context);
             if (!view) {
                 return;
             }
@@ -75,13 +73,14 @@ export async function buildFetch(options: ServerOptions) {
             if (view) {
                 let content = "";
                 await view.assemble(attributes);
+
                 if (view instanceof PartialView) {
-                    if (!view.helper.renderCanceled) {
+                    if (!context.renderCanceled) {
                         await featureTransforms(view);
                         content = await view.render();
                     }
-                    for (const oob of view.helper.oobs) {
-                        const oobView = register.get(oob.tag)?.present();
+                    for (const oob of context.oobs) {
+                        const oobView = register.get(oob.tag)?.present(context);
                         if (!oobView || !(oobView instanceof PartialView)) {
                             warn("view", `OOB view not found: ${oob.tag}`);
                             continue;
@@ -91,7 +90,7 @@ export async function buildFetch(options: ServerOptions) {
                 } else {
                     content = await view.render();
                 }
-                return new Response(content, {
+                context.response = new Response(content, {
                     headers: {
                         "Content-Type": "text/html;charset=utf-8",
                     },
@@ -100,17 +99,25 @@ export async function buildFetch(options: ServerOptions) {
         }
     }
 
-    async function renderFull(request: Request): Promise<Response | undefined> {
-        const url = new URL(request.url);
+    async function renderFull(context: Context) {
+        const url = new URL(context.request.url);
         const pathway = url.pathname.slice(1).split("/").filter(Boolean);
         let view: View | undefined;
 
         for (let i = 0; i < pathway.length; i++) {
             const tag = pathway.slice(i, pathway.length + 1 - 1).join("-");
-            view = presentComposition(tag, view);
+            // If outer leaf not present, consider this resource unavailable.
+            if (!view) {
+                view = presentComposition(context, tag);
+                if (!view) {
+                    return;
+                }
+            } else {
+                view = presentComposition(context, tag, view);
+            }
         }
 
-        view = presentComposition("root", view);
+        view = presentComposition(context, "root", view);
 
         if (!view) {
             return;
@@ -118,37 +125,44 @@ export async function buildFetch(options: ServerOptions) {
 
         await view.assemble();
 
+        if (context.response) {
+            return;
+        }
+
         if (view instanceof PartialView) {
             await featureTransforms(view);
         }
 
-        return new Response(`<!doctype html>\n${await view.render()}`, {
-            headers: {
-                "Content-Type": "text/html;charset=utf-8",
+        context.response = new Response(
+            `<!doctype html>\n${await view.render()}`,
+            {
+                headers: {
+                    "Content-Type": "text/html;charset=utf-8",
+                },
             },
-        });
+        );
     }
 
-    function presentComposition(tag: string, leaf: View | undefined) {
+    function presentComposition(context: Context, tag: string, leaf?: View) {
         const template = register.get(tag);
         if (template) {
             if (leaf && template instanceof MarkdownTemplate) {
                 error(
-                    "view",
+                    "fetch",
                     "Bad composition, markdown views don't have slots.",
                 );
             }
             if (leaf) {
                 if (template instanceof MarkdownTemplate) {
                     error(
-                        "view",
+                        "fetch",
                         "Bad composition, markdown views don't have slots.",
                     );
                     return template.present();
                 }
-                return template.present(leaf);
+                return template.present(context, leaf);
             }
-            return template.present();
+            return template.present(context);
         }
     }
 
@@ -161,15 +175,15 @@ export async function buildFetch(options: ServerOptions) {
     }
 }
 
-function log(url: URL, response: Response, duration: number) {
-    const line = `${url.pathname}${url.search} ${chalk.gray(`${duration}ms`)}`;
-    if (response.status > 500) {
-        error(response.status, line);
-    } else if (response.status > 400) {
-        warn(response.status, line);
-    } else if (response.status > 300) {
-        debug(response.status, line);
-    } else {
-        info(response.status, line);
-    }
+function log(context: Context, duration: number) {
+    const loglvl = match(context.response!.status)
+        .with(P.number.between(500, 599), () => error)
+        .with(P.number.between(400, 499), () => warn)
+        .otherwise(() => info);
+    loglvl(
+        "fetch",
+        `${context.response!.status} ${context.url.pathname}${
+            context.url.search
+        } ${chalk.gray(`${duration}ms`)}`,
+    );
 }

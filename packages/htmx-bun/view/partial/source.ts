@@ -190,12 +190,12 @@ export class PartialSource {
      * pulled into the local scope, that we can then pass to the interpolation functions.
      *
      * We're also extracting out the partials Attributes interface, if it has one, so we can use
-     * that information at runtime.  We also stub Attribute and Helper locals, these will be passed
+     * that information at runtime.  We also stub Context and Attribute locals, these will be passed
      * to the function that encloses the partial code, provided to it's local namespace.
      * @private
      */
     private transformCode() {
-        const locals: string[] = ["Helper", "Attributes"];
+        const locals: string[] = ["Context", "Attributes"];
         const transformer: ts.TransformerFactory<ts.SourceFile> = (context) => {
             return (root) => {
                 const statements: ts.Statement[] = [];
@@ -246,10 +246,10 @@ export class PartialSource {
                             ts.factory.createParameterDeclaration(
                                 undefined,
                                 undefined,
-                                ts.factory.createIdentifier("Helper"),
+                                ts.factory.createIdentifier("Context"),
                                 undefined,
                                 ts.factory.createTypeReferenceNode(
-                                    ts.factory.createIdentifier("Helper"),
+                                    ts.factory.createIdentifier("Context"),
                                     undefined,
                                 ),
                                 undefined,
