@@ -117,7 +117,7 @@ export async function buildFetch(options: ServerOptions) {
             }
         }
 
-        view = presentComposition(context, "root", view);
+        view = presentComposition(context, "layout", view);
 
         if (!view) {
             return;
@@ -164,6 +164,7 @@ export async function buildFetch(options: ServerOptions) {
             }
             return template.present(context);
         }
+        return leaf;
     }
 
     async function featureTransforms(view: PartialView) {
