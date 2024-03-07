@@ -5,9 +5,16 @@ export type HtmlTransformVisitResponse =
     | (HtmlNode | undefined)[]
     | undefined;
 
-type HtmlTransformVisitFunctions = {
-    visitNode: (node: HtmlNode) => Promise<HtmlTransformVisitResponse>;
-    visitEachChild: (node: HtmlNode) => Promise<HtmlNode>;
+export type HtmlTransformVisitNodeFunction = (
+    node: HtmlNode,
+) => Promise<HtmlTransformVisitResponse>;
+export type HtmlTransformVisitEachChildFunction = (
+    node: HtmlNode,
+) => Promise<HtmlNode>;
+
+export type HtmlTransformVisitFunctions = {
+    visitNode: HtmlTransformVisitNodeFunction;
+    visitEachChild: HtmlTransformVisitEachChildFunction;
 };
 
 export type HtmlTransformVisitor = (

@@ -1,5 +1,5 @@
+import { Context } from "../../server/context";
 import { Register, Template, View } from "../register";
-import { Helper } from "./helper";
 import { Attributes } from "./source";
 import { PartialView } from "./view";
 
@@ -10,7 +10,7 @@ export interface PartialModule {
     attributes: Attributes;
     html: string;
     default: (
-        helper: Helper,
+        context: Context,
         attributes: Record<string, unknown>,
     ) => Record<string, unknown>;
 }
@@ -44,9 +44,9 @@ export class PartialTemplate implements Template {
      * @param attributes The attributes to use.
      * @returns The resulting $scope
      */
-    async run(helper: Helper, attributes: Record<string, unknown>) {
+    async run(context: Context, attributes: Record<string, unknown>) {
         const fn = this.module.default;
-        const result = await fn(helper, attributes);
+        const result = await fn(context, attributes);
         return result;
     }
 
@@ -55,7 +55,7 @@ export class PartialTemplate implements Template {
      * @param subview An optional subview, which will be slotted.
      * @returns The created view.
      */
-    present(subview?: View): PartialView {
-        return new PartialView(this, subview);
+    present(context: Context, subview?: View): PartialView {
+        return new PartialView(this, context, subview);
     }
 }

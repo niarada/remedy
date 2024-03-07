@@ -1,6 +1,7 @@
 import { Glob } from "bun";
 import { resolve } from "path";
 import { error, warn } from "~/lib/log";
+import { Context } from "../server/context";
 import { MarkdownModule, MarkdownTemplate } from "./markdown/template";
 import { HtmlNode } from "./partial/ast";
 import { PartialModule, PartialTemplate } from "./partial/template";
@@ -9,7 +10,7 @@ export interface Template {
     register: Register;
     tag: string;
     path: string;
-    present: (subview?: View) => View;
+    present: (context: Context, subview?: View) => View;
 }
 
 export interface View {
@@ -98,7 +99,7 @@ export class Register {
     async _present(tag: string) {
         return (
             (await this.load(pathFromTag(tag)))! as PartialTemplate
-        ).present();
+        ).present({} as Context);
     }
 
     get(tag: string): Template | undefined {

@@ -5,10 +5,8 @@ import { ServerFeature } from ".";
 export default function (): ServerFeature {
     return {
         name: "sse",
-        async fetch(request) {
-            const url = new URL(request.url);
-
-            if (url.pathname === "/_fontawesome") {
+        async intercede(context) {
+            if (context.url.pathname === "/_fontawesome") {
                 const file = Bun.file(
                     `${dirname(
                         require.resolve("@fortawesome/fontawesome-free"),
@@ -20,11 +18,11 @@ export default function (): ServerFeature {
                     },
                 });
             }
-            if (url.pathname.startsWith("/webfonts/")) {
+            if (context.url.pathname.startsWith("/webfonts/")) {
                 const file = Bun.file(
                     `${dirname(
                         require.resolve("@fortawesome/fontawesome-free"),
-                    )}/..${url.pathname}`,
+                    )}/..${context.url.pathname}`,
                 );
                 return new Response(file, {
                     headers: {

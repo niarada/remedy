@@ -8,10 +8,8 @@ export interface HtmxOptions {
 export default function (): ServerFeature {
     return {
         name: "htmx",
-        async fetch(request) {
-            const url = new URL(request.url);
-
-            if (url.pathname === "/_htmx") {
+        async intercede(context) {
+            if (context.url.pathname === "/_htmx") {
                 const file = Bun.file(require.resolve("htmx.org"));
                 return new Response(file, {
                     headers: {

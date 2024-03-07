@@ -2,9 +2,13 @@ import { error, warn } from "~/lib/log";
 import { HtmlElement, HtmlFragment, createHtmlText } from "~/view/partial/ast";
 import { parsePartial } from "~/view/partial/parser";
 import { concatAttributeValue, printHtml } from "~/view/partial/printer";
-import { HtmlTransformVisitor, transformHtml } from "~/view/partial/transform";
+import {
+    HtmlTransformVisitNodeFunction,
+    HtmlTransformVisitor,
+    transformHtml,
+} from "~/view/partial/transform";
+import { Context } from "../../server/context";
 import { View } from "../register";
-import { Helper } from "./helper";
 import { PartialTemplate } from "./template";
 
 export class PartialView {
@@ -13,18 +17,14 @@ export class PartialView {
     #assembled = false;
     #html: HtmlFragment;
     #locals: Record<string, unknown> = {};
-    #helper: Helper;
+    #context: Context;
     #attributes: Record<string, unknown> = {};
 
-    constructor(template: PartialTemplate, subview?: View) {
+    constructor(template: PartialTemplate, context: Context, subview?: View) {
         this.#template = template;
         this.#subview = subview;
         this.#html = parsePartial(template.html);
-        this.#helper = new Helper();
-    }
-
-    get helper() {
-        return this.#helper;
+        this.#context = context;
     }
 
     async render(attributes: Record<string, unknown> = {}): Promise<string> {
@@ -45,7 +45,7 @@ export class PartialView {
         this.#assembled = true;
         await this.#subview?.assemble();
         this.#attributes = this.coerceAttributes(attributes);
-        this.#locals = await this.#template.run(this.#helper, attributes);
+        this.#locals = await this.#template.run(this.#context, attributes);
         await transformHtml(
             this.#html,
             async (node, { visitEachChild, visitNode }) => {
@@ -57,49 +57,13 @@ export class PartialView {
                         return ((await visitEachChild(node)) as HtmlElement)
                             .children;
                     }
-                    // Handling the 'each' iterator
-                    // XXX: Extract this at some point
-                    const each = this.expressAttributeValue(
-                        node,
-                        "mx-each",
-                    ) as unknown[];
-                    const as = this.expressAttributeValue(
-                        node,
-                        "mx-as",
-                    ) as string;
-                    if (each && !as) {
-                        warn(
-                            "view",
-                            `Missing 'mx-as' attribute in 'mx-each' iterator for ${node.tag}`,
-                        );
-                    } else if (!each && as) {
-                        warn(
-                            "view",
-                            `Unused 'mx-as' attribute for ${node.tag}`,
-                        );
-                    } else if (each && !Array.isArray(each)) {
-                        warn(
-                            "view",
-                            `Invalid 'mx-each' attribute for ${node.tag}, not an Array`,
-                        );
-                    } else if (each) {
-                        const children = [];
-                        for (const item of each) {
-                            const child = structuredClone(node);
-                            child.attrs = child.attrs.filter(
-                                (attr) =>
-                                    !["mx-each", "mx-as"].includes(attr.name),
-                            );
-                            this.interpolateAttributesToText(child, {
-                                [as]: item,
-                            });
-                            children.push(await visitNode(child));
-                        }
-                        return children.flat();
+                    const each = await this.each(node, visitNode);
+                    if (each) {
+                        return each;
                     }
                     const subtemplate = this.#template.register.get(node.tag);
                     if (subtemplate) {
-                        const subview = subtemplate.present();
+                        const subview = subtemplate.present(this.#context);
                         await subview.assemble(
                             this.expressAttributesAsText(node),
                         );
@@ -268,5 +232,49 @@ export class PartialView {
             console.log(e);
             return undefined;
         }
+    }
+
+    /**
+     * Checks if an element has a mx-each and mx-as attributes, and if so returns
+     * copies of itself based on the iterated value.
+     * @param node The HTML element to check and use as template.
+     * @param visitNode Transformer function used on newly cloned children.
+     * @returns The array of nodes derived from the iteration.
+     */
+    async each(node: HtmlElement, visitNode: HtmlTransformVisitNodeFunction) {
+        const each = this.expressAttributeValue(node, "mx-each") as unknown[];
+        const as = this.expressAttributeValue(node, "mx-as") as string;
+        if (!each) {
+            if (as) {
+                warn("view", `Unused 'mx-as' attribute for ${node.tag}`);
+            }
+            return;
+        }
+        if (!as) {
+            warn(
+                "view",
+                `Missing 'mx-as' attribute in 'mx-each' iterator for ${node.tag}`,
+            );
+            return;
+        }
+        if (!Array.isArray(each)) {
+            warn(
+                "view",
+                `Invalid 'mx-each' attribute for ${node.tag}, not an Array`,
+            );
+            return;
+        }
+        const children = [];
+        for (const item of each) {
+            const child = structuredClone(node);
+            child.attrs = child.attrs.filter(
+                (attr) => !["mx-each", "mx-as"].includes(attr.name),
+            );
+            this.interpolateAttributesToText(child, {
+                [as]: item,
+            });
+            children.push(await visitNode(child));
+        }
+        return children.flat();
     }
 }

@@ -32,6 +32,7 @@
         "postcss": "^8.4.35",
         "ramda": "^0.29.1",
         "tailwindcss": "^3.4.1",
+        "ts-pattern": "^5.0.8",
         "typescript": "^5.3.3",
         "xregexp": "^5.1.1"
     }

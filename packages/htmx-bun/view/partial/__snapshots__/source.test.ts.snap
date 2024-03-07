@@ -8,9 +8,9 @@ interface Attributes {
     id: number;
     name: string;
 }
-export default async function (Helper: Helper, Attributes: Attributes) {
+export default async function (Context: Context, Attributes: Attributes) {
     const items = [{ id: 1, name: "one" }, { id: 2, name: "two" }];
-    return { Helper, Attributes, items };
+    return { Context, Attributes, items };
 }
 "
 `;
