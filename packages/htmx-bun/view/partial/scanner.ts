@@ -36,9 +36,7 @@ class Scanner {
         this.source = source;
         this.position = htmlStartIndex(source);
         if (this.position === -1) {
-            throw new Error(
-                "Syntax Error: No elements found\nThe html section must begin with an element at the beginning of a line.",
-            );
+            return [];
         }
         while (this.position < this.source.length) {
             const start = this.position;

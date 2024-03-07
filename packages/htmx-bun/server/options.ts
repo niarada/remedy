@@ -8,7 +8,6 @@ export interface ServerOptions {
 interface ServerOptionsFeatures {
     fontawesome?: boolean;
     tailwind?: boolean;
-    markdown?: boolean;
     htmx?: HtmxOptions;
     sse?: boolean;
     static?: boolean;
@@ -20,7 +19,6 @@ const options = {
     features: {
         fontawesome: false,
         tailwind: false,
-        markdown: false,
         htmx: {
             debug: false,
         },
