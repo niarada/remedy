@@ -28,6 +28,7 @@ export async function buildFetch(options: ServerOptions) {
     return async (request: Request) => {
         const time = Bun.nanoseconds();
         const context = new Context(request);
+        await context.loadForm();
 
         for (const feature of features) {
             if (feature.intercede) {
@@ -103,6 +104,10 @@ export async function buildFetch(options: ServerOptions) {
         const url = new URL(context.request.url);
         const pathway = url.pathname.slice(1).split("/").filter(Boolean);
         let view: View | undefined;
+
+        if (pathway.length === 0) {
+            pathway.push("root");
+        }
 
         for (let i = 0; i < pathway.length; i++) {
             const tag = pathway.slice(i, pathway.length + 1 - 1).join("-");
@@ -183,8 +188,8 @@ function log(context: Context, duration: number) {
         .otherwise(() => info);
     loglvl(
         "fetch",
-        `${context.response!.status} ${context.url.pathname}${
-            context.url.search
-        } ${chalk.gray(`${duration}ms`)}`,
+        `${context.response!.status} ${context.request.method} ${
+            context.url.pathname
+        }${context.url.search} ${chalk.gray(`${duration}ms`)}`,
     );
 }
