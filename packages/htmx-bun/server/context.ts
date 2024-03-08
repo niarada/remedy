@@ -10,6 +10,7 @@ export class Context {
     #response?: Response;
     #url: URL;
     #cookie: Cookie;
+    #form: Record<string, string> = {};
     #oobs: Oob[] = [];
     #renderCanceled = false;
 
@@ -17,6 +18,25 @@ export class Context {
         this.#request = request;
         this.#url = new URL(request.url);
         this.#cookie = readCookie(request);
+    }
+
+    async loadForm() {
+        if (!["POST", "PUT", "PATCH"].includes(this.#request.method)) {
+            return;
+        }
+        if (
+            ![
+                "application/x-www-form-urlencoded",
+                "multipart/form-data",
+            ].includes(this.#request.headers.get("Content-Type") ?? "")
+        ) {
+            return;
+        }
+        this.#form = Object.fromEntries(
+            Array.from(await this.#request.formData()).filter(
+                ([key, value]) => typeof value === "string",
+            ),
+        ) as Record<string, string>;
     }
 
     get request() {
@@ -40,6 +60,18 @@ export class Context {
 
     get cookie() {
         return this.#cookie;
+    }
+
+    get form() {
+        return this.#form;
+    }
+
+    set flash(message: string) {
+        this.#cookie.flash = message;
+    }
+
+    get flash(): string | undefined {
+        return this.#cookie.message as string | undefined;
     }
 
     redirect(href: string) {
