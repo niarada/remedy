@@ -7,9 +7,11 @@ export type HtmlTransformVisitResponse =
 
 export type HtmlTransformVisitNodeFunction = (
     node: HtmlNode,
+    additionalScope?: Record<string, unknown>,
 ) => Promise<HtmlTransformVisitResponse>;
 export type HtmlTransformVisitEachChildFunction = (
     node: HtmlNode,
+    additionalScope?: Record<string, unknown>,
 ) => Promise<HtmlNode>;
 
 export type HtmlTransformVisitFunctions = {
@@ -20,22 +22,37 @@ export type HtmlTransformVisitFunctions = {
 export type HtmlTransformVisitor = (
     node: HtmlNode,
     fns: HtmlTransformVisitFunctions,
+    additionalScope?: Record<string, unknown>,
 ) => Promise<HtmlTransformVisitResponse>;
 
 export async function transformHtml(
     node: HtmlNode,
     visit: HtmlTransformVisitor,
 ) {
-    async function visitNode(node: HtmlNode) {
-        return await visit(node, { visitNode, visitEachChild });
+    async function visitNode(
+        node: HtmlNode,
+        additionalScope: Record<string, unknown> = {},
+    ) {
+        return await visit(
+            node,
+            { visitNode, visitEachChild },
+            additionalScope,
+        );
     }
 
-    async function visitEachChild(node: HtmlNode) {
+    async function visitEachChild(
+        node: HtmlNode,
+        additionalScope: Record<string, unknown> = {},
+    ) {
         if (node.type === "fragment" || node.type === "element") {
             const replacements = [];
             for (const child of node.children) {
                 replacements.push(
-                    await visit(child, { visitEachChild, visitNode }),
+                    await visit(
+                        child,
+                        { visitEachChild, visitNode },
+                        additionalScope,
+                    ),
                 );
             }
             node.children = replacements

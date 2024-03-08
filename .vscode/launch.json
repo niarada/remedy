@@ -30,7 +30,7 @@
             "program": "${workspaceRoot}/packages/htmx-bun/server/index.ts",
             "runtimeArgs": [
                 "-r",
-                "${workspaceRoot}/packages/htmx-bun/plugins/partial.ts"
+                "${workspaceRoot}/packages/htmx-bun/plugins/index.ts"
             ],
             "cwd": "${workspaceRoot}/examples/todo"
         },
@@ -41,7 +41,7 @@
             "program": "${workspaceRoot}/packages/htmx-bun/server/index.ts",
             "runtimeArgs": [
                 "-r",
-                "${workspaceRoot}/packages/htmx-bun/plugins/partial.ts"
+                "${workspaceRoot}/packages/htmx-bun/plugins/index.ts"
             ],
             "cwd": "${workspaceRoot}/examples/docs"
         },
@@ -49,7 +49,7 @@
             "type": "bun",
             "request": "launch",
             "name": "Debug File",
-            "runtimeArgs": ["-r", "plugins/partial.ts"],
+            "runtimeArgs": ["-r", "plugins/index.ts"],
             "program": "${workspaceRoot}/packages/htmx-bun/debug.ts",
             "cwd": "${workspaceRoot}/packages/htmx-bun",
             "watchMode": "hot"
