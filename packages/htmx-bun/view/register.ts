@@ -15,7 +15,10 @@ export interface Template {
 
 export interface View {
     render: () => Promise<string>;
-    assemble: (attributes?: Record<string, unknown>) => Promise<void>;
+    assemble: (
+        attributes?: Record<string, unknown>,
+        additionalScope?: Record<string, unknown>,
+    ) => Promise<void>;
     get children(): HtmlNode[];
 }
 

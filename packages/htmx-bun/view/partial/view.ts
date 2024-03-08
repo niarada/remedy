@@ -38,26 +38,37 @@ export class PartialView {
      *
      * @param attributes - The attributes to be used during assembly.
      */
-    async assemble(attributes = {}) {
+    async assemble(attributes = {}, additionalAssemblyScope = {}) {
         if (this.#assembled) {
             return;
         }
         this.#assembled = true;
         await this.#subview?.assemble();
         this.#attributes = this.coerceAttributes(attributes);
-        this.#locals = await this.#template.run(this.#context, attributes);
+        this.#locals = Object.assign(
+            await this.#template.run(this.#context, attributes),
+            additionalAssemblyScope,
+        );
         await transformHtml(
             this.#html,
-            async (node, { visitEachChild, visitNode }) => {
+            async (node, { visitEachChild, visitNode }, additionalScope) => {
                 if (node.type === "element") {
                     if (node.tag === "slot") {
                         if (this.#subview) {
                             return this.#subview.children;
                         }
-                        return ((await visitEachChild(node)) as HtmlElement)
-                            .children;
+                        return (
+                            (await visitEachChild(
+                                node,
+                                additionalScope,
+                            )) as HtmlElement
+                        ).children;
                     }
-                    const each = await this.each(node, visitNode);
+                    const each = await this.each(
+                        node,
+                        visitNode,
+                        additionalScope,
+                    );
                     if (each) {
                         return each;
                     }
@@ -65,18 +76,18 @@ export class PartialView {
                     if (subtemplate) {
                         const subview = subtemplate.present(this.#context);
                         await subview.assemble(
-                            this.expressAttributesAsText(node),
+                            this.expressAttributesAsText(node, additionalScope),
                         );
                         return subview.children;
                     }
-                    this.interpolateAttributesToText(node);
+                    this.interpolateAttributesToString(node, additionalScope);
                 } else if (node.type === "expression") {
                     return createHtmlText(
                         node.parent,
-                        String(this.express(node.content)),
+                        String(this.express(node.content, additionalScope)),
                     );
                 }
-                return await visitEachChild(node);
+                return await visitEachChild(node, additionalScope);
             },
         );
     }
@@ -120,11 +131,18 @@ export class PartialView {
      */
     coerceAttributes(attributes: Record<string, unknown>) {
         for (const attribute of this.#template.attributes) {
+            if (attribute.type === "string") {
+                continue;
+            }
             if (attribute.type === "number") {
                 attributes[attribute.name] = Number(attributes[attribute.name]);
             } else if (attribute.type === "boolean") {
                 attributes[attribute.name] = Boolean(
                     attributes[attribute.name],
+                );
+            } else {
+                attributes[attribute.name] = JSON.parse(
+                    attributes[attribute.name] as string,
                 );
             }
         }
@@ -133,11 +151,12 @@ export class PartialView {
 
     /**
      * Interpolates the attributes of an HTML element.
-     * Replaces attribute expressions with their evaluated results.
+     * Replaces attribute expressions with their evaluated results
+     * coerced to strings.
      *
      * @param node - The HTML element node.
      */
-    interpolateAttributesToText(
+    interpolateAttributesToString(
         node: HtmlElement,
         additionalScope: Record<string, unknown> = {},
     ) {
@@ -145,11 +164,16 @@ export class PartialView {
             for (let i = 0; i < attr.value.length; i++) {
                 const value = attr.value[i];
                 if (value.type === "expression") {
+                    const expressed = this.express(
+                        value.content,
+                        additionalScope,
+                    );
                     attr.value[i] = {
                         type: "text",
-                        content: String(
-                            this.express(value.content, additionalScope),
-                        ),
+                        content:
+                            typeof expressed === "object"
+                                ? JSON.stringify(expressed)
+                                : String(expressed),
                     };
                 }
             }
@@ -162,7 +186,10 @@ export class PartialView {
      * @param attrs The attributes for an element on this node.
      * @returns An object of the nodes attributes evaluated.
      */
-    expressAttributesAsText(node: HtmlElement) {
+    expressAttributesAsText(
+        node: HtmlElement,
+        additionalScope: Record<string, unknown> = {},
+    ) {
         const obj: Record<string, string> = {};
         const attrs = structuredClone(node.attrs);
         for (const attr of attrs) {
@@ -170,7 +197,12 @@ export class PartialView {
                 if (attr.value[i].type === "expression") {
                     attr.value[i] = {
                         type: "text",
-                        content: String(this.express(attr.value[i].content)),
+                        content: String(
+                            this.express(
+                                attr.value[i].content,
+                                additionalScope,
+                            ),
+                        ),
                     };
                 }
             }
@@ -228,6 +260,8 @@ export class PartialView {
                 "view",
                 `Error evaluating expression in '${this.#template.path}': ${expression}`,
             );
+            delete $scope.Context;
+            delete $scope.Attributes;
             console.log("$scope:", $scope);
             console.log(e);
             return undefined;
@@ -241,7 +275,11 @@ export class PartialView {
      * @param visitNode Transformer function used on newly cloned children.
      * @returns The array of nodes derived from the iteration.
      */
-    async each(node: HtmlElement, visitNode: HtmlTransformVisitNodeFunction) {
+    async each(
+        node: HtmlElement,
+        visitNode: HtmlTransformVisitNodeFunction,
+        additionalScope: Record<string, unknown> = {},
+    ) {
         const each = this.expressAttributeValue(node, "mx-each") as unknown[];
         const as = this.expressAttributeValue(node, "mx-as") as string;
         if (!each) {
@@ -270,10 +308,20 @@ export class PartialView {
             child.attrs = child.attrs.filter(
                 (attr) => !["mx-each", "mx-as"].includes(attr.name),
             );
-            this.interpolateAttributesToText(child, {
-                [as]: item,
-            });
-            children.push(await visitNode(child));
+            this.interpolateAttributesToString(
+                child,
+                Object.assign({}, additionalScope, {
+                    [as]: item,
+                }),
+            );
+            children.push(
+                await visitNode(
+                    child,
+                    Object.assign({}, additionalScope, {
+                        [as]: item,
+                    }),
+                ),
+            );
         }
         return children.flat();
     }

@@ -18,6 +18,9 @@
             "suspicious": {
                 "noUnsafeDeclarationMerging": "off",
                 "noAssignInExpressions": "off"
+            },
+            "performance": {
+                "noDelete": "off"
             }
         }
     },

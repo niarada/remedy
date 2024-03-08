@@ -3,7 +3,12 @@ interface Attributes {
     value: number;
 }
 
+const contacts = [{ first: "John" } ];
+
 const localtext = Attributes.text;
 
 <div>{localtext}</div>
 <div>{typeof value === "number"}</div>
+<tr mx-each={contacts} mx-as="contact">
+    <td>{contact.first}</td>
+</tr>

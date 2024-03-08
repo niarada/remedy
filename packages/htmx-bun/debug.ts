@@ -5,8 +5,14 @@
 import { Register } from "./view/register";
 
 const register = new Register("./view/__fixtures__");
-await register._present("todo-list");
-await register._present("todo-item");
-const view = await register._present("index");
+
+// await register._present("todo-list");
+// await register._present("todo-item");
+// const view = await register._present("index");
+// const html = await view.render();
+
+await register._present("debug-item");
+const view = await register._present("debug");
 const html = await view.render();
+
 console.log(html);
