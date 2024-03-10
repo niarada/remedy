@@ -1,0 +1,24 @@
+import { model } from "~/lib/model"
+
+<form action="/contacts" method="get" class="tool-bar">
+    <label for="search">Search Term</label>
+    <input id="search" type="search" name="q" value="">
+    <input type="submit" value="Search">
+</form>
+
+<table>
+    <thead>
+    <tr>
+        <th>First</th> <th>Last</th> <th>Phone</th> <th>Email</th> <th></th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr mx-each={model.contacts} mx-as="contact">
+            <td>{contact.first}</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>
+    <a href="/contacts/new">Add Contact</a>
+</p>

@@ -1,4 +1,4 @@
-import { createHtmlElement } from "~/view/partial/ast";
+import { createHtmlElement } from "~/hypermedia/template";
 import { ServerFeature } from ".";
 
 export interface HtmxOptions {
@@ -18,7 +18,7 @@ export default function (): ServerFeature {
                 });
             }
         },
-        async transform(node) {
+        transform(node) {
             if (node.type === "element" && node.tag === "head") {
                 node.children.push(
                     createHtmlElement(node, "script", {

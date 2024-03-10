@@ -2,6 +2,7 @@ import { HtmxOptions } from "./features/htmx";
 
 export interface ServerOptions {
     port?: number;
+    base?: string;
     features?: ServerOptionsFeatures;
 }
 
@@ -16,6 +17,7 @@ interface ServerOptionsFeatures {
 
 const options = {
     port: 4321,
+    base: "public",
     features: {
         fontawesome: false,
         tailwind: false,

@@ -1,3 +1,0 @@
-const why = "He first loved us."
-
-<div>{why}</div>

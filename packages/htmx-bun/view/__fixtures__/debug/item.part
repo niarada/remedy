@@ -1,5 +1,0 @@
-interface Attributes {
-    contact: object;
-}
-
-<div id={contact.id}>{contact.first}</div>

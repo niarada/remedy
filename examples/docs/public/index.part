@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>htmx-bun: documenation</title>
+        <title>htmx-bun: documentation</title>
         <link rel="icon" type="image/png" href="/assets/icon-light.png">
     </head>
     <body class="flex flex-col bg-slate-700 text-white p-2">
@@ -22,7 +22,7 @@
                     <li><a href="/routing">Routing</a></li>
                     <li><a href="/integrations">Integrations</a></li>
                     <li><a href="/options">Options</a></li>
-                    <li><a href="/editor-support">Editor Support</a></li>
+                    <li><a href="/editorsupport">Editor Support</a></li>
                     <li><a href="/roadmap">Roadmap</a></li>
                 </ul>
             </nav>

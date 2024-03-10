@@ -21,6 +21,9 @@
             },
             "performance": {
                 "noDelete": "off"
+            },
+            "complexity": {
+                "noThisInStatic": "off"
             }
         }
     },
