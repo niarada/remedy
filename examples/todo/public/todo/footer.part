@@ -8,14 +8,14 @@ interface Attributes {
 if (Attributes.clear) {
     model.items = model.items.filter((item) => !item.done);
     saveModel();
-    Helper.oob("todo-list");
-    Helper.oob("todo-toggle");
+    Context.oob("todo-list");
+    Context.oob("todo-toggle");
 }
 
 if (Attributes.filter) {
     model.filter = Attributes.filter;
     saveModel();
-    Helper.oob("todo-list");
+    Context.oob("todo-list");
 }
 
 const remaining = model.items.filter((item) => !item.done).length;

@@ -6,8 +6,6 @@
         "examples:todo": "cd examples/todo && ../../packages/htmx-bun/bin/htmx-bun-hot",
         "examples:contact": "cd examples/contact && ../../packages/htmx-bun/bin/htmx-bun-hot",
         "build:grammar": "bun scripts/build-grammar.ts",
-        "tests:htmx-bun": "cd packages/htmx-bun && bun tests",
-        "clear-snapshots": "find . ! -path \"*node_modules*\" -name __snapshots__ | xargs rm -rf",
         "publish:htmx-bun": "bun scripts/publish-htmx-bun.ts"
     },
     "repository": {

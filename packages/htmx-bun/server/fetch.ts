@@ -1,29 +1,20 @@
 import chalk from "chalk";
 import { P, match } from "ts-pattern";
-import { URL } from "url";
+import { Director } from "~/hypermedia/director";
+import { Presentation } from "~/hypermedia/presentation";
 import { error, info, warn } from "~/lib/log";
-import { watch } from "~/lib/watch";
-import { MarkdownTemplate } from "~/view/markdown/template";
-import { PartialView } from "~/view/partial/view";
-import { Register, View } from "~/view/register";
 import { Context } from "./context";
 import { buildFeatures } from "./features";
 import { ServerOptions } from "./options";
 
 export async function buildFetch(options: ServerOptions) {
-    const features = await buildFeatures(options);
-    const register = new Register("public");
-    await register.initialize();
+    const director = new Director(options.base);
 
     if (options?.features?.dev) {
-        info("server", "watching 'public' directory...");
-        watch("public", async (_, path) => {
-            if (/\.(part|md)$/.test(path ?? "")) {
-                info("server", `reloading '${path}'`);
-                register.load(path!);
-            }
-        });
+        director.watch();
     }
+
+    const features = await buildFeatures(options);
 
     return async (request: Request) => {
         const time = Bun.nanoseconds();
@@ -60,122 +51,106 @@ export async function buildFetch(options: ServerOptions) {
     };
 
     async function renderPartial(context: Context) {
-        const url = new URL(context.request.url);
-        const tag = (url.pathname.slice(1) || "root").replace(/\//g, "-");
-        if (/^[a-z][-a-z0-9]+$/.test(tag) && register.get(tag)) {
-            const view = register.get(tag)?.present(context);
-            if (!view) {
-                return;
-            }
-            const attributes: Record<string, string> = {};
-            url.searchParams.forEach((value, name) => {
-                attributes[name] = value;
-            });
-            if (view) {
-                let content = "";
-                await view.assemble(attributes);
+        const tag =
+            context.url.pathname.slice(1).replace(/\//g, "-") || "layout";
+        const rep = await director.represent(tag);
+        if (!rep) {
+            return;
+        }
+        const content: string[] = [];
+        const pres = await rep.present(context, context.form);
+        await pres.activate();
 
-                if (view instanceof PartialView) {
-                    if (!context.renderCanceled) {
-                        await featureTransforms(view);
-                        content = await view.render();
-                    }
-                    for (const oob of context.oobs) {
-                        const oobView = register.get(oob.tag)?.present(context);
-                        if (!oobView || !(oobView instanceof PartialView)) {
-                            warn("view", `OOB view not found: ${oob.tag}`);
-                            continue;
-                        }
-                        content += await oobView.render(oob.attributes);
-                    }
-                } else {
-                    content = await view.render();
-                }
-                context.response = new Response(content, {
-                    headers: {
-                        "Content-Type": "text/html;charset=utf-8",
-                    },
-                });
+        if (!context.renderCanceled) {
+            await pres.compose();
+            await pres.flatten();
+            await featureTransforms(pres);
+            content.push(pres.render());
+        }
+        for (const oob of context.oobs) {
+            if (await director.represent(oob.tag)) {
+                content.push(await director.render(oob.tag, context));
+            } else {
+                warn("view", `OOB view not found: ${oob.tag}`);
             }
         }
+        context.response = new Response(content.join("\n"), {
+            headers: {
+                "Content-Type": "text/html;charset=utf-8",
+            },
+        });
     }
 
     async function renderFull(context: Context) {
-        const url = new URL(context.request.url);
-        const pathway = url.pathname.slice(1).split("/").filter(Boolean);
-        let view: View | undefined;
-
-        if (pathway.length === 0) {
-            pathway.push("root");
-        }
+        const pathway = context.url.pathname
+            .slice(1)
+            .split("/")
+            .filter(Boolean);
+        let pres: Presentation | undefined;
 
         for (let i = 0; i < pathway.length; i++) {
             const tag = pathway.slice(i, pathway.length + 1 - 1).join("-");
             // If outer leaf not present, consider this resource unavailable.
-            if (!view) {
-                view = presentComposition(context, tag);
-                if (!view) {
+            if (!pres) {
+                pres = await director.present(tag, context);
+                if (!pres) {
+                    return;
+                }
+                await pres.activate();
+                await pres.compose();
+                if (context.response) {
                     return;
                 }
             } else {
-                view = presentComposition(context, tag, view);
+                pres = await composePresentation(context, tag, pres);
+                if (context.response) {
+                    return;
+                }
             }
         }
 
-        view = presentComposition(context, "layout", view);
-
-        if (!view) {
-            return;
-        }
-
-        await view.assemble();
-
+        pres = await composePresentation(context, "layout", pres);
         if (context.response) {
             return;
         }
 
-        if (view instanceof PartialView) {
-            await featureTransforms(view);
+        if (!pres) {
+            return;
         }
 
-        context.response = new Response(
-            `<!doctype html>\n${await view.render()}`,
-            {
-                headers: {
-                    "Content-Type": "text/html;charset=utf-8",
-                },
+        pres.flatten();
+
+        await featureTransforms(pres);
+
+        context.response = new Response(`<!doctype html>\n${pres.render()}`, {
+            headers: {
+                "Content-Type": "text/html;charset=utf-8",
             },
-        );
+        });
     }
 
-    function presentComposition(context: Context, tag: string, leaf?: View) {
-        const template = register.get(tag);
-        if (template) {
-            if (leaf && template instanceof MarkdownTemplate) {
-                error(
-                    "fetch",
-                    "Bad composition, markdown views don't have slots.",
-                );
-            }
+    async function composePresentation(
+        context: Context,
+        tag: string,
+        leaf?: Presentation,
+    ) {
+        const pres = await director.present(tag, context);
+
+        if (pres) {
+            await pres.activate();
+            await pres.compose();
             if (leaf) {
-                if (template instanceof MarkdownTemplate) {
-                    error(
-                        "fetch",
-                        "Bad composition, markdown views don't have slots.",
-                    );
-                    return template.present();
-                }
-                return template.present(context, leaf);
+                pres.replaceSlotWith(leaf.template.children);
             }
-            return template.present(context);
+            return pres;
         }
         return leaf;
     }
 
-    async function featureTransforms(view: PartialView) {
+    async function featureTransforms(presentation: Presentation) {
         for (const feature of features) {
             if (feature.transform) {
-                await view.transform(feature.transform);
+                presentation.transform(feature.transform);
             }
         }
     }

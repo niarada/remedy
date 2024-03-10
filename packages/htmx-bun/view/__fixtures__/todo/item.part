@@ -1,6 +1,0 @@
-interface Attributes {
-    id: string;
-    name: string;
-}
-
-<li id={id}>{name}</li>

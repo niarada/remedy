@@ -1,4 +1,0 @@
-
-const contacts = [{ id: 1, first: "John" } ];
-
-<debug-item mx-each={contacts} mx-as="contact" contact={contact} />

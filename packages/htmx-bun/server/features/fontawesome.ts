@@ -1,5 +1,5 @@
 import { dirname } from "path";
-import { createHtmlElement } from "~/view/partial/ast";
+import { createHtmlElement } from "~/hypermedia/template";
 import { ServerFeature } from ".";
 
 export default function (): ServerFeature {
@@ -31,7 +31,7 @@ export default function (): ServerFeature {
                 });
             }
         },
-        async transform(node) {
+        transform(node) {
             if (node.type === "element" && node.tag === "head") {
                 node.children.push(
                     createHtmlElement(node, "link", {

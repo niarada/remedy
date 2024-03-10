@@ -3,7 +3,7 @@ import { model, saveModel } from "~/lib/model";
 interface Attributes {
     id: number;
     toggle?: boolean;
-    text?: text;
+    text?: string;
     destroy?: boolean;
 }
 
@@ -13,10 +13,10 @@ const item = model.items.find((it) => it.id === id);
 if (Attributes.toggle) {
     item.done = !item.done;
     await saveModel();
-    Helper.oob('todo-footer');
-    Helper.oob('todo-toggle');
-    Helper.oob('todo-list');
-    Helper.cancelRender();
+    Context.oob('todo-footer');
+    Context.oob('todo-toggle');
+    Context.oob('todo-list');
+    Context.cancelRender();
 }
 
 if (Attributes.text) {
@@ -27,8 +27,8 @@ if (Attributes.text) {
 if (Attributes.destroy) {
     model.items = model.items.filter((it) => it.id !== id);
     await saveModel();
-    Helper.cancelRender();
-    Helper.oob('todo-footer');
+    Context.cancelRender();
+    Context.oob('todo-footer');
 }
 
 <li

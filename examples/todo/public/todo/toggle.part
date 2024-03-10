@@ -11,9 +11,9 @@ if (Attributes.toggle) {
         item.done = !checked;
     }
     await saveModel();
-    Helper.cancelRender();
-    Helper.oob('todo-list');
-    Helper.oob('todo-footer');
+    Context.cancelRender();
+    Context.oob('todo-list');
+    Context.oob('todo-footer');
 }
 
 <div id="toggle-all-container" hx-swap-oob="true" class="toggle-all-container">

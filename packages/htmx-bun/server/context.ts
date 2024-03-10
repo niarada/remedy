@@ -21,6 +21,9 @@ export class Context {
     }
 
     async loadForm() {
+        this.url.searchParams.forEach((value, name) => {
+            this.form[name] = value;
+        });
         if (!["POST", "PUT", "PATCH"].includes(this.#request.method)) {
             return;
         }
@@ -32,11 +35,14 @@ export class Context {
         ) {
             return;
         }
-        this.#form = Object.fromEntries(
-            Array.from(await this.#request.formData()).filter(
-                ([key, value]) => typeof value === "string",
+        Object.assign(
+            this.form,
+            Object.fromEntries(
+                Array.from(await this.#request.formData()).filter(
+                    ([key, value]) => typeof value === "string",
+                ),
             ),
-        ) as Record<string, string>;
+        );
     }
 
     get request() {

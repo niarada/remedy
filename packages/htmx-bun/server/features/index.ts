@@ -1,7 +1,7 @@
+import { HtmlSimpleTransformVisitor } from "~/hypermedia/template";
 import { info } from "~/lib/log";
 import { Context } from "~/server/context";
 import { ServerOptions } from "~/server/options";
-import { HtmlTransformVisitor } from "~/view/partial/transform";
 
 export type FeatureFactory = (
     options: ServerOptions,
@@ -12,7 +12,7 @@ export interface ServerFeature {
     intercede?: (
         context: Context,
     ) => Promise<Response | undefined> | Response | undefined;
-    transform?: HtmlTransformVisitor;
+    transform?: HtmlSimpleTransformVisitor;
 }
 
 type FeaturesKey = keyof ServerOptions["features"];

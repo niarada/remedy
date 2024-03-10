@@ -8,9 +8,9 @@ if (Attributes.text) {
     const id = model.items.reduce((id, it) => Math.max(id, it.id), 0) + 1;
     model.items.push({ id, text: Attributes.text, done: false });
     await saveModel();
-    Helper.cancelRender();
-    Helper.oob('todo-list');
-    Helper.oob('todo-footer');
+    Context.cancelRender();
+    Context.oob('todo-list');
+    Context.oob('todo-footer');
 }
 
 <input

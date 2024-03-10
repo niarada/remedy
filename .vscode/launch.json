@@ -4,7 +4,7 @@
         {
             "type": "extensionHost",
             "request": "launch",
-            "name": "Debug language extension in Todo example",
+            "name": "Extension: Todo",
             "runtimeExecutable": "${execPath}",
             "args": [
                 "--extensionDevelopmentPath=${workspaceRoot}/packages/vscode",
@@ -15,41 +15,32 @@
         {
             "type": "extensionHost",
             "request": "launch",
-            "name": "Debug language extension in view fixtures",
+            "name": "Extension: Docs",
             "runtimeExecutable": "${execPath}",
             "args": [
                 "--extensionDevelopmentPath=${workspaceRoot}/packages/vscode",
-                "--folder-uri=${workspaceRoot}/packages/htmx-bun/view/__fixtures__"
+                "--folder-uri=${workspaceRoot}/examples/docs"
             ],
             "autoAttachChildProcesses": true
         },
         {
             "type": "bun",
             "request": "launch",
-            "name": "Debug Example: Todo",
+            "name": "Server: Todo",
             "program": "${workspaceRoot}/packages/htmx-bun/server/index.ts",
-            "runtimeArgs": [
-                "-r",
-                "${workspaceRoot}/packages/htmx-bun/plugins/index.ts"
-            ],
             "cwd": "${workspaceRoot}/examples/todo"
         },
         {
             "type": "bun",
             "request": "launch",
-            "name": "Debug Example: Docs",
+            "name": "Server: Docs",
             "program": "${workspaceRoot}/packages/htmx-bun/server/index.ts",
-            "runtimeArgs": [
-                "-r",
-                "${workspaceRoot}/packages/htmx-bun/plugins/index.ts"
-            ],
             "cwd": "${workspaceRoot}/examples/docs"
         },
         {
             "type": "bun",
             "request": "launch",
             "name": "Debug File",
-            "runtimeArgs": ["-r", "plugins/index.ts"],
             "program": "${workspaceRoot}/packages/htmx-bun/debug.ts",
             "cwd": "${workspaceRoot}/packages/htmx-bun",
             "watchMode": "hot"

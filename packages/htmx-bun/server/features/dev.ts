@@ -1,8 +1,8 @@
 import EventEmitter from "events";
+import { createHtmlElement } from "~/hypermedia/template";
 import { formatTypeScript } from "~/lib/format";
 import { info } from "~/lib/log";
 import { watch } from "~/lib/watch";
-import { createHtmlElement } from "~/view/partial/ast";
 import { ServerFeature } from ".";
 import { ServerOptions } from "../options";
 
@@ -15,7 +15,7 @@ export default function (options: ServerOptions): ServerFeature {
     }
 
     info("dev", "watching for changes...");
-    watch("public", () => {
+    watch(options.base!, () => {
         info("dev", "sending refresh...");
         emitter.emit("refresh");
     });
@@ -74,7 +74,7 @@ export default function (options: ServerOptions): ServerFeature {
                 );
             }
         },
-        async transform(node) {
+        transform(node) {
             if (node.type === "element" && node.tag === "head") {
                 node.children.push(
                     createHtmlElement(node, "script", {
