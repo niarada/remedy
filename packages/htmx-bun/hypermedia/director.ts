@@ -137,7 +137,7 @@ export class Director {
     async render(
         tag: string,
         context: Context,
-        attributes: Attributes,
+        attributes?: Attributes,
         options: Partial<PrintHtmlOptions> = {},
     ): Promise<string> {
         const rep = await this.represent(tag);
