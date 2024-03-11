@@ -1,4 +1,3 @@
-- Layouts/slots
 - Caching of static resources.
 - Cache tailwind.
 - Fontsource integration.
@@ -7,8 +6,6 @@
 - Pattern for passing through normal html attributes to view.
 - Validation of element attributes.
 - Custom sse streams.
-- Allow views to return headers.  Or provide mechanism for setting htmx headers.
-- Allow throwing http status codes, or returning them.
 - Facilitate returning hx trigger events.
 - Clone more examples:
   - https://thefullstack.network/
@@ -18,14 +15,7 @@
 - Template fragments: https://htmx.org/essays/template-fragments/
 - Targetable partials / fragments (that is, specifying a near partial rather than knowning its rendered tag)
 - A solution to use oobs without having to specify an id -- with some generated id one might suppose.
-- Memoize identical $exps
-- Backticks in a partial source completely jack it up.
-- Use a prefix on custom attributes, e.g. "mx-for" instead of "for".
 - htmx support in editor.
-- SAX support for bracketed attributes with spaces in them e.g. { expression }.
-  - rehype may have this (https://github.com/rehypejs/rehype)
-- Double-quotes in bracketed code e.g. { "expression" }.
-- Syntax highlighting and language support in expressions.
+- Better syntax support for expressions in the template.
 - Compile to single binary.
-- More integrations:
-  - expressive-code.com
+- Build scripts to re-use html-bun template code in the view, instead of just the copy it is now.
