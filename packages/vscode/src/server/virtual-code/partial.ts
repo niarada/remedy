@@ -27,7 +27,7 @@ export class PartialVirtualCode implements VirtualCode {
                 lengths: [text.length],
                 data: {
                     completion: true,
-                    format: false,
+                    format: true,
                     navigation: true,
                     semantic: true,
                     structure: true,
@@ -38,7 +38,21 @@ export class PartialVirtualCode implements VirtualCode {
         this.embeddedCodes = [];
         const htmlStartIndex = text.search(/\n^<\w+/m);
         this.embeddedCodes.push(
-            new PartialScriptVirtualCode("typescript", text),
+            new PartialScriptVirtualCode("typescript0", text),
+            new SimpleVirtualCode(
+                "typescript1",
+                "typescript",
+                text.slice(0, htmlStartIndex),
+                0,
+                {
+                    completion: true,
+                    format: true,
+                    navigation: true,
+                    semantic: false,
+                    structure: false,
+                    verification: false,
+                },
+            ),
             new SimpleVirtualCode(
                 "html",
                 "html",

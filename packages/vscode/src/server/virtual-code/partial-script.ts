@@ -17,23 +17,23 @@ export class PartialScriptVirtualCode implements VirtualCode {
         const htmlAdditions = redactHtml(text);
         text = text.slice(0, htmlIndex);
         const codeAdditions = generateCodeAdditions(text);
-        text = `${codeAdditions.prefix}${htmlAdditions.prefix}${text}${htmlAdditions.suffix}${codeAdditions.suffix};`;
+        const prefix = codeAdditions.prefix + htmlAdditions.prefix;
+        const suffix = htmlAdditions.suffix + codeAdditions.suffix;
+        const full = `${prefix}${text}${suffix}`;
         this.snapshot = {
-            getText: (start, end) => text.slice(start, end),
-            getLength: () => text.length,
+            getText: (start, end) => full.slice(start, end),
+            getLength: () => full.length,
             getChangeRange: () => undefined,
         };
         this.mappings = [
             {
                 sourceOffsets: [0],
-                generatedOffsets: [
-                    codeAdditions.prefix.length + htmlAdditions.prefix.length,
-                ],
-                lengths: [text.length],
+                generatedOffsets: [prefix.length],
+                lengths: [full.length],
                 data: {
-                    completion: true,
-                    format: true,
-                    navigation: true,
+                    completion: false,
+                    format: false,
+                    navigation: false,
                     semantic: true,
                     structure: true,
                     verification: true,
@@ -100,7 +100,8 @@ function redactHtml(html: string) {
     for (let i = 0; i < tokens.length; i++) {
         const token = tokens[i];
         if (token.type === TokenType.Whitespace) {
-            suffix.push(" ".repeat(token.value.length));
+            // suffix.push(" ".repeat(token.value.length));
+            suffix.push(token.value);
             continue;
         }
         if (token.type === TokenType.Text) {

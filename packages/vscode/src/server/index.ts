@@ -29,7 +29,7 @@ connection.onInitialize(async (params) => {
                     partialService,
                 ];
             },
-            getLanguagePlugins(serviceEnv, projectContext) {
+            getLanguagePlugins() {
                 return [partialLanguage];
             },
         },

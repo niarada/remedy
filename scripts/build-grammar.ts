@@ -1,8 +1,14 @@
 import yaml from "js-yaml";
 import { watch } from "node:fs";
 
+const argv = process.argv.slice(2);
+const [watchArg] =
+    argv.indexOf("--watch") !== -1
+        ? argv.splice(argv.indexOf("--watch"), 1)
+        : [];
+const target = argv[0] || "packages/vscode/dist/htmx-bun.tmLanguage.json";
+
 const source = "packages/vscode/grammars/htmx-bun.tmLanguage.yaml";
-const target = "packages/vscode/dist/htmx-bun.tmLanguage.json";
 
 async function build() {
     console.log(`Building '${target}'...`);
@@ -14,7 +20,7 @@ async function build() {
 
 await build();
 
-if (process.argv.includes("--watch")) {
+if (watchArg) {
     console.log("Watching for changes...");
     watch(source, build);
 }
