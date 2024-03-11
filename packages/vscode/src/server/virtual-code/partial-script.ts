@@ -14,9 +14,15 @@ export class PartialScriptVirtualCode implements VirtualCode {
         text: string,
     ) {
         const htmlIndex = htmlStartIndex(text);
-        const htmlAdditions = redactHtml(text);
+        let htmlAdditions = { prefix: "", suffix: "" };
+        try {
+            htmlAdditions = redactHtml(text);
+        } catch (e) {}
         text = text.slice(0, htmlIndex);
-        const codeAdditions = generateCodeAdditions(text);
+        let codeAdditions = { prefix: "", suffix: "" };
+        try {
+            codeAdditions = generateCodeAdditions(text);
+        } catch (e) {}
         const prefix = codeAdditions.prefix + htmlAdditions.prefix;
         const suffix = htmlAdditions.suffix + codeAdditions.suffix;
         const full = `${prefix}${text}${suffix}`;
