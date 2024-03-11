@@ -1,4 +1,4 @@
-import { URL } from "url";
+import { URL } from "node:url";
 import { Cookie, readCookie, writeCookie } from "./cookie";
 
 /**
@@ -94,7 +94,7 @@ export class Context {
      * @param tag The partial tag to include in the response.
      * @param attributes Attributes to pass to the tag.
      */
-    oob(tag: string, attributes: Record<string, unknown>) {
+    oob(tag: string, attributes: Record<string, unknown> = {}) {
         this.#oobs.push({ tag, attributes });
     }
 

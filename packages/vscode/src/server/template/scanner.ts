@@ -1,9 +1,5 @@
 import { htmlVoidTags } from ".";
 
-// XXX: Scanner tokens aren't all capturing full values.
-//      Serializing the token values should produce the exact text that was read.
-//      Specifically, text attribute quotes are going missing.
-
 export enum TokenType {
     Whitespace = "Whitespace",
     TagName = "TagName",
