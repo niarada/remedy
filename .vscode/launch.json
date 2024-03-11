@@ -1,6 +1,20 @@
 {
     "version": "0.2.0",
+    "compounds": [
+        {
+            "name": "Extension + Language Server",
+            "configurations": ["Extension: Todo", "Language Server: Attach"]
+        }
+    ],
     "configurations": [
+        {
+            "name": "Language Server: Attach",
+            "type": "node",
+            "request": "attach",
+            "port": 6009,
+            "restart": true,
+            "outFiles": ["${workspaceRoot}/packages/vscode/dist/**/*.js"]
+        },
         {
             "type": "extensionHost",
             "request": "launch",

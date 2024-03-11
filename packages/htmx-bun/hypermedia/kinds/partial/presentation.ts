@@ -1,3 +1,3 @@
-import { Presentation } from "~/hypermedia";
+import { Presentation } from "~/hypermedia/presentation";
 
 export class PartialPresentation extends Presentation {}
