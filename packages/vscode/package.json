@@ -5,7 +5,7 @@
     "categories": ["Programming Languages", "Formatters", "Linters"],
     "keywords": ["htmx-bun", "htmx", "bun", "node", "typescript", "javascript"],
     "icon": "./assets/icon-light.png",
-    "version": "0.0.1",
+    "version": "0.1.1",
     "publisher": "moonlight-pm",
     "engines": {
         "vscode": "^1.86.0"
@@ -15,16 +15,11 @@
         "type": "git",
         "url": "https://github.com/moonlight-pm/htmx-bun.git"
     },
-    "scripts": {
-        "xvscode:prepublish": "npm run esbuild-base -- --minify",
-        "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
-        "esbuild": "npm run esbuild-base -- --sourcemap",
-        "esbuild-watch": "npm run esbuild-base -- --sourcemap --watch"
-    },
+    "main": "./dist/extension.js",
     "contributes": {
         "languages": [
             {
-                "id": "htmx-bun",
+                "id": "partial",
                 "aliases": ["htmx-bun"],
                 "extensions": [".part"],
                 "configuration": "./grammars/htmx-bun.json",
@@ -36,7 +31,7 @@
         ],
         "grammars": [
             {
-                "language": "htmx-bun",
+                "language": "partial",
                 "scopeName": "source.part",
                 "path": "./dist/htmx-bun.tmLanguage.json",
                 "embeddedLanguages": {
@@ -54,23 +49,23 @@
         ],
         "configuration": {
             "type": "object",
-            "title": "Montana language server configuration",
+            "title": "htmx-bun language server configuration",
             "properties": {
                 "htmx-bun.trace.server": {
                     "scope": "window",
                     "type": "string",
                     "enum": ["off", "messages", "verbose"],
-                    "default": "off",
+                    "default": "verbose",
                     "description": "Traces the communication between VS Code and the language server."
                 }
             }
         }
     },
     "dependencies": {
-        "@types/node": "^20.11.24",
+        "@types/node": "^20.11.25",
         "@types/vscode": "^1.87.0",
-        "@volar/vscode": "^2.1.0",
-        "typescript": "^5.3.3",
+        "@volar/vscode": "^2.1.2",
+        "typescript": "^5.4.2",
         "volar-service-html": "^0.0.31",
         "volar-service-typescript": "^0.0.31",
         "vscode-languageclient": "^9.0.1"

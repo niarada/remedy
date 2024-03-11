@@ -25,12 +25,11 @@
         "chalk": "^5.3.0",
         "htmx.org": "^1.9.10",
         "markdown-it": "^14.0.0",
-        "parse5-sax-parser": "^7.0.0",
         "postcss": "^8.4.35",
         "ramda": "^0.29.1",
         "tailwindcss": "^3.4.1",
         "ts-pattern": "^5.0.8",
-        "typescript": "^5.3.3",
+        "typescript": "^5.4.2",
         "xregexp": "^5.1.1"
     }
 }

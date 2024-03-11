@@ -1,27 +1,26 @@
-name: Montana
+name: htmx-bun partial
 scopeName: source.part
-patterns:
-  - contentName: meta.embedded.block.html
-    patterns:
-      - include: text.html.basic
-  - contentName: meta.emnedded.block.typescript
-    patterns:
-      - include: source.ts
+fileTypes: [part]
 
-# repository:
-#   root:
-#     contentName: meta.embedded.block.html
-#     patterns:
-#       - include: "#server"
-#       - include: "#interpolation"
-#       - include: "#attributes-interpolated"
-#       - include: text.html.basic
-#   server:
-#     begin: "<server>"
-#     beginCaptures:
-#       0: {name: constant.regexp}
-#     end: "</server>"
-#     endCaptures:
-#       0: {name: constant.regexp}
-#     contentName: meta.embedded.block.typescript
-#     patterns: [include: source.ts]
+patterns:
+  - include: '#typescript'
+  - include: '#html'
+
+repository:
+  typescript:
+    patterns:
+      - begin: \A
+        end: ^(?=<)
+        name: source.ts
+        contentName: meta.embedded.block.typescript
+        patterns:
+          - include: source.ts
+
+  html:
+    patterns:
+      - begin: ^(?=<)
+        end: ''
+        name: text.html.basic
+        contentName: meta.embedded.block.html
+        patterns:
+          - include: text.html.basic

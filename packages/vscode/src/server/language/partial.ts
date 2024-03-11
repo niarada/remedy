@@ -1,16 +1,16 @@
-import { LanguagePlugin } from "@volar/language-core";
-import { ServicePlugin } from "@volar/language-service";
+import type { LanguagePlugin } from "@volar/language-core";
+import type { ServicePlugin } from "@volar/language-service";
 import { ScriptKind } from "typescript";
-import { MontanaVirtualCode } from "../virtual-code/montana";
+import { PartialVirtualCode } from "../virtual-code/partial";
 
-export const montanaLanguage: LanguagePlugin = {
+export const partialLanguage: LanguagePlugin = {
     createVirtualCode(id, languageId, snapshot) {
-        if (languageId === "montana") {
-            return new MontanaVirtualCode(id, snapshot);
+        if (languageId === "partial") {
+            return new PartialVirtualCode(id, snapshot);
         }
     },
-    updateVirtualCode(_id, code: MontanaVirtualCode, snapshot) {
-        if (code.languageId === "montana") {
+    updateVirtualCode(_id, code: PartialVirtualCode, snapshot) {
+        if (code.languageId === "partial") {
             code.update(snapshot);
             return code;
         }
@@ -24,7 +24,7 @@ export const montanaLanguage: LanguagePlugin = {
             },
         ],
         getScript(rootCode) {
-            for (const code of rootCode.embeddedCodes[0].embeddedCodes) {
+            for (const code of rootCode.embeddedCodes) {
                 if (code.languageId === "typescript") {
                     return {
                         code,
@@ -33,11 +33,12 @@ export const montanaLanguage: LanguagePlugin = {
                     };
                 }
             }
+            return undefined;
         },
     },
 };
 
-export const montanaService: ServicePlugin = {
+export const partialService: ServicePlugin = {
     create(context) {
         return {};
     },

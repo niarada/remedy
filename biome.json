@@ -10,7 +10,8 @@
         "rules": {
             "style": {
                 "noNonNullAssertion": "off",
-                "noParameterAssign": "off"
+                "noParameterAssign": "off",
+                "useImportType": "off"
             },
             "a11y": {
                 "all": false

@@ -1,45 +1,43 @@
-import { LanguageClient } from "vscode-languageclient/node";
+import * as serverProtocol from "@volar/language-server/protocol";
+import { createLabsInfo, getTsdk } from "@volar/vscode";
+import { LanguageClient, TransportKind } from "vscode-languageclient/node";
 
 let client: LanguageClient;
 
 export async function activate(context) {
     console.log("ACTIVATE");
-    // const module = Uri.joinPath(
-    //     context.extensionUri,
-    //     "dist",
-    //     "server",
-    //     "index.js",
-    // ).fsPath;
-    // client = new LanguageClient(
-    //     "montana",
-    //     "Montana Language Server",
-    //     {
-    //         run: {
-    //             module: module,
-    //             transport: TransportKind.ipc,
-    //             options: { execArgv: [] },
-    //         },
-    //         debug: {
-    //             module: module,
-    //             transport: TransportKind.ipc,
-    //             options: { execArgv: ["--nolazy", "--inspect=6009"] },
-    //         },
-    //     },
-    //     {
-    //         documentSelector: [{ language: "montana" }],
-    //         initializationOptions: {
-    //             typescript: {
-    //                 tsdk: (await getTsdk(context)).tsdk,
-    //             },
-    //         },
-    //     },
-    // );
-    // await client.start();
+    const serverPath = `${context.extensionPath}/dist/server/index.js`;
+    client = new LanguageClient(
+        "partial",
+        "htmx-bun Language Server",
+        {
+            run: {
+                module: serverPath,
+                transport: TransportKind.ipc,
+                options: { execArgv: [] },
+            },
+            debug: {
+                module: serverPath,
+                transport: TransportKind.ipc,
+                options: { execArgv: ["--nolazy", "--inspect=6009"] },
+            },
+        },
+        {
+            documentSelector: [{ language: "partial" }],
+            initializationOptions: {
+                typescript: {
+                    tsdk: (await getTsdk(context)).tsdk,
+                },
+            },
+        },
+    );
+    await client.start();
 
-    // const labs = createLabsInfo(serverProtocol);
-    // labs.addLanguageClient(client);
+    const labs = createLabsInfo(serverProtocol);
+    labs.addLanguageClient(client);
 
-    // return labs.extensionExports;
+    console.log("ACTIVATION COMPLETE");
+    return labs.extensionExports;
 }
 
 export function deactivate() {
