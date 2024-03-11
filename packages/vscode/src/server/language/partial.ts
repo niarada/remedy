@@ -1,7 +1,5 @@
 import type { LanguagePlugin } from "@volar/language-core";
 import type { ServicePlugin } from "@volar/language-service";
-import * as path from "node:path";
-import * as ts from "typescript";
 import { ScriptKind } from "typescript";
 import { PartialVirtualCode } from "../virtual-code/partial";
 
@@ -36,33 +34,6 @@ export const partialLanguage: LanguagePlugin = {
                 }
             }
             return undefined;
-        },
-        // getExtraScripts(filename, rootCode) {
-        //     console.log("EXTRA", filename);
-        //     const text = "const Context = {};";
-        //     return [
-        //         {
-        //             fileName: "foo",
-        //             code: new SimpleVirtualCode("foo", "typescript", text, 0),
-        //             extension: ".ts",
-        //             scriptKind: ScriptKind.TS,
-        //         },
-        //     ];
-        // },
-        resolveLanguageServiceHost(host) {
-            return {
-                ...host,
-                getScriptFileNames() {
-                    const dir = ts.sys.resolvePath(
-                        path.resolve(__dirname, "../.."),
-                    );
-                    const fileNames = host.getScriptFileNames();
-                    const addedFileNames = [
-                        ts.sys.resolvePath(path.resolve(dir, "global.d.ts")),
-                    ];
-                    return [...fileNames, ...addedFileNames];
-                },
-            };
         },
     },
 };
