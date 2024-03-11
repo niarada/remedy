@@ -124,6 +124,9 @@ export class Presentation {
 
     coerceAttributes() {
         const attributes: Attributes = {};
+        if (!this.representation.artifact.attributes) {
+            return attributes;
+        }
         for (const [key, type] of Object.entries(
             this.representation.artifact.attributes,
         )) {
