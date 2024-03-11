@@ -1,3 +1,6 @@
 # Language support for htmx-bun partial (`.part`) files.
 
-Currently only supports syntax highlighting.  Real language support is on the way.
+Supports:
+  - Syntax highlighting and all language services for both HTML and TypeScript sections.
+  - Inserts htmx-bun `Context` type definition.
+  - Some recognition of TypeScript values in HTML template expressions.
