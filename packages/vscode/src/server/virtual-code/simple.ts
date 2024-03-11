@@ -1,4 +1,8 @@
-import type { CodeMapping, VirtualCode } from "@volar/language-core";
+import type {
+    CodeInformation,
+    CodeMapping,
+    VirtualCode,
+} from "@volar/language-core";
 import type { IScriptSnapshot } from "typescript";
 
 export class SimpleVirtualCode implements VirtualCode {
@@ -11,6 +15,14 @@ export class SimpleVirtualCode implements VirtualCode {
         public languageId: string,
         text: string,
         offset: number,
+        data: CodeInformation = {
+            completion: true,
+            format: true,
+            navigation: true,
+            semantic: true,
+            structure: true,
+            verification: true,
+        },
     ) {
         this.snapshot = {
             getText: (start, end) => text.slice(start, end),
@@ -22,14 +34,7 @@ export class SimpleVirtualCode implements VirtualCode {
                 sourceOffsets: [offset],
                 generatedOffsets: [0],
                 lengths: [text.length],
-                data: {
-                    completion: true,
-                    format: true,
-                    navigation: true,
-                    semantic: true,
-                    structure: true,
-                    verification: true,
-                },
+                data,
             },
         ];
     }

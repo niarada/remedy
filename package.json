@@ -7,7 +7,8 @@
         "examples:contact": "cd examples/contact && ../../packages/htmx-bun/bin/htmx-bun-hot",
         "build:grammar": "bun scripts/build-grammar.ts",
         "build:extension": "tsc -p packages/vscode",
-        "publish:htmx-bun": "bun scripts/publish-htmx-bun.ts"
+        "publish:htmx-bun": "bun scripts/publish-htmx-bun.ts",
+        "publish:extension": "sh scripts/publish-extension.sh"
     },
     "repository": {
         "type": "git",
@@ -17,6 +18,10 @@
     "dependencies": {
         "@biomejs/biome": "^1.5.3",
         "@types/js-yaml": "^4.0.9",
-        "js-yaml": "^4.1.0"
+        "esbuild": "^0.20.1",
+        "js-yaml": "^4.1.0",
+        "ts-loader": "^9.5.1",
+        "webpack": "^5.90.3",
+        "webpack-cli": "^5.1.4"
     }
 }
