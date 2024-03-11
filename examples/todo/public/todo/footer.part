@@ -20,47 +20,26 @@ if (Attributes.filter) {
 
 const remaining = model.items.filter((item) => !item.done).length;
 
-<footer
-    id="todo-footer"
-    hx-swap-oob="true"
-    class="footer"
-    style="display: {model.items.length === 0 ? 'none' : 'block'};"
->
+<footer id="todo-footer" hx-swap-oob="true" class="footer"
+    style="display: {model.items.length === 0 ? 'none' : 'block'};">
     <span class="todo-count">
         <strong>{remaining}</strong>
         item{remaining === 1 ? "" : "s"} left
     </span>
     <ul class="filters">
         <li>
-            <a
-                hx-get="/todo/footer?filter=all"
-                hx-swap="none"
-                href="#"
-                class="{model.filter === 'all' ? 'selected' : ''}"
-            >All</a>
+            <a hx-get="/todo/footer?filter=all" hx-swap="none" href="#"
+                class="{model.filter === 'all' ? 'selected' : ''}">All</a>
         </li>
         <li>
-            <a
-                hx-get="/todo/footer?filter=active"
-                hx-swap="none"
-                href="#"
-                class="{model.filter === 'active' ? 'selected' : ''}"
-            >Active</a>
+            <a hx-get="/todo/footer?filter=active" hx-swap="none" href="#"
+                class="{model.filter === 'active' ? 'selected' : ''}">Active</a>
         </li>
         <li>
-            <a
-                hx-get="/todo/footer?filter=completed"
-                hx-swap="none"
-                href="#"
-                class="{model.filter === 'completed' ? 'selected' : ''}"
-            >Completed</a>
+            <a hx-get="/todo/footer?filter=completed" hx-swap="none" href="#"
+                class="{model.filter === 'completed' ? 'selected' : ''}">Completed</a>
         </li>
     </ul>
-    <button
-        hx-get="/todo/footer?clear=true"
-        hx-target="closest footer"
-        hx-swap="outerHTML"
-        class="clear-completed"
-        style="display: {remaining !== model.items.length ? 'block' : 'none'};"
-    >Clear completed</button>
+    <button hx-get="/todo/footer?clear=true" hx-target="closest footer" hx-swap="outerHTML" class="clear-completed"
+        style="display: {remaining !== model.items.length ? 'block' : 'none'};">Clear completed</button>
 </footer>
