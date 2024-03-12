@@ -36,28 +36,32 @@ export class PartialVirtualCode implements VirtualCode {
             },
         ];
         this.embeddedCodes = [];
-        const htmlStartIndex = text.search(/\n^<\w+/m);
+        const htmlStartIndex = text[0] === "<" ? 0 : text.search(/^<\w+/m);
+        if (htmlStartIndex > 0) {
+            this.embeddedCodes.push(
+                new PartialScriptVirtualCode("typescript0", text),
+                new SimpleVirtualCode(
+                    "typescript1",
+                    "typescript",
+                    text.slice(0, htmlStartIndex),
+                    0,
+                    {
+                        completion: true,
+                        format: true,
+                        navigation: true,
+                        semantic: false,
+                        structure: false,
+                        verification: false,
+                    },
+                ),
+            );
+        }
         this.embeddedCodes.push(
-            new PartialScriptVirtualCode("typescript0", text),
-            new SimpleVirtualCode(
-                "typescript1",
-                "typescript",
-                text.slice(0, htmlStartIndex),
-                0,
-                {
-                    completion: true,
-                    format: true,
-                    navigation: true,
-                    semantic: false,
-                    structure: false,
-                    verification: false,
-                },
-            ),
             new SimpleVirtualCode(
                 "html",
                 "html",
                 text.slice(htmlStartIndex),
-                htmlStartIndex,
+                htmlStartIndex - 1,
             ),
         );
     }

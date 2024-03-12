@@ -19,3 +19,5 @@
 - Better syntax support for expressions in the template.
 - Compile to single binary.
 - Build scripts to re-use html-bun template code in the view, instead of just the copy it is now.
+- Consider using buildMappings for the language server virtual source:
+  - https://github.com/vuejs/language-tools/blob/0f5dfcec3365518c4edb0c0b32397597786ca0e1/packages/language-core/lib/plugins/file-md.ts

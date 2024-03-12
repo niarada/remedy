@@ -3,8 +3,8 @@ scopeName: source.part
 fileTypes: [part]
 
 patterns:
-  - include: '#typescript'
   - include: '#html'
+  - include: '#typescript'
 
 repository:
   typescript:

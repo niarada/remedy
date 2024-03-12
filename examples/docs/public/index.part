@@ -1,36 +1,40 @@
+
 <html>
-    <head>
-        <title>htmx-bun: documentation</title>
-        <link rel="icon" type="image/png" href="/assets/icon-light.png">
-    </head>
-    <body class="flex flex-col bg-slate-700 text-white p-2">
-        <header class="flex justify-between items-center gap-4 pb-2 mb-6 border-b border-b-slate-500">
-            <a class="flex items-center gap-4" href="/">
-                <img src="/assets/icon-light.png" class="h-8 w-8" />
-                <div class="font-bold">htmx-bun</div>
-            </a>
-            <a href="https://github.com/moonlight-pm/htmx-bun">
-                <i class="text-2xl fa-brands fa-github" />
-            </a>
-        </header>
-        <main class="flex gap-32"  hx-boost="article">
-            <nav>
-                <ul class="flex flex-col gap-1 cursor-pointer">
-                    <li><a href="/introduction">Introduction</a></li>
-                    <li><a href="/installation">Installation</a></li>
-                    <li><a href="/partials">Partials</a></li>
-                    <li><a href="/routing">Routing</a></li>
-                    <li><a href="/integrations">Integrations</a></li>
-                    <li><a href="/options">Options</a></li>
-                    <li><a href="/editorsupport">Editor Support</a></li>
-                    <li><a href="/roadmap">Roadmap</a></li>
-                </ul>
-            </nav>
-            <article class="prose prose-slate prose-invert">
-                <slot>
-                    <introduction />
-                </slot>
-            </article>
-        </main>
-    </body>
+
+<head>
+    <title>htmx-bun: documentation</title>
+    <link rel="icon" type="image/png" href="/assets/icon-light.png">
+</head>
+
+<body class="flex flex-col bg-slate-700 text-white p-2">
+    <header class="flex justify-between items-center gap-4 pb-2 mb-6 border-b border-b-slate-500">
+        <a class="flex items-center gap-4" href="/">
+            <img src="/assets/icon-light.png" class="h-8 w-8" />
+            <div class="font-bold">htmx-bun</div>
+        </a>
+        <a href="https://github.com/moonlight-pm/htmx-bun">
+            <i class="text-2xl fa-brands fa-github" />
+        </a>
+    </header>
+    <main class="flex gap-32" hx-boost="article">
+        <nav>
+            <ul class="flex flex-col gap-1 cursor-pointer">
+                <li><a href="/introduction">Introduction</a></li>
+                <li><a href="/installation">Installation</a></li>
+                <li><a href="/partials">Partials</a></li>
+                <li><a href="/routing">Routing</a></li>
+                <li><a href="/integrations">Integrations</a></li>
+                <li><a href="/options">Options</a></li>
+                <li><a href="/editorsupport">Editor Support</a></li>
+                <li><a href="/roadmap">Roadmap</a></li>
+            </ul>
+        </nav>
+        <article class="prose prose-slate prose-invert">
+            <slot>
+                <introduction />
+            </slot>
+        </article>
+    </main>
+</body>
+
 </html>
