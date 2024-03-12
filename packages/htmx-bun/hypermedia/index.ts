@@ -77,7 +77,7 @@ export abstract class Source {
 export interface Artifact {
     kind: ArtifactKind;
     attributes: AttributeTypes;
-    action(context: Context, attributes: Attributes): Promise<Scope>;
+    action($context: Context): Promise<Scope>;
     template: string;
 }
 
@@ -89,10 +89,10 @@ export interface Artifact {
  * instantiated throught the `present` method.
  */
 export class Representation {
-    private template: HtmlFragment;
+    protected template: HtmlFragment;
 
     constructor(
-        private readonly director: Director,
+        readonly director: Director,
         readonly tag: string,
         readonly artifact: Artifact,
         readonly path?: string,
@@ -108,16 +108,30 @@ export class Representation {
      * @param attributes The attribute values passed into this presentation instance.
      * @returns
      */
-    present(context: Context, attributes: Attributes = {}): Presentation {
-        // if (this.artifact.kind === "markdown") {
+    present(context: Context): Presentation {
         const template = cloneHtml(this.template) as HtmlFragment;
-        return new Presentation(
-            this.director,
-            this,
-            template,
-            context,
-            attributes,
+        if (this instanceof VariableRepresentation) {
+            return new Presentation(
+                this.director,
+                this,
+                template,
+                context.withAttributes(this.variables),
+            );
+        }
+        return new Presentation(this.director, this, template, context);
+    }
+}
+
+export class VariableRepresentation extends Representation {
+    constructor(
+        representation: Representation,
+        readonly variables: Record<string, string>,
+    ) {
+        super(
+            representation.director,
+            representation.tag,
+            representation.artifact,
+            representation.path,
         );
-        // }
     }
 }

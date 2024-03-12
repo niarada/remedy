@@ -6,6 +6,20 @@
             "first": "Joshua",
             "last": "Kifer",
             "phone": "4068490996"
+        },
+        {
+            "id": 2,
+            "first": "Kora",
+            "last": "Kifer",
+            "email": "kora@hotsprings.mt",
+            "phone": ""
+        },
+        {
+            "id": 3,
+            "first": "Lili",
+            "last": "Kifer",
+            "email": "lili@hotsprings.mt",
+            "phone": ""
         }
     ]
 }

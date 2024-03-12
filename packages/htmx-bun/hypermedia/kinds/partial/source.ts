@@ -127,6 +127,12 @@ export class PartialSource extends Source {
                                 node,
                             );
                         }
+                        if (ts.isConditionalExpression(node.parent)) {
+                            return context.factory.createPropertyAccessExpression(
+                                context.factory.createIdentifier("$scope"),
+                                node,
+                            );
+                        }
                     }
                     return ts.visitEachChild(node, visit, context);
                 };
@@ -149,12 +155,11 @@ export class PartialSource extends Source {
      * pulled into the local scope, that we can then pass to the interpolation functions.
      *
      * We're also extracting out the partials Attributes interface, if it has one, so we can use
-     * that information at runtime.  We also stub Context and Attribute locals, these will be passed
-     * to the function that encloses the partial code, provided to it's local namespace.
-     * @private
+     * that information at runtime.  We also stub the $context local that will be passed
+     * to the function that encloses the partial code.
      */
     private tranformAction() {
-        const locals: string[] = ["Context", "Attributes"];
+        const locals: string[] = ["$context"];
         const transformer: ts.TransformerFactory<ts.SourceFile> = (context) => {
             return (root) => {
                 const statements: ts.Statement[] = [];
@@ -204,21 +209,10 @@ export class PartialSource extends Source {
                             ts.factory.createParameterDeclaration(
                                 undefined,
                                 undefined,
-                                ts.factory.createIdentifier("Context"),
+                                ts.factory.createIdentifier("$context"),
                                 undefined,
                                 ts.factory.createTypeReferenceNode(
                                     ts.factory.createIdentifier("Context"),
-                                    undefined,
-                                ),
-                                undefined,
-                            ),
-                            ts.factory.createParameterDeclaration(
-                                undefined,
-                                undefined,
-                                ts.factory.createIdentifier("Attributes"),
-                                undefined,
-                                ts.factory.createTypeReferenceNode(
-                                    ts.factory.createIdentifier("Attributes"),
                                     undefined,
                                 ),
                                 undefined,

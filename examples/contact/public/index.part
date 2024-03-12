@@ -1,1 +1,29 @@
-Context.redirect("/contacts");
+if (Context.url.pathname === "/") {
+    Context.redirect("/contacts");
+}
+
+const flash = Context.flash;
+// Context.flash = "Foobar";
+
+<html lang="">
+
+<head>
+    <title>Contact App</title>
+    <link rel="stylesheet" href="/static/missing.css">
+    <link rel="stylesheet" href="/static/site.css">
+</head>
+
+<body hx-boost="true">
+    <main>
+        <header>
+            <h1>
+                <div style="text-transform: uppercase;">contacts.app</div>
+                <div>A Demo Contacts Application</div>
+            </h1>
+        </header>
+        <div style="{flash ? '' : 'display: none;'}" class="flash">{flash}</div>
+        <slot />
+    </main>
+</body>
+
+</html>

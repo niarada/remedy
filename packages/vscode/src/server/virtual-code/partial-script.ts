@@ -37,9 +37,9 @@ export class PartialScriptVirtualCode implements VirtualCode {
                 generatedOffsets: [prefix.length],
                 lengths: [full.length],
                 data: {
-                    completion: false,
+                    completion: true,
                     format: false,
-                    navigation: false,
+                    navigation: true,
                     semantic: true,
                     structure: true,
                     verification: true,
@@ -54,12 +54,8 @@ function generateCodeAdditions(text) {
     const suffix: string[] = [];
 
     prefix.push(`
-        import { Context as ServerContext } from "htmx-bun/server/context";
-        const Context = {} as ServerContext;
-    `);
-
-    prefix.push(`
-        const Attributes = {} as Attributes;
+        import { Context } from "htmx-bun/server/context";
+        const $context = {} as Context<Attributes>;
     `);
 
     const transformer: ts.TransformerFactory<ts.SourceFile> = (context) => {
