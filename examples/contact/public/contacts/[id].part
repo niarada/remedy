@@ -24,4 +24,3 @@ if (!contact) {
     <a href="/contacts/{contact.id}/edit">Edit</a>
     <a href="/contacts">Back</a>
 </p>
->

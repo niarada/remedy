@@ -1,4 +1,4 @@
-import crypto from "crypto";
+import crypto from "node:crypto";
 import { warn } from "../lib/log";
 
 const cookieSecret = process.env.COOKIE_SECRET;

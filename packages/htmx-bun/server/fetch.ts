@@ -18,7 +18,17 @@ export async function buildFetch(options: ServerOptions) {
 
     return async (request: Request) => {
         const time = Bun.nanoseconds();
+
         const context = new Context(request);
+
+        if (
+            context.url.pathname !== "/" &&
+            context.url.pathname.endsWith("/")
+        ) {
+            context.redirect(context.url.pathname.slice(0, -1));
+            return context.response;
+        }
+
         await context.loadForm();
 
         for (const feature of features) {
@@ -58,7 +68,7 @@ export async function buildFetch(options: ServerOptions) {
             return;
         }
         const content: string[] = [];
-        const pres = await rep.present(context, context.form);
+        const pres = await rep.present(context);
         await pres.activate();
 
         if (!context.renderCanceled) {
@@ -86,47 +96,58 @@ export async function buildFetch(options: ServerOptions) {
             .slice(1)
             .split("/")
             .filter(Boolean);
-        let pres: Presentation | undefined;
+        let presentation: Presentation | undefined;
 
         for (let i = 0; i < pathway.length; i++) {
             const tag = pathway.slice(i, pathway.length + 1 - 1).join("-");
             // If outer leaf not present, consider this resource unavailable.
-            if (!pres) {
-                pres = await director.present(tag, context, context.form);
-                if (!pres) {
+            if (!presentation) {
+                presentation = await director.present(tag, context);
+                if (!presentation) {
                     return;
                 }
-                await pres.activate();
-                await pres.compose();
+                await presentation.activate();
+                await presentation.compose();
                 if (context.response) {
                     return;
                 }
             } else {
-                pres = await composePresentation(context, tag, pres);
+                presentation = await composePresentation(
+                    context,
+                    tag,
+                    presentation,
+                );
                 if (context.response) {
                     return;
                 }
             }
         }
 
-        pres = await composePresentation(context, "layout", pres);
+        presentation = await composePresentation(
+            context,
+            "layout",
+            presentation,
+        );
         if (context.response) {
             return;
         }
 
-        if (!pres) {
+        if (!presentation) {
             return;
         }
 
-        pres.flatten();
+        presentation.flatten();
 
-        await featureTransforms(pres);
+        await featureTransforms(presentation);
 
-        context.response = new Response(`<!doctype html>\n${pres.render()}`, {
-            headers: {
-                "Content-Type": "text/html;charset=utf-8",
+        context.response = new Response(
+            `<!doctype html>\n${presentation.render()}`,
+            {
+                headers: {
+                    "Content-Type": "text/html;charset=utf-8",
+                },
             },
-        });
+        );
     }
 
     async function composePresentation(

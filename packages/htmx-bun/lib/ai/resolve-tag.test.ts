@@ -162,4 +162,32 @@ describe("resolveTag", () => {
         expect(resolvedPath).toBe(expectedPath);
         expect(amendedTag).toBe(expectedAmendedTag);
     });
+
+    it("should resolve tag to file path when both directory and file paths match", () => {
+        const tag = "foo-bar";
+        const expectedPath = path.join(basePath, "foo", "bar.txt");
+        const expectedAmendedTag = "foo-bar";
+        fs.mkdirSync(path.join(basePath, "foo", "bar"), { recursive: true });
+        fs.writeFileSync(expectedPath, "");
+        const { path: resolvedPath, amendedTag } = resolveTag(tag, basePath);
+        expect(resolvedPath).toBe(expectedPath);
+        expect(amendedTag).toBe(expectedAmendedTag);
+    });
+
+    it("should resolve tag to file path when both variable directory and variable file paths match", () => {
+        const tag = "foo-baz";
+        const expectedPath = path.join(basePath, "foo", "[id].txt");
+        const expectedAmendedTag = "foo-[id]";
+        const expectedResolvedVariables = { id: "baz" };
+        fs.mkdirSync(path.join(basePath, "foo", "[id]"), { recursive: true });
+        fs.writeFileSync(expectedPath, "");
+        const {
+            path: resolvedPath,
+            amendedTag,
+            resolvedVariables,
+        } = resolveTag(tag, basePath);
+        expect(resolvedPath).toBe(expectedPath);
+        expect(amendedTag).toBe(expectedAmendedTag);
+        expect(resolvedVariables).toEqual(expectedResolvedVariables);
+    });
 });
