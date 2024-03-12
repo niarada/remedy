@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { Context } from "~/server/context";
+import { fakeContext } from "~/lib/test";
 import { Director } from "./director";
 import { MarkdownSource } from "./kinds/markdown/source";
 import { PartialSource } from "./kinds/partial/source";
@@ -9,7 +9,7 @@ const director = new Director();
 test("representation present", async () => {
     await director.prepare("alpha", new MarkdownSource("# Hello"));
     const alphaR = await director.represent("alpha");
-    const alphaP = alphaR!.present({} as Context, {});
+    const alphaP = alphaR!.present(fakeContext());
     expect(alphaP).toBeDefined();
 });
 
@@ -20,9 +20,9 @@ const gift = "Joy";
 `;
 test("render simple", async () => {
     await director.prepare("beta", new PartialSource(source1));
-    expect(
-        await director.render("beta", {} as Context, {}, { trim: true }),
-    ).toBe("<h1>Joy</h1>");
+    expect(await director.render("beta", fakeContext(), { trim: true })).toBe(
+        "<h1>Joy</h1>",
+    );
 });
 
 const source2 = `
@@ -40,8 +40,7 @@ test("render attributes", async () => {
     expect(
         await director.render(
             "gamma",
-            {} as Context,
-            { gift: "Temperance", chapter: 5 },
+            fakeContext({ gift: "Temperance", chapter: 5 }),
             { trim: true },
         ),
     ).toBe(`<p><a chapter="number 5">Temperance</a></p>`);
@@ -52,9 +51,9 @@ test("flow each", async () => {
         "delta",
         new PartialSource(`<a mx-each={[1,2]} mx-as="i">{i}</a>`),
     );
-    expect(
-        await director.render("delta", {} as Context, {}, { trim: true }),
-    ).toBe("<a>1</a><a>2</a>");
+    expect(await director.render("delta", fakeContext(), { trim: true })).toBe(
+        "<a>1</a><a>2</a>",
+    );
 });
 
 await director.prepare(
@@ -85,12 +84,9 @@ interface Attributes {
 );
 
 test("render todo list, check types", async () => {
-    const html = await director.render(
-        "todo-list",
-        {} as Context,
-        {},
-        { trim: true },
-    );
+    const html = await director.render("todo-list", fakeContext(), {
+        trim: true,
+    });
     expect(html).toBe(
         `<ul><li id="1" type="number">Love</li><li id="2" type="number">Joy</li><li id="3" type="number">Peace</li></ul>`,
     );
@@ -130,11 +126,8 @@ interface Attributes {
 );
 
 test("render slot assuring outer expression for slotted items", async () => {
-    const html = await director.render(
-        "slot-outer",
-        {} as Context,
-        {},
-        { trim: true },
-    );
+    const html = await director.render("slot-outer", fakeContext(), {
+        trim: true,
+    });
     expect(html).toBe(`<main><div class="outer"><hr gift="Joy"></div></main>`);
 });

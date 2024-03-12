@@ -1,0 +1,27 @@
+import { model } from "~/lib/model"
+
+interface Attributes {
+    id: number;
+}
+
+console.log(typeof $context.attributes.id);
+
+const id = Number($context.attributes.id ?? 0);
+
+const contact = model.contacts.find(contact => contact.id === id)!;
+if (!contact) {
+    $context.status(404);
+}
+
+<h1>{contact.first} {contact.last}</h1>
+
+<div>
+    <div>Phone: {contact.phone}</div>
+    <div>Email: {contact.email}</div>
+</div>
+
+<p>
+    <a href="/contacts/{contact.id}/edit">Edit</a>
+    <a href="/contacts">Back</a>
+</p>
+>

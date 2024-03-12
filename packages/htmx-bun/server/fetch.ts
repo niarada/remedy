@@ -69,7 +69,7 @@ export async function buildFetch(options: ServerOptions) {
         }
         for (const oob of context.oobs) {
             if (await director.represent(oob.tag)) {
-                content.push(await director.render(oob.tag, context));
+                content.push((await director.render(oob.tag, context))!);
             } else {
                 warn("view", `OOB view not found: ${oob.tag}`);
             }
@@ -92,7 +92,7 @@ export async function buildFetch(options: ServerOptions) {
             const tag = pathway.slice(i, pathway.length + 1 - 1).join("-");
             // If outer leaf not present, consider this resource unavailable.
             if (!pres) {
-                pres = await director.present(tag, context);
+                pres = await director.present(tag, context, context.form);
                 if (!pres) {
                     return;
                 }

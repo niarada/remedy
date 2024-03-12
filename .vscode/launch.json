@@ -8,16 +8,20 @@
         {
             "name": "Extension + LS: Docs",
             "configurations": ["Extension: Docs", "Language Server: Attach"]
+        },
+        {
+            "name": "Extension + LS: Contact",
+            "configurations": ["Extension: Contact", "Language Server: Attach"]
         }
     ],
     "configurations": [
         {
-            "name": "Language Server: Attach",
-            "type": "node",
-            "request": "attach",
-            "port": 6009,
-            "restart": true,
-            "outFiles": ["${workspaceRoot}/packages/vscode/dist/**/*.js"]
+            "type": "bun",
+            "request": "launch",
+            "name": "Debug File",
+            "program": "${workspaceRoot}/packages/htmx-bun/debug.ts",
+            "cwd": "${workspaceRoot}/packages/htmx-bun",
+            "watchMode": "hot"
         },
         {
             "type": "extensionHost",
@@ -42,6 +46,17 @@
             "autoAttachChildProcesses": true
         },
         {
+            "type": "extensionHost",
+            "request": "launch",
+            "name": "Extension: Contact",
+            "runtimeExecutable": "${execPath}",
+            "args": [
+                "--extensionDevelopmentPath=${workspaceRoot}/packages/vscode",
+                "--folder-uri=${workspaceRoot}/examples/contact"
+            ],
+            "autoAttachChildProcesses": true
+        },
+        {
             "type": "bun",
             "request": "launch",
             "name": "Server: Todo",
@@ -58,10 +73,17 @@
         {
             "type": "bun",
             "request": "launch",
-            "name": "Debug File",
-            "program": "${workspaceRoot}/packages/htmx-bun/debug.ts",
-            "cwd": "${workspaceRoot}/packages/htmx-bun",
-            "watchMode": "hot"
+            "name": "Server: Contact",
+            "program": "${workspaceRoot}/packages/htmx-bun/server/index.ts",
+            "cwd": "${workspaceRoot}/examples/contact"
+        },
+        {
+            "name": "Language Server: Attach",
+            "type": "node",
+            "request": "attach",
+            "port": 6009,
+            "restart": true,
+            "outFiles": ["${workspaceRoot}/packages/vscode/dist/**/*.js"]
         }
     ]
 }

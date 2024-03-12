@@ -46,9 +46,9 @@ export class PartialVirtualCode implements VirtualCode {
                     text.slice(0, htmlStartIndex),
                     0,
                     {
-                        completion: true,
+                        completion: false,
                         format: true,
-                        navigation: true,
+                        navigation: false,
                         semantic: false,
                         structure: false,
                         verification: false,

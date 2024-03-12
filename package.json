@@ -1,27 +1,28 @@
 {
-    "name": "htmx-bun-repo",
-    "private": true,
-    "scripts": {
-        "examples:docs": "cd examples/docs && ../../packages/htmx-bun/bin/htmx-bun-hot",
-        "examples:todo": "cd examples/todo && ../../packages/htmx-bun/bin/htmx-bun-hot",
-        "examples:contact": "cd examples/contact && ../../packages/htmx-bun/bin/htmx-bun-hot",
-        "build:grammar": "bun scripts/build-grammar.ts",
-        "build:extension": "tsc -p packages/vscode",
-        "publish:htmx-bun": "bun scripts/publish-htmx-bun.ts",
-        "publish:extension": "sh scripts/publish-extension.sh"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/moonlight-pm/htmx-bun.git"
-    },
-    "workspaces": ["packages/*", "examples/*"],
-    "dependencies": {
-        "@biomejs/biome": "^1.5.3",
-        "@types/js-yaml": "^4.0.9",
-        "esbuild": "^0.20.1",
-        "js-yaml": "^4.1.0",
-        "ts-loader": "^9.5.1",
-        "webpack": "^5.90.3",
-        "webpack-cli": "^5.1.4"
-    }
+  "name": "htmx-bun-repo",
+  "private": true,
+  "scripts": {
+    "examples:docs": "cd examples/docs && ../../packages/htmx-bun/bin/htmx-bun-hot",
+    "examples:todo": "cd examples/todo && ../../packages/htmx-bun/bin/htmx-bun-hot",
+    "examples:contact": "cd examples/contact && ../../packages/htmx-bun/bin/htmx-bun-hot",
+    "build:grammar": "bun scripts/build-grammar.ts",
+    "build:extension": "bun scripts/build-extension.ts",
+    "publish:htmx-bun": "bun scripts/publish-htmx-bun.ts",
+    "publish:extension": "sh scripts/publish-extension.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/moonlight-pm/htmx-bun.git"
+  },
+  "workspaces": ["packages/*", "examples/*"],
+  "dependencies": {
+    "@biomejs/biome": "^1.5.3",
+    "@types/js-yaml": "^4.0.9",
+    "esbuild": "^0.20.1",
+    "http-status-codes": "^2.3.0",
+    "js-yaml": "^4.1.0",
+    "ts-loader": "^9.5.1",
+    "webpack": "^5.90.3",
+    "webpack-cli": "^5.1.4"
+  }
 }

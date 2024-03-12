@@ -5,5 +5,8 @@
         "source.organizeImports.biome": "never",
         "source.fixAll": "never",
         "source.organizeImports": "explicit"
+    },
+    "[partial]": {
+        "editor.defaultFormatter": "moonlight-pm.htmx-bun-vscode"
     }
 }

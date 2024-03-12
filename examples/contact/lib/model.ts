@@ -23,7 +23,7 @@ interface Model {
     contacts: Contact[];
 }
 
-interface Contact {
+export interface Contact {
     id: number;
     first: string;
     last: string;

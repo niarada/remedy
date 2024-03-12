@@ -1,9 +1,14 @@
-import { model, createContact } from "~/lib/model";
+import { createContact } from "~/lib/model";
+
+interface Attributes {
+    first: string;
+    last: string;
+    email: string;
+    phone: string;
+}
 
 if (Context.request.method === "POST") {
-    await createContact({
-        ...Context.form,
-    });
+    await createContact(Attributes);
     Context.flash = "Created New Contact!";
     Context.redirect("/contacts");
 }

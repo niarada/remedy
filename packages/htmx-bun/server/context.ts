@@ -1,44 +1,79 @@
+import { getReasonPhrase } from "http-status-codes";
 import { URL } from "node:url";
+import { AttributeTypes, Attributes } from "~/hypermedia";
 import { Cookie, readCookie, writeCookie } from "./cookie";
+
+/**
+ * Information shared by any contexts created for this particular request.
+ */
+interface ContextFootball {
+    request: Request;
+    response?: Response;
+    url: URL;
+    cookie: Cookie;
+    form: Record<string, string>;
+    oobs: Oob[];
+    renderCanceled: boolean;
+}
 
 /**
  * A context encapsulates information about a request context for a view, and provides utilities
  * for manipulating it.
  */
-export class Context {
-    #request: Request;
-    #response?: Response;
-    #url: URL;
-    #cookie: Cookie;
-    #form: Record<string, string> = {};
-    #oobs: Oob[] = [];
-    #renderCanceled = false;
+export class Context<A extends Attributes = Attributes> {
+    private readonly football: ContextFootball;
+    #attributes: A;
 
-    constructor(request: Request) {
-        this.#request = request;
-        this.#url = new URL(request.url);
-        this.#cookie = readCookie(request);
+    constructor(
+        requestOrFootball: Request | ContextFootball,
+        attributes: A = {} as A,
+    ) {
+        if (requestOrFootball instanceof Request) {
+            this.football = {
+                request: requestOrFootball,
+                url: new URL(requestOrFootball.url),
+                cookie: readCookie(requestOrFootball),
+                form: {},
+                oobs: [],
+                renderCanceled: false,
+            };
+        } else {
+            this.football = requestOrFootball;
+        }
+        this.#attributes = attributes;
+    }
+
+    withAttributes(attributes: Attributes): Context {
+        return new Context(this.football, attributes);
+    }
+
+    coerceAttributes(types: AttributeTypes) {
+        this.#attributes = coerceAttributes(this.#attributes, types);
+    }
+
+    get attributes() {
+        return this.#attributes;
     }
 
     async loadForm() {
-        this.url.searchParams.forEach((value, name) => {
+        this.football.url.searchParams.forEach((value, name) => {
             this.form[name] = value;
         });
-        if (!["POST", "PUT", "PATCH"].includes(this.#request.method)) {
+        if (!["POST", "PUT", "PATCH"].includes(this.football.request.method)) {
             return;
         }
         if (
             ![
                 "application/x-www-form-urlencoded",
                 "multipart/form-data",
-            ].includes(this.#request.headers.get("Content-Type") ?? "")
+            ].includes(this.football.request.headers.get("Content-Type") ?? "")
         ) {
             return;
         }
         Object.assign(
             this.form,
             Object.fromEntries(
-                Array.from(await this.#request.formData()).filter(
+                Array.from(await this.football.request.formData()).filter(
                     ([key, value]) => typeof value === "string",
                 ),
             ),
@@ -46,44 +81,53 @@ export class Context {
     }
 
     get request() {
-        return this.#request;
+        return this.football.request;
     }
 
     set response(response: Response | undefined) {
         if (response) {
-            writeCookie(response, this.#cookie);
+            writeCookie(response, this.football.cookie);
         }
-        this.#response = response;
+        this.football.response = response;
     }
 
     get response() {
-        return this.#response;
+        return this.football.response;
     }
 
     get url() {
-        return this.#url;
+        return this.football.url;
     }
 
     get cookie() {
-        return this.#cookie;
+        return this.football.cookie;
     }
 
     get form() {
-        return this.#form;
+        return this.football.form;
     }
 
     set flash(message: string) {
-        this.#cookie.flash = message;
+        this.football.cookie.flash = message;
     }
 
     get flash(): string | undefined {
-        return this.#cookie.message as string | undefined;
+        const message = this.football.cookie.flash as string | undefined;
+        delete this.football.cookie.flash;
+        return message;
     }
 
     redirect(href: string) {
         this.response = new Response(null, {
             status: 302,
             headers: { Location: href },
+        });
+    }
+
+    status(status: number, message?: string) {
+        this.response = new Response(null, {
+            status,
+            statusText: message ?? getReasonPhrase(status),
         });
     }
 
@@ -95,11 +139,11 @@ export class Context {
      * @param attributes Attributes to pass to the tag.
      */
     oob(tag: string, attributes: Record<string, unknown> = {}) {
-        this.#oobs.push({ tag, attributes });
+        this.football.oobs.push({ tag, attributes });
     }
 
     get oobs() {
-        return this.#oobs;
+        return this.football.oobs;
     }
 
     /**
@@ -107,11 +151,11 @@ export class Context {
      * specified, will still be included in the response.
      */
     cancelRender() {
-        this.#renderCanceled = true;
+        this.football.renderCanceled = true;
     }
 
     get renderCanceled() {
-        return this.#renderCanceled;
+        return this.football.renderCanceled;
     }
 }
 
@@ -121,4 +165,19 @@ export class Context {
 interface Oob {
     tag: string;
     attributes: Record<string, unknown>;
+}
+
+export function coerceAttributes<A extends Attributes = Attributes>(
+    attributes: A,
+    types: AttributeTypes,
+) {
+    const coerced: Record<string, unknown> = structuredClone(attributes);
+    for (const [key, type] of Object.entries(types)) {
+        if (type === "number") {
+            coerced[key] = Number(attributes[key]);
+        } else if (type === "boolean") {
+            coerced[key] = Boolean(attributes[key]);
+        }
+    }
+    return coerced as A;
 }

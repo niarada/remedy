@@ -1,9 +1,10 @@
 import { plugin } from "bun";
-import { existsSync, readFileSync } from "fs";
+import { existsSync, readFileSync } from "node:fs";
+import { resolveTag } from "~/lib/ai/resolve-tag";
 import { info, warn } from "~/lib/log";
 import { watch } from "~/lib/watch";
 import { Context } from "~/server/context";
-import { Artifact, Attributes, Representation, Source } from ".";
+import { Artifact, Representation, Source, VariableRepresentation } from ".";
 import { MarkdownSource } from "./kinds/markdown/source";
 import { PartialSource } from "./kinds/partial/source";
 import { PrintHtmlOptions, htmlTags } from "./template";
@@ -86,18 +87,45 @@ export class Director {
      * @returns The representation, if found, or undefined.
      */
     async represent(tag: string): Promise<Representation | undefined> {
-        if (!this.representations.has(tag)) {
-            const path = this.pathForTag(tag);
+        if (!this.representations.has(tag) && this.base) {
+            const { path, amendedTag, resolvedVariables } = resolveTag(
+                tag,
+                this.base,
+            );
             if (!path) {
                 warn("director", `No representation found for '${tag}'`);
                 return;
             }
-            const text = readFileSync(path, "utf8");
-            const shortpath = path.replace(new RegExp(`^${this.base}/`), "");
-            if (path.endsWith(".part")) {
-                await this.prepare(tag, new PartialSource(text, shortpath));
-            } else if (path.endsWith(".md")) {
-                await this.prepare(tag, new MarkdownSource(text, shortpath));
+            if (amendedTag) {
+                if (!this.representations.has(amendedTag)) {
+                    const text = readFileSync(path, "utf8");
+                    const shortpath = path.replace(
+                        new RegExp(`^${this.base}/`),
+                        "",
+                    );
+                    if (path.endsWith(".part")) {
+                        await this.prepare(
+                            amendedTag,
+                            new PartialSource(text, shortpath),
+                        );
+                    } else if (path.endsWith(".md")) {
+                        await this.prepare(
+                            amendedTag,
+                            new MarkdownSource(text, shortpath),
+                        );
+                    }
+                }
+                let representation = this.representations.get(amendedTag);
+                if (
+                    representation &&
+                    Object.keys(resolvedVariables).length > 0
+                ) {
+                    representation = new VariableRepresentation(
+                        representation,
+                        resolvedVariables,
+                    );
+                }
+                return representation;
             }
             // } catch (e) {
             //     error("director", `Failed to load '${path}'`);
@@ -121,8 +149,8 @@ export class Director {
      * @param attributes The attributes.
      * @returns
      */
-    async present(tag: string, context: Context, attributes: Attributes = {}) {
-        return (await this.represent(tag))?.present(context, attributes);
+    async present(tag: string, context: Context) {
+        return (await this.represent(tag))?.present(context);
     }
 
     /**
@@ -137,11 +165,13 @@ export class Director {
     async render(
         tag: string,
         context: Context,
-        attributes?: Attributes,
         options: Partial<PrintHtmlOptions> = {},
-    ): Promise<string> {
+    ): Promise<string | undefined> {
         const rep = await this.represent(tag);
-        const pres = rep!.present(context, attributes);
+        if (!rep) {
+            return;
+        }
+        const pres = rep.present(context);
         await pres.activate();
         await pres.compose();
         pres.flatten();

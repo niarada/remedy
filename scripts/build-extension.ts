@@ -1,20 +1,23 @@
-// XXX: This doesn't work.  Use webpack for now.
+/**
+ * Script to build the extension for development.
+ * Production builds happen with `publish-extension.sh`
+ */
 
-import { build } from "esbuild";
+import { $ } from "bun";
+import { watch } from "node:fs";
 
-const debug = true; //process.argv.includes('debug')
+async function buildSource() {
+    console.log("Building extension source...");
+    await $`tsc -p packages/vscode`;
+}
 
-await build({
-    bundle: true,
-    entryPoints: {
-        extension: "packages/vscode/src/extension.ts",
-        server: "packages/vscode/src/server/index.ts",
-    },
-    external: ["vscode"],
-    logLevel: "info",
-    minify: !debug,
-    outdir: "packages/vscode/dist",
-    platform: "node",
-    sourcemap: debug,
-    target: "node16",
-});
+async function buildGrammar() {
+    console.log("Building extension grammar...");
+    await $`bun build:grammar`;
+}
+
+await buildSource();
+await buildGrammar();
+
+watch("packages/vscode/src", buildSource);
+watch("packages/vscode/grammars", buildGrammar);

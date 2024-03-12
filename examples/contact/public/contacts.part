@@ -8,13 +8,24 @@ import { model } from "~/lib/model"
 
 <table>
     <thead>
-    <tr>
-        <th>First</th> <th>Last</th> <th>Phone</th> <th>Email</th> <th></th>
-    </tr>
+        <tr>
+            <th>First</th>
+            <th>Last</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th></th>
+        </tr>
     </thead>
     <tbody>
         <tr mx-each={model.contacts} mx-as="contact">
             <td>{contact.first}</td>
+            <td>{contact.last}</td>
+            <td>{contact.phone}</td>
+            <td>{contact.email}</td>
+            <td>
+                <a href="/contacts/edit?id={contact.id}">Edit</a>
+                <a href="/contacts/{contact.id}">View</a>
+            </td>
         </tr>
     </tbody>
 </table>
