@@ -2,8 +2,12 @@
     "version": "0.2.0",
     "compounds": [
         {
-            "name": "Extension + Language Server",
+            "name": "Extension + LS: Todo",
             "configurations": ["Extension: Todo", "Language Server: Attach"]
+        },
+        {
+            "name": "Extension + LS: Docs",
+            "configurations": ["Extension: Docs", "Language Server: Attach"]
         }
     ],
     "configurations": [
