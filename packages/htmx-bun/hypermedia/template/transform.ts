@@ -1,4 +1,11 @@
-import { HtmlNode } from "./ast";
+import {
+    HtmlNode,
+    HtmlParent,
+    createHtmlElement,
+    createHtmlExpression,
+    createHtmlFragment,
+    createHtmlText,
+} from "./ast";
 
 export type HtmlTransformVisitResponse =
     | HtmlNode
@@ -97,15 +104,36 @@ export function simpleWalkHtml(node: HtmlNode, visit: HtmlSimpleWalkVisitor) {
     });
 }
 
-export function cloneHtml(source: HtmlNode): HtmlNode {
-    const target = structuredClone(source);
-    simpleWalkHtml(target, (node) => {
-        if (node.parent) {
-            node.scope = Object.assign(
-                Object.create(node.parent.scope),
-                node.scope,
-            );
+export function cloneHtml(node: HtmlNode, parent?: HtmlParent): HtmlNode {
+    if (node.type === "fragment") {
+        const clone = createHtmlFragment(parent);
+        if (!parent) {
+            clone.parent = node.parent;
+            clone.scope = { ...node.scope };
         }
-    });
-    return target;
+        clone.children = node.children.map((child) => cloneHtml(child, clone));
+        return clone;
+    }
+    if (!parent) {
+        parent = node.parent;
+    }
+    switch (node.type) {
+        case "element": {
+            const clone = createHtmlElement(
+                parent,
+                node.tag,
+                structuredClone(node.attrs),
+            );
+            clone.children = node.children.map((child) =>
+                cloneHtml(child, clone),
+            );
+            return clone;
+        }
+        case "text": {
+            return createHtmlText(parent, node.content);
+        }
+        case "expression": {
+            return createHtmlExpression(parent, node.content);
+        }
+    }
 }
