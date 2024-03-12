@@ -8,6 +8,8 @@ import { watch } from "node:fs";
 
 async function buildSource() {
     console.log("Building extension source...");
+    await $`mkdir -p packages/vscode/src/server/template`;
+    await $`cp -r packages/htmx-bun/hypermedia/template/*.ts packages/vscode/src/server/template`;
     await $`tsc -p packages/vscode`;
 }
 
@@ -20,4 +22,5 @@ await buildSource();
 await buildGrammar();
 
 watch("packages/vscode/src", buildSource);
+watch("packages/htmx-bun/hypermedia/template", buildSource);
 watch("packages/vscode/grammars", buildGrammar);
