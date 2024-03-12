@@ -50,12 +50,41 @@ function resolvePath(
     const [first, ...rest] = segments;
     const entries = fs.readdirSync(currentPath, { withFileTypes: true });
 
-    // Check for non-variable directories and files first
+    // Check for non-variable files first
     for (const entry of entries) {
         const nameWithoutExtension = path.parse(entry.name).name;
         const entryPath = path.join(currentPath, entry.name);
 
-        if (entry.isDirectory() && nameWithoutExtension === first) {
+        if (entry.isFile() && nameWithoutExtension === first) {
+            if (rest.length === 0) {
+                return {
+                    path: entryPath,
+                    amendedTag: first,
+                    resolvedVariables,
+                };
+            }
+            const {
+                path: subPath,
+                amendedTag: subAmendedTag,
+                resolvedVariables: subResolvedVariables,
+            } = resolvePath(rest, path.dirname(entryPath), resolvedVariables);
+            if (subPath !== undefined) {
+                return {
+                    path: subPath,
+                    amendedTag: subAmendedTag
+                        ? `${first}-${subAmendedTag}`
+                        : first,
+                    resolvedVariables: subResolvedVariables,
+                };
+            }
+        }
+    }
+
+    // Check for non-variable directories
+    for (const entry of entries) {
+        const entryPath = path.join(currentPath, entry.name);
+
+        if (entry.isDirectory() && entry.name === first) {
             const {
                 path: subPath,
                 amendedTag: subAmendedTag,
@@ -70,25 +99,48 @@ function resolvePath(
                     resolvedVariables: subResolvedVariables,
                 };
             }
-        } else if (
-            entry.isFile() &&
-            rest.length === 0 &&
-            nameWithoutExtension === first
-        ) {
-            return {
-                path: entryPath,
-                amendedTag: first,
-                resolvedVariables,
-            };
         }
     }
 
-    // Check for variable directories and files
+    // Check for variable files and directories
     for (const entry of entries) {
         const nameWithoutExtension = path.parse(entry.name).name;
         const entryPath = path.join(currentPath, entry.name);
 
         if (
+            entry.isFile() &&
+            nameWithoutExtension.startsWith("[") &&
+            nameWithoutExtension.endsWith("]")
+        ) {
+            const variableName = nameWithoutExtension.slice(1, -1);
+            if (rest.length === 0) {
+                return {
+                    path: entryPath,
+                    amendedTag: nameWithoutExtension,
+                    resolvedVariables: {
+                        ...resolvedVariables,
+                        [variableName]: first,
+                    },
+                };
+            }
+            const {
+                path: subPath,
+                amendedTag: subAmendedTag,
+                resolvedVariables: subResolvedVariables,
+            } = resolvePath(rest, path.dirname(entryPath), {
+                ...resolvedVariables,
+                [variableName]: first,
+            });
+            if (subPath !== undefined) {
+                return {
+                    path: subPath,
+                    amendedTag: subAmendedTag
+                        ? `${nameWithoutExtension}-${subAmendedTag}`
+                        : nameWithoutExtension,
+                    resolvedVariables: subResolvedVariables,
+                };
+            }
+        } else if (
             entry.isDirectory() &&
             nameWithoutExtension.startsWith("[") &&
             nameWithoutExtension.endsWith("]")
@@ -111,21 +163,6 @@ function resolvePath(
                     resolvedVariables: subResolvedVariables,
                 };
             }
-        } else if (
-            entry.isFile() &&
-            rest.length === 0 &&
-            nameWithoutExtension.startsWith("[") &&
-            nameWithoutExtension.endsWith("]")
-        ) {
-            const variableName = nameWithoutExtension.slice(1, -1);
-            return {
-                path: entryPath,
-                amendedTag: nameWithoutExtension,
-                resolvedVariables: {
-                    ...resolvedVariables,
-                    [variableName]: first,
-                },
-            };
         }
     }
 

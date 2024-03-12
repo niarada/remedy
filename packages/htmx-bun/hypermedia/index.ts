@@ -109,6 +109,7 @@ export class Representation {
      * @returns
      */
     present(context: Context): Presentation {
+        const t = this.template;
         const template = cloneHtml(this.template) as HtmlFragment;
         if (this instanceof VariableRepresentation) {
             return new Presentation(
