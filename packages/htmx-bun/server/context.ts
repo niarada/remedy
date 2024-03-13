@@ -24,10 +24,7 @@ export class Context<A extends Attributes = Attributes> {
     private readonly football: ContextFootball;
     #attributes: A;
 
-    constructor(
-        requestOrFootball: Request | ContextFootball,
-        attributes: A = {} as A,
-    ) {
+    constructor(requestOrFootball: Request | ContextFootball, attributes: A = {} as A) {
         if (requestOrFootball instanceof Request) {
             this.football = {
                 request: requestOrFootball,
@@ -51,6 +48,10 @@ export class Context<A extends Attributes = Attributes> {
         this.#attributes = coerceAttributes(this.#attributes, types);
     }
 
+    definedAttributeValues(types: AttributeTypes) {
+        return definedAttributeValues(this.#attributes, types);
+    }
+
     get attributes() {
         return this.#attributes;
     }
@@ -63,19 +64,16 @@ export class Context<A extends Attributes = Attributes> {
             return;
         }
         if (
-            ![
-                "application/x-www-form-urlencoded",
-                "multipart/form-data",
-            ].includes(this.football.request.headers.get("Content-Type") ?? "")
+            !["application/x-www-form-urlencoded", "multipart/form-data"].includes(
+                this.football.request.headers.get("Content-Type") ?? "",
+            )
         ) {
             return;
         }
         Object.assign(
             this.form,
             Object.fromEntries(
-                Array.from(await this.football.request.formData()).filter(
-                    ([key, value]) => typeof value === "string",
-                ),
+                Array.from(await this.football.request.formData()).filter(([key, value]) => typeof value === "string"),
             ),
         );
     }
@@ -167,10 +165,7 @@ interface Oob {
     attributes: Record<string, unknown>;
 }
 
-export function coerceAttributes<A extends Attributes = Attributes>(
-    attributes: A,
-    types: AttributeTypes,
-) {
+export function coerceAttributes<A extends Attributes = Attributes>(attributes: A, types: AttributeTypes) {
     const coerced: Record<string, unknown> = structuredClone(attributes);
     for (const [key, type] of Object.entries(types)) {
         if (type === "number") {
@@ -180,4 +175,12 @@ export function coerceAttributes<A extends Attributes = Attributes>(
         }
     }
     return coerced as A;
+}
+
+export function definedAttributeValues<A extends Attributes = Attributes>(attributes: A, types: AttributeTypes) {
+    const defined = [];
+    for (const [key, type] of Object.entries(types)) {
+        defined.push(attributes[key]);
+    }
+    return defined;
 }

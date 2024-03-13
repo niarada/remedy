@@ -4,11 +4,8 @@ interface Attributes {
     id: number;
 }
 
-console.log(typeof $context.attributes.id);
-
-const id = Number($context.attributes.id ?? 0);
-
 const contact = model.contacts.find(contact => contact.id === id)!;
+
 if (!contact) {
     $context.status(404);
 }

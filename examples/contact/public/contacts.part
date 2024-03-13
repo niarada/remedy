@@ -23,7 +23,7 @@ import { model } from "~/lib/model"
             <td>{contact.phone}</td>
             <td>{contact.email}</td>
             <td>
-                <a href="/contacts/edit?id={contact.id}">Edit</a>
+                <a href="/contacts/{contact.id}/edit">Edit</a>
                 <a href="/contacts/{contact.id}">View</a>
             </td>
         </tr>

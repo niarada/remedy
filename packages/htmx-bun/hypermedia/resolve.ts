@@ -28,18 +28,11 @@ interface ResolvedPathInfo {
  */
 export function resolveTag(tag: string, basePath: string): ResolvedTagInfo {
     const segments = tag.split("-");
-    const { path: resolvedPath, resolvedVariables } = resolvePath(
-        segments,
-        basePath,
-        {},
-    );
+    const { path: resolvedPath, resolvedVariables } = resolvePath(segments, basePath, {});
     return {
         path: resolvedPath,
         amendedTag:
-            resolvedPath &&
-            dropExtension(
-                resolvedPath.replace(new RegExp(`^${basePath}/`), ""),
-            ).replace(/\//g, "-"),
+            resolvedPath && dropExtension(resolvedPath.replace(new RegExp(`^${basePath}/`), "")).replace(/\//g, "-"),
         resolvedVariables,
     };
 }
@@ -59,6 +52,9 @@ function resolvePath(
     const currentPathWithoutExtension = dropExtension(currentPath);
 
     if (!fs.existsSync(currentPathWithoutExtension) || segments.length === 0) {
+        if (segments.length > 0) {
+            return { path: undefined, resolvedVariables };
+        }
         return {
             path: currentPath,
             resolvedVariables,
@@ -93,11 +89,7 @@ function resolvePath(
         const nameWithoutExtension = path.parse(entry.name).name;
         const entryPath = path.join(currentPath, entry.name);
 
-        if (
-            entry.isFile() &&
-            nameWithoutExtension.startsWith("[") &&
-            nameWithoutExtension.endsWith("]")
-        ) {
+        if (entry.isFile() && nameWithoutExtension.startsWith("[") && nameWithoutExtension.endsWith("]")) {
             const variableName = nameWithoutExtension.slice(1, -1);
             return resolvePath(rest, entryPath, {
                 ...resolvedVariables,
@@ -122,8 +114,5 @@ function resolvePath(
 }
 
 function dropExtension(filePath: string): string {
-    return path.join(
-        path.dirname(filePath),
-        path.basename(filePath, path.extname(filePath)),
-    );
+    return path.join(path.dirname(filePath), path.basename(filePath, path.extname(filePath)));
 }

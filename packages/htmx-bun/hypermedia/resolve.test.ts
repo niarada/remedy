@@ -12,22 +12,15 @@ describe("resolveTag", () => {
         fs.mkdirSync(path.join(basePath, "joy/patience/[id]"), {
             recursive: true,
         });
-        fs.writeFileSync(
-            path.join(basePath, "joy/patience/[id]/kindness.part"),
-            "",
-        );
+        fs.writeFileSync(path.join(basePath, "joy/patience/[id]/kindness.part"), "");
         fs.mkdirSync(path.join(basePath, "joy/[virtue]/[id]"), {
             recursive: true,
         });
-        fs.writeFileSync(
-            path.join(basePath, "joy/[virtue]/[id]/kindness.part"),
-            "",
-        );
-        fs.writeFileSync(
-            path.join(basePath, "joy/[virtue]/[id]/[other].part"),
-            "",
-        );
+        fs.writeFileSync(path.join(basePath, "joy/[virtue]/[id]/kindness.part"), "");
+        fs.writeFileSync(path.join(basePath, "joy/[virtue]/[id]/[other].part"), "");
         fs.writeFileSync(path.join(basePath, "joy.part"), "");
+        fs.mkdirSync(path.join(basePath, "love"), { recursive: true });
+        fs.writeFileSync(path.join(basePath, "love/[id].part"), "");
     });
 
     afterAll(() => {
@@ -74,6 +67,26 @@ describe("resolveTag", () => {
             path: path.join(basePath, "joy.part"),
             amendedTag: "joy",
             resolvedVariables: {},
+        };
+        expect(resolveTag(tag, basePath)).toEqual(expected);
+    });
+
+    it("should return undefined for a path one segment longer than an existing path that doesn't exist", () => {
+        const tag = "love-3-goodness";
+        const expected = {
+            path: undefined,
+            amendedTag: undefined,
+            resolvedVariables: { id: "3" },
+        };
+        expect(resolveTag(tag, basePath)).toEqual(expected);
+    });
+
+    it("should return when variable file on end", () => {
+        const tag = "love-3";
+        const expected = {
+            path: path.join(basePath, "/love/[id].part"),
+            amendedTag: "love-[id]",
+            resolvedVariables: { id: "3" },
         };
         expect(resolveTag(tag, basePath)).toEqual(expected);
     });

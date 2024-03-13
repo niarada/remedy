@@ -63,32 +63,21 @@ function generateCodeAdditions(text) {
             const visit: ts.Visitor = (node) => {
                 // console.log("VISIT", ts.SyntaxKind[node.kind]);
                 ts.visitEachChild(node, visit, context);
-                // if (
-                //     ts.isPropertySignature(node) &&
-                //     ts.isInterfaceDeclaration(node.parent) &&
-                //     node.parent.name.text === "Attributes"
-                // ) {
-                //     console.log(
-                //         "Attribute",
-                //         node.name.getText(),
-                //         node.type?.getText(),
-                //     );
-                // }
-                // if (
-                //     ts.isVariableDeclaration(node) &&
-                //     node.parent.parent.parent === root
-                // ) {
-                //     suffix.push(`${node.name.getText()};\n`);
-                // }
+                if (
+                    ts.isPropertySignature(node) &&
+                    ts.isInterfaceDeclaration(node.parent) &&
+                    node.parent.name.text === "Attributes"
+                ) {
+                    console.log("Attribute", node.name.getText(), node.type?.getText());
+                    prefix.push(`const ${node.name.getText()} = $context.attributes.${node.name.getText()};\n`);
+                }
                 return node;
             };
             ts.visitNode(root, visit);
             return root;
         };
     };
-    ts.transform(ts.createSourceFile("", text, ts.ScriptTarget.Latest, true), [
-        transformer,
-    ]);
+    ts.transform(ts.createSourceFile("", text, ts.ScriptTarget.Latest, true), [transformer]);
     return {
         prefix: prefix.join(""),
         suffix: suffix.join(""),
@@ -102,7 +91,6 @@ function redactHtml(html: string) {
     for (let i = 0; i < tokens.length; i++) {
         const token = tokens[i];
         if (token.type === TokenType.Whitespace) {
-            // suffix.push(" ".repeat(token.value.length));
             suffix.push(token.value);
             continue;
         }
