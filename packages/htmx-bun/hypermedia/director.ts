@@ -1,5 +1,5 @@
 import { plugin } from "bun";
-import { existsSync, readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { resolveTag } from "~/lib/ai/resolve-tag";
 import { info, warn } from "~/lib/log";
 import { watch } from "~/lib/watch";
@@ -176,31 +176,5 @@ export class Director {
         await pres.compose();
         pres.flatten();
         return pres.render(options);
-    }
-
-    /**
-     * Searches all possible file paths derived from the configured base path
-     * and the tag name, returning the first one found.
-     * @param tag The tag name.
-     * @returns A path, or undefined.
-     */
-    pathForTag(tag: string) {
-        const pathname = tag.replace(/-/g, "/");
-        if (this.base) {
-            const possibles =
-                tag === "layout"
-                    ? [`${this.base}/index.part`, `${this.base}/index.md`]
-                    : [
-                          //   `${this.base}/${pathname}/index.part`,
-                          //   `${this.base}/${pathname}/index.md`,
-                          `${this.base}/${pathname}.part`,
-                          `${this.base}/${pathname}.md`,
-                      ];
-            for (const path of possibles) {
-                if (existsSync(path)) {
-                    return path;
-                }
-            }
-        }
     }
 }

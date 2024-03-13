@@ -1,8 +1,8 @@
-if (Context.url.pathname === "/") {
-    Context.redirect("/contacts");
+if ($context.url.pathname === "/") {
+    $context.redirect("/contacts");
 }
 
-const flash = Context.flash;
+const flash = $context.flash;
 // Context.flash = "Foobar";
 
 <html lang="">
