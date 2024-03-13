@@ -2,7 +2,7 @@ import { afterAll } from "bun:test";
 import { mkdtempSync, rmdirSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { AttributeTypes, Attributes } from "~/hypermedia";
-import { Context, coerceAttributes } from "~/server/context";
+import { Context, coerceAttributes, definedAttributeValues } from "~/server/context";
 
 export function makeTemporaryDirectory() {
     const dir = mkdtempSync(`${tmpdir()}/htmx-bun-`);
@@ -25,6 +25,10 @@ class FakeContext {
 
     coerceAttributes(types: AttributeTypes = {}) {
         this.#attributes = coerceAttributes(this.#attributes, types);
+    }
+
+    definedAttributeValues(types: AttributeTypes) {
+        return definedAttributeValues(this.#attributes, types);
     }
 
     get attributes() {
