@@ -62,13 +62,17 @@ const nextArticle = articles[articleIndex + 1] || null;
                 </li>
             </ul>
         </nav>
-        <article class="prose prose-slate prose-invert">
+        <article class="prose prose-slate prose-invert flex-1">
             <slot>
                 <introduction />
             </slot>
             <footer class="mt-8 flex justify-between border-t border-t-slate-500 pt-4">
-                <a href={previousArticle?.href}>← {previousArticle?.title}</a>
-                <a href={nextArticle?.href}>{nextArticle?.title} →</a>
+                <div>
+                    <a mx-when={previousArticle} href={previousArticle?.href}>← {previousArticle?.title}</a>
+                </div>
+                <div>
+                    <a mx-when={nextArticle} href={nextArticle?.href}>{nextArticle?.title} →</a>
+                </div>
             </footer>
         </article>
     </main>

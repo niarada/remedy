@@ -3,7 +3,7 @@ import { Context } from "~/server/context";
 import { Representation } from ".";
 import { Director } from "./director";
 import { expressDefinedAttributesToStrings, transformExpressionsIntoStrings } from "./expressor";
-import { transformFlowEach } from "./flow";
+import { transformFlowEach, transformFlowWhen } from "./flow";
 import {
     HtmlElement,
     HtmlFragment,
@@ -41,6 +41,7 @@ export class Presentation {
     }
 
     async compose() {
+        transformFlowWhen(this.template);
         transformFlowEach(this.template);
         await this.transformComposedHypermedia();
     }
