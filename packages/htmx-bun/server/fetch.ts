@@ -93,7 +93,7 @@ export async function buildFetch(options: ServerOptions) {
 
         for (let i = 0; i < pathway.length; i++) {
             const tag = pathway.slice(i, pathway.length + 1 - 1).join("-");
-            console.log("TAG", tag);
+
             // If outer leaf not present, consider this resource unavailable.
             if (!presentation) {
                 presentation = await director.present(tag, context);

@@ -8,5 +8,8 @@
     },
     "[partial]": {
         "editor.defaultFormatter": "moonlight-pm.htmx-bun-vscode"
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
     }
 }

@@ -1,4 +1,4 @@
-import markdown from "markdown-it";
+import Markdown from "markdown-it";
 import { Source } from "~/hypermedia";
 
 export class MarkdownSource extends Source {
@@ -15,7 +15,17 @@ export class MarkdownSource extends Source {
     }
 
     compile() {
-        this.#html = markdown().render(this.text);
-        console.log(this.#html);
+        this.#html = markdown.render(this.text);
     }
 }
+
+const markdown = new Markdown();
+
+markdown.set({
+    xhtmlOut: false,
+});
+
+markdown.renderer.rules.text = (tokens, idx) => {
+    return tokens[idx].content;
+};
+markdown.disable("entity");
