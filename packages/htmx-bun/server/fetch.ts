@@ -21,10 +21,7 @@ export async function buildFetch(options: ServerOptions) {
 
         const context = new Context(request);
 
-        if (
-            context.url.pathname !== "/" &&
-            context.url.pathname.endsWith("/")
-        ) {
+        if (context.url.pathname !== "/" && context.url.pathname.endsWith("/")) {
             context.redirect(context.url.pathname.slice(0, -1));
             return context.response;
         }
@@ -61,8 +58,7 @@ export async function buildFetch(options: ServerOptions) {
     };
 
     async function renderPartial(context: Context) {
-        const tag =
-            context.url.pathname.slice(1).replace(/\//g, "-") || "index";
+        const tag = context.url.pathname.slice(1).replace(/\//g, "-") || "index";
         const rep = await director.represent(tag);
         if (!rep) {
             return;
@@ -92,14 +88,12 @@ export async function buildFetch(options: ServerOptions) {
     }
 
     async function renderFull(context: Context) {
-        const pathway = context.url.pathname
-            .slice(1)
-            .split("/")
-            .filter(Boolean);
+        const pathway = context.url.pathname.slice(1).split("/").filter(Boolean);
         let presentation: Presentation | undefined;
 
         for (let i = 0; i < pathway.length; i++) {
             const tag = pathway.slice(i, pathway.length + 1 - 1).join("-");
+            console.log("TAG", tag);
             // If outer leaf not present, consider this resource unavailable.
             if (!presentation) {
                 presentation = await director.present(tag, context);
@@ -112,22 +106,16 @@ export async function buildFetch(options: ServerOptions) {
                     return;
                 }
             } else {
-                presentation = await composePresentation(
-                    context,
-                    tag,
-                    presentation,
-                );
+                presentation = await composePresentation(context, tag, presentation);
                 if (context.response) {
                     return;
                 }
             }
         }
 
-        presentation = await composePresentation(
-            context,
-            "index",
-            presentation,
-        );
+        // XXX: If the path /index had been specifically requested, it will be wrapped in itself,
+        //      so fix that are throw an error.
+        presentation = await composePresentation(context, "index", presentation);
 
         if (context.response) {
             return;
@@ -141,21 +129,14 @@ export async function buildFetch(options: ServerOptions) {
 
         await featureTransforms(presentation);
 
-        context.response = new Response(
-            `<!doctype html>\n${presentation.render()}`,
-            {
-                headers: {
-                    "Content-Type": "text/html;charset=utf-8",
-                },
+        context.response = new Response(`<!doctype html>\n${presentation.render()}`, {
+            headers: {
+                "Content-Type": "text/html;charset=utf-8",
             },
-        );
+        });
     }
 
-    async function composePresentation(
-        context: Context,
-        tag: string,
-        leaf?: Presentation,
-    ) {
+    async function composePresentation(context: Context, tag: string, leaf?: Presentation) {
         const pres = await director.present(tag, context);
 
         if (pres) {
@@ -185,8 +166,8 @@ function log(context: Context, duration: number) {
         .otherwise(() => info);
     loglvl(
         "fetch",
-        `${context.response!.status} ${context.request.method} ${
-            context.url.pathname
-        }${context.url.search} ${chalk.gray(`${duration}ms`)}`,
+        `${context.response!.status} ${context.request.method} ${context.url.pathname}${
+            context.url.search
+        } ${chalk.gray(`${duration}ms`)}`,
     );
 }

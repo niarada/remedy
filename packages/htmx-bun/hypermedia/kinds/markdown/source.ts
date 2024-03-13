@@ -7,7 +7,7 @@ export class MarkdownSource extends Source {
     #html!: string;
 
     get attributes() {
-        return "null";
+        return "{}";
     }
 
     get template() {
@@ -16,5 +16,6 @@ export class MarkdownSource extends Source {
 
     compile() {
         this.#html = markdown().render(this.text);
+        console.log(this.#html);
     }
 }
