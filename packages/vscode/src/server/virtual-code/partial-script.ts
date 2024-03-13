@@ -23,7 +23,10 @@ export class PartialScriptVirtualCode implements VirtualCode {
         try {
             codeAdditions = generateCodeAdditions(text);
         } catch (e) {}
-        const prefix = codeAdditions.prefix + htmlAdditions.prefix;
+        const prefix = (codeAdditions.prefix + htmlAdditions.prefix)
+            .split("\n")
+            .map((it) => it.trim())
+            .join("\n");
         const suffix = htmlAdditions.suffix + codeAdditions.suffix;
         const full = `${prefix}${text}${suffix}`;
         this.snapshot = {
