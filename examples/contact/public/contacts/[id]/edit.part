@@ -1,4 +1,4 @@
-import { model } from "~/lib/model"
+import { model, saveModel } from "~/lib/model"
 
 interface Attributes {
     id: number;
@@ -10,27 +10,33 @@ if (!contact) {
     $context.status(404);
 }
 
+if ($context.request.method === "POST") {
+    Object.assign(contact, $context.form);
+    saveModel();
+    $context.redirect(`/contacts/${contact.id}`);
+}
+
 <form action="/contacts/{id}/edit" method="post">
     <fieldset>
         <legend>Contact Values</legend>
         <p>
             <label for="email">Email</label>
-            <input name="email" id="email" type="email" placeholder="Email" value="">
+            <input name="email" id="email" type="email" placeholder="Email" value={contact.email}>
             <span class="error"></span>
         </p>
         <p>
             <label for="first">First Name</label>
-            <input name="first" id="first" type="text" placeholder="First Name" value="">
+            <input name="first" id="first" type="text" placeholder="First Name" value={contact.first}>
             <span class="error"></span>
         </p>
         <p>
             <label for="last">Last Name</label>
-            <input name="last" id="last" type="text" placeholder="Last Name" value="">
+            <input name="last" id="last" type="text" placeholder="Last Name" value={contact.last}>
             <span class="error"></span>
         </p>
         <p>
             <label for="phone">Phone</label>
-            <input name="phone" id="phone" type="text" placeholder="Phone" value="">
+            <input name="phone" id="phone" type="text" placeholder="Phone" value={contact.phone}>
             <span class="error"></span>
         </p>
         <button>Save</button>

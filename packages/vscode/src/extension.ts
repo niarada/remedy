@@ -5,7 +5,6 @@ import { LanguageClient, TransportKind } from "vscode-languageclient/node";
 let client: LanguageClient;
 
 export async function activate(context) {
-    console.log("ACTIVATE");
     const serverPath = `${context.extensionPath}/dist/server/index.js`;
     client = new LanguageClient(
         "partial",
@@ -36,7 +35,6 @@ export async function activate(context) {
     const labs = createLabsInfo(serverProtocol);
     labs.addLanguageClient(client);
 
-    console.log("ACTIVATION COMPLETE");
     return labs.extensionExports;
 }
 
