@@ -1,7 +1,7 @@
 import type { CodeMapping, VirtualCode } from "@volar/language-core";
 import type { IScriptSnapshot } from "typescript";
 import * as ts from "typescript";
-import { TokenType, htmlStartIndex, scanPartial } from "../template/scanner";
+import { TokenType, htmlStartIndex, scanPartial } from "../../template/scanner";
 
 export class PartialScriptVirtualCode implements VirtualCode {
     languageId = "typescript";
@@ -17,7 +17,9 @@ export class PartialScriptVirtualCode implements VirtualCode {
         let htmlAdditions = { prefix: "", suffix: "" };
         try {
             htmlAdditions = redactHtml(text);
-        } catch (e) {}
+        } catch (e) {
+            console.log(e);
+        }
         text = text.slice(0, htmlIndex);
         let codeAdditions = { prefix: "", suffix: "" };
         try {
@@ -29,6 +31,7 @@ export class PartialScriptVirtualCode implements VirtualCode {
             .join("\n");
         const suffix = htmlAdditions.suffix + codeAdditions.suffix;
         const full = `${prefix}${text}${suffix}`;
+        // console.log(full);
         this.snapshot = {
             getText: (start, end) => full.slice(start, end),
             getLength: () => full.length,

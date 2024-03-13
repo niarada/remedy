@@ -4,22 +4,28 @@
 
 ### Mission:
 
-*Building web sites should be fast, fun, and uncomplicated.*
+*Start with nothing.*
 
 #### Influences:
 
-1. [HATEOAS](https://htmx.org/essays/hateoas/)
-1. [Hypermedia Systems](https://hypermedia.systems/)
+- [HATEOAS](https://htmx.org/essays/hateoas/)
+- [Hypermedia Systems](https://hypermedia.systems/)
 
-#### Fundamentals:
+#### Basics:
 
-(Hmm... views and whatnot should be re-represented as "Resources")
+When you start up `htmx-bun`, the only thing you get is a running server, and a public folder.
 
+Put something in the public folder, and the server will serve it.
 
-1. All views are partials
-1. Partials can be loaded into other partials, unless they are a leaf type:
-   - `.part` - Partial files can contain other partials through their <slot>
-   - `.md` - Markdown files are leaf partials.
-1. Partials are accessible by route.
-1. Partials emit html, or nothing.
-1. Partials are composable.
+Some thing you may put in the folder are special:
+
+- *Markdown files (`.md`)*
+
+   These will be turned into HTML.
+
+- *Partial files (`.part`)*
+
+   These consist of some script (TS or JS) at the top, and HTML at the bottom.  Or just script, or just HTML.
+
+   In the HTML, curly braces **&lbrace; &rbrace;** are used to evaluate expressions, which may
+   reference any variables present in the script above.

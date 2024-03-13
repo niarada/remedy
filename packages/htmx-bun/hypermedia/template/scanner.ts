@@ -71,10 +71,7 @@ class Scanner {
     }
 
     private matchElement() {
-        if (
-            this.peekStringMatch(2, "</") ||
-            !this.matchCharacterType(TokenType.OpenAngleBracket, "<")
-        ) {
+        if (this.peekStringMatch(2, "</") || !this.matchCharacterType(TokenType.OpenAngleBracket, "<")) {
             return;
         }
         if (!this.matchTagName()) {
@@ -111,9 +108,7 @@ class Scanner {
 
     private matchTagName() {
         const position = this.position;
-        const match = this.source
-            .slice(this.position)
-            .match(/^[a-z][a-z0-9]*(-[a-z]+)*/);
+        const match = this.source.slice(this.position).match(/^[a-z][a-z0-9]*(-[a-z]+)*/);
         if (match) {
             this.position += match[0].length;
             this.token(TokenType.TagName, position);
@@ -142,9 +137,7 @@ class Scanner {
 
     private matchAttributeName() {
         const position = this.position;
-        const match = this.source
-            .slice(this.position)
-            .match(/^[a-z]+((:|::|-)[a-z]+)*/);
+        const match = this.source.slice(this.position).match(/^[a-z]+((:|::|-)[a-z]+)*/);
         if (match) {
             this.position += match[0].length;
             this.token(TokenType.AttributeName, position);
@@ -172,10 +165,7 @@ class Scanner {
 
     private matchAttributeText(): true | undefined {
         const position = this.position;
-        while (
-            !this.peekCharacter('{"') &&
-            this.position < this.source.length
-        ) {
+        while (!this.peekCharacter('{"') && this.position < this.source.length) {
             this.position++;
         }
         if (position !== this.position) {
@@ -192,10 +182,7 @@ class Scanner {
     }
 
     private matchContent() {
-        while (
-            this.position < this.source.length &&
-            !this.peekStringMatch(2, "</")
-        ) {
+        while (this.position < this.source.length && !this.peekStringMatch(2, "</")) {
             this.matchText();
             this.matchElement();
         }
@@ -203,10 +190,7 @@ class Scanner {
 
     private matchText(): true | undefined {
         const position = this.position;
-        while (
-            !this.peekCharacter("{<") &&
-            this.position < this.source.length
-        ) {
+        while (!this.peekCharacter("{<") && this.position < this.source.length) {
             this.position++;
         }
         if (position !== this.position) {
@@ -273,12 +257,7 @@ class Scanner {
 
     private error(message: string) {
         const line = this.source.slice(0, this.position).split("\n").length;
-        const column =
-            this.position - this.source.lastIndexOf("\n", this.position);
-        throw new Error(
-            `Syntax Error: ${message} at line ${line}, column ${column}: ${
-                this.source[this.position]
-            }\n`,
-        );
+        const column = this.position - this.source.lastIndexOf("\n", this.position);
+        throw new Error(`Syntax Error: ${message} at line ${line}, column ${column}: ${this.source[this.position]}\n`);
     }
 }

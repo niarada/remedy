@@ -40,29 +40,16 @@ export class PartialVirtualCode implements VirtualCode {
         if (htmlStartIndex > 0) {
             this.embeddedCodes.push(
                 new PartialScriptVirtualCode("typescript0", text),
-                new SimpleVirtualCode(
-                    "typescript1",
-                    "typescript",
-                    text.slice(0, htmlStartIndex),
-                    0,
-                    {
-                        completion: false,
-                        format: true,
-                        navigation: false,
-                        semantic: false,
-                        structure: false,
-                        verification: false,
-                    },
-                ),
+                new SimpleVirtualCode("typescript1", "typescript", text.slice(0, htmlStartIndex), 0, {
+                    completion: false,
+                    format: true,
+                    navigation: false,
+                    semantic: false,
+                    structure: false,
+                    verification: false,
+                }),
             );
         }
-        this.embeddedCodes.push(
-            new SimpleVirtualCode(
-                "html",
-                "html",
-                text.slice(htmlStartIndex),
-                htmlStartIndex - 1,
-            ),
-        );
+        this.embeddedCodes.push(new SimpleVirtualCode("html", "html", text.slice(htmlStartIndex), htmlStartIndex - 1));
     }
 }
