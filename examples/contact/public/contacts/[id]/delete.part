@@ -1,0 +1,17 @@
+import { model, saveModel } from "~/lib/model"
+
+interface Attributes {
+    id: number;
+}
+
+const contact = model.contacts.find(contact => contact.id === $context.attributes.id)!;
+
+if (!contact) {
+    $context.status(404);
+}
+
+if ($context.request.method === "POST") {
+    model.contacts = model.contacts.filter(c => c.id !== contact.id);
+    saveModel();
+    $context.redirect(`/contacts`);
+}

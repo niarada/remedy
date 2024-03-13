@@ -1,5 +1,15 @@
 import { model } from "~/lib/model"
 
+let contacts = model.contacts;
+
+if ($context.form.q) {
+    const q = $context.form.q.toLowerCase();
+    contacts = contacts.filter(contact => contact.first.includes($context.form.q)
+        || contact.last.toLowerCase().includes(q)
+        || contact.email.toLowerCase().includes(q)
+        || contact.phone.toLowerCase().includes(q));
+}
+
 <form action="/contacts" method="get" class="tool-bar">
     <label for="search">Search Term</label>
     <input id="search" type="search" name="q" value="">
@@ -17,7 +27,7 @@ import { model } from "~/lib/model"
         </tr>
     </thead>
     <tbody>
-        <tr mx-each={model.contacts} mx-as="contact">
+        <tr mx-each={contacts} mx-as="contact">
             <td>{contact.first}</td>
             <td>{contact.last}</td>
             <td>{contact.phone}</td>

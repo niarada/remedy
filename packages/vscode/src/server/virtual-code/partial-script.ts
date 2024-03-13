@@ -64,14 +64,12 @@ function generateCodeAdditions(text) {
     const transformer: ts.TransformerFactory<ts.SourceFile> = (context) => {
         return (root) => {
             const visit: ts.Visitor = (node) => {
-                // console.log("VISIT", ts.SyntaxKind[node.kind]);
                 ts.visitEachChild(node, visit, context);
                 if (
                     ts.isPropertySignature(node) &&
                     ts.isInterfaceDeclaration(node.parent) &&
                     node.parent.name.text === "Attributes"
                 ) {
-                    console.log("Attribute", node.name.getText(), node.type?.getText());
                     prefix.push(`const ${node.name.getText()} = $context.attributes.${node.name.getText()};\n`);
                 }
                 return node;
