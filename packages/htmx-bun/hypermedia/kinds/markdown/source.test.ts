@@ -4,7 +4,7 @@ import { MarkdownSource } from "./source";
 const source1 = `
 # Hello
 `;
-const target1 = `export const attributes = null;
+const target1 = `export const attributes = {};
 export const template = "<h1>Hello</h1>\\n";
 export async function action() { return {}; }
 `;

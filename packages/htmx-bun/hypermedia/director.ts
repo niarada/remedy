@@ -1,6 +1,5 @@
 import { plugin } from "bun";
 import { readFileSync } from "node:fs";
-// import { resolveTag } from "~/lib/ai/resolve-tag";
 import { info, warn } from "~/lib/log";
 import { watch } from "~/lib/watch";
 import { Context } from "~/server/context";
