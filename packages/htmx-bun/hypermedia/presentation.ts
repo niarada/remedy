@@ -2,10 +2,7 @@ import { warn } from "~/lib/log";
 import { Context } from "~/server/context";
 import { Representation } from ".";
 import { Director } from "./director";
-import {
-    expressDefinedAttributesToStrings,
-    transformExpressionsIntoStrings,
-} from "./expressor";
+import { expressDefinedAttributesToStrings, transformExpressionsIntoStrings } from "./expressor";
 import { transformFlowEach } from "./flow";
 import {
     HtmlElement,
@@ -36,7 +33,10 @@ export class Presentation {
         Object.assign(
             this.template.scope,
             this.context.attributes,
-            await this.representation.artifact.action(this.context),
+            await this.representation.artifact.action(
+                this.context,
+                ...this.context.definedAttributeValues(this.representation.artifact.attributes),
+            ),
         );
     }
 
@@ -76,38 +76,22 @@ export class Presentation {
     async transformComposedHypermedia() {
         const candidates: HtmlElement[] = [];
         simpleWalkHtml(this.template, (node) => {
-            if (
-                node.type === "element" &&
-                node.tag !== "slot" &&
-                !htmlTags.includes(node.tag)
-            ) {
+            if (node.type === "element" && node.tag !== "slot" && !htmlTags.includes(node.tag)) {
                 candidates.push(node);
             }
         });
         for (const node of candidates) {
             const rep = await this.director.represent(node.tag);
             if (!rep) {
-                warn(
-                    "presentation",
-                    `No representation found for '${node.tag}'`,
-                );
+                warn("presentation", `No representation found for '${node.tag}'`);
                 return node;
             }
-            const attributes = expressDefinedAttributesToStrings(
-                node,
-                rep.artifact.attributes,
-            );
-            const presentation = rep.present(
-                this.context.withAttributes(attributes),
-            );
+            const attributes = expressDefinedAttributesToStrings(node, rep.artifact.attributes);
+            const presentation = rep.present(this.context.withAttributes(attributes));
             await presentation.activate();
             await presentation.compose();
             presentation.replaceSlotWith(node.children);
-            node.parent.children.splice(
-                node.parent.children.indexOf(node),
-                1,
-                ...presentation.template.children,
-            );
+            node.parent.children.splice(node.parent.children.indexOf(node), 1, ...presentation.template.children);
         }
     }
 

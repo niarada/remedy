@@ -43,12 +43,7 @@ export class Director {
             },
         });
         const artifact = (await import(tag)) as Artifact;
-        const representation = new Representation(
-            this,
-            tag,
-            artifact,
-            source.path,
-        );
+        const representation = new Representation(this, tag, artifact, source.path);
         this.representations.set(tag, representation);
     }
 
@@ -65,9 +60,7 @@ export class Director {
         watch(this.base, async (_, path) => {
             if (/\.(part|md)$/.test(path ?? "")) {
                 info("director", `reloading '${path}'`);
-                const rep = Array.from(this.representations.values()).find(
-                    (r) => r.path === path,
-                );
+                const rep = Array.from(this.representations.values()).find((r) => r.path === path);
                 if (rep) {
                     this.revert(rep.tag);
                 }
@@ -88,13 +81,8 @@ export class Director {
      * @returns The representation, if found, or undefined.
      */
     async represent(tag: string): Promise<Representation | undefined> {
-        console.log("Represent", tag);
         if (!this.representations.has(tag) && this.base) {
-            const { path, amendedTag, resolvedVariables } = resolveTag(
-                tag,
-                this.base,
-            );
-            console.log(amendedTag, path);
+            const { path, amendedTag, resolvedVariables } = resolveTag(tag, this.base);
             if (!path) {
                 warn("director", `No representation found for '${tag}'`);
                 return;
@@ -102,31 +90,16 @@ export class Director {
             if (amendedTag) {
                 if (!this.representations.has(amendedTag)) {
                     const text = readFileSync(path, "utf8");
-                    const shortpath = path.replace(
-                        new RegExp(`^${this.base}/`),
-                        "",
-                    );
+                    const shortpath = path.replace(new RegExp(`^${this.base}/`), "");
                     if (path.endsWith(".part")) {
-                        await this.prepare(
-                            amendedTag,
-                            new PartialSource(text, shortpath),
-                        );
+                        await this.prepare(amendedTag, new PartialSource(text, shortpath));
                     } else if (path.endsWith(".md")) {
-                        await this.prepare(
-                            amendedTag,
-                            new MarkdownSource(text, shortpath),
-                        );
+                        await this.prepare(amendedTag, new MarkdownSource(text, shortpath));
                     }
                 }
                 let representation = this.representations.get(amendedTag);
-                if (
-                    representation &&
-                    Object.keys(resolvedVariables).length > 0
-                ) {
-                    representation = new VariableRepresentation(
-                        representation,
-                        resolvedVariables,
-                    );
+                if (representation && Object.keys(resolvedVariables).length > 0) {
+                    representation = new VariableRepresentation(representation, resolvedVariables);
                 }
                 return representation;
             }
@@ -165,11 +138,7 @@ export class Director {
      * @param options Options to pass to the printer.
      * @returns The rendered html string.
      */
-    async render(
-        tag: string,
-        context: Context,
-        options: Partial<PrintHtmlOptions> = {},
-    ): Promise<string | undefined> {
+    async render(tag: string, context: Context, options: Partial<PrintHtmlOptions> = {}): Promise<string | undefined> {
         const rep = await this.represent(tag);
         if (!rep) {
             return;

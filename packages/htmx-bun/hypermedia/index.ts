@@ -1,13 +1,7 @@
 import { Context } from "~/server/context";
 import { Director } from "./director";
 import { Presentation } from "./presentation";
-import {
-    HtmlFragment,
-    Scope,
-    cloneHtml,
-    createHtmlFragment,
-    parseSource,
-} from "./template";
+import { HtmlFragment, Scope, cloneHtml, createHtmlFragment, parseSource } from "./template";
 
 export type AttributeType = string | boolean | number;
 export type AttributeTypeString = "string" | "boolean" | "number";
@@ -77,7 +71,7 @@ export abstract class Source {
 export interface Artifact {
     kind: ArtifactKind;
     attributes: AttributeTypes;
-    action($context: Context): Promise<Scope>;
+    action($context: Context, ...rest: AttributeType[]): Promise<Scope>;
     template: string;
 }
 
@@ -97,9 +91,7 @@ export class Representation {
         readonly artifact: Artifact,
         readonly path?: string,
     ) {
-        this.template = this.artifact.template
-            ? parseSource(this.artifact.template)
-            : createHtmlFragment();
+        this.template = this.artifact.template ? parseSource(this.artifact.template) : createHtmlFragment();
     }
 
     /**
@@ -112,12 +104,7 @@ export class Representation {
         const t = this.template;
         const template = cloneHtml(this.template) as HtmlFragment;
         if (this instanceof VariableRepresentation) {
-            return new Presentation(
-                this.director,
-                this,
-                template,
-                context.withAttributes(this.variables),
-            );
+            return new Presentation(this.director, this, template, context.withAttributes(this.variables));
         }
         return new Presentation(this.director, this, template, context);
     }
@@ -128,11 +115,6 @@ export class VariableRepresentation extends Representation {
         representation: Representation,
         readonly variables: Record<string, string>,
     ) {
-        super(
-            representation.director,
-            representation.tag,
-            representation.artifact,
-            representation.path,
-        );
+        super(representation.director, representation.tag, representation.artifact, representation.path);
     }
 }

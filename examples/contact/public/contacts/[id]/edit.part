@@ -1,0 +1,38 @@
+import { model } from "~/lib/model"
+
+interface Attributes {
+    id: number;
+}
+
+const contact = model.contacts.find(contact => contact.id === $context.attributes.id)!;
+
+if (!contact) {
+    $context.status(404);
+}
+
+<form action="/contacts/{id}/edit" method="post">
+    <fieldset>
+        <legend>Contact Values</legend>
+        <p>
+            <label for="email">Email</label>
+            <input name="email" id="email" type="email" placeholder="Email" value="">
+            <span class="error"></span>
+        </p>
+        <p>
+            <label for="first">First Name</label>
+            <input name="first" id="first" type="text" placeholder="First Name" value="">
+            <span class="error"></span>
+        </p>
+        <p>
+            <label for="last">Last Name</label>
+            <input name="last" id="last" type="text" placeholder="Last Name" value="">
+            <span class="error"></span>
+        </p>
+        <p>
+            <label for="phone">Phone</label>
+            <input name="phone" id="phone" type="text" placeholder="Phone" value="">
+            <span class="error"></span>
+        </p>
+        <button>Save</button>
+    </fieldset>
+</form>

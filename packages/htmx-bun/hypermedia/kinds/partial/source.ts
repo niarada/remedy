@@ -1,12 +1,6 @@
 import * as ts from "typescript";
-import { AttributeTypeString, AttributeTypes, Source } from "~/hypermedia";
-import {
-    HtmlFragment,
-    htmlStartIndex,
-    parseSource,
-    printHtml,
-    walkHtml,
-} from "~/hypermedia/template";
+import { Source } from "~/hypermedia";
+import { HtmlFragment, htmlStartIndex, parseSource, printHtml, walkHtml } from "~/hypermedia/template";
 
 /**
  * A `.part` source file composed of an upper code section (action) and
@@ -17,7 +11,7 @@ export class PartialSource extends Source {
 
     #template!: HtmlFragment;
     #action!: ts.SourceFile;
-    #attributes?: ts.InterfaceDeclaration;
+    #attributes: Record<string, ts.TypeNode> = {};
 
     /**
      * Compile the partial source into TypeScript that can be loaded as a module by the loader plugin.
@@ -40,16 +34,8 @@ export class PartialSource extends Source {
     }
 
     get attributes() {
-        const attributes: AttributeTypes = {};
-        if (this.#attributes) {
-            for (const member of this.#attributes.members) {
-                if (ts.isPropertySignature(member) && member.type) {
-                    attributes[member.name.getText()] =
-                        member.type.getText() as AttributeTypeString;
-                }
-            }
-        }
-        return JSON.stringify(attributes);
+        console.log(this.#attributes);
+        return JSON.stringify(Object.fromEntries(Object.entries(this.#attributes).map(([k, v]) => [k, v.getText()])));
     }
 
     get template() {
@@ -66,9 +52,7 @@ export class PartialSource extends Source {
                 for (const attr of node.attrs) {
                     for (const value of attr.value) {
                         if (value.type === "expression") {
-                            value.content = this.transformExpression(
-                                value.content,
-                            );
+                            value.content = this.transformExpression(value.content);
                         }
                     }
                 }
@@ -90,12 +74,7 @@ export class PartialSource extends Source {
      * @returns The transformed expression.
      */
     private transformExpression(expression: string) {
-        const source = ts.createSourceFile(
-            "",
-            expression,
-            ts.ScriptTarget.Latest,
-            true,
-        );
+        const source = ts.createSourceFile("", expression, ts.ScriptTarget.Latest, true);
 
         const transformer: ts.TransformerFactory<ts.Node> = (context) => {
             return (root) => {
@@ -143,11 +122,7 @@ export class PartialSource extends Source {
         const result = ts.transform(source, [transformer]);
         const transformed = result.transformed[0] as ts.SourceFile;
         const printer = ts.createPrinter({ omitTrailingSemicolon: true });
-        return printer.printNode(
-            ts.EmitHint.Unspecified,
-            transformed.statements[0],
-            source,
-        );
+        return printer.printNode(ts.EmitHint.Unspecified, transformed.statements[0], source);
     }
 
     /**
@@ -156,38 +131,39 @@ export class PartialSource extends Source {
      *
      * We're also extracting out the partials Attributes interface, if it has one, so we can use
      * that information at runtime.  We also stub the $context local that will be passed
-     * to the function that encloses the partial code.
+     * to the function that encloses the partial code, as well as any attributes.
      */
     private tranformAction() {
         const locals: string[] = ["$context"];
+        // const attributes: Record<string, string> = {};
+        // const attributes: Record<string, ts.TypeNode> = {};
         const transformer: ts.TransformerFactory<ts.SourceFile> = (context) => {
             return (root) => {
                 const statements: ts.Statement[] = [];
                 const visit: ts.Visitor = (node) => {
                     node = ts.visitEachChild(node, visit, context);
-                    if (
-                        ts.isImportSpecifier(node) &&
-                        node.isTypeOnly === false
-                    ) {
+                    if (ts.isImportSpecifier(node) && node.isTypeOnly === false) {
                         locals.push(node.name.text);
                     }
                     if (ts.isImportDeclaration(node)) {
                         statements.push(node);
                         return;
                     }
-                    if (
-                        ts.isInterfaceDeclaration(node) &&
-                        node.name.text === "Attributes"
-                    ) {
-                        this.#attributes = node;
+                    if (ts.isInterfaceDeclaration(node) && node.name.text === "Attributes") {
+                        // this.#attributes = node;
                         statements.push(node);
                         return;
                     }
-                    if (
-                        ts.isVariableDeclaration(node) &&
-                        node.parent.parent.parent === root
-                    ) {
+                    if (ts.isVariableDeclaration(node) && node.parent.parent.parent === root) {
                         locals.push(node.name.getText());
+                    }
+                    if (
+                        ts.isPropertySignature(node) &&
+                        ts.isInterfaceDeclaration(node.parent) &&
+                        node.parent.name.text === "Attributes"
+                    ) {
+                        // attributes.push(node.name.getText());
+                        this.#attributes[node.name.getText()] = node.type!;
                     }
                     return node;
                 };
@@ -211,12 +187,19 @@ export class PartialSource extends Source {
                                 undefined,
                                 ts.factory.createIdentifier("$context"),
                                 undefined,
-                                ts.factory.createTypeReferenceNode(
-                                    ts.factory.createIdentifier("Context"),
-                                    undefined,
-                                ),
+                                ts.factory.createTypeReferenceNode(ts.factory.createIdentifier("Context"), undefined),
                                 undefined,
                             ),
+                            ...Object.entries(this.#attributes).map(([name, type]) => {
+                                return ts.factory.createParameterDeclaration(
+                                    undefined,
+                                    undefined,
+                                    ts.factory.createIdentifier(name),
+                                    undefined,
+                                    type,
+                                    undefined,
+                                );
+                            }),
                         ],
                         undefined,
                         ts.factory.createBlock(
@@ -226,9 +209,7 @@ export class PartialSource extends Source {
                                     ts.factory.createObjectLiteralExpression(
                                         locals.map((name) =>
                                             ts.factory.createShorthandPropertyAssignment(
-                                                ts.factory.createIdentifier(
-                                                    name,
-                                                ),
+                                                ts.factory.createIdentifier(name),
                                             ),
                                         ),
                                         false,

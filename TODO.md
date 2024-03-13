@@ -23,3 +23,6 @@
   - https://github.com/vuejs/language-tools/blob/0f5dfcec3365518c4edb0c0b32397597786ca0e1/packages/language-core/lib/plugins/file-md.ts
   - https://github.com/vue-vine/language-tools/blob/feat/template/packages/language-server/src/languagePlugin.ts#L124-L163
   - https://github.com/vuejs/language-tools/blob/0f5dfcec3365518c4edb0c0b32397597786ca0e1/packages/language-core/lib/generators/script.ts#L396-L402
+- Potential integrations:
+  - https://github.com/kgscialdone/facet
+  - https://orm.drizzle.team/docs/overview
