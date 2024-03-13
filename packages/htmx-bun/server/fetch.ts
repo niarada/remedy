@@ -62,7 +62,7 @@ export async function buildFetch(options: ServerOptions) {
 
     async function renderPartial(context: Context) {
         const tag =
-            context.url.pathname.slice(1).replace(/\//g, "-") || "layout";
+            context.url.pathname.slice(1).replace(/\//g, "-") || "index";
         const rep = await director.represent(tag);
         if (!rep) {
             return;
@@ -125,9 +125,10 @@ export async function buildFetch(options: ServerOptions) {
 
         presentation = await composePresentation(
             context,
-            "layout",
+            "index",
             presentation,
         );
+
         if (context.response) {
             return;
         }
