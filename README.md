@@ -3,23 +3,12 @@
 
 ### Status: pre-alpha
 
+This project is still in early development.  Master branch may or may not work as changes come in quickly.  This should settle down in a few weeks and regular non-breaking builds will happen.
 
-## Mission:
-
-*To make building web sites fast, fun, and uncomplicated.*
-
-### Influences:
+### References
 
 1. [HATEOAS](https://htmx.org/essays/hateoas/)
 1. [Hypermedia Systems](https://hypermedia.systems/)
-
-### Design principles:
-
-1. All views are partials
-1. Partials are a mix of script and html.
-1. Partials are accessible by route.
-1. Partials emit html, or nothing.
-1. Partials are composable.
 
 ## Run an example
 
@@ -41,7 +30,7 @@ Now, start dropping files in the `public` directory.
 
 ## Partials
 
-Partials are indicated with the extension `.part`.  Partials consist of both script and html.  You may start the file with some script, but as soon as a newline followed by a **tag** or **docytype** is encountered, html will be assumed from then on.
+Partials are indicated with the extension `.part`.  Partials consist of both script and html.  You may start the file with some script, but as soon as a newline followed by a **tag** is encountered, html will be assumed from then on.
 
 Example:
 
@@ -56,11 +45,12 @@ const b: string = "b";
 Partials will be resolved into tagnames based on their path.
 
 Examples:
-- `/view/index.part` → `<root />`
-- `/view/todo.part` → `<todo />`
-- `/view/todo/list.part` → `<todo-list />`
+- `public/todo.part` → `<todo />`
+- `public/todo/list.part` → `<todo-list />`
 
 These tags may be referenced in other partials.
+
+`index.part` files are **layouts**.
 
 Tag attributes are passed in as attributes normally are, and are available in the script.  If you include an interface, the types will be properly coerced.
 
