@@ -1,12 +1,13 @@
 import { plugin } from "bun";
 import { readFileSync } from "node:fs";
-import { resolveTag } from "~/lib/ai/resolve-tag";
+// import { resolveTag } from "~/lib/ai/resolve-tag";
 import { info, warn } from "~/lib/log";
 import { watch } from "~/lib/watch";
 import { Context } from "~/server/context";
 import { Artifact, Representation, Source, VariableRepresentation } from ".";
 import { MarkdownSource } from "./kinds/markdown/source";
 import { PartialSource } from "./kinds/partial/source";
+import { resolveTag } from "./resolve";
 import { PrintHtmlOptions, htmlTags } from "./template";
 
 /**
@@ -87,11 +88,13 @@ export class Director {
      * @returns The representation, if found, or undefined.
      */
     async represent(tag: string): Promise<Representation | undefined> {
+        console.log("Represent", tag);
         if (!this.representations.has(tag) && this.base) {
             const { path, amendedTag, resolvedVariables } = resolveTag(
                 tag,
                 this.base,
             );
+            console.log(amendedTag, path);
             if (!path) {
                 warn("director", `No representation found for '${tag}'`);
                 return;
