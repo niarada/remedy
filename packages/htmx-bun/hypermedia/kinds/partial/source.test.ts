@@ -14,7 +14,7 @@ export const template = "<div>{$scope.id} {$scope.name}</div>\\n";
 interface Attributes {
     id: number;
 }
-export async function action($context: Context) {
+export async function action($context: Context, id: number) {
     const name = 'Alpha';
     return { $context, name };
 }

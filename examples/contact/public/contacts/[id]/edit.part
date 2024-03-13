@@ -36,3 +36,11 @@ if (!contact) {
         <button>Save</button>
     </fieldset>
 </form>
+
+<form action="/contacts/{id}/delete" method="post">
+    <button>Delete Contact</button>
+</form>
+
+<p>
+    <a href="/contacts/">Back</a>
+</p>

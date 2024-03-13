@@ -34,7 +34,6 @@ export class PartialSource extends Source {
     }
 
     get attributes() {
-        console.log(this.#attributes);
         return JSON.stringify(Object.fromEntries(Object.entries(this.#attributes).map(([k, v]) => [k, v.getText()])));
     }
 
