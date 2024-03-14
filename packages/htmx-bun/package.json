@@ -4,13 +4,7 @@
     "bin": {
         "htmx-bun": "bin/htmx-bun"
     },
-    "files": [
-        "README.md",
-        "bin",
-        "tsconfig.json",
-        "{lib,partial,plugins,server,view}/**/*.ts",
-        "!**/*.test.ts"
-    ],
+    "files": ["README.md", "bin", "tsconfig.json", "{lib,partial,plugins,server,view}/**/*.ts", "!**/*.test.ts"],
     "repository": {
         "type": "git",
         "url": "git+https://github.com/moonlight-pm/htmx-bun.git"
@@ -24,6 +18,7 @@
         "autoprefixer": "^10.4.18",
         "chalk": "^5.3.0",
         "htmx.org": "^1.9.10",
+        "http-status-codes": "^2.3.0",
         "markdown-it": "^14.0.0",
         "postcss": "^8.4.35",
         "ramda": "^0.29.1",
