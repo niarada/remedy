@@ -1,4 +1,4 @@
-import { mkdirSync } from "fs";
+import { mkdirSync } from "node:fs";
 import { mergeDeepWith } from "ramda";
 import { info } from "~/lib/log";
 import defaultOptions, { ServerOptions } from "~/server/options";
@@ -16,7 +16,7 @@ const options = mergeDeepWith((_, b) => b, defaultOptions, userOptions);
 const fetch = await buildFetch(options);
 
 Bun.serve({
-    port: options.port,
+    port: options.port!,
     fetch,
 });
 

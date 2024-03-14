@@ -3,6 +3,7 @@ import { P, match } from "ts-pattern";
 import { Director } from "~/hypermedia/director";
 import { Presentation } from "~/hypermedia/presentation";
 import { error, info, warn } from "~/lib/log";
+import { applyCompression } from "./compression";
 import { Context } from "./context";
 import { buildFeatures } from "./features";
 import { ServerOptions } from "./options";
@@ -16,14 +17,14 @@ export async function buildFetch(options: ServerOptions) {
 
     const features = await buildFeatures(options);
 
-    return async (request: Request) => {
+    return async (request: Request): Promise<Response> => {
         const time = Bun.nanoseconds();
 
         const context = new Context(request);
 
         if (context.url.pathname !== "/" && context.url.pathname.endsWith("/")) {
             context.redirect(context.url.pathname.slice(0, -1));
-            return context.response;
+            return context.response!;
         }
 
         await context.loadForm();
@@ -54,7 +55,7 @@ export async function buildFetch(options: ServerOptions) {
 
         log(context, Math.floor((Bun.nanoseconds() - time) / 1000000));
 
-        return context.response;
+        return applyCompression(request, context.response);
     };
 
     async function renderPartial(context: Context) {
