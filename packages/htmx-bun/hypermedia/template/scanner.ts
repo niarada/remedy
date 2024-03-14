@@ -65,13 +65,17 @@ class Scanner {
         return this.tokens[this.tokens.length - 1];
     }
 
+    get penultimate(): Token | undefined {
+        return this.tokens[this.tokens.length - 2];
+    }
+
     private matchNext() {
         this.matchElement();
         this.matchText();
     }
 
     private matchElement() {
-        if (this.peekStringMatch(2, "</") || !this.matchCharacterType(TokenType.OpenAngleBracket, "<")) {
+        if (this.peekString("</") || !this.matchCharacterType(TokenType.OpenAngleBracket, "<")) {
             return;
         }
         if (!this.matchTagName()) {
@@ -117,7 +121,7 @@ class Scanner {
     }
 
     private matchAttributes() {
-        while (!this.peekCharacter("/>")) {
+        while (!this.peekAnyCharacter("/>")) {
             this.matchAttribute();
             this.matchWhitespace();
         }
@@ -149,13 +153,13 @@ class Scanner {
         if (this.matchExpression()) {
             return true;
         }
-        if (!this.peekCharacter('"')) {
+        if (!this.peekAnyCharacter('"')) {
             return;
         }
         this.position++;
         const position = this.position;
         this.matchAttributeText();
-        if (!this.peekCharacter('"')) {
+        if (!this.peekAnyCharacter('"')) {
             this.error("Expected closing quote");
             return;
         }
@@ -165,13 +169,13 @@ class Scanner {
 
     private matchAttributeText(): true | undefined {
         const position = this.position;
-        while (!this.peekCharacter('{"') && this.position < this.source.length) {
+        while (!this.peekAnyCharacter('{"') && this.position < this.source.length) {
             this.position++;
         }
         if (position !== this.position) {
             this.token(TokenType.Text, position);
         }
-        if (this.peekCharacter("{")) {
+        if (this.peekAnyCharacter("{")) {
             this.matchExpression();
             return this.matchAttributeText();
         }
@@ -182,31 +186,47 @@ class Scanner {
     }
 
     private matchContent() {
-        while (this.position < this.source.length && !this.peekStringMatch(2, "</")) {
-            this.matchText();
+        while (this.position < this.source.length && !this.peekString("</")) {
+            if (this.penultimate?.value === "code") {
+                this.matchCodeText();
+            } else {
+                this.matchText();
+            }
             this.matchElement();
         }
     }
 
     private matchText(): true | undefined {
         const position = this.position;
-        while (!this.peekCharacter("{<") && this.position < this.source.length) {
+        while (!this.peekAnyCharacter("{<") && this.position < this.source.length) {
             this.position++;
         }
         if (position !== this.position) {
             this.token(TokenType.Text, position);
         }
-        if (this.peekCharacter("{")) {
+        if (this.peekAnyCharacter("{")) {
             this.matchExpression();
             return this.matchText();
         }
-        if (this.peekCharacter("<") && !this.peekStringMatch(2, "</")) {
+        if (this.peekAnyCharacter("<") && !this.peekString("</")) {
             this.matchElement();
             return this.matchText();
         }
         if (position === this.position) {
             return;
         }
+        return true;
+    }
+
+    private matchCodeText(): true | undefined {
+        const position = this.position;
+        while (!this.peekString("</code>") && this.position < this.source.length) {
+            this.position++;
+        }
+        if (position === this.position) {
+            return;
+        }
+        this.token(TokenType.Text, position);
         return true;
     }
 
@@ -245,14 +265,14 @@ class Scanner {
         return true;
     }
 
-    private peekCharacter(chars: string) {
+    private peekAnyCharacter(chars: string) {
         if (chars.split("").includes(this.source[this.position])) {
             return this.source[this.position];
         }
     }
 
-    private peekStringMatch(length: number, str: string) {
-        return this.source.slice(this.position, this.position + length) === str;
+    private peekString(str: string) {
+        return this.source.slice(this.position, this.position + str.length) === str;
     }
 
     private error(message: string) {
