@@ -42,7 +42,6 @@ export function applyCompression(request: Request, response: Response) {
     if (!format) {
         return response;
     }
-    console.log({ ...Object.fromEntries(response.headers.entries()), "Content-Encoding": format });
     return new Response(
         response.body instanceof ReadableStream
             ? response.body.pipeThrough(new CompressionStream(format))
