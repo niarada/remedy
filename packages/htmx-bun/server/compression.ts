@@ -32,7 +32,6 @@ class CompressionStream {
 }
 
 const toBuffer = (data: unknown, encoding: BufferEncoding) => {
-    console.log("BUFFER", data);
     return Buffer.from(
         typeof data === "object" ? JSON.stringify(data) : data?.toString() ?? new String(data),
         encoding,
