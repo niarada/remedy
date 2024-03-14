@@ -26,5 +26,4 @@
 - Potential integrations:
   - https://github.com/kgscialdone/facet
   - https://orm.drizzle.team/docs/overview
-- Parse HTML comments.
 - Bug: Referring to an uninitialzed var in an mx-each block hangs the extension.

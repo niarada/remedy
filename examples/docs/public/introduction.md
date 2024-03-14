@@ -4,7 +4,7 @@
 
 ### Mission:
 
-*Start with nothing.*
+*Start from zero.*
 
 #### Influences:
 
@@ -17,7 +17,7 @@ When you start up `htmx-bun`, the only thing you get is a running server, and a 
 
 Put something in the public folder, and the server will serve it.
 
-Some thing you may put in the folder are special:
+Some things you may put in the folder are special:
 
 - *Markdown files (`.md`)*
 
@@ -27,5 +27,4 @@ Some thing you may put in the folder are special:
 
    These consist of some script (TS or JS) at the top, and HTML at the bottom.  Or just script, or just HTML.
 
-   In the HTML, curly braces **&lbrace; &rbrace;** are used to evaluate expressions, which may
-   reference any variables present in the script above.
+   In the HTML, curly braces **&lbrace; &rbrace;** are used to evaluate expressions, which are injected with the script scope, and any attributes..
