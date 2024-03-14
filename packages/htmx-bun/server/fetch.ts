@@ -54,7 +54,6 @@ export async function buildFetch(options: ServerOptions) {
         }
 
         log(context, Math.floor((Bun.nanoseconds() - time) / 1000000));
-
         return applyCompression(request, context.response);
     };
 
