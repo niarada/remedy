@@ -14,6 +14,7 @@ export enum TokenType {
     Equal = "Equal",
     Expression = "Expression",
     Text = "Text",
+    Comment = "Comment",
 }
 
 export interface Token {
@@ -70,6 +71,7 @@ class Scanner {
     }
 
     private matchNext() {
+        this.matchComment();
         this.matchElement();
         this.matchText();
     }
@@ -189,9 +191,9 @@ class Scanner {
         while (this.position < this.source.length && !this.peekString("</")) {
             if (this.penultimate?.value === "code") {
                 this.matchCodeText();
-            } else {
-                this.matchText();
             }
+            this.matchComment();
+            this.matchText();
             this.matchElement();
         }
     }
@@ -209,6 +211,7 @@ class Scanner {
             return this.matchText();
         }
         if (this.peekAnyCharacter("<") && !this.peekString("</")) {
+            this.matchComment();
             this.matchElement();
             return this.matchText();
         }
@@ -241,6 +244,20 @@ class Scanner {
         }
         this.position++;
         this.token(TokenType.Expression, position);
+        return true;
+    }
+
+    private matchComment() {
+        const position = this.position;
+        if (!this.peekString("<!--")) {
+            return;
+        }
+        this.position += 4;
+        while (!this.peekString("-->")) {
+            this.position++;
+        }
+        this.position += 3;
+        this.token(TokenType.Comment, position);
         return true;
     }
 

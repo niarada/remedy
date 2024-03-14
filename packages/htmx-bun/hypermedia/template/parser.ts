@@ -64,11 +64,7 @@ class Parser {
                 break;
             }
             case TokenType.TagName: {
-                const element = createHtmlElement(
-                    this.top,
-                    this.token.value,
-                    [],
-                );
+                const element = createHtmlElement(this.top, this.token.value, []);
                 this.top.children.push(element);
                 this.stack.push(element);
                 this.position++;
@@ -123,19 +119,16 @@ class Parser {
                 break;
             }
             case TokenType.Expression: {
-                this.top.children.push(
-                    createHtmlExpression(
-                        this.top,
-                        this.token.value.slice(1, -1),
-                    ),
-                );
+                this.top.children.push(createHtmlExpression(this.top, this.token.value.slice(1, -1)));
                 this.position++;
                 break;
             }
             case TokenType.Text: {
-                this.top.children.push(
-                    createHtmlText(this.top, this.token.value),
-                );
+                this.top.children.push(createHtmlText(this.top, this.token.value));
+                this.position++;
+                break;
+            }
+            case TokenType.Comment: {
                 this.position++;
                 break;
             }
@@ -145,13 +138,8 @@ class Parser {
     parseContent() {}
 
     private error(message: string) {
-        const line = this.source
-            .slice(0, this.token.position)
-            .split("\n").length;
-        const column =
-            this.position - this.source.lastIndexOf("\n", this.position);
-        throw new Error(
-            `Parser Error: ${message} at line ${line}, column ${column}: ${this.token.value}\n`,
-        );
+        const line = this.source.slice(0, this.token.position).split("\n").length;
+        const column = this.position - this.source.lastIndexOf("\n", this.position);
+        throw new Error(`Parser Error: ${message} at line ${line}, column ${column}: ${this.token.value}\n`);
     }
 }

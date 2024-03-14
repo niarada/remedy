@@ -41,9 +41,13 @@ export class Director {
                 });
             },
         });
-        const artifact = (await import(tag)) as Artifact;
-        const representation = new Representation(this, tag, artifact, source.path);
-        this.representations.set(tag, representation);
+        try {
+            const artifact = (await import(tag)) as Artifact;
+            const representation = new Representation(this, tag, artifact, source.path);
+            this.representations.set(tag, representation);
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     revert(tag: string) {

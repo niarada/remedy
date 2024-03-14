@@ -24,3 +24,13 @@ test("complex attributes", () => {
     const tokens = scanPartial(source2);
     expect(tokens).toMatchSnapshot();
 });
+
+const source3 = `
+<div>
+    <!-- <h1>love peace joy</h1> -->
+</div>
+`;
+test("comment", () => {
+    const tokens = scanPartial(source3);
+    expect(tokens).toMatchSnapshot();
+});

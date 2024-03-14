@@ -294,3 +294,72 @@ exports[`complex attributes 1`] = `
   },
 ]
 `;
+
+exports[`comment 1`] = `
+[
+  {
+    "position": 1,
+    "type": "OpenAngleBracket",
+    "value": "<",
+  },
+  {
+    "position": 2,
+    "type": "TagName",
+    "value": "div",
+  },
+  {
+    "position": 5,
+    "type": "CloseAngleBracket",
+    "value": ">",
+  },
+  {
+    "position": 6,
+    "type": "Text",
+    "value": 
+"
+    "
+,
+  },
+  {
+    "position": 11,
+    "type": "Comment",
+    "value": "<!-- <h1>love peace joy</h1> -->",
+  },
+  {
+    "position": 43,
+    "type": "Text",
+    "value": 
+"
+"
+,
+  },
+  {
+    "position": 44,
+    "type": "OpenAngleBracket",
+    "value": "<",
+  },
+  {
+    "position": 45,
+    "type": "Slash",
+    "value": "/",
+  },
+  {
+    "position": 46,
+    "type": "TagName",
+    "value": "div",
+  },
+  {
+    "position": 49,
+    "type": "CloseAngleBracket",
+    "value": ">",
+  },
+  {
+    "position": 50,
+    "type": "Text",
+    "value": 
+"
+"
+,
+  },
+]
+`;
