@@ -28,4 +28,3 @@
   - https://orm.drizzle.team/docs/overview
 - Parse HTML comments.
 - Bug: Referring to an uninitialzed var in an mx-each block hangs the extension.
-- Allow { } in markdown.  Could transform into entities, but these aren't converted in code.

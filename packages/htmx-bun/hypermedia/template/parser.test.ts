@@ -46,3 +46,13 @@ test("scope", () => {
         expect(node.scope.gift).toBe("kindness");
     });
 });
+
+const source5 = `
+<div>
+    <!-- <h1>love peace joy</h1> -->
+</div>
+`;
+test("paarser comment", () => {
+    const ast = parseSource(source5);
+    expect(printHtml(ast)).toBe("<div>\n    \n</div>\n");
+});
