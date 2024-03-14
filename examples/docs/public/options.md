@@ -10,7 +10,6 @@ export default {
     features: {
         fontawesome: false,
         tailwind: false,
-        markdown: false,
         # Enable htmx, this can be set to false
         htmx: {
             # Enable htmx debug output

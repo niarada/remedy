@@ -1,17 +1,12 @@
 import { deflateSync, gzipSync } from "bun";
-import zlib from "node:zlib";
+import { createDeflate, createGzip } from "node:zlib";
 
 class CompressionStream {
     readable: ReadableStream;
     writable: WritableStream;
 
     constructor(format: "gzip" | "deflate") {
-        const handle =
-            format === "deflate"
-                ? zlib.createDeflate()
-                : format === "gzip"
-                  ? zlib.createGzip()
-                  : zlib.createDeflateRaw();
+        const handle = format === "gzip" ? createGzip() : createDeflate();
 
         this.readable = new ReadableStream({
             start(controller) {
@@ -39,12 +34,15 @@ const toBuffer = (data: unknown, encoding: BufferEncoding) => {
 };
 
 export function applyCompression(request: Request, response: Response) {
-    const format =
-        (request.headers.get("Accept-Encoding")?.includes("gzip") && "gzip") ||
-        (request.headers.get("Accept-Encoding")?.includes("deflate") && "deflate");
+    if (response.headers.get("connection") === "keep-alive") {
+        return response;
+    }
+    const accept = request.headers.get("Accept-Encoding") ?? "";
+    const format = (accept.includes("gzip") && "gzip") || (accept.includes("deflate") && "deflate");
     if (!format) {
         return response;
     }
+    console.log({ ...Object.fromEntries(response.headers.entries()), "Content-Encoding": format });
     return new Response(
         response.body instanceof ReadableStream
             ? response.body.pipeThrough(new CompressionStream(format))

@@ -1,4 +1,4 @@
-import EventEmitter from "events";
+import EventEmitter from "node:events";
 import { createHtmlElement } from "~/hypermedia/template";
 import { formatTypeScript } from "~/lib/format";
 import { info } from "~/lib/log";
@@ -66,7 +66,7 @@ export default function (options: ServerOptions): ServerFeature {
                     }),
                     {
                         headers: {
-                            "Content-Type": "text/event-stream",
+                            "Content-Type": "text/event-stream; charset=utf-8",
                             "Cache-Control": "no-cache",
                             Connection: "keep-alive",
                         },
