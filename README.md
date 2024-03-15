@@ -1,9 +1,10 @@
-**remedy** is a *Hypermedia Server* hosted on the [bun](https://bun.sh) runtime with [htmx](https://htmx.org) as a first-class integration.  It enters the fray, along-side other like-minded  efforts, to help *remedy* the ailment that is modern web complexity.
+**remedy** is a *Hypermedia Server* hosted on the [bun](https://bun.sh) runtime with [htmx](https://htmx.org) as a first-class integration.
 
 
 ### Status: alpha
 
-This project is still in early development.  Master branch may or may not work as changes come in quickly.  This should settle down in a few weeks and regular non-breaking builds will happen.
+### [Documentation](https://remedy.niarada.io)
+
 
 ## Run an example
 
