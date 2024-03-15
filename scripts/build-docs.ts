@@ -28,6 +28,7 @@ const server = Bun.spawn(["node_modules/.bin/remedy"], {
 await Bun.sleep(1000);
 
 await $`wget -P docs --mirror --convert-links --adjust-extension --page-requisites --no-parent --no-host-directories localhost:5678`;
+await Bun.write("docs/CNAME", "remedy.niarada.io");
 
 server.kill();
 
