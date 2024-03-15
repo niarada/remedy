@@ -44,8 +44,9 @@ const nextArticle = articles[articleIndex + 1] || null;
 <html>
 
 <head>
+    <meta charset="UTF-8">
     <title>remedy: documentation</title>
-    <link rel="icon" type="image/png" href="/assets/icon-light.png">
+    <link rel="icon" type="image/png" href="/assets/cross-both.png">
 </head>
 
 <body class="flex flex-col bg-gray-50 text-black">

@@ -38,7 +38,7 @@ export async function buildFetch(options: ServerOptions) {
             }
         }
 
-        if (!context.response) {
+        if (!context.response && (context.url.pathname === "/" || /^\/[a-z][a-z0-9-\/]*$/.test(context.url.pathname))) {
             if (request.headers.get("HX-Request")) {
                 await renderPartial(context);
             } else {
