@@ -1,0 +1,3 @@
+new EventSource("/_dev_stream").addEventListener("refresh", (event) => {
+    location.reload();
+});

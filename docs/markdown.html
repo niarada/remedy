@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>remedy: documentation</title>
+    <link rel="icon" type="image/png" href="http://localhost:4321/assets/icon-light.png">
+<link rel="stylesheet" href="_fontawesome.css"><link rel="stylesheet" href="_tailwind.css"><script type="module" src="_htmx"></script><script type="module" src="_dev"></script></head>
+
+<body class="flex flex-col bg-gray-50 text-black">
+    <header class="flex justify-between items-center gap-4 bg-red-700 px-4 py-2 text-white">
+        <a class="flex items-center gap-3" href="index.html">
+            <img src="assets/cross-dark.png" class="h-6 w-6">
+            <div class="text-2xl">remedy</div>
+        </a>
+        <a href="https://github.com/niarada/remedy">
+            <i class="text-2xl fa-brands fa-github"></i>
+        </a>
+    </header>
+    <main class="flex mt-6 px-4" hx-boost="article">
+        <nav class="w-48">
+            <ul class="flex flex-col gap-1 cursor-pointer">
+                <li class="">
+                    <a href="index.html">Introduction</a>
+                </li><li class="">
+                    <a href="partials.html">Partials</a>
+                </li><li class="">
+                    <a href="routes.html">Routes</a>
+                </li><li class="">
+                    <a href="context.html">Context</a>
+                </li><li class="">
+                    <a href="integrations.html">Integrations</a>
+                </li><li class="font-bold">
+                    <a href="markdown.html">Markdown</a>
+                </li><li class="">
+                    <a href="options.html">Options</a>
+                </li><li class="">
+                    <a href="editorsupport.html">Editor Support</a>
+                </li><li class="">
+                    <a href="roadmap.html">Roadmap</a>
+                </li>
+            </ul>
+        </nav>
+        <article class="prose w-full">
+            <h1>Markdown</h1>
+<p>Markdown files <code>.md</code> are treated like partials.  They can be used by other partials by their resolved tag, or browsed directly.  However they do not make use of attributes or forms, or have any script.  They are converted to html at compile time.</p>
+
+            <footer class="mt-8 flex justify-between border-t border-t-slate-500 pt-4 pb-10">
+                <div>
+                    <a href="integrations.html">← Integrations</a>
+                </div>
+                <div>
+                    <a href="options.html">Options →</a>
+                </div>
+            </footer>
+        </article>
+    </main>
+</body>
+
+</html>

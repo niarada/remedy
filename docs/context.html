@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>remedy: documentation</title>
+    <link rel="icon" type="image/png" href="http://localhost:4321/assets/icon-light.png">
+<link rel="stylesheet" href="_fontawesome.css"><link rel="stylesheet" href="_tailwind.css"><script type="module" src="_htmx"></script><script type="module" src="_dev"></script></head>
+
+<body class="flex flex-col bg-gray-50 text-black">
+    <header class="flex justify-between items-center gap-4 bg-red-700 px-4 py-2 text-white">
+        <a class="flex items-center gap-3" href="index.html">
+            <img src="assets/cross-dark.png" class="h-6 w-6">
+            <div class="text-2xl">remedy</div>
+        </a>
+        <a href="https://github.com/niarada/remedy">
+            <i class="text-2xl fa-brands fa-github"></i>
+        </a>
+    </header>
+    <main class="flex mt-6 px-4" hx-boost="article">
+        <nav class="w-48">
+            <ul class="flex flex-col gap-1 cursor-pointer">
+                <li class="">
+                    <a href="index.html">Introduction</a>
+                </li><li class="">
+                    <a href="partials.html">Partials</a>
+                </li><li class="">
+                    <a href="routes.html">Routes</a>
+                </li><li class="font-bold">
+                    <a href="context.html">Context</a>
+                </li><li class="">
+                    <a href="integrations.html">Integrations</a>
+                </li><li class="">
+                    <a href="markdown.html">Markdown</a>
+                </li><li class="">
+                    <a href="options.html">Options</a>
+                </li><li class="">
+                    <a href="editorsupport.html">Editor Support</a>
+                </li><li class="">
+                    <a href="roadmap.html">Roadmap</a>
+                </li>
+            </ul>
+        </nav>
+        <article class="prose w-full">
+            <h1>Context</h1>
+<p>Your partials have access to a <code>$context</code> object that provides information about the request, and let's you manipulate the response.</p>
+<p>It looks like this:</p>
+<pre><code>interface Context&lt;Attributes&gt; {
+    readonly attributes: Attributes;
+    readonly request: Request;
+    readonly url: URL;
+    readonly cookie: Record&lt;string, string&gt;;
+    readonly form: Record&lt;string, string&gt;;
+
+    response?: Response;
+    flash: string;
+
+    redirect(href: string, status?: number);
+    status(status: number, message?: string);
+    oob(tag: string, attributes: Record&lt;string, unknown&gt; = {});
+    cancelRender();
+}
+</code></pre>
+<h2>attributes</h2>
+<p>Any attributes passed in via tag, or variable path part.</p>
+<h3>request</h3>
+<p>A standard <a href="https://developer.mozilla.org/en-US/docs/Web/API/Request">request</a> object.</p>
+<h3>url</h3>
+<p>The parsed <a href="https://developer.mozilla.org/en-US/docs/Web/API/URL">URL</a> object.</p>
+<h3>cookie</h3>
+<p>An object that you may freely set/get properties on.  It will be passed back and forth to the client.
+Make sure to set <code>COOKIE_SECRET</code> in your environment if you want the cookie encrypted.</p>
+<h3>form</h3>
+<p>An object populated by both form submission fields and query string parameters.</p>
+<h3>response(=)</h3>
+<p>May be set to an instance of <a href="https://developer.mozilla.org/en-US/docs/Web/API/Response">Response</a> to more directly control the response.  The template, if any, will be ignored if this is set.</p>
+<h3>flash(=)</h3>
+<p>Shortcut to place a flash message in the cookie, or to read it from the cookie.  If read, it will be deleted from the cookie.</p>
+<h3>redirect(href, status?)</h3>
+<p>Shortcut to redirect.  If <code>status</code> is not specified, it defaults to 302.</p>
+<h3>status(status, message?)</h3>
+<p>Shortcut to set the status code and message.  This creates a response, so templating will be bypassed.  If <code>message</code> is not specified, it defaults the standard message for the code.</p>
+<h3>oob(tag, attributes)</h3>
+<p>Renders an <a href="https://htmx.org/docs/#oob_swaps">out-of-band</a> partial to the response.</p>
+<h3>cancelRender</h3>
+<p>Cancels rendering the template for the current partial.  It will, however, still render any out-of-bands that have been specified.</p>
+
+            <footer class="mt-8 flex justify-between border-t border-t-slate-500 pt-4 pb-10">
+                <div>
+                    <a href="routes.html">← Routes</a>
+                </div>
+                <div>
+                    <a href="integrations.html">Integrations →</a>
+                </div>
+            </footer>
+        </article>
+    </main>
+</body>
+
+</html>
