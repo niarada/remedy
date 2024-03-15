@@ -1,9 +1,0 @@
-{
-    "name": "htmx-bun-todo",
-    "scripts": {
-        "dev": "bun --watch src/server.ts"
-    },
-    "dependencies": {
-        "htmx-bun": "workspace:*"
-    }
-}

@@ -1,20 +1,15 @@
- **htmx-bun** is a *Hypermedia Server* hosted on the [Bun](https://bun.sh) runtime with [Htmx](https://htmx.org) as a first-class integration.
+**remedy** is a *Hypermedia Server* hosted on the [bun](https://bun.sh) runtime with [htmx](https://htmx.org) as a first-class integration.  It enters the fray, along-side other like-minded  efforts, to help *remedy* the ailment that is modern web complexity.
 
 
-### Status: pre-alpha
+### Status: alpha
 
 This project is still in early development.  Master branch may or may not work as changes come in quickly.  This should settle down in a few weeks and regular non-breaking builds will happen.
-
-### References
-
-1. [HATEOAS](https://htmx.org/essays/hateoas/)
-1. [Hypermedia Systems](https://hypermedia.systems/)
 
 ## Run an example
 
 ```sh
-git clone https://github.com/moonlight-pm/htmx-bun
-cd htmx-bun
+git clone https://github.com/niarada/remedy
+cd remedy
 bun i
 bun examples:todo
 ```
@@ -23,7 +18,7 @@ bun examples:todo
 
 ```sh
 mkdir my-project && cd my-project
-bunx htmx-bun
+bunx @niarada/remedy
 ```
 
 Now, start dropping files in the `public` directory.

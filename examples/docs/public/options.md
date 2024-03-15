@@ -1,6 +1,6 @@
 # Options
 
-To configure **htmx-bun** options, drop an `options.ts` file in your project root.
+To add special configuration to **remedy**, drop an `options.ts` file in your project root.
 
 Have it follow this structure, all fields are optional, defaults are given:
 

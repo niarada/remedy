@@ -57,7 +57,7 @@ export class Context<A extends Attributes = Attributes> {
     }
 
     async loadForm() {
-        this.football.url.searchParams.forEach((value, name) => {
+        this.football.url.searchParams.forEach((value: string, name: string) => {
             this.form[name] = value;
         });
         if (!["POST", "PUT", "PATCH"].includes(this.football.request.method)) {
@@ -115,9 +115,9 @@ export class Context<A extends Attributes = Attributes> {
         return message;
     }
 
-    redirect(href: string) {
+    redirect(href: string, status = 302) {
         this.response = new Response(null, {
-            status: 302,
+            status,
             headers: { Location: href },
         });
     }

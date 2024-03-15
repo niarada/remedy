@@ -1,4 +1,4 @@
 src
 tsconfig.json
 node_modules
-grammars/htmx-bun.tmLanguage.yaml
+grammars/remedy.tmLanguage.yaml
