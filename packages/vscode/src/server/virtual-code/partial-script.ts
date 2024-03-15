@@ -60,7 +60,7 @@ function generateCodeAdditions(text) {
     const suffix: string[] = [];
 
     prefix.push(`
-        import { Context } from "htmx-bun/server/context";
+        import { Context } from "@niarada/remedy/server/context";
         const $context = {} as Context<Attributes>;
     `);
 

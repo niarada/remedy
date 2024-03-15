@@ -5,7 +5,7 @@ import { AttributeTypes, Attributes } from "~/hypermedia";
 import { Context, coerceAttributes, definedAttributeValues } from "~/server/context";
 
 export function makeTemporaryDirectory() {
-    const dir = mkdtempSync(`${tmpdir()}/htmx-bun-`);
+    const dir = mkdtempSync(`${tmpdir()}/remedy-`);
     afterAll(() => {
         rmdirSync(dir, { recursive: true });
     });

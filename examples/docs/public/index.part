@@ -4,20 +4,24 @@ const articles = [
         href: "/",
     },
     {
-        title: "Installation",
-        href: "/installation",
-    },
-    {
         title: "Partials",
         href: "/partials",
     },
     {
-        title: "Routing",
-        href: "/routing",
+        title: "Routes",
+        href: "/routes",
+    },
+    {
+        title: "Context",
+        href: "/context",
     },
     {
         title: "Integrations",
         href: "/integrations",
+    },
+    {
+        title: "Markdown",
+        href: "/markdown",
     },
     {
         title: "Options",
@@ -40,33 +44,34 @@ const nextArticle = articles[articleIndex + 1] || null;
 <html>
 
 <head>
-    <title>htmx-bun: documentation</title>
+    <title>remedy: documentation</title>
     <link rel="icon" type="image/png" href="/assets/icon-light.png">
 </head>
 
-<body class="flex flex-col bg-slate-700 text-white p-2">
-    <header class="flex justify-between items-center gap-4 pb-2 mb-6 border-b border-b-slate-500">
-        <a class="flex items-center gap-4" href="/">
-            <img src="/assets/icon-light.png" class="h-8 w-8" />
-            <div class="font-bold">htmx-bun</div>
+<body class="flex flex-col bg-gray-50 text-black">
+    <header class="flex justify-between items-center gap-4 bg-red-700 px-4 py-2 text-white">
+        <a class="flex items-center gap-3" href="/">
+            <img src="/assets/cross-dark.png" class="h-6 w-6" />
+            <div class="text-2xl">remedy</div>
         </a>
-        <a href="https://github.com/moonlight-pm/htmx-bun">
+        <a href="https://github.com/niarada/remedy">
             <i class="text-2xl fa-brands fa-github" />
         </a>
     </header>
-    <main class="flex gap-32" hx-boost="article">
-        <nav>
+    <main class="flex mt-6 px-4" hx-boost="article">
+        <nav class="w-48">
             <ul class="flex flex-col gap-1 cursor-pointer">
-                <li mx-each={articles} mx-as="article">
+                <li mx-each={articles} mx-as="article"
+                    class="{article.href === $context.url.pathname ? 'font-bold' : ''}">
                     <a href={article.href}>{article.title}</a>
                 </li>
             </ul>
         </nav>
-        <article class="prose prose-slate prose-invert flex-1">
+        <article class="prose w-full">
             <slot>
                 <introduction />
             </slot>
-            <footer class="mt-8 flex justify-between border-t border-t-slate-500 pt-4">
+            <footer class="mt-8 flex justify-between border-t border-t-slate-500 pt-4 pb-10">
                 <div>
                     <a mx-when={previousArticle} href={previousArticle?.href}>← {previousArticle?.title}</a>
                 </div>

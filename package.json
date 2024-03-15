@@ -1,20 +1,19 @@
 {
-    "name": "htmx-bun-repo",
+    "name": "@niarada/remedy",
     "private": true,
     "scripts": {
-        "examples:docs": "cd examples/docs && ../../packages/htmx-bun/bin/htmx-bun-hot",
-        "examples:todo": "cd examples/todo && ../../packages/htmx-bun/bin/htmx-bun-hot",
-        "examples:contact": "cd examples/contact && ../../packages/htmx-bun/bin/htmx-bun-hot",
+        "examples:docs": "cd examples/docs && ../../packages/server/bin/remedy-hot",
+        "examples:todo": "cd examples/todo && ../../packages/server/bin/remedy-hot",
+        "examples:contact": "cd examples/contact && ../../packages/server/bin/remedy-hot",
         "build:grammar": "bun scripts/build-grammar.ts",
         "build:extension": "bun scripts/build-extension.ts",
-        "publish:htmx-bun": "bun scripts/publish-htmx-bun.ts",
-        "publish:extension": "sh scripts/publish-extension.sh"
+        "publish:extension": "sh scripts/publish-extension.sh",
+        "publish:server": "sh scripts/publish-server.sh"
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/moonlight-pm/htmx-bun.git"
+        "url": "https://github.com/niarada/remedy.git"
     },
-    "workspaces": ["packages/*", "examples/*"],
     "dependencies": {
         "@biomejs/biome": "^1.5.3",
         "@types/js-yaml": "^4.0.9",

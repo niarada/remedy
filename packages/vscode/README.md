@@ -1,6 +1,7 @@
-# Language support for htmx-bun partial (`.part`) files.
+# Language support for remedy partial (`.part`) files.
 
 Supports:
   - Syntax highlighting and all language services for both HTML and TypeScript sections.
-  - Inserts htmx-bun `Context` type definition.
-  - Some recognition of TypeScript values in HTML template expressions.
+  - Inserts remedy `$context` object and defined attributes.
+  - Recognition of scripted scope and attributes in HTML template expressions.
+  - Auto-detects tailwind.

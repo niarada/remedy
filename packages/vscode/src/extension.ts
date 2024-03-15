@@ -10,7 +10,7 @@ export async function activate(context: vscode.ExtensionContext) {
     const serverPath = `${context.extensionPath}/dist/server/index.js`;
     client = new LanguageClient(
         "partial",
-        "htmx-bun Language Server",
+        "remedy language server",
         {
             run: {
                 module: serverPath,

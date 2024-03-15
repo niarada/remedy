@@ -1,13 +1,13 @@
 {
-    "name": "htmx-bun",
-    "version": "0.1.0",
+    "name": "@niarada/remedy",
+    "version": "0.2.5",
     "bin": {
-        "htmx-bun": "bin/htmx-bun"
+        "remedy": "bin/remedy"
     },
-    "files": ["README.md", "bin", "tsconfig.json", "{lib,partial,plugins,server,view}/**/*.ts", "!**/*.test.ts"],
+    "files": ["README.md", "bin", "tsconfig.json", "{lib,server,hypermedia}/**/*.ts", "!**/*.test.ts"],
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/moonlight-pm/htmx-bun.git"
+        "url": "git+https://github.com/niarada/remedy.git"
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^6.5.1",

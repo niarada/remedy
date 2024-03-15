@@ -1,31 +1,31 @@
 {
-    "name": "htmx-bun-vscode",
-    "displayName": "htmx-bun",
-    "description": "Language support for htmx-bun",
+    "name": "remedy-vscode",
+    "displayName": "remedy hypermedia server",
+    "description": "Language support for remedy hypermedia server partial files",
     "categories": ["Programming Languages", "Formatters", "Linters"],
-    "keywords": ["htmx-bun", "htmx", "bun", "node", "typescript", "javascript"],
-    "icon": "./assets/icon-both.png",
+    "keywords": ["remedy", "hypermedia", "hypermedia server", "htmx", "bun", "node", "typescript", "javascript"],
+    "icon": "./assets/cross-both.png",
     "version": "0.2.5",
-    "publisher": "moonlight-pm",
+    "publisher": "niarada",
     "engines": {
         "vscode": "^1.86.0"
     },
     "license": "0BSD",
     "repository": {
         "type": "git",
-        "url": "https://github.com/moonlight-pm/htmx-bun.git"
+        "url": "https://github.com/niarada/remedy.git"
     },
     "main": "./dist/extension.js",
     "contributes": {
         "languages": [
             {
                 "id": "partial",
-                "aliases": ["htmx-bun"],
+                "aliases": ["remedy"],
                 "extensions": [".part"],
-                "configuration": "./grammars/htmx-bun.json",
+                "configuration": "./grammars/remedy.json",
                 "icon": {
-                    "light": "./assets/icon-dark.png",
-                    "dark": "./assets/icon-light.png"
+                    "light": "./assets/icon-light.png",
+                    "dark": "./assets/icon-dark.png"
                 }
             }
         ],
@@ -33,7 +33,7 @@
             {
                 "language": "partial",
                 "scopeName": "source.part",
-                "path": "./dist/htmx-bun.tmLanguage.json",
+                "path": "./dist/remedy.tmLanguage.json",
                 "embeddedLanguages": {
                     "meta.embedded.block.typescript": "typescript",
                     "meta.embedded.block.html": "html"
@@ -49,9 +49,9 @@
         ],
         "configuration": {
             "type": "object",
-            "title": "htmx-bun language server configuration",
+            "title": "remedy language server configuration",
             "properties": {
-                "htmx-bun.trace.server": {
+                "remedy.trace.server": {
                     "scope": "window",
                     "type": "string",
                     "enum": ["off", "messages", "verbose"],

@@ -5,7 +5,7 @@ import defaultOptions, { ServerOptions } from "~/server/options";
 import pkg from "../package.json";
 import { buildFetch } from "./fetch";
 
-info("server", `htmx-bun ${pkg.version}`);
+info("server", `remedy ${pkg.version}`);
 
 mkdirSync("public", { recursive: true });
 let userOptions: ServerOptions = {};

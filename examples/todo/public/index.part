@@ -18,8 +18,8 @@
         <footer class="info">
             <p>Double-click to edit a todo</p>
             <p>
-                Created by
-                <a href="https://github.com/moonlight-pm/htmx-bun">moonlight(pm)</a>
+                Made on
+                <a href="https://github.com/niarada/remedy">remedy</a>
             </p>
             <p>
                 Part of
