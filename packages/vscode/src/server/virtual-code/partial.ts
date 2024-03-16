@@ -36,7 +36,7 @@ export class PartialVirtualCode implements VirtualCode {
             },
         ];
         this.embeddedCodes = [];
-        const htmlStartIndex = text[0] === "<" ? 0 : text.search(/^<\w+/m);
+        const htmlStartIndex = text.search(/^<\w+/m);
         if (htmlStartIndex > 0) {
             this.embeddedCodes.push(
                 new PartialScriptVirtualCode("typescript0", text),

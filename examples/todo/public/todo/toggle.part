@@ -6,28 +6,18 @@ interface Attributes {
 
 const checked = model.items.filter((it) => it.done).length === model.items.length;
 
-if (Attributes.toggle) {
+if (toggle) {
     for (const item of model.items) {
         item.done = !checked;
     }
     await saveModel();
-    Context.cancelRender();
-    Context.oob('todo-list');
-    Context.oob('todo-footer');
+    $context.cancelRender();
+    $context.oob('todo-list');
+    $context.oob('todo-footer');
 }
 
 <div id="toggle-all-container" hx-swap-oob="true" class="toggle-all-container">
-    <input
-        id="toggle-all"
-        class="toggle-all"
-        type="checkbox"
-        autocomplete="off"
-        checked={checked}
-    />
-    <label
-        hx-get="/todo/toggle?toggle=true"
-        hx-swap="none"
-        class="toggle-all-label"
-        for="toggle-all"
-    >Mark all as complete</label>
+    <input id="toggle-all" class="toggle-all" type="checkbox" autocomplete="off" checked={checked} />
+    <label hx-get="/todo/toggle?toggle=true" hx-swap="none" class="toggle-all-label" for="toggle-all">Mark all as
+        complete</label>
 </div>

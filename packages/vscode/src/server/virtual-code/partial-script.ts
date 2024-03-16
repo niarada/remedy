@@ -31,7 +31,6 @@ export class PartialScriptVirtualCode implements VirtualCode {
             .join("\n");
         const suffix = htmlAdditions.suffix + codeAdditions.suffix;
         const full = `${prefix}${text}${suffix}`;
-        // console.log(full);
         this.snapshot = {
             getText: (start, end) => full.slice(start, end),
             getLength: () => full.length,
