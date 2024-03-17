@@ -16,10 +16,21 @@ export function visitEach(visitor: ICstVisitor<unknown, unknown>, nodes: CstElem
     }
 }
 
-export function orderedFlatChildren(context: CstChildrenDictionary) {
+export function orderedFlatNodeChildren(context: CstChildrenDictionary) {
     return (Object.values(context).flat() as CstNode[]).sort((a, b) => {
         return a.location!.startOffset - b.location!.startOffset;
     });
+}
+
+export function orderedFlatChildren(element: unknown) {
+    const children = getChildren(element);
+    const elements = Object.values(children).flat();
+    elements.sort((a, b) => {
+        const aOffset = Object.hasOwn(a, "location") ? (a as CstNode).location!.startOffset : (a as IToken).startOffset;
+        const bOffset = Object.hasOwn(b, "location") ? (b as CstNode).location!.startOffset : (b as IToken).startOffset;
+        return aOffset - bOffset;
+    });
+    return elements;
 }
 
 export function getChildren(element: unknown) {

@@ -5,8 +5,17 @@ export const Slash = createToken({ name: "Slash", pattern: /\// });
 export const Identifier = createToken({ name: "Identifier", pattern: /[a-z][\w\-:]*/ });
 export const Equals = createToken({ name: "Equals", pattern: /=/ });
 export const WhiteSpace = createToken({ name: "WhiteSpace", pattern: /\s+/ });
-export const StringLiteral = createToken({ name: "StringLiteral", pattern: /"([^"]*)"|'([^']*)'/ });
 export const Text = createToken({ name: "Text", pattern: /[^<]+/ });
+
+export const OpenSingleQuote = createToken({ name: "OpenSingleQuote", pattern: /'/, push_mode: "SingleQuoted" });
+export const OpenDoubleQuote = createToken({ name: "OpenDoubleQuote", pattern: /"/, push_mode: "DoubleQuoted" });
+export const OpenBacktickQuote = createToken({ name: "OpenBacktickQUote", pattern: /`/, push_mode: "BacktickQuoted" });
+export const SingleQuoteText = createToken({ name: "SingleQuoteText", pattern: /([^'\{]+)/ });
+export const DoubleQuoteText = createToken({ name: "DoubleQuoteText", pattern: /([^"\{]+)/ });
+export const BacktickQuoteText = createToken({ name: "BacktickQuoteText", pattern: /([^`\{]+)/ });
+export const CloseSingleQuote = createToken({ name: "CloseSingleQuote", pattern: /'/, pop_mode: true });
+export const CloseDoubleQuote = createToken({ name: "CloseDoubleQuote", pattern: /"/, pop_mode: true });
+export const CloseBacktickQuote = createToken({ name: "CloseBacktickQuote", pattern: /`/, pop_mode: true });
 
 export const OpenAngleBracket = createToken({ name: "OpenAngleBracket", pattern: /</, push_mode: "TagStart" });
 
@@ -40,9 +49,22 @@ export const BracketedText = createToken({
 const lexer = new Lexer({
     modes: {
         fragment: [Comment, OpenAngleBracketSlash, OpenAngleBracket, OpenBracket, Text],
-        TagStart: [WhiteSpace, Identifier, Equals, StringLiteral, OpenBracket, Slash, CloseAngleBracket],
+        TagStart: [
+            WhiteSpace,
+            Identifier,
+            Equals,
+            OpenBracket,
+            Slash,
+            CloseAngleBracket,
+            OpenSingleQuote,
+            OpenDoubleQuote,
+            OpenBacktickQuote,
+        ],
         TagEnd: [Identifier, CloseAngleBracket],
         Bracketed: [OpenBracket, CloseBracket, BracketedText],
+        SingleQuoted: [OpenBracket, CloseSingleQuote, SingleQuoteText],
+        DoubleQuoted: [OpenBracket, CloseDoubleQuote, DoubleQuoteText],
+        BacktickQuoted: [OpenBracket, CloseBacktickQuote, BacktickQuoteText],
     },
     defaultMode: "fragment",
 });

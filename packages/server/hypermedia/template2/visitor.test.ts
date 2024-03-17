@@ -10,6 +10,7 @@ import {
     getTokenImage,
     getTokens,
     orderedFlatChildren,
+    orderedFlatNodeChildren,
     visit,
     visitEach,
 } from "./visitor";
@@ -94,13 +95,11 @@ class PrintVisitor extends BaseTemplateVisitorWithDefaults {
     }
 
     document(context: CstChildrenDictionary) {
-        // if (context.fragment) {
         visit(this, context.fragment);
-        // }
     }
 
     fragment(context: CstChildrenDictionary) {
-        visitEach(this, orderedFlatChildren(context));
+        visitEach(this, orderedFlatNodeChildren(context));
     }
 
     comment(context: CstChildrenDictionary) {
@@ -138,12 +137,35 @@ class PrintVisitor extends BaseTemplateVisitorWithDefaults {
         this.#output.push(getTokenImage(context, "WhiteSpace")!);
         this.#output.push(getTokenImage(context, "Identifier")!);
         this.#output.push(getTokenImage(context, "Equals")!);
-        const string = getTokenImage(context, "StringLiteral");
-        if (string) {
-            this.#output.push(string);
-        } else {
-            this.visit(getNode(context, "expression")!);
+        visit(this, context.attributeValue);
+    }
+
+    attributeValue(context: CstChildrenDictionary) {
+        const open =
+            getToken(context, "OpenSingleQuote") ||
+            getToken(context, "OpenDoubleQuote") ||
+            getToken(context, "OpenBacktickQuote");
+        if (!open) {
+            const expression = getNode(context, "expression");
+            visit(this, expression);
+            return;
         }
+        const close =
+            getToken(context, "CloseSingleQuote") ||
+            getToken(context, "CloseDoubleQuote") ||
+            getToken(context, "CloseBacktickQuote");
+        this.#output.push(open.image);
+        const children = orderedFlatChildren(context);
+        children.shift();
+        children.pop();
+        for (const child of children) {
+            if ((child as IToken).image) {
+                this.#output.push((child as IToken).image);
+            } else {
+                visit(this, child as CstNode);
+            }
+        }
+        this.#output.push(close.image);
     }
 
     expression(context: CstChildrenDictionary) {
