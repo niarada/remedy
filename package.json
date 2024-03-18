@@ -1,7 +1,7 @@
 {
     "name": "@niarada/remedy",
     "private": true,
-    "version": "0.2.6",
+    "version": "0.2.7",
     "scripts": {
         "examples:docs": "cd examples/docs && ../../packages/server/bin/remedy-hot",
         "examples:todo": "cd examples/todo && ../../packages/server/bin/remedy-hot",
@@ -10,7 +10,8 @@
         "build:grammar": "bun scripts/build-grammar.ts",
         "build:extension": "bun scripts/build-extension.ts",
         "publish:extension": "sh scripts/publish-extension.sh",
-        "publish:server": "sh scripts/publish-server.sh"
+        "publish:server": "sh scripts/publish-server.sh",
+        "version": "bun scripts/version.ts"
     },
     "repository": {
         "type": "git",
@@ -19,8 +20,10 @@
     "dependencies": {
         "@biomejs/biome": "^1.5.3",
         "@types/js-yaml": "^4.0.9",
+        "@types/semver": "^7.5.8",
         "esbuild": "^0.20.1",
         "js-yaml": "^4.1.0",
+        "semver": "^7.6.0",
         "ts-loader": "^9.5.1",
         "webpack": "^5.90.3",
         "webpack-cli": "^5.1.4"

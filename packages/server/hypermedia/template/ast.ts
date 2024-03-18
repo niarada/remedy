@@ -51,7 +51,7 @@ export type HtmlElement = {
     tag: string;
     void: boolean;
     attrs: HtmlElementAttribute[];
-    spaces: string[];
+    postAttributeSpace: string;
     scope: Scope;
 };
 
@@ -59,6 +59,7 @@ export type HtmlElementAttribute = {
     name: string;
     value: HtmlElementAttributeValue[];
     quote: "'" | '"' | "`";
+    preSpace: string;
 };
 
 export type HtmlElementAttributeText = {
@@ -105,9 +106,10 @@ export const createHtmlElement = (
               name,
               value: [{ type: "text", content: String(value) }],
               quote: '"',
+              preSpace: " ",
           })),
     children,
-    spaces: [],
+    postAttributeSpace: "",
     scope: Object.create(parent.scope),
 });
 
@@ -177,7 +179,7 @@ class AstBuilder extends BaseTemplateVisitorWithDefaults {
         }
         const whitespace = getToken(tagStart, "WhiteSpace");
         if (whitespace) {
-            element.spaces.push(whitespace.image);
+            element.postAttributeSpace = whitespace.image;
         }
         if (!getToken(tagStart, "Slash") && !htmlVoidTags.includes(tagStartIdentifier) && context.fragment) {
             this.visit(context.fragment as CstNode[]);
@@ -187,11 +189,11 @@ class AstBuilder extends BaseTemplateVisitorWithDefaults {
 
     attribute(context: CstChildrenDictionary) {
         const element = this.top as HtmlElement;
-        element.spaces.push(getTokenImage(context, "WhiteSpace"));
         element.attrs.push({
             name: getTokenImage(context, "Identifier"),
             value: [],
             quote: '"',
+            preSpace: getTokenImage(context, "WhiteSpace"),
         });
         visit(this, context.attributeValue);
     }
@@ -248,9 +250,13 @@ class AstBuilder extends BaseTemplateVisitorWithDefaults {
 }
 
 export function parseSource(source: string, scope: Scope = {}) {
-    const htmlIndex = source.search(/^<\w+/m);
+    const htmlIndex = htmlStartIndex(source);
     const { document, errors } = parse(source.slice(htmlIndex));
     const visitor = new AstBuilder(scope);
     visitor.visit(document);
     return visitor.ast;
+}
+
+export function htmlStartIndex(source: string) {
+    return source.search(/^[ ]*<\w+/m);
 }

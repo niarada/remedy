@@ -1,10 +1,16 @@
 {
     "name": "@niarada/remedy",
-    "version": "0.2.6",
+    "version": "0.2.7",
     "bin": {
         "remedy": "bin/remedy"
     },
-    "files": ["README.md", "bin", "tsconfig.json", "{lib,server,hypermedia}/**/*.ts", "!**/*.test.ts"],
+    "files": [
+        "README.md",
+        "bin",
+        "tsconfig.json",
+        "{lib,server,hypermedia}/**/*.ts",
+        "!**/*.test.ts"
+    ],
     "repository": {
         "type": "git",
         "url": "git+https://github.com/niarada/remedy.git"

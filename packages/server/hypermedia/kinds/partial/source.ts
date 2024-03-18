@@ -1,6 +1,6 @@
 import * as ts from "typescript";
 import { Source } from "~/hypermedia";
-import { HtmlFragment, parseSource, printHtml, walkHtml } from "~/hypermedia/template";
+import { HtmlFragment, htmlStartIndex, parseSource, printHtml, walkHtml } from "~/hypermedia/template";
 
 /**
  * A `.part` source file composed of an upper code section (action) and
@@ -18,7 +18,7 @@ export class PartialSource extends Source {
      * @returns The TypeScript source code for the partial.
      */
     compile() {
-        const htmlIndex = this.text.search(/^<\w+/m);
+        const htmlIndex = htmlStartIndex(this.text);
         this.#template = parseSource(this.text);
         this.#action = ts.createSourceFile("", this.text.slice(0, htmlIndex), ts.ScriptTarget.Latest, true);
         this.transformExpressions();

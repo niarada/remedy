@@ -16,6 +16,7 @@ import {
     getToken,
     getTokenImage,
     getTokens,
+    htmlStartIndex,
     htmlVoidTags,
     orderedFlatChildren,
     orderedFlatNodeChildren,
@@ -44,7 +45,7 @@ export class PartialScriptVirtualCode implements VirtualCode {
         text: string,
     ) {
         const segments: Segment<CodeInformation>[] = [];
-        const htmlIndex = text.search(/^<\w+/m);
+        const htmlIndex = htmlStartIndex(text);
         const code = text.slice(0, htmlIndex);
         const html = text.slice(htmlIndex);
         let htmlAdditions = { insertions: [], body: "" };

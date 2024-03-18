@@ -2,10 +2,23 @@
     "name": "remedy-vscode",
     "displayName": "remedy hypermedia server",
     "description": "Language support for remedy hypermedia server partial files",
-    "categories": ["Programming Languages", "Formatters", "Linters"],
-    "keywords": ["remedy", "hypermedia", "hypermedia server", "htmx", "bun", "node", "typescript", "javascript"],
+    "categories": [
+        "Programming Languages",
+        "Formatters",
+        "Linters"
+    ],
+    "keywords": [
+        "remedy",
+        "hypermedia",
+        "hypermedia server",
+        "htmx",
+        "bun",
+        "node",
+        "typescript",
+        "javascript"
+    ],
     "icon": "./assets/cross-both.png",
-    "version": "0.2.6",
+    "version": "0.2.7",
     "publisher": "niarada",
     "engines": {
         "vscode": "^1.86.0"
@@ -20,8 +33,12 @@
         "languages": [
             {
                 "id": "partial",
-                "aliases": ["remedy"],
-                "extensions": [".part"],
+                "aliases": [
+                    "remedy"
+                ],
+                "extensions": [
+                    ".part"
+                ],
                 "configuration": "./grammars/remedy.json",
                 "icon": {
                     "light": "./assets/icon-light.png",
@@ -54,7 +71,11 @@
                 "remedy.trace.server": {
                     "scope": "window",
                     "type": "string",
-                    "enum": ["off", "messages", "verbose"],
+                    "enum": [
+                        "off",
+                        "messages",
+                        "verbose"
+                    ],
                     "default": "off",
                     "description": "Traces the communication between VS Code and the language server."
                 }

@@ -104,7 +104,7 @@ export function cloneHtml(node: HtmlNode, parent?: HtmlParent): HtmlNode {
         case "element": {
             const clone = createHtmlElement(parent, node.tag, structuredClone(node.attrs));
             clone.children = node.children.map((child) => cloneHtml(child, clone));
-            clone.spaces = structuredClone(node.spaces);
+            clone.postAttributeSpace = node.postAttributeSpace;
             return clone;
         }
         case "text": {

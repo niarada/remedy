@@ -50,7 +50,6 @@ const lexer = new Lexer({
     modes: {
         fragment: [Comment, OpenAngleBracketSlash, OpenAngleBracket, OpenBracket, Text],
         TagStart: [
-            WhiteSpace,
             Identifier,
             Equals,
             OpenBracket,
@@ -59,6 +58,7 @@ const lexer = new Lexer({
             OpenSingleQuote,
             OpenDoubleQuote,
             OpenBacktickQuote,
+            WhiteSpace,
         ],
         TagEnd: [Identifier, CloseAngleBracket],
         Bracketed: [OpenBracket, CloseBracket, BracketedText],

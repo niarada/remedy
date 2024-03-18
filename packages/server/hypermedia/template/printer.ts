@@ -17,16 +17,17 @@ export function printHtml(htmlOrNode: string | HtmlNode, options: Partial<PrintH
             text.push("<");
             text.push(node.tag);
             for (let i = 0; i < node.attrs.length; i++) {
-                text.push(node.spaces[i]);
                 const attr = node.attrs[i];
+                text.push(attr.preSpace);
                 if (attr.value.length === 1 && attr.value[0].type === "expression") {
                     text.push(`${attr.name}=${attr.value[0].content}`);
                 } else {
-                    // XXX: Need to use the original quote marks here
                     text.push(`${attr.name}=${attr.quote}${concatAttributeValue(attr)}${attr.quote}`);
                 }
             }
-            // XXX: There might be some final spacing here.
+            if (node.postAttributeSpace.includes("\n")) {
+                text.push(node.postAttributeSpace);
+            }
             text.push(">");
             visitEachChild(node);
             if (!node.void) {
