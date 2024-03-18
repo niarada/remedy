@@ -4,7 +4,9 @@
  */
 
 import { $ } from "bun";
-import { watch } from "node:fs";
+import { rmdirSync, watch } from "node:fs";
+
+rmdirSync("packages/vscode/dist", { recursive: true });
 
 async function buildSource() {
     console.log("Building extension source...");
