@@ -1,6 +1,5 @@
 import { describe, expect, it } from "bun:test";
 import { CstChildrenDictionary, CstNode, IToken } from "chevrotain";
-import { error } from "~/lib/log";
 import { parse } from "./parser";
 import {
     BaseTemplateVisitorWithDefaults,
@@ -15,7 +14,7 @@ import {
     visitEach,
 } from "./visitor";
 
-describe("semanticizer", () => {
+describe("visitor", () => {
     it("should parse an empty document", () => {
         parseAndCompare("");
     });
@@ -65,15 +64,15 @@ describe("semanticizer", () => {
         `);
     });
 
-    it("should lex expression within attribute value", () => {
+    it("should parse expression within attribute value", () => {
         parseAndCompare('<a href="url/{expression}/page"></a>');
     });
 
-    it("should lex expression in text content", () => {
+    it("should parse expression in text content", () => {
         parseAndCompare("<p>Text before {expression} text after</p>");
     });
 
-    it("should lex multiple expressions in different positions", () => {
+    it("should parse multiple expressions in different positions", () => {
         parseAndCompare('<div id={id} class="{class}">Text {expression} more text</div>');
     });
 });
@@ -112,7 +111,7 @@ class PrintVisitor extends BaseTemplateVisitorWithDefaults {
         const tagEnd = context.tagEnd?.[0];
         const tagEndIdentifier = tagEnd && getTokenImage(tagEnd, "Identifier");
         if (getToken(tagStart, "Slash") && tagEnd) {
-            error(`Unexpected closing tag: ${tagEndIdentifier}`);
+            console.error(`Unexpected closing tag: ${tagEndIdentifier}`);
         }
         this.#output.push(`<${tagStartIdentifier}`);
         for (const attribute of getNodes(tagStart, "attribute")) {

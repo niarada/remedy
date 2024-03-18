@@ -1,11 +1,5 @@
 import { expect, test } from "bun:test";
-import {
-    cloneHtml,
-    parseSource,
-    printHtml,
-    simpleTransformHtml,
-    walkHtml,
-} from ".";
+import { cloneHtml, parseSource, printHtml, simpleTransformHtml, walkHtml } from ".";
 
 const source1 = `<div><p id="joy">χαρά</p></div>\n`;
 
@@ -60,7 +54,8 @@ test("duplicate element", () => {
 });
 
 test("clone ast", () => {
-    const source = parseSource("<a><a><a></a></a></a>", {
+    const text = "<a><a><a foo='bar' baz=`bam`></a></a></a>";
+    const source = parseSource(text, {
         gift: "faithfulness",
     });
     const target = cloneHtml(source);
@@ -68,4 +63,5 @@ test("clone ast", () => {
     walkHtml(target, (node) => {
         expect(node.scope.gift).toBe("temperance");
     });
+    expect(printHtml(target, { trim: true })).toBe(text);
 });

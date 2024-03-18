@@ -1,20 +1,16 @@
 import {
     HtmlNode,
     HtmlParent,
+    createHtmlComment,
     createHtmlElement,
     createHtmlExpression,
     createHtmlFragment,
     createHtmlText,
-} from "./ast";
+} from ".";
 
-export type HtmlTransformVisitResponse =
-    | HtmlNode
-    | (HtmlNode | undefined)[]
-    | undefined;
+export type HtmlTransformVisitResponse = HtmlNode | (HtmlNode | undefined)[] | undefined;
 
-export type HtmlTransformVisitNodeFunction = (
-    node: HtmlNode,
-) => HtmlTransformVisitResponse;
+export type HtmlTransformVisitNodeFunction = (node: HtmlNode) => HtmlTransformVisitResponse;
 export type HtmlTransformVisitEachChildFunction = (node: HtmlNode) => HtmlNode;
 
 export type HtmlTransformVisitFunctions = {
@@ -22,14 +18,9 @@ export type HtmlTransformVisitFunctions = {
     visitEachChild: HtmlTransformVisitEachChildFunction;
 };
 
-export type HtmlTransformVisitor = (
-    node: HtmlNode,
-    fns: HtmlTransformVisitFunctions,
-) => HtmlTransformVisitResponse;
+export type HtmlTransformVisitor = (node: HtmlNode, fns: HtmlTransformVisitFunctions) => HtmlTransformVisitResponse;
 
-export type HtmlSimpleTransformVisitor = (
-    node: HtmlNode,
-) => HtmlTransformVisitResponse;
+export type HtmlSimpleTransformVisitor = (node: HtmlNode) => HtmlTransformVisitResponse;
 
 export function transformHtml(node: HtmlNode, visit: HtmlTransformVisitor) {
     function visitNode(node: HtmlNode) {
@@ -42,9 +33,7 @@ export function transformHtml(node: HtmlNode, visit: HtmlTransformVisitor) {
             for (const child of node.children) {
                 replacements.push(visit(child, { visitEachChild, visitNode }));
             }
-            node.children = replacements
-                .flat()
-                .filter((it) => it) as HtmlNode[];
+            node.children = replacements.flat().filter((it) => it) as HtmlNode[];
             for (const child of node.children) {
                 child.parent = node;
             }
@@ -61,10 +50,7 @@ export function transformHtml(node: HtmlNode, visit: HtmlTransformVisitor) {
  *
  * @param visit - The visitor function to apply to each HTML node.
  */
-export function simpleTransformHtml(
-    node: HtmlNode,
-    visit: HtmlSimpleTransformVisitor,
-) {
+export function simpleTransformHtml(node: HtmlNode, visit: HtmlSimpleTransformVisitor) {
     transformHtml(node, (node, { visitEachChild, visitNode }) => {
         const results = visit(node);
         const nodes = [results].flat().filter((it) => it) as HtmlNode[];
@@ -79,10 +65,7 @@ type HtmlWalkVisitFunctions = {
     visitEachChild: (node: HtmlNode) => void;
 };
 
-export type HtmlWalkVisitor = (
-    node: HtmlNode,
-    fns: HtmlWalkVisitFunctions,
-) => void;
+export type HtmlWalkVisitor = (node: HtmlNode, fns: HtmlWalkVisitFunctions) => void;
 
 export type HtmlSimpleWalkVisitor = (node: HtmlNode) => void;
 
@@ -119,14 +102,9 @@ export function cloneHtml(node: HtmlNode, parent?: HtmlParent): HtmlNode {
     }
     switch (node.type) {
         case "element": {
-            const clone = createHtmlElement(
-                parent,
-                node.tag,
-                structuredClone(node.attrs),
-            );
-            clone.children = node.children.map((child) =>
-                cloneHtml(child, clone),
-            );
+            const clone = createHtmlElement(parent, node.tag, structuredClone(node.attrs));
+            clone.children = node.children.map((child) => cloneHtml(child, clone));
+            clone.spaces = structuredClone(node.spaces);
             return clone;
         }
         case "text": {
@@ -134,6 +112,9 @@ export function cloneHtml(node: HtmlNode, parent?: HtmlParent): HtmlNode {
         }
         case "expression": {
             return createHtmlExpression(parent, node.content);
+        }
+        case "comment": {
+            return createHtmlComment(parent, node.content);
         }
     }
 }

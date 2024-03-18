@@ -1,12 +1,6 @@
 import { error } from "~/lib/log";
 import { AttributeTypes, Attributes } from ".";
-import {
-    HtmlElement,
-    HtmlNode,
-    Scope,
-    createHtmlText,
-    simpleTransformHtml,
-} from "./template";
+import { HtmlElement, HtmlNode, Scope, createHtmlText, simpleTransformHtml } from "./template";
 
 /**
  * Evaluates an expression with a given scope.
@@ -16,11 +10,11 @@ import {
  * @returns The result of evaluating the expression.
  */
 export function express(scope: Scope, expression: string): unknown {
-    const express = new Function("$scope", `return ${expression}`);
+    const expressFn = new Function("$scope", `return ${expression.slice(1, -1)}`);
     try {
-        return express(scope);
+        return expressFn(scope);
     } catch (e) {
-        error("expressor", `Error evaluating expression '${expression}`);
+        error("expressor", `Error evaluating expression ${expression}`);
         console.log("$scope:", scope);
         console.log(e);
         return undefined;
@@ -42,19 +36,14 @@ export function transformExpressionsIntoStrings(node: HtmlNode) {
                         ? value
                         : {
                               type: "text",
-                              content: String(
-                                  express(node.scope, value.content),
-                              ),
+                              content: String(express(node.scope, value.content)),
                           },
                 );
                 return attr;
             });
         }
         if (node.type === "expression") {
-            return createHtmlText(
-                node.parent,
-                String(express(node.scope, node.content)),
-            );
+            return createHtmlText(node.parent, String(express(node.scope, node.content)));
         }
         return node;
     });
@@ -67,10 +56,7 @@ export function transformExpressionsIntoStrings(node: HtmlNode) {
  * @param name The name of the attribute to express
  * @returns The expressed value, or undefined.
  */
-export function expressAttributeFirstValue(
-    node: HtmlElement,
-    name: string,
-): unknown {
+export function expressAttributeFirstValue(node: HtmlElement, name: string): unknown {
     for (const attr of node.attrs) {
         if (attr.name !== name) continue;
         if (attr.value.length === 0) continue;
@@ -81,34 +67,7 @@ export function expressAttributeFirstValue(
     }
 }
 
-// export function expressAttributeValue(value: HtmlElementAttributeValue) {
-//     if (value.type === "text") {
-//         return value.content;
-//     }
-//     return express(node.scope, attr.value[0].content);
-// }
-
-// export function expressAttributeValueToString(
-//     attribute: HtmlElementAttribute,
-//     name: string,
-// ) {
-//     const values = [];
-//     for (const val of attribute.value) {
-//     }
-//     for (const attr of node.attrs) {
-//         if (attr.name !== name) continue;
-//         if (attr.value.length === 0) continue;
-//         if (attr.value[0].type === "expression") {
-//             return express(node.scope, attr.value[0].content);
-//         }
-//         return attr.value[0].content;
-//     }
-// }
-
-export function expressDefinedAttributesToStrings(
-    node: HtmlElement,
-    types: AttributeTypes,
-) {
+export function expressDefinedAttributesToStrings(node: HtmlElement, types: AttributeTypes) {
     const attributes = {} as Attributes;
     for (const attr of node.attrs) {
         const type = types[attr.name];

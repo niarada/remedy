@@ -21,5 +21,6 @@ export async function action($context: Context, id: number) {
 `;
 test("compile", () => {
     const source = new PartialSource(source1);
+    // console.log(source.code);
     expect(source.code).toBe(target1);
 });

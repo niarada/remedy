@@ -1,6 +1,6 @@
 import * as ts from "typescript";
 import { Source } from "~/hypermedia";
-import { HtmlFragment, htmlStartIndex, parseSource, printHtml, walkHtml } from "~/hypermedia/template";
+import { HtmlFragment, parseSource, printHtml, walkHtml } from "~/hypermedia/template";
 
 /**
  * A `.part` source file composed of an upper code section (action) and
@@ -18,13 +18,9 @@ export class PartialSource extends Source {
      * @returns The TypeScript source code for the partial.
      */
     compile() {
+        const htmlIndex = this.text.search(/^<\w+/m);
         this.#template = parseSource(this.text);
-        this.#action = ts.createSourceFile(
-            "",
-            this.text.slice(0, htmlStartIndex(this.text)),
-            ts.ScriptTarget.Latest,
-            true,
-        );
+        this.#action = ts.createSourceFile("", this.text.slice(0, htmlIndex), ts.ScriptTarget.Latest, true);
         this.transformExpressions();
         this.tranformAction();
     }
@@ -73,7 +69,7 @@ export class PartialSource extends Source {
      * @returns The transformed expression.
      */
     private transformExpression(expression: string) {
-        const source = ts.createSourceFile("", expression, ts.ScriptTarget.Latest, true);
+        const source = ts.createSourceFile("", expression.slice(1, -1), ts.ScriptTarget.Latest, true);
 
         const transformer: ts.TransformerFactory<ts.Node> = (context) => {
             return (root) => {
@@ -121,7 +117,7 @@ export class PartialSource extends Source {
         const result = ts.transform(source, [transformer]);
         const transformed = result.transformed[0] as ts.SourceFile;
         const printer = ts.createPrinter({ omitTrailingSemicolon: true });
-        return printer.printNode(ts.EmitHint.Unspecified, transformed.statements[0], source);
+        return `{${printer.printNode(ts.EmitHint.Unspecified, transformed.statements[0], source)}}`;
     }
 
     /**

@@ -5,13 +5,13 @@ export const Slash = createToken({ name: "Slash", pattern: /\// });
 export const Identifier = createToken({ name: "Identifier", pattern: /[a-z][\w\-:]*/ });
 export const Equals = createToken({ name: "Equals", pattern: /=/ });
 export const WhiteSpace = createToken({ name: "WhiteSpace", pattern: /\s+/ });
-export const Text = createToken({ name: "Text", pattern: /[^<]+/ });
+export const Text = createToken({ name: "Text", pattern: /[^<{]+/ });
 
 export const OpenSingleQuote = createToken({ name: "OpenSingleQuote", pattern: /'/, push_mode: "SingleQuoted" });
 export const OpenDoubleQuote = createToken({ name: "OpenDoubleQuote", pattern: /"/, push_mode: "DoubleQuoted" });
-export const OpenBacktickQuote = createToken({ name: "OpenBacktickQUote", pattern: /`/, push_mode: "BacktickQuoted" });
-export const SingleQuoteText = createToken({ name: "SingleQuoteText", pattern: /([^'\{]+)/ });
-export const DoubleQuoteText = createToken({ name: "DoubleQuoteText", pattern: /([^"\{]+)/ });
+export const OpenBacktickQuote = createToken({ name: "OpenBacktickQuote", pattern: /`/, push_mode: "BacktickQuoted" });
+export const SingleQuoteText = createToken({ name: "SingleQuoteText", pattern: /[^'{]+/ });
+export const DoubleQuoteText = createToken({ name: "DoubleQuoteText", pattern: /[^"{]+/ });
 export const BacktickQuoteText = createToken({ name: "BacktickQuoteText", pattern: /([^`\{]+)/ });
 export const CloseSingleQuote = createToken({ name: "CloseSingleQuote", pattern: /'/, pop_mode: true });
 export const CloseDoubleQuote = createToken({ name: "CloseDoubleQuote", pattern: /"/, pop_mode: true });
