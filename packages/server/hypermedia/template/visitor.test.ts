@@ -83,7 +83,7 @@ describe("visitor", () => {
         `);
     });
 
-    it("should parse this that was failing", () => {
+    it("should parse attributes without a value", () => {
         parseAndCompare(`<input hx-get="/todo/add" hx-swap="none" hx-on::before-request="this.value = ''" class="new-todo"
         placeholder="What needs to be done?" autofocus autocomplete="off" name="text">`);
     });

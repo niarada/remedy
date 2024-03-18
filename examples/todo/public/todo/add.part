@@ -4,22 +4,14 @@ interface Attributes {
     text: string;
 }
 
-if (Attributes.text) {
+if (text) {
     const id = model.items.reduce((id, it) => Math.max(id, it.id), 0) + 1;
-    model.items.push({ id, text: Attributes.text, done: false });
+    model.items.push({ id, text: text, done: false });
     await saveModel();
     Context.cancelRender();
     Context.oob('todo-list');
     Context.oob('todo-footer');
 }
 
-<input
-    hx-get="/todo/add"
-    hx-swap="none"
-    hx-on::before-request="this.value = ''"
-    class="new-todo"
-    placeholder="What needs to be done?"
-    autofocus
-    autocomplete="off"
-    name="text"
->
+<input hx-get="/todo/add" hx-swap="none" hx-on::before-request="this.value = ''" class="new-todo"
+    placeholder="What needs to be done?" autofocus autocomplete="off" name="text">

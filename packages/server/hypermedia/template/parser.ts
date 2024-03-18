@@ -116,8 +116,10 @@ class TemplateParser<F> extends CstParser {
     private attribute = this.RULE("attribute", () => {
         this.CONSUME(WhiteSpace);
         this.CONSUME(Identifier);
-        this.CONSUME(Equals);
-        this.SUBRULE(this.attributeValue);
+        this.OPTION(() => {
+            this.CONSUME(Equals);
+            this.SUBRULE(this.attributeValue);
+        });
     });
 
     private attributeValue = this.RULE("attributeValue", () => {

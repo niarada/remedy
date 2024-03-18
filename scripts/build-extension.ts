@@ -7,11 +7,14 @@ import { $ } from "bun";
 import { rmdirSync, watch } from "node:fs";
 
 rmdirSync("packages/vscode/dist", { recursive: true });
+rmdirSync("packages/vscode/src/template", { recursive: true });
 
 async function buildSource() {
     console.log("Building extension source...");
     await $`mkdir -p packages/vscode/src/template`;
-    await $`cp -r packages/server/hypermedia/template/*.ts packages/vscode/src/template`;
+    await $`find packages/server/hypermedia/template -name "*.ts" ! -name "*.test.ts" -exec cp {} packages/vscode/src/template \;`;
+    // await $`cp -r packages/server/hypermedia/template/*.ts packages/vscode/src/template`;
+    // await $`rm packages/vscode/src/template/**/*.test.ts`;
     await $`tsc -p packages/vscode`;
 }
 
