@@ -1,12 +1,16 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
-        "target": "es2020",
-        "lib": ["es2020"],
+        "module": "CommonJS",
+        "target": "ES2022",
+        "lib": [
+            "ES2022"
+        ],
         "outDir": "dist",
         "skipLibCheck": true,
         "rootDir": "src",
         "sourceMap": true
     },
-    "include": ["src"]
+    "include": [
+        "src"
+    ]
 }
