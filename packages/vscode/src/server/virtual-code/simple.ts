@@ -1,8 +1,4 @@
-import type {
-    CodeInformation,
-    CodeMapping,
-    VirtualCode,
-} from "@volar/language-core";
+import type { CodeInformation, CodeMapping, VirtualCode } from "@volar/language-core";
 import type { IScriptSnapshot } from "typescript";
 
 export class SimpleVirtualCode implements VirtualCode {

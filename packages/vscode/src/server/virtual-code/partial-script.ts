@@ -59,7 +59,16 @@ export class PartialScriptVirtualCode implements VirtualCode {
             codeAdditions = generateCodeAdditions(text);
         } catch (e) {}
         segments.push(codeAdditions.code);
-        segments.push([code, undefined, 0, features]);
+
+        const lastImportStatementIndex = code.lastIndexOf("import");
+        const nextLineAfterLastImportStatementIndex = code.lastIndexOf("\n", lastImportStatementIndex) + 1;
+        if (lastImportStatementIndex !== -1) {
+            segments.push(code.slice(0, nextLineAfterLastImportStatementIndex));
+            segments.push("function() {\n");
+            segments.push(code.slice(nextLineAfterLastImportStatementIndex));
+        } else {
+            segments.push([code, undefined, 0, features]);
+        }
 
         const { insertions, body } = htmlAdditions;
         let offset = 0;
@@ -73,6 +82,7 @@ export class PartialScriptVirtualCode implements VirtualCode {
             const chunk = body.slice(offset);
             segments.push([chunk, undefined, code.length + offset, features]);
         }
+        segments.push("}\n");
 
         const generated = volarToString(segments);
         this.snapshot = {
@@ -206,7 +216,10 @@ class RedactVisitor extends BaseTemplateVisitorWithDefaults {
         const identifier = getTokenImage(context, "Identifier");
         this.#body.push(getTokenImage(context, "WhiteSpace"));
         this.pushSpaces(identifier);
-        this.pushSpaces(getTokenImage(context, "Equals"));
+        const token = getToken(context, "Equals");
+        if (token) {
+            this.pushSpaces(token.image);
+        }
         visit(this, context.attributeValue);
         if (identifier === "mx-each") {
             this.lastEach = this.lastExpression;

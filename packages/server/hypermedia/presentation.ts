@@ -30,14 +30,12 @@ export class Presentation {
      */
     async activate(): Promise<void> {
         this.context.coerceAttributes(this.representation.artifact.attributes);
-        Object.assign(
-            this.template.scope,
-            this.context.attributes,
-            await this.representation.artifact.action(
+        const actionResult =
+            (await this.representation.artifact.action(
                 this.context,
                 ...this.context.definedAttributeValues(this.representation.artifact.attributes),
-            ),
-        );
+            )) ?? {};
+        Object.assign(this.template.scope, this.context.attributes, actionResult);
     }
 
     async compose() {
