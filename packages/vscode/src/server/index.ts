@@ -18,22 +18,14 @@ connection.onInitialize(async (params) => {
         params.initializationOptions.typescript.tsdk,
         params.locale,
     );
-    const result = server.initialize(
-        params,
-        createTypeScriptProjectProviderFactory(typescript, diagnosticMessages),
-        {
-            getServicePlugins() {
-                return [
-                    createHtmlService(),
-                    createTypeScriptService(typescript),
-                    partialService,
-                ];
-            },
-            getLanguagePlugins() {
-                return [partialLanguage];
-            },
+    const result = server.initialize(params, createTypeScriptProjectProviderFactory(typescript, diagnosticMessages), {
+        getServicePlugins() {
+            return [createHtmlService(), ...createTypeScriptService(typescript), partialService];
         },
-    );
+        getLanguagePlugins() {
+            return [partialLanguage];
+        },
+    });
     return result;
 });
 
