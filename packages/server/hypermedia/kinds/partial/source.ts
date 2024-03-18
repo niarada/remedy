@@ -1,6 +1,7 @@
 import * as ts from "typescript";
 import { Source } from "~/hypermedia";
 import { HtmlFragment, htmlStartIndex, parseSource, printHtml, walkHtml } from "~/hypermedia/template";
+import { error } from "~/lib/log";
 
 /**
  * A `.part` source file composed of an upper code section (action) and
@@ -19,7 +20,18 @@ export class PartialSource extends Source {
      */
     compile() {
         const htmlIndex = htmlStartIndex(this.text);
-        this.#template = parseSource(this.text);
+        const { ast, errors } = parseSource(this.text);
+        if (errors.length) {
+            error("partial", `failed to parse '${this.path}'`);
+            error("partial", errors[0].message);
+            error(
+                "partial",
+                `  on line ${
+                    errors[0].token.startLine! + (this.text.slice(0, htmlIndex).match(/\n/g)?.length ?? 0)
+                } at column ${errors[0].token.startColumn}`,
+            );
+        }
+        this.#template = ast;
         this.#action = ts.createSourceFile("", this.text.slice(0, htmlIndex), ts.ScriptTarget.Latest, true);
         this.transformExpressions();
         this.tranformAction();

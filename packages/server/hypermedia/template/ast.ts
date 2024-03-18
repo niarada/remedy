@@ -254,7 +254,7 @@ export function parseSource(source: string, scope: Scope = {}) {
     const { document, errors } = parse(source.slice(htmlIndex));
     const visitor = new AstBuilder(scope);
     visitor.visit(document);
-    return visitor.ast;
+    return { ast: visitor.ast, errors };
 }
 
 export function htmlStartIndex(source: string) {

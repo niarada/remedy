@@ -1,6 +1,6 @@
 import { plugin } from "bun";
 import { readFileSync } from "node:fs";
-import { info, warn } from "~/lib/log";
+import { error, info, warn } from "~/lib/log";
 import { watch } from "~/lib/watch";
 import { Context } from "~/server/context";
 import { Artifact, Representation, Source, VariableRepresentation } from ".";
@@ -41,13 +41,17 @@ export class Director {
                 });
             },
         });
+        let artifact: Artifact | undefined;
         try {
-            const artifact = (await import(tag)) as Artifact;
-            const representation = new Representation(this, tag, artifact, source.path);
-            this.representations.set(tag, representation);
+            artifact = (await import(tag)) as Artifact;
         } catch (err) {
-            console.log(err);
+            error("director", `failed to import '${tag}'`);
         }
+        if (!artifact) {
+            return;
+        }
+        const representation = new Representation(this, tag, artifact, source.path);
+        this.representations.set(tag, representation);
     }
 
     revert(tag: string) {
@@ -62,7 +66,6 @@ export class Director {
         info("director", `watching for changes in '${this.base}'`);
         watch(this.base, async (_, path) => {
             if (/\.(part|md)$/.test(path ?? "")) {
-                info("director", `reloading '${path}'`);
                 const rep = Array.from(this.representations.values()).find((r) => r.path === path);
                 if (rep) {
                     this.revert(rep.tag);

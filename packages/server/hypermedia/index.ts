@@ -91,7 +91,12 @@ export class Representation {
         readonly artifact: Artifact,
         readonly path?: string,
     ) {
-        this.template = this.artifact.template ? parseSource(this.artifact.template) : createHtmlFragment();
+        if (this.artifact.template) {
+            const { ast } = parseSource(this.artifact.template);
+            this.template = ast;
+        } else {
+            this.template = createHtmlFragment();
+        }
     }
 
     /**

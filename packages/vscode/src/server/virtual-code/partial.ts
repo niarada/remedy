@@ -51,6 +51,6 @@ export class PartialVirtualCode implements VirtualCode {
                 }),
             );
         }
-        this.embeddedCodes.push(new SimpleVirtualCode("html", "html", text.slice(htmlIndex), htmlIndex - 1));
+        this.embeddedCodes.push(new SimpleVirtualCode("html", "html", text.slice(htmlIndex), htmlIndex));
     }
 }

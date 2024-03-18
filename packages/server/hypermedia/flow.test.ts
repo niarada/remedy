@@ -8,9 +8,9 @@ const source1 = `
 `;
 
 test("simple each", () => {
-    const node = parseSource(source1);
-    transformFlowEach(node);
-    expect(printHtml(node, { trim: true })).toBe("<hr><hr><hr><hr>");
+    const { ast } = parseSource(source1);
+    transformFlowEach(ast);
+    expect(printHtml(ast, { trim: true })).toBe("<hr><hr><hr><hr>");
 });
 
 const source2 = `
@@ -18,8 +18,8 @@ const source2 = `
 `;
 
 test("each that passes additional scope", () => {
-    const node = parseSource(source2);
-    transformFlowEach(node);
-    transformExpressionsIntoStrings(node);
-    expect(printHtml(node, { trim: true })).toBe("<a>1</a><a>2</a>");
+    const { ast } = parseSource(source2);
+    transformFlowEach(ast);
+    transformExpressionsIntoStrings(ast);
+    expect(printHtml(ast, { trim: true })).toBe("<a>1</a><a>2</a>");
 });

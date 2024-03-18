@@ -10,6 +10,6 @@ const source1 = `
 const target1 = "<div><h1>love peace joy</h1></div>";
 
 test("print trimmed", () => {
-    const ast = parseSource(source1);
+    const { ast } = parseSource(source1);
     expect(printHtml(ast, { trim: true })).toBe(target1);
 });

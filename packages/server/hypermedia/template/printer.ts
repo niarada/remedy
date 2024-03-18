@@ -6,7 +6,13 @@ export interface PrintHtmlOptions {
 
 export function printHtml(htmlOrNode: string | HtmlNode, options: Partial<PrintHtmlOptions> = {}): string {
     const { trim } = Object.assign({ trim: false }, options);
-    const html = typeof htmlOrNode === "string" ? parseSource(htmlOrNode) : htmlOrNode;
+    let html: HtmlNode;
+    if (typeof htmlOrNode === "string") {
+        const { ast } = parseSource(htmlOrNode);
+        html = ast;
+    } else {
+        html = htmlOrNode;
+    }
     let text: string[] = [];
     walkHtml(html, (node, { visitEachChild }) => {
         if (node.type === "fragment") {
