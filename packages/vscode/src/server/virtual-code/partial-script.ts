@@ -24,6 +24,15 @@ import {
     visitEach,
 } from "../../template";
 
+const features = {
+    verification: true,
+    completion: true,
+    semantic: true,
+    navigation: true,
+    structure: true,
+    format: false,
+};
+
 export class PartialScriptVirtualCode implements VirtualCode {
     languageId = "typescript";
     snapshot: IScriptSnapshot;
@@ -36,33 +45,34 @@ export class PartialScriptVirtualCode implements VirtualCode {
     ) {
         const segments: Segment<CodeInformation>[] = [];
         const htmlIndex = text.search(/^<\w+/m);
-        let htmlAdditions = { prefix: "", suffix: "" };
+        const code = text.slice(0, htmlIndex);
+        const html = text.slice(htmlIndex);
+        let htmlAdditions = { insertions: [], body: "" };
         try {
-            htmlAdditions = redactHtml(text.slice(htmlIndex));
+            htmlAdditions = redactHtml(html);
         } catch (e) {
             console.log(e);
         }
-        text = text.slice(0, htmlIndex);
-        let codeAdditions = { prefix: "", suffix: "" };
+        let codeAdditions = { code: "" };
         try {
             codeAdditions = generateCodeAdditions(text);
         } catch (e) {}
-        const prefix = (codeAdditions.prefix + htmlAdditions.prefix)
-            .split("\n")
-            .map((it) => it.trim())
-            .join("\n");
-        segments.push(prefix);
-        const features = {
-            verification: true,
-            completion: true,
-            semantic: true,
-            navigation: true,
-            structure: true,
-            format: false,
-        };
-        const suffix = htmlAdditions.suffix + codeAdditions.suffix;
-        segments.push([text, undefined, 0, features]);
-        segments.push([suffix, undefined, text.length, features]);
+        segments.push(codeAdditions.code);
+        segments.push([code, undefined, 0, features]);
+
+        const { insertions, body } = htmlAdditions;
+        let offset = 0;
+        for (const insertion of insertions) {
+            const chunk = body.slice(offset, insertion.offset);
+            segments.push([chunk, undefined, code.length + offset, features]);
+            segments.push(insertion.text);
+            offset += chunk.length;
+        }
+        if (offset < body.length) {
+            const chunk = body.slice(offset);
+            segments.push([chunk, undefined, code.length + offset, features]);
+        }
+
         const generated = volarToString(segments);
         this.snapshot = {
             getText: (start, end) => generated.slice(start, end),
@@ -74,13 +84,10 @@ export class PartialScriptVirtualCode implements VirtualCode {
 }
 
 function generateCodeAdditions(text) {
-    const prefix: string[] = [];
-    const suffix: string[] = [];
-
-    prefix.push(`
-        import { Context } from "@niarada/remedy/server/context";
-        const $context = {} as Context<Attributes>;
-    `);
+    const code: string[] = [
+        `import { Context } from "@niarada/remedy/server/context";\n`,
+        "const $context = {} as Context<Attributes>;\n",
+    ];
 
     const transformer: ts.TransformerFactory<ts.SourceFile> = (context) => {
         return (root) => {
@@ -91,7 +98,7 @@ function generateCodeAdditions(text) {
                     ts.isInterfaceDeclaration(node.parent) &&
                     node.parent.name.text === "Attributes"
                 ) {
-                    prefix.push(`const ${node.name.getText()} = $context.attributes.${node.name.getText()};\n`);
+                    code.push(`const ${node.name.getText()} = $context.attributes.${node.name.getText()};\n`);
                 }
                 return node;
             };
@@ -101,25 +108,34 @@ function generateCodeAdditions(text) {
     };
     ts.transform(ts.createSourceFile("", text, ts.ScriptTarget.Latest, true), [transformer]);
     return {
-        prefix: prefix.join(""),
-        suffix: suffix.join(""),
+        code: code.join(""),
     };
 }
 
 function redactHtml(source: string) {
-    const prefix: string[] = [];
-    const suffix: string[] = [];
     const { document, errors } = parse(source);
     const visitor = new RedactVisitor();
     visitor.visit(document);
     return {
-        prefix: prefix.join(""),
-        suffix: visitor.output,
+        insertions: visitor.insertions,
+        body: visitor.body,
     };
 }
 
+interface Insertion {
+    offset: number;
+    text: string;
+}
+
 class RedactVisitor extends BaseTemplateVisitorWithDefaults {
-    #output: string[] = [];
+    insertions: Insertion[] = [];
+    #body: string[] = [];
+
+    lastAs?: string;
+    lastEach?: string;
+    lastExpression?: string;
+    lastAttributeExpression?: string;
+    lastAttributeString?: string;
 
     constructor() {
         super();
@@ -127,7 +143,7 @@ class RedactVisitor extends BaseTemplateVisitorWithDefaults {
     }
 
     pushSpaces(text: string, space = " ") {
-        this.#output.push(text.replace(/\S/g, space));
+        this.#body.push(text.replace(/\S/g, space));
     }
 
     document(context: CstChildrenDictionary) {
@@ -143,9 +159,9 @@ class RedactVisitor extends BaseTemplateVisitorWithDefaults {
     }
 
     element(context: CstChildrenDictionary) {
-        const tagStart = context.tagStart[0];
+        const tagStart = getNode(context, "tagStart");
         const tagStartIdentifier = getTokenImage(tagStart, "Identifier");
-        const tagEnd = context.tagEnd?.[0];
+        const tagEnd = getNode(context, "tagEnd");
         const tagEndIdentifier = tagEnd && getTokenImage(tagEnd, "Identifier");
         if (getToken(tagStart, "Slash") && tagEnd) {
             console.error(`Unexpected closing tag: ${tagEndIdentifier}`);
@@ -156,8 +172,22 @@ class RedactVisitor extends BaseTemplateVisitorWithDefaults {
         }
         const whitespace = getToken(tagStart, "WhiteSpace");
         if (whitespace) {
-            this.#output.push(whitespace.image);
+            this.#body.push(whitespace.image);
         }
+        if (this.lastEach && this.lastAs) {
+            this.insertions.push({
+                offset: tagStart.location.startOffset,
+                text: `{const ${this.lastAs} = ${this.lastEach.slice(1, -1)}[0];`,
+            });
+            if (tagEnd) {
+                this.insertions.push({ offset: tagEnd.location.endOffset, text: "}" });
+            } else {
+                const token = getToken(context, "CloseAngleBracket");
+                this.insertions.push({ offset: token.endOffset, text: "}" });
+            }
+        }
+        this.lastEach = undefined;
+        this.lastAs = undefined;
         if (getToken(tagStart, "Slash")) {
             this.pushSpaces("/>");
         } else if (htmlVoidTags.includes(tagStartIdentifier)) {
@@ -172,10 +202,17 @@ class RedactVisitor extends BaseTemplateVisitorWithDefaults {
     }
 
     attribute(context: CstChildrenDictionary) {
-        this.#output.push(getTokenImage(context, "WhiteSpace"));
-        this.pushSpaces(getTokenImage(context, "Identifier"));
+        const identifier = getTokenImage(context, "Identifier");
+        this.#body.push(getTokenImage(context, "WhiteSpace"));
+        this.pushSpaces(identifier);
         this.pushSpaces(getTokenImage(context, "Equals"));
         visit(this, context.attributeValue);
+        if (identifier === "mx-each") {
+            this.lastEach = this.lastExpression;
+        }
+        if (identifier === "mx-as") {
+            this.lastAs = this.lastAttributeString;
+        }
     }
 
     attributeValue(context: CstChildrenDictionary) {
@@ -186,6 +223,7 @@ class RedactVisitor extends BaseTemplateVisitorWithDefaults {
         if (!open) {
             const expression = getNode(context, "expression");
             visit(this, expression);
+            this.lastAttributeExpression = this.lastExpression;
             return;
         }
         const close =
@@ -196,13 +234,18 @@ class RedactVisitor extends BaseTemplateVisitorWithDefaults {
         const children = orderedFlatChildren(context);
         children.shift();
         children.pop();
+        let value = "";
         for (const child of children) {
-            if ((child as IToken).image) {
-                this.pushSpaces((child as IToken).image);
+            const image = (child as IToken).image;
+            if (image) {
+                this.pushSpaces(image);
+                value += image;
             } else {
                 visit(this, child as CstNode);
+                value += this.lastExpression;
             }
         }
+        this.lastAttributeString = value;
         this.pushSpaces(close.image);
     }
 
@@ -211,9 +254,10 @@ class RedactVisitor extends BaseTemplateVisitorWithDefaults {
         tokens.shift();
         tokens.pop();
         for (const part of tokens) {
-            this.#output.push(" ");
-            this.#output.push(part.image);
-            this.#output.push(";");
+            this.#body.push(" ");
+            this.#body.push(part.image);
+            this.lastExpression = `{${part.image}}`;
+            this.#body.push(";");
         }
     }
 
@@ -221,7 +265,11 @@ class RedactVisitor extends BaseTemplateVisitorWithDefaults {
         this.pushSpaces(context.Text[0].image);
     }
 
-    get output() {
-        return this.#output.join("");
+    get prefix() {
+        return this.insertions.join("");
+    }
+
+    get body() {
+        return this.#body.join("");
     }
 }
