@@ -1,30 +1,34 @@
+
 <html>
-    <head>
-        <title>todos</title>
-        <link rel="stylesheet" href="/base.css">
-    </head>
-    <body>
-        <section class="todoapp">
-            <header class="header">
-                <h1>todos</h1>
-                <todo-add />
-            </header>
-            <main class="main" style="display: block;">
-                <todo-toggle />
-                <todo-list />
-            </main>
-            <todo-footer />
-        </section>
-        <footer class="info">
-            <p>Double-click to edit a todo</p>
-            <p>
-                Made on
-                <a href="https://github.com/niarada/remedy">remedy</a>
-            </p>
-            <p>
-                Part of
-                <a href="http://todomvc.com">TodoMVC</a>
-            </p>
-        </footer>
-    </body>
+
+<head>
+    <title>todos</title>
+    <link rel="stylesheet" href="/base.css">
+</head>
+
+<body>
+    <section class="todoapp">
+        <header class="header">
+            <h1>todos</h1>
+            <todo-add />
+        </header>
+        <main class="main" style="display: block;">
+            <todo-toggle />
+            <todo-list />
+        </main>
+        <todo-footer />
+    </section>
+    <footer class="info">
+        <p>Double-click to edit a todo</p>
+        <p>
+            Made on
+            <a href="https://github.com/niarada/remedy">remedy</a>
+        </p>
+        <p>
+            Part of
+            <a href="http://todomvc.com">TodoMVC</a>
+        </p>
+    </footer>
+</body>
+
 </html>

@@ -1,145 +1,186 @@
+import { CstParser } from "chevrotain";
 import {
-    HtmlElement,
-    HtmlElementAttributeValue,
-    HtmlFragment,
-    HtmlNode,
-    Scope,
-    createHtmlElement,
-    createHtmlExpression,
-    createHtmlFragment,
-    createHtmlText,
-} from "./ast";
-import { Token, TokenType, scanPartial } from "./scanner";
+    BacktickQuoteText,
+    BracketedText,
+    CloseAngleBracket,
+    CloseBacktickQuote,
+    CloseBracket,
+    CloseDoubleQuote,
+    CloseSingleQuote,
+    Comment,
+    DoubleQuoteText,
+    Equals,
+    ExpressionPart,
+    Identifier,
+    OpenAngleBracket,
+    OpenAngleBracketSlash,
+    OpenBacktickQuote,
+    OpenBracket,
+    OpenDoubleQuote,
+    OpenSingleQuote,
+    SingleQuoteText,
+    Slash,
+    Text,
+    WhiteSpace,
+    lex,
+} from "./lexer";
+import { htmlVoidTags } from "./tags";
 
-export function parseSource(source: string, scope: Scope = {}) {
-    const parser = new Parser(source, scope);
-    return parser.parse() as HtmlFragment;
+class TemplateParser<F> extends CstParser {
+    lastTagStartWasSelfClosing = false;
+
+    constructor() {
+        super(
+            [
+                BacktickQuoteText,
+                BracketedText,
+                CloseAngleBracket,
+                CloseBacktickQuote,
+                CloseBracket,
+                CloseDoubleQuote,
+                CloseSingleQuote,
+                Comment,
+                DoubleQuoteText,
+                Equals,
+                ExpressionPart,
+                Identifier,
+                OpenAngleBracket,
+                OpenAngleBracketSlash,
+                OpenBacktickQuote,
+                OpenBracket,
+                OpenDoubleQuote,
+                OpenSingleQuote,
+                SingleQuoteText,
+                Slash,
+                Text,
+                WhiteSpace,
+            ],
+            { nodeLocationTracking: "full" },
+        );
+        this.performSelfAnalysis();
+    }
+
+    public document = this.RULE("document", () => {
+        this.OPTION(() => {
+            this.SUBRULE(this.fragment);
+        });
+    });
+
+    private fragment = this.RULE("fragment", () => {
+        this.AT_LEAST_ONE(() => {
+            this.OR([
+                { ALT: () => this.SUBRULE(this.comment) },
+                { ALT: () => this.SUBRULE(this.element) },
+                { ALT: () => this.SUBRULE(this.text) },
+                { ALT: () => this.SUBRULE(this.expression) },
+            ]);
+        });
+    });
+
+    private element = this.RULE("element", () => {
+        this.SUBRULE(this.tagStart);
+        if (!this.lastTagStartWasSelfClosing) {
+            this.OPTION(() => {
+                this.SUBRULE(this.fragment);
+            });
+        }
+        this.OPTION1(() => this.SUBRULE(this.tagEnd));
+    });
+
+    private tagStart = this.RULE("tagStart", () => {
+        this.lastTagStartWasSelfClosing = false;
+        this.CONSUME(OpenAngleBracket);
+        const identifier = this.CONSUME(Identifier);
+        if (htmlVoidTags.includes(identifier.image)) {
+            this.lastTagStartWasSelfClosing = true;
+        }
+        this.MANY(() => {
+            this.SUBRULE(this.attribute);
+        });
+        this.OPTION(() => {
+            this.CONSUME(WhiteSpace);
+        });
+        this.OPTION1(() => {
+            this.CONSUME(Slash);
+            this.lastTagStartWasSelfClosing = true;
+        });
+        this.CONSUME(CloseAngleBracket);
+    });
+
+    private tagEnd = this.RULE("tagEnd", () => {
+        this.CONSUME(OpenAngleBracketSlash);
+        this.CONSUME(Identifier);
+        this.CONSUME(CloseAngleBracket);
+    });
+
+    private attribute = this.RULE("attribute", () => {
+        this.CONSUME(WhiteSpace);
+        this.CONSUME(Identifier);
+        this.CONSUME(Equals);
+        this.SUBRULE(this.attributeValue);
+    });
+
+    private attributeValue = this.RULE("attributeValue", () => {
+        this.OR([
+            { ALT: () => this.SUBRULE(this.expression) },
+            {
+                ALT: () => {
+                    this.CONSUME(OpenSingleQuote);
+                    this.MANY(() => {
+                        this.OR1([
+                            { ALT: () => this.CONSUME(SingleQuoteText) },
+                            { ALT: () => this.SUBRULE1(this.expression) },
+                        ]);
+                    });
+                    this.CONSUME(CloseSingleQuote);
+                },
+            },
+            {
+                ALT: () => {
+                    this.CONSUME(OpenDoubleQuote);
+                    this.MANY1(() => {
+                        this.OR2([
+                            { ALT: () => this.CONSUME(DoubleQuoteText) },
+                            { ALT: () => this.SUBRULE2(this.expression) },
+                        ]);
+                    });
+                    this.CONSUME(CloseDoubleQuote);
+                },
+            },
+            {
+                ALT: () => {
+                    this.CONSUME(OpenBacktickQuote);
+                    this.MANY2(() => {
+                        this.OR3([
+                            { ALT: () => this.CONSUME(BacktickQuoteText) },
+                            { ALT: () => this.SUBRULE3(this.expression) },
+                        ]);
+                    });
+                    this.CONSUME(CloseBacktickQuote);
+                },
+            },
+        ]);
+    });
+
+    private expression = this.RULE("expression", () => {
+        this.AT_LEAST_ONE(() => {
+            this.CONSUME(ExpressionPart);
+        });
+    });
+
+    private comment = this.RULE("comment", () => {
+        this.CONSUME(Comment);
+    });
+
+    private text = this.RULE("text", () => {
+        this.CONSUME(Text);
+    });
 }
 
-class Parser {
-    source: string;
-    tokens: Token[];
-    stack: HtmlNode[];
-    position = 0;
+export const parser = new TemplateParser();
 
-    constructor(source: string, scope: Scope = {}) {
-        this.source = source;
-        this.tokens = scanPartial(this.source);
-        const root = createHtmlFragment();
-        root.scope = scope;
-        this.stack = [root];
-    }
-
-    get top(): HtmlElement {
-        return this.stack[this.stack.length - 1] as HtmlElement;
-    }
-
-    get token(): Token {
-        return this.tokens[this.position];
-    }
-
-    offset(offset: number) {
-        return this.tokens[this.position + offset];
-    }
-
-    offsetTypeIs(offset: number, type: TokenType) {
-        return this.offset(offset).type === type;
-    }
-
-    parse() {
-        while (this.position < this.tokens.length) {
-            const position = this.position;
-            this.parseNext();
-            if (position === this.position) {
-                this.error(`Unexpected ${this.token.type}`);
-            }
-        }
-        return this.stack[0];
-    }
-
-    parseNext() {
-        switch (this.token.type) {
-            case TokenType.Whitespace: {
-                this.position++;
-                break;
-            }
-            case TokenType.TagName: {
-                const element = createHtmlElement(this.top, this.token.value, []);
-                this.top.children.push(element);
-                this.stack.push(element);
-                this.position++;
-                break;
-            }
-            case TokenType.AttributeName: {
-                const name = this.token.value;
-                if (!this.offsetTypeIs(1, TokenType.Equal)) {
-                    this.top.attrs.push({ name, value: [] });
-                    this.position++;
-                    break;
-                }
-                this.position += 2;
-                const value: HtmlElementAttributeValue[] = [];
-                while (true) {
-                    const type = this.offset(0).type;
-                    if (type === TokenType.Text) {
-                        value.push({ type: "text", content: this.token.value });
-                    } else if (type === TokenType.Expression) {
-                        value.push({
-                            type: "expression",
-                            content: this.token.value.slice(1, -1),
-                        });
-                    } else {
-                        break;
-                    }
-                    this.position++;
-                }
-                this.top.attrs.push({ name, value });
-                break;
-            }
-            case TokenType.OpenAngleBracket: {
-                this.position++;
-                break;
-            }
-            case TokenType.CloseAngleBracket: {
-                if (
-                    this.offsetTypeIs(-1, TokenType.Slash) ||
-                    (!this.offsetTypeIs(-1, TokenType.TagName) && this.top.void)
-                ) {
-                    this.stack.pop();
-                }
-                this.position++;
-                break;
-            }
-            case TokenType.Slash: {
-                this.stack.pop();
-                this.position += 2;
-                break;
-            }
-            case TokenType.Equal: {
-                break;
-            }
-            case TokenType.Expression: {
-                this.top.children.push(createHtmlExpression(this.top, this.token.value.slice(1, -1)));
-                this.position++;
-                break;
-            }
-            case TokenType.Text: {
-                this.top.children.push(createHtmlText(this.top, this.token.value));
-                this.position++;
-                break;
-            }
-            case TokenType.Comment: {
-                this.position++;
-                break;
-            }
-        }
-    }
-
-    parseContent() {}
-
-    private error(message: string) {
-        const line = this.source.slice(0, this.token.position).split("\n").length;
-        const column = this.position - this.source.lastIndexOf("\n", this.position);
-        throw new Error(`Parser Error: ${message} at line ${line}, column ${column}: ${this.token.value}\n`);
-    }
+export function parse(source: string) {
+    const { tokens } = lex(source);
+    parser.input = tokens;
+    return { document: parser.document(), errors: parser.errors };
 }

@@ -20,9 +20,7 @@ const gift = "Joy";
 `;
 test("render simple", async () => {
     await director.prepare("beta", new PartialSource(source1));
-    expect(await director.render("beta", fakeContext(), { trim: true })).toBe(
-        "<h1>Joy</h1>",
-    );
+    expect(await director.render("beta", fakeContext(), { trim: true })).toBe("<h1>Joy</h1>");
 });
 
 const source2 = `
@@ -37,23 +35,14 @@ interface Attributes {
 `;
 test("render attributes", async () => {
     await director.prepare("gamma", new PartialSource(source2));
-    expect(
-        await director.render(
-            "gamma",
-            fakeContext({ gift: "Temperance", chapter: 5 }),
-            { trim: true },
-        ),
-    ).toBe(`<p><a chapter="number 5">Temperance</a></p>`);
+    expect(await director.render("gamma", fakeContext({ gift: "Temperance", chapter: 5 }), { trim: true })).toBe(
+        `<p><a chapter="number 5">Temperance</a></p>`,
+    );
 });
 
 test("flow each", async () => {
-    await director.prepare(
-        "delta",
-        new PartialSource(`<a mx-each={[1,2]} mx-as="i">{i}</a>`),
-    );
-    expect(await director.render("delta", fakeContext(), { trim: true })).toBe(
-        "<a>1</a><a>2</a>",
-    );
+    await director.prepare("delta", new PartialSource(`<a mx-each={[1,2]} mx-as="i">{i}</a>`));
+    expect(await director.render("delta", fakeContext(), { trim: true })).toBe("<a>1</a><a>2</a>");
 });
 
 await director.prepare(

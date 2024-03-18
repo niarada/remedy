@@ -1,18 +1,12 @@
-import { HtmlElementAttribute, HtmlNode } from "./ast";
-import { parseSource } from "./parser";
-import { walkHtml } from "./transform";
+import { HtmlElementAttribute, HtmlNode, parseSource, walkHtml } from ".";
 
 export interface PrintHtmlOptions {
     trim: boolean;
 }
 
-export function printHtml(
-    htmlOrNode: string | HtmlNode,
-    options: Partial<PrintHtmlOptions> = {},
-): string {
+export function printHtml(htmlOrNode: string | HtmlNode, options: Partial<PrintHtmlOptions> = {}): string {
     const { trim } = Object.assign({ trim: false }, options);
-    const html =
-        typeof htmlOrNode === "string" ? parseSource(htmlOrNode) : htmlOrNode;
+    const html = typeof htmlOrNode === "string" ? parseSource(htmlOrNode) : htmlOrNode;
     let text: string[] = [];
     walkHtml(html, (node, { visitEachChild }) => {
         if (node.type === "fragment") {
@@ -20,33 +14,19 @@ export function printHtml(
             return;
         }
         if (node.type === "element") {
-            // Remove the checked attribute on inputs if their value is "false"
-            // XXX: This is clunky
-            let attrs = structuredClone(node.attrs);
-            if (node.tag === "input") {
-                attrs = attrs.filter((attr) =>
-                    attr.name === "checked" &&
-                    concatAttributeValue(attr) === "false"
-                        ? undefined
-                        : attr,
-                );
-            }
             text.push("<");
             text.push(node.tag);
-            for (const attr of attrs) {
-                if (attr.value.length === 0) {
-                    text.push(` ${attr.name}`);
-                    continue;
+            for (let i = 0; i < node.attrs.length; i++) {
+                text.push(node.spaces[i]);
+                const attr = node.attrs[i];
+                if (attr.value.length === 1 && attr.value[0].type === "expression") {
+                    text.push(`${attr.name}=${attr.value[0].content}`);
+                } else {
+                    // XXX: Need to use the original quote marks here
+                    text.push(`${attr.name}=${attr.quote}${concatAttributeValue(attr)}${attr.quote}`);
                 }
-                let value = `"${concatAttributeValue(attr)}"`;
-                if (
-                    attr.value.length === 1 &&
-                    attr.value[0].type === "expression"
-                ) {
-                    value = value.slice(1, -1);
-                }
-                text.push(` ${attr.name}=${value}`);
             }
+            // XXX: There might be some final spacing here.
             text.push(">");
             visitEachChild(node);
             if (!node.void) {
@@ -59,7 +39,7 @@ export function printHtml(
             return;
         }
         if (node.type === "expression") {
-            text.push(`{${node.content}}`);
+            text.push(`${node.content}`);
             return;
         }
     });
@@ -71,12 +51,5 @@ export function printHtml(
 }
 
 export function concatAttributeValue(attr: HtmlElementAttribute) {
-    return attr.value
-        .map((value) => {
-            if (value.type === "text") {
-                return value.content;
-            }
-            return `{${value.content}}`;
-        })
-        .join("");
+    return attr.value.map((value) => value.content).join("");
 }

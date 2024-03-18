@@ -62,12 +62,13 @@
         }
     },
     "dependencies": {
-        "@types/node": "^20.11.25",
+        "@types/node": "^20.11.28",
         "@types/vscode": "^1.87.0",
         "@volar/vscode": "^2.1.2",
+        "chevrotain": "^10.5.0",
         "typescript": "^5.4.2",
-        "volar-service-html": "^0.0.31",
-        "volar-service-typescript": "^0.0.31",
+        "volar-service-html": "^0.0.34",
+        "volar-service-typescript": "^0.0.34",
         "vscode-languageclient": "^9.0.1"
     }
 }
