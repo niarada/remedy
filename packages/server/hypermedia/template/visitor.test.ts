@@ -1,5 +1,6 @@
 import { describe, expect, it } from "bun:test";
 import { CstChildrenDictionary, CstNode, IToken } from "chevrotain";
+import { htmlVoidTags } from ".";
 import { parse } from "./parser";
 import {
     BaseTemplateVisitorWithDefaults,
@@ -75,6 +76,12 @@ describe("visitor", () => {
     it("should parse multiple expressions in different positions", () => {
         parseAndCompare('<div id={id} class="{class}">Text {expression} more text</div>');
     });
+
+    it("should parse void tags", () => {
+        parseAndCompare(`
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        `);
+    });
 });
 
 function parseAndCompare(source: string) {
@@ -123,6 +130,8 @@ class PrintVisitor extends BaseTemplateVisitorWithDefaults {
         }
         if (getToken(tagStart, "Slash")) {
             this.#output.push("/>");
+        } else if (htmlVoidTags.includes(tagStartIdentifier)) {
+            this.#output.push(">");
         } else {
             this.#output.push(">");
             if (context.fragment) {
