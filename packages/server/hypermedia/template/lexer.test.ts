@@ -302,4 +302,13 @@ describe("lexer", () => {
             ["CloseAngleBracket", ">"],
         ]);
     });
+
+    it("should lex code blocks", () => {
+        const { tokens } = lex("<code>{code}</code>");
+        expect(tokens.map((t) => [t.tokenType.name, t.image])).toEqual([
+            ["CodeStart", "<code>"],
+            ["CodeText", "{code}"],
+            ["CodeEnd", "</code>"],
+        ]);
+    });
 });

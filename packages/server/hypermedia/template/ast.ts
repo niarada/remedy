@@ -164,6 +164,14 @@ class AstBuilder extends BaseTemplateVisitorWithDefaults {
         this.append(createHtmlComment(this.top, getTokenImage(context, "Comment")!));
     }
 
+    code(context: CstChildrenDictionary) {
+        const element = this.append(createHtmlElement(this.top, "code")) as HtmlElement;
+        const code = getTokenImage(context, "CodeText");
+        if (code) {
+            element.children.push(createHtmlText(element, code));
+        }
+    }
+
     element(context: CstChildrenDictionary) {
         const tagStart = context.tagStart[0];
         const tagStartIdentifier = getTokenImage(tagStart, "Identifier");

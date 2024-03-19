@@ -7,6 +7,9 @@ import {
     CloseBracket,
     CloseDoubleQuote,
     CloseSingleQuote,
+    CodeEnd,
+    CodeStart,
+    CodeText,
     Comment,
     DoubleQuoteText,
     Equals,
@@ -39,6 +42,9 @@ class TemplateParser<F> extends CstParser {
                 CloseBracket,
                 CloseDoubleQuote,
                 CloseSingleQuote,
+                CodeEnd,
+                CodeStart,
+                CodeText,
                 Comment,
                 DoubleQuoteText,
                 Equals,
@@ -70,11 +76,18 @@ class TemplateParser<F> extends CstParser {
         this.AT_LEAST_ONE(() => {
             this.OR([
                 { ALT: () => this.SUBRULE(this.comment) },
+                { ALT: () => this.SUBRULE(this.code) },
                 { ALT: () => this.SUBRULE(this.element) },
                 { ALT: () => this.SUBRULE(this.text) },
                 { ALT: () => this.SUBRULE(this.expression) },
             ]);
         });
+    });
+
+    private code = this.RULE("code", () => {
+        this.CONSUME(CodeStart);
+        this.CONSUME(CodeText);
+        this.CONSUME(CodeEnd);
     });
 
     private element = this.RULE("element", () => {

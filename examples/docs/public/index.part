@@ -20,6 +20,10 @@ const articles = [
         href: "/integrations",
     },
     {
+        title: "Templates",
+        href: "/templates",
+    },
+    {
         title: "Markdown",
         href: "/markdown",
     },
@@ -52,7 +56,7 @@ const nextArticle = articles[articleIndex + 1] || null;
 <body class="flex flex-col bg-gray-50 text-black">
     <header class="flex justify-between items-center gap-4 bg-red-700 px-4 py-2 text-white">
         <a class="flex items-center gap-3" href="/">
-            <img src="/assets/cross-dark.png" class="h-6 w-6" />
+            <img src="/assets/cross-dark.png" class="h-6 w-6">
             <div class="text-2xl">remedy</div>
         </a>
         <a href="https://github.com/niarada/remedy">
@@ -63,7 +67,7 @@ const nextArticle = articles[articleIndex + 1] || null;
         <nav class="w-48">
             <ul class="flex flex-col gap-1 cursor-pointer">
                 <li mx-each={articles} mx-as="article"
-                    class="{article.href === $context.url.pathname ? 'font-bold' : ''}">
+                    class={article.href === $context.url.pathname ? 'font-bold' : ''}>
                     <a href={article.href}>{article.title}</a>
                 </li>
             </ul>

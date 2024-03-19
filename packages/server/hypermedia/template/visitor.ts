@@ -45,8 +45,12 @@ export function getTokens(element: unknown, name: string) {
     return (getChildren(element)[name] || []) as IToken[];
 }
 
-export function getNode(element: unknown, name: string) {
-    return getNodes(element, name)[0] as CstNode | undefined;
+export function getNode(element: unknown, name: string, ...rest: string[]) {
+    const node = getNodes(element, name)[0] as CstNode | undefined;
+    if (rest.length) {
+        return getNode(node, rest[0], ...rest.slice(1));
+    }
+    return node;
 }
 
 export function getToken(element: unknown, name: string) {

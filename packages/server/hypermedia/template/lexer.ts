@@ -46,9 +46,23 @@ export const BracketedText = createToken({
     categories: [ExpressionPart],
 });
 
+export const CodeStart = createToken({
+    name: "CodeStart",
+    pattern: /<code>/,
+    push_mode: "Code",
+});
+
+export const CodeText = createToken({ name: "CodeText", pattern: /[\s\S]*(?=<\/code>)/s });
+
+export const CodeEnd = createToken({
+    name: "CodeEnd",
+    pattern: /<\/code>/,
+    pop_mode: true,
+});
+
 const lexer = new Lexer({
     modes: {
-        fragment: [Comment, OpenAngleBracketSlash, OpenAngleBracket, OpenBracket, Text],
+        fragment: [Comment, CodeStart, OpenAngleBracketSlash, OpenAngleBracket, OpenBracket, Text],
         TagStart: [
             Identifier,
             Equals,
@@ -60,6 +74,7 @@ const lexer = new Lexer({
             OpenBacktickQuote,
             WhiteSpace,
         ],
+        Code: [CodeEnd, CodeText],
         TagEnd: [Identifier, CloseAngleBracket],
         Bracketed: [OpenBracket, CloseBracket, BracketedText],
         SingleQuoted: [OpenBracket, CloseSingleQuote, SingleQuoteText],
