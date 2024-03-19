@@ -106,7 +106,7 @@ export class Representation {
      * @returns
      */
     present(context: Context): Presentation {
-        const t = this.template;
+        // console.log(this, this.template);
         const template = cloneHtml(this.template) as HtmlFragment;
         if (this instanceof VariableRepresentation) {
             return new Presentation(this.director, this, template, context.withAttributes(this.variables));

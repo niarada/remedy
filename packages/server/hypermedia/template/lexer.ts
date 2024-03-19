@@ -52,7 +52,7 @@ export const CodeStart = createToken({
     push_mode: "Code",
 });
 
-export const CodeText = createToken({ name: "CodeText", pattern: /[\s\S]*(?=<\/code>)/s });
+export const CodeText = createToken({ name: "CodeText", pattern: /(.|\s|\S)+?(?=<\/code>)/ });
 
 export const CodeEnd = createToken({
     name: "CodeEnd",
@@ -84,10 +84,13 @@ const lexer = new Lexer({
     defaultMode: "fragment",
 });
 
-export function lex(inputText: string) {
-    const result = lexer.tokenize(inputText);
+export function lex(input: string) {
+    const result = lexer.tokenize(input);
     if (result.errors.length > 0) {
-        throw new Error(result.errors[0].message);
+        console.warn("Lexer errors:");
+        for (const error of result.errors) {
+            console.warn(error.message);
+        }
     }
     return result;
 }

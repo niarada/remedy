@@ -311,4 +311,25 @@ describe("lexer", () => {
             ["CodeEnd", "</code>"],
         ]);
     });
+
+    it("", () => {
+        const { tokens } = lex(`
+            <pre><code>bunx @niarada/remedy
+            </code></pre>
+
+        `);
+        expect(tokens.map((t) => [t.tokenType.name, t.image])).toEqual([
+            ["Text", "\n            "],
+            ["OpenAngleBracket", "<"],
+            ["Identifier", "pre"],
+            ["CloseAngleBracket", ">"],
+            ["CodeStart", "<code>"],
+            ["CodeText", "bunx @niarada/remedy\n            "],
+            ["CodeEnd", "</code>"],
+            ["OpenAngleBracketSlash", "</"],
+            ["Identifier", "pre"],
+            ["CloseAngleBracket", ">"],
+            ["Text", "\n\n        "],
+        ]);
+    });
 });

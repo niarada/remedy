@@ -260,6 +260,9 @@ class AstBuilder extends BaseTemplateVisitorWithDefaults {
 export function parseSource(source: string, scope: Scope = {}) {
     const htmlIndex = htmlStartIndex(source);
     const { document, errors } = parse(source.slice(htmlIndex));
+    if (errors.length) {
+        throw errors[0];
+    }
     const visitor = new AstBuilder(scope);
     visitor.visit(document);
     return { ast: visitor.ast, errors };
