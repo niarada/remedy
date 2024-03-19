@@ -46,9 +46,9 @@ export function deactivate() {
 
 function initializeExtension(context) {
     // const workspaceOptions = getWorkspaceOptions(context);
-    vscode.workspace
-        .getConfiguration("tailwindCSS")
-        .update("experimental.configFile", `${context.extensionPath}/assets/tailwind.js`);
+    // vscode.workspace
+    //     .getConfiguration("tailwindCSS")
+    //     .update("experimental.configFile", `${context.extensionPath}/assets/tailwind.js`);
     vscode.workspace.getConfiguration("tailwindCSS").update("includeLanguages", {
         partial: "html",
     });
