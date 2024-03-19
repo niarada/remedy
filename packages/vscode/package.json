@@ -18,7 +18,7 @@
         "javascript"
     ],
     "icon": "./assets/cross-both.png",
-    "version": "0.2.7",
+    "version": "0.2.8",
     "publisher": "niarada",
     "engines": {
         "vscode": "^1.86.0"
@@ -44,6 +44,16 @@
                     "light": "./assets/icon-light.png",
                     "dark": "./assets/icon-dark.png"
                 }
+            },
+            {
+                "id": "remedy-html",
+                "aliases": [
+                    "remedy-html"
+                ],
+                "extensions": [
+                    ".rhtml"
+                ],
+                "configuration": "./grammars/html.json"
             }
         ],
         "grammars": [
@@ -62,6 +72,15 @@
                     "meta.brace.angle",
                     "punctuation.definition.tag"
                 ]
+            },
+            {
+                "language": "remedy-html",
+                "scopeName": "text.html.remedy",
+                "path": "./dist/html.tmLanguage.json",
+                "embeddedLanguages": {
+                    "meta.embedded.block.typescript": "typescript",
+                    "meta.embedded.block.html": "html"
+                }
             }
         ],
         "configuration": {

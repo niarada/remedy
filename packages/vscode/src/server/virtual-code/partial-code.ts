@@ -126,7 +126,9 @@ function generateCodeAdditions(text) {
 function redactHtml(source: string) {
     const { document, errors } = parse(source);
     const visitor = new RedactVisitor();
-    visitor.visit(document);
+    try {
+        visitor.visit(document);
+    } catch (e) {}
     return {
         insertions: visitor.insertions,
         body: visitor.body,
@@ -277,10 +279,6 @@ class RedactVisitor extends BaseTemplateVisitorWithDefaults {
 
     text(context: Record<string, IToken[]>) {
         this.pushSpaces(context.Text[0].image);
-    }
-
-    get prefix() {
-        return this.insertions.join("");
     }
 
     get body() {
