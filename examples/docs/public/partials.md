@@ -95,4 +95,4 @@ Tag names are generated from the path of the partial file name.  Essentially, `/
 
 So, for a path such as `public/salutation/hello.part` the tag would be `<salutation-hello>`.
 
-Now, this leads us into routing, so head over to the [next section](/routing).
+Now, this leads us into routing, so head over to the [next section](/routes).

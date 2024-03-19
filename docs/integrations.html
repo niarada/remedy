@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>remedy: documentation</title>
+    <link rel="stylesheet" href="base.css">
     <link rel="icon" type="image/png" href="assets/cross-both.png">
 <link rel="stylesheet" href="_fontawesome.css"><link rel="stylesheet" href="_tailwind.css"></head>
 
@@ -20,50 +21,67 @@
     <main class="flex mt-6 px-4" hx-boost="article">
         <nav class="w-48">
             <ul class="flex flex-col gap-1 cursor-pointer">
-                <li class="">
+                <li
+                    class="">
                     <a href="index.html">Introduction</a>
-                </li><li class="">
+                </li><li
+                    class="">
                     <a href="partials.html">Partials</a>
-                </li><li class="">
+                </li><li
+                    class="">
                     <a href="routes.html">Routes</a>
-                </li><li class="">
-                    <a href="context.html">Context</a>
-                </li><li class="font-bold">
-                    <a href="integrations.html">Integrations</a>
-                </li><li class="">
+                </li><li
+                    class="">
+                    <a href="templates.html">Templates</a>
+                </li><li
+                    class="">
                     <a href="markdown.html">Markdown</a>
-                </li><li class="">
+                </li><li
+                    class="">
+                    <a href="context.html">Context</a>
+                </li><li
+                    class="font-bold">
+                    <a href="integrations.html">Integrations</a>
+                </li><li
+                    class="">
                     <a href="options.html">Options</a>
-                </li><li class="">
+                </li><li
+                    class="">
                     <a href="editorsupport.html">Editor Support</a>
-                </li><li class="">
+                </li><li
+                    class="">
                     <a href="roadmap.html">Roadmap</a>
                 </li>
             </ul>
         </nav>
         <article class="prose w-full">
             <h1>Integrations</h1>
+<p>Also known as plugins or features.</p>
 <p><strong>remedy</strong> is designed to allow for easy integration with 3rd party libraries or custom plugins.  A process for community contributed integrations will be established at some point in the future.</p>
 <p>All integrations can be configured in <a href="options.html">Options</a>.</p>
 <h3>Enabled by default</h3>
-<ul>
-<li><strong>dev</strong>: file watching and hot refresh</li>
-<li><strong>static</strong>: static asset delivery</li>
-<li><strong>htmx</strong>: htmx support</li>
-</ul>
+<h4>dev</h4>
+<p>File watching and hot refresh.</p>
+<h4>static</h4>
+<p>Static asset delivery.</p>
+<h4>htmx</h4>
+<p>HTMX support.</p>
 <h3>Disabled by default</h3>
-<ul>
-<li><strong>sse</strong>: htmx server-sent events support</li>
-<li><strong>tailwind</strong>: tailwind support</li>
-<li><strong>fontawesome</strong>: fontawesome free library</li>
-</ul>
+<h4>sse</h4>
+<p>HTMX server-sent events support.</p>
+<h4>tailwind</h4>
+<p>Tailwind support.</p>
+<p>If this is enabled, a <code>tailwind.config.ts</code> will be created for you.  The <strong>remedy</strong> VSCode extension will automatically associate tailwind with <strong>remedy</strong> partials.</p>
+<h4>fontawesome</h4>
+<p>Fontawesome free library.</p>
+<p>e.g. <code>&lt;i class=&quot;fa-brands fa-github&quot; /&gt;</code></p>
 
             <footer class="mt-8 flex justify-between border-t border-t-slate-500 pt-4 pb-10">
                 <div>
                     <a href="context.html">← Context</a>
                 </div>
                 <div>
-                    <a href="markdown.html">Markdown →</a>
+                    <a href="options.html">Options →</a>
                 </div>
             </footer>
         </article>

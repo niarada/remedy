@@ -12,20 +12,20 @@ const articles = [
         href: "/routes",
     },
     {
-        title: "Context",
-        href: "/context",
-    },
-    {
-        title: "Integrations",
-        href: "/integrations",
-    },
-    {
         title: "Templates",
         href: "/templates",
     },
     {
         title: "Markdown",
         href: "/markdown",
+    },
+    {
+        title: "Context",
+        href: "/context",
+    },
+    {
+        title: "Integrations",
+        href: "/integrations",
     },
     {
         title: "Options",
@@ -50,6 +50,7 @@ const nextArticle = articles[articleIndex + 1] || null;
 <head>
     <meta charset="UTF-8">
     <title>remedy: documentation</title>
+    <link rel="stylesheet" href="/base.css">
     <link rel="icon" type="image/png" href="/assets/cross-both.png">
 </head>
 

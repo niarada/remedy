@@ -21,7 +21,7 @@ export default {
 `,
 );
 
-const server = Bun.spawn(["node_modules/.bin/remedy"], {
+const server = Bun.spawn(["packages/server/bin/remedy"], {
     cwd: work,
 });
 

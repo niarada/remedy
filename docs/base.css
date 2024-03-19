@@ -1,0 +1,21 @@
+ul.roadmap {
+    list-style-type: none;
+    margin: 0;
+    padding-left: 1rem;
+}
+
+ul.roadmap li {
+    margin: 0;
+    padding: 0;
+}
+
+ul.roadmap li:before {
+    font-family: 'Font Awesome 6 Free';
+    content: "\f111";
+    font-weight: 500;
+    margin-right: 0.5rem;
+}
+
+ul.roadmap li.done:before {
+    font-weight: 900;
+}

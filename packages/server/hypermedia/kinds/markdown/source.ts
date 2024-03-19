@@ -1,5 +1,6 @@
 import Markdown from "markdown-it";
 import { Source } from "~/hypermedia";
+import markdownRegexp from "./regexp";
 
 export class MarkdownSource extends Source {
     readonly kind = "markdown";
@@ -28,4 +29,13 @@ markdown.set({
 markdown.renderer.rules.text = (tokens, idx) => {
     return tokens[idx].content;
 };
+
 markdown.disable("entity");
+
+markdownRegexp(markdown, {
+    name: "fontawesome",
+    regexp: /fa\(([^\)]+)\)/,
+    replace: (match) => {
+        return `<i class="fa fa-${match}"></i>`;
+    },
+});

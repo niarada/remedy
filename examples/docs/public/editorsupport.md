@@ -1,7 +1,9 @@
 # Editor Support
 
-A [Visual Studio Code extension](https://marketplace.visualstudio.com/items?itemName=niarada.remedy-vscode) is in development.
 
-Or, search in the extension manager for **remedy**.
+### Visual Studio Code
+#### remedy
+The official [**remedy** extension](https://marketplace.visualstudio.com/items?itemName=niarada.remedy-vscode).
 
-This extension will aim to provide syntax highlighting, formatting, diagnostics, and intellisense for HTML, TS, JS, and any official integrations like Tailwind.
+#### htmx
+[This extension](https://marketplace.visualstudio.com/items?itemName=CraigRBroughton.htmx-attributes) seems to play nicely with **remedy**.

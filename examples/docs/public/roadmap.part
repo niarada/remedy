@@ -1,0 +1,11 @@
+<h1>Roadmap</h1>
+
+<ul class="roadmap">
+    <li>Attributes schema and validation (zod, valibot)</li>
+    <li>Settable HX-* response headers in context</li>
+    <li>HTMX SSE</li>
+    <li>Alpine integration</li>
+    <li>Production mode</li>
+    <li>Production mode static asset cache</li>
+    <li>Production mode cache feature products</li>
+</ul>
