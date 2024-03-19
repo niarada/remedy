@@ -36,8 +36,12 @@ if (destroy) {
     $context.oob('todo-footer');
 }
 
-<li hx-trigger="dblclick" hx-get="/todo/item?id={id}&edit=true" hx-swap="outerHTML" class="{edit ? 'editing' : ''} {item.done ? 'completed' : ''}"
-    >
+const editing = edit;
+const completed = item.done;
+
+<li hx-trigger="dblclick" hx-get="/todo/item?id={id}&edit=true" hx-swap="outerHTML"
+    class="¢editing ¢completed"
+>
     <div class="view">
         <input hx-get="/todo/item?id={id}&toggle=true" hx-swap="none" class="toggle" type="checkbox" autocomplete="off"
             checked={item.done}>

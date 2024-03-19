@@ -39,6 +39,18 @@ export function transformExpressionsIntoStrings(node: HtmlNode) {
                               content: String(express(node.scope, value.content)),
                           },
                 );
+                if (attr.name === "class") {
+                    for (const value of attr.value) {
+                        value.content = value.content
+                            .replace(/¢(\w+)/g, (_, placeholder) => {
+                                if (node.scope[placeholder]) {
+                                    return placeholder;
+                                }
+                                return "";
+                            })
+                            .trim();
+                    }
+                }
                 return attr;
             });
         }

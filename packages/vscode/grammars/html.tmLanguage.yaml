@@ -64,6 +64,7 @@ repository:
                 name: source.css
             name: string.quoted.double.html
             patterns:
+            - include: "#expression"
             - include: "#entities"
           - begin: "'"
             beginCaptures:
