@@ -1,5 +1,4 @@
 {
-    "tailwindCSS.experimental.configFile": "/Users/joshua/Workspace/Active/remedy/packages/vscode/assets/tailwind.js",
     "tailwindCSS.includeLanguages": {
         "partial": "html"
     }
