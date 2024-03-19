@@ -16,6 +16,10 @@ import {
     simpleWalkHtml,
 } from "./template";
 
+interface ActivationOptions {
+    applyFormToAttributes?: boolean;
+}
+
 export class Presentation {
     constructor(
         private readonly director: Director,
@@ -28,7 +32,10 @@ export class Presentation {
      * Execute the action tied to this presentation with the contained server context
      * and the attributes passed into this presentation instance.
      */
-    async activate(): Promise<void> {
+    async activate(options: ActivationOptions = {}): Promise<void> {
+        if (options.applyFormToAttributes) {
+            this.context.applyFormAttributes(this.representation.artifact.attributes);
+        }
         this.context.coerceAttributes(this.representation.artifact.attributes);
         const actionResult =
             (await this.representation.artifact.action(

@@ -65,7 +65,7 @@ export async function buildFetch(options: ServerOptions) {
         }
         const content: string[] = [];
         const pres = await rep.present(context);
-        await pres.activate();
+        await pres.activate({ applyFormToAttributes: true });
 
         if (!context.renderCanceled) {
             await pres.compose();
@@ -75,7 +75,7 @@ export async function buildFetch(options: ServerOptions) {
         }
         for (const oob of context.oobs) {
             if (await director.represent(oob.tag)) {
-                content.push((await director.render(oob.tag, context))!);
+                content.push((await director.render(oob.tag, context.withAttributes(oob.attributes)))!);
             } else {
                 warn("view", `OOB view not found: ${oob.tag}`);
             }

@@ -23,16 +23,4 @@ repository:
         name: text.html.remedy
         contentName: meta.embedded.block.html
         patterns:
-          # - include: '#expression'
           - include: text.html.remedy
-
-  expression:
-    patterns:
-      - begin: \{
-        beginCaptures:
-          '0': { name: punctuation.definition.generic.begin.html }
-        end: \}
-        endCaptures:
-          '0': { name: punctuation.definition.generic.end.html }
-        patterns:
-          - include: source.ts#expression

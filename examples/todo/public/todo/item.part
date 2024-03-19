@@ -36,12 +36,8 @@ if (destroy) {
     $context.oob('todo-footer');
 }
 
-<li hx-trigger="dblclick" hx-get="/todo/item?id={id}&edit=true" hx-swap="outerHTML" hx-on::after-request="
-        // This event isn't firing
-        console.log('AFTER')
-        this.querySelector('input.edit')?.focus();
-        this.querySelector('input.edit')?.setSelectionRange(999,999);
-    " class="{edit ? 'editing' : ''} {item.done ? 'completed' : ''}">
+<li hx-trigger="dblclick" hx-get="/todo/item?id={id}&edit=true" hx-swap="outerHTML" class="{edit ? 'editing' : ''} {item.done ? 'completed' : ''}"
+    >
     <div class="view">
         <input hx-get="/todo/item?id={id}&toggle=true" hx-swap="none" class="toggle" type="checkbox" autocomplete="off"
             checked={item.done}>
@@ -49,7 +45,7 @@ if (destroy) {
         <button hx-get="/todo/item?id={id}&destroy=true" hx-target="closest li" hx-swap="delete"
             class="destroy" />
     </div>
-    <input style={edit ? '' : 'display: none;'} hx-get="/todo/item?id={id}" hx-target="closest li" hx-swap="outerHTML"
+    <input mx-when={edit} hx-get="/todo/item?id={id}" hx-target="closest li" hx-swap="outerHTML"
         hx-on:blur="this.parentElement.classList.remove('editing'); this.remove();" class="edit" name="text"
         value={item.text}>
 </li>

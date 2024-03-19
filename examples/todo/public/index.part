@@ -5,7 +5,10 @@
     <link rel="stylesheet" href="/base.css">
 </head>
 
-<body>
+<body hx-on::after-settle="
+    this.querySelector('input.edit')?.focus();
+    this.querySelector('input.edit')?.setSelectionRange(0, 999);
+">
     <section class="todoapp">
         <header class="header">
             <h1>todos</h1>

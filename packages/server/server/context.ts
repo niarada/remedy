@@ -40,8 +40,12 @@ export class Context<A extends Attributes = Attributes> {
         this.#attributes = attributes;
     }
 
-    withAttributes(attributes: Attributes): Context {
+    withAttributes(attributes: Attributes = {}): Context {
         return new Context(this.football, attributes);
+    }
+
+    applyFormAttributes(types: AttributeTypes) {
+        this.#attributes = applyFormAttributes(this.form, this.#attributes, types);
     }
 
     coerceAttributes(types: AttributeTypes) {
@@ -136,7 +140,7 @@ export class Context<A extends Attributes = Attributes> {
      * @param tag The partial tag to include in the response.
      * @param attributes Attributes to pass to the tag.
      */
-    oob(tag: string, attributes: Record<string, unknown> = {}) {
+    oob(tag: string, attributes: Attributes = {}) {
         this.football.oobs.push({ tag, attributes });
     }
 
@@ -162,7 +166,19 @@ export class Context<A extends Attributes = Attributes> {
  */
 interface Oob {
     tag: string;
-    attributes: Record<string, unknown>;
+    attributes: Attributes;
+}
+
+export function applyFormAttributes<A extends Attributes = Attributes>(
+    form: Record<string, unknown>,
+    attributes: A,
+    types: AttributeTypes,
+) {
+    const applied: Record<string, unknown> = structuredClone(attributes);
+    for (const key in types) {
+        applied[key] ??= form[key];
+    }
+    return applied as A;
 }
 
 export function coerceAttributes<A extends Attributes = Attributes>(attributes: A, types: AttributeTypes) {

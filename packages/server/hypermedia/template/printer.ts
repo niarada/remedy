@@ -35,7 +35,15 @@ export function printHtml(htmlOrNode: string | HtmlNode, options: Partial<PrintH
                 if (attr.value.length === 1 && attr.value[0].type === "expression") {
                     text.push(`${attr.name}=${attr.value[0].content}`);
                 } else {
-                    text.push(`${attr.name}=${attr.quote}${concatAttributeValue(attr)}${attr.quote}`);
+                    const value = concatAttributeValue(attr);
+                    // XXX: Special case for input.checked
+                    if (node.tag === "input" && attr.name === "checked") {
+                        if (value !== "false") {
+                            text.push("checked");
+                        }
+                    } else {
+                        text.push(`${attr.name}=${attr.quote}${value}${attr.quote}`);
+                    }
                 }
             }
             if (node.postAttributeSpace.includes("\n")) {

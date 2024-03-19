@@ -40,6 +40,6 @@ const remaining = model.items.filter((item) => !item.done).length;
                 class={model.filter==='completed' ? 'selected' : ''}>Completed</a>
         </li>
     </ul>
-    <button hx-get="/todo/footer?clear=true" hx-target="closest footer" hx-swap="outerHTML" class="clear-completed"
+    <button hx-get="/todo/footer?clear=true" class="clear-completed"
         style="display: {remaining !== model.items.length ? 'block' : 'none'};">Clear completed</button>
 </footer>
