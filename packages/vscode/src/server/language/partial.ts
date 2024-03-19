@@ -1,7 +1,11 @@
 import type { LanguagePlugin } from "@volar/language-core";
 import type { ServicePlugin } from "@volar/language-service";
 import { ScriptKind } from "typescript";
+import { parseSource, printHtml } from "../../template";
 import { PartialVirtualCode } from "../virtual-code/partial";
+
+// import { getLanguageService as getHtmlLanguageService } from "vscode-html-languageservice";
+// const htmlLanguageService = getHtmlLanguageService();
 
 export const partialLanguage: LanguagePlugin = {
     createVirtualCode(id, languageId, snapshot) {
@@ -38,19 +42,8 @@ export const partialLanguage: LanguagePlugin = {
     },
 };
 
-// provideDocumentLinks
-// provideDocumentColors
-// provideFoldingRanges
-// provideDocumentSymbols
-// provideCodeActions
-// provideInlayHints
-// provideDiagnostics
-// provideSemanticDiagnostics
-// provideCodeLenses
-// provideReferencesCodeLensRanges
-// resolveEmbeddedCodeFormattingOptions
-
 export const partialService: ServicePlugin = {
+    name: "partial",
     create(context) {
         return {
             // provideHover: () => {
@@ -89,10 +82,19 @@ export const partialService: ServicePlugin = {
             //     console.log("provideCodeActions");
             //     return [];
             // },
-            // provideDocumentFormattingEdits: () => {
-            //     console.log("provideDocumentFormattingEdits");
-            //     return [];
-            // },
+            provideDocumentFormattingEdits: (document, range, options, embeddedCodeContext, token) => {
+                const { ast, errors } = parseSource(document.getText(range));
+                if (errors.length) {
+                    return [];
+                }
+                const newText = printHtml(ast, { expandSelfClosing: false });
+                const edit = {
+                    range,
+                    newText,
+                };
+                return [edit];
+                // return htmlLanguageService.format(document, range, options);
+            },
             // provideOnTypeFormattingEdits: () => {
             //     console.log("provideOnTypeFormattingEdits");
             //     return [];

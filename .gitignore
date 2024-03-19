@@ -1,5 +1,6 @@
 .DS_Store
 node_modules
 bun.lockb
+package-lock.json
 .extension-build
 examples/docs/.vscode

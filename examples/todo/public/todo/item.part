@@ -4,69 +4,54 @@ interface Attributes {
     id: number;
     toggle?: boolean;
     text?: string;
+    edit?: boolean;
     destroy?: boolean;
 }
 
-const id = Attributes.id;
 const item = model.items.find((it) => it.id === id);
 
-if (Attributes.toggle) {
+if (!item) {
+    $context.status(404);
+    return;
+}
+
+if (toggle) {
     item.done = !item.done;
     await saveModel();
-    Context.oob('todo-footer');
-    Context.oob('todo-toggle');
-    Context.oob('todo-list');
-    Context.cancelRender();
+    $context.oob('todo-footer');
+    $context.oob('todo-toggle');
+    $context.oob('todo-list');
+    $context.cancelRender();
 }
 
-if (Attributes.text) {
-    item.text = Attributes.text;
+if (text) {
+    item.text = text;
     await saveModel();
 }
 
-if (Attributes.destroy) {
+if (destroy) {
     model.items = model.items.filter((it) => it.id !== id);
     await saveModel();
-    Context.cancelRender();
-    Context.oob('todo-footer');
+    $context.cancelRender();
+    $context.oob('todo-footer');
 }
 
-<li
-    hx-trigger="dblclick"
-    hx-get="/todo/item?id={id}&edit=true"
-    hx-swap="outerHTML"
-    hx-on::after-request="
+
+
+<li hx-trigger="dblclick" hx-get="/todo/item?id={id}&edit=true" hx-swap="outerHTML" hx-on::after-request="
         // This event isn't firing
         console.log('AFTER')
         this.querySelector('input.edit')?.focus();
         this.querySelector('input.edit')?.setSelectionRange(999,999);
-    "
-    class="{Attributes.edit ? 'editing' : ''} {item.done ? 'completed' : ''}"
->
+    " class="{edit ? 'editing' : ''} {item.done ? 'completed' : ''}">
     <div class="view">
-        <input
-            hx-get="/todo/item?id={id}&toggle=true"
-            hx-swap="none"
-            class="toggle"
-            type="checkbox"
-            autocomplete="off"
-            checked={item.done}
-        />
+        <input hx-get="/todo/item?id={id}&toggle=true" hx-swap="none" class="toggle" type="checkbox" autocomplete="off"
+            checked={item.done} />
         <label>{item.text}</label>
-        <button
-            hx-get="/todo/item?id={id}&destroy=true"
-            hx-target="closest li"
-            hx-swap="delete"
+        <button hx-get="/todo/item?id={id}&destroy=true" hx-target="closest li" hx-swap="delete"
             class="destroy"></button>
     </div>
-    <input
-        style="{Attributes.edit ? '' : 'display: none;'}"
-        hx-get="/todo/item?id={id}"
-        hx-target="closest li"
-        hx-swap="outerHTML"
-        hx-on:blur="this.parentElement.classList.remove('editing'); this.remove();"
-        class="edit"
-        name="text"
-        value="{item.text}"
-    >
+    <input style="{edit ? '' : 'display: none;'}" hx-get="/todo/item?id={id}" hx-target="closest li" hx-swap="outerHTML"
+        hx-on:blur="this.parentElement.classList.remove('editing'); this.remove();" class="edit" name="text"
+        value="{item.text}">
 </li>

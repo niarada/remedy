@@ -8,9 +8,9 @@ if (text) {
     const id = model.items.reduce((id, it) => Math.max(id, it.id), 0) + 1;
     model.items.push({ id, text: text, done: false });
     await saveModel();
-    Context.cancelRender();
-    Context.oob('todo-list');
-    Context.oob('todo-footer');
+    $context.cancelRender();
+    $context.oob('todo-list');
+    $context.oob('todo-footer');
 }
 
 <input hx-get="/todo/add" hx-swap="none" hx-on::before-request="this.value = ''" class="new-todo"

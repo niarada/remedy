@@ -34,7 +34,7 @@ const features = {
     format: false,
 };
 
-export class PartialScriptVirtualCode implements VirtualCode {
+export class PartialCodeVirtualCode implements VirtualCode {
     languageId = "typescript";
     snapshot: IScriptSnapshot;
     mappings: CodeMapping[];

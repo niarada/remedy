@@ -2,9 +2,16 @@ import { HtmlElementAttribute, HtmlNode, parseSource, walkHtml } from ".";
 
 export interface PrintHtmlOptions {
     trim: boolean;
+    expandSelfClosing: boolean;
 }
 
+const defaultOptions: PrintHtmlOptions = {
+    trim: false,
+    expandSelfClosing: true,
+};
+
 export function printHtml(htmlOrNode: string | HtmlNode, options: Partial<PrintHtmlOptions> = {}): string {
+    options = Object.assign({}, defaultOptions, options);
     const { trim } = Object.assign({ trim: false }, options);
     let html: HtmlNode;
     if (typeof htmlOrNode === "string") {
@@ -34,9 +41,12 @@ export function printHtml(htmlOrNode: string | HtmlNode, options: Partial<PrintH
             if (node.postAttributeSpace.includes("\n")) {
                 text.push(node.postAttributeSpace);
             }
+            if (!node.void && !options.expandSelfClosing && node.children.length === 0) {
+                text.push(" /");
+            }
             text.push(">");
             visitEachChild(node);
-            if (!node.void) {
+            if (!node.void && (options.expandSelfClosing || node.children.length > 0)) {
                 text.push(`</${node.tag}>`);
             }
             return;

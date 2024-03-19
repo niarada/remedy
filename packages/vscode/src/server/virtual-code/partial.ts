@@ -2,7 +2,7 @@ import type { CodeMapping, VirtualCode } from "@volar/language-core";
 import type { IScriptSnapshot } from "typescript";
 
 import { htmlStartIndex } from "../../template";
-import { PartialScriptVirtualCode } from "./partial-script";
+import { PartialCodeVirtualCode } from "./partial-code";
 import { SimpleVirtualCode } from "./simple";
 
 export class PartialVirtualCode implements VirtualCode {
@@ -40,8 +40,8 @@ export class PartialVirtualCode implements VirtualCode {
         const htmlIndex = htmlStartIndex(text);
         if (htmlIndex > 0) {
             this.embeddedCodes.push(
-                new PartialScriptVirtualCode("typescript0", text),
-                new SimpleVirtualCode("typescript1", "typescript", text.slice(0, htmlIndex), 0, {
+                new PartialCodeVirtualCode("code", text),
+                new SimpleVirtualCode("code-formatting", "typescript", text.slice(0, htmlIndex), 0, {
                     completion: false,
                     format: true,
                     navigation: false,
@@ -51,6 +51,23 @@ export class PartialVirtualCode implements VirtualCode {
                 }),
             );
         }
-        this.embeddedCodes.push(new SimpleVirtualCode("html", "html", text.slice(htmlIndex), htmlIndex));
+        this.embeddedCodes.push(
+            new SimpleVirtualCode("template", "html", text.slice(htmlIndex), htmlIndex, {
+                completion: true,
+                format: false,
+                navigation: true,
+                semantic: true,
+                structure: true,
+                verification: true,
+            }),
+            new SimpleVirtualCode("template-formatting", "partial-template", text.slice(htmlIndex), htmlIndex, {
+                completion: false,
+                format: true,
+                navigation: false,
+                semantic: false,
+                structure: false,
+                verification: false,
+            }),
+        );
     }
 }

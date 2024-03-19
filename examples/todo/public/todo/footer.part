@@ -5,17 +5,17 @@ interface Attributes {
     filter?: Filter;
 }
 
-if (Attributes.clear) {
+if (clear) {
     model.items = model.items.filter((item) => !item.done);
     saveModel();
-    Context.oob("todo-list");
-    Context.oob("todo-toggle");
+    $context.oob("todo-list");
+    $context.oob("todo-toggle");
 }
 
-if (Attributes.filter) {
-    model.filter = Attributes.filter;
+if (filter) {
+    model.filter = filter;
     saveModel();
-    Context.oob("todo-list");
+    $context.oob("todo-list");
 }
 
 const remaining = model.items.filter((item) => !item.done).length;
@@ -29,15 +29,15 @@ const remaining = model.items.filter((item) => !item.done).length;
     <ul class="filters">
         <li>
             <a hx-get="/todo/footer?filter=all" hx-swap="none" href="#"
-                class="{model.filter === 'all' ? 'selected' : ''}">All</a>
+                class={model.filter==='all' ? 'selected' : ''}>All</a>
         </li>
         <li>
             <a hx-get="/todo/footer?filter=active" hx-swap="none" href="#"
-                class="{model.filter === 'active' ? 'selected' : ''}">Active</a>
+                class={model.filter==='active' ? 'selected' : ''}>Active</a>
         </li>
         <li>
             <a hx-get="/todo/footer?filter=completed" hx-swap="none" href="#"
-                class="{model.filter === 'completed' ? 'selected' : ''}">Completed</a>
+                class={model.filter==='completed' ? 'selected' : ''}>Completed</a>
         </li>
     </ul>
     <button hx-get="/todo/footer?clear=true" hx-target="closest footer" hx-swap="outerHTML" class="clear-completed"
