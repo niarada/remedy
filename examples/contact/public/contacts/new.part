@@ -7,10 +7,10 @@ interface Attributes {
     phone: string;
 }
 
-if (Context.request.method === "POST") {
-    await createContact(Attributes);
-    Context.flash = "Created New Contact!";
-    Context.redirect("/contacts");
+if ($context.request.method === "POST") {
+    await createContact($context.form);
+    $context.flash = "Created New Contact!";
+    $context.redirect("/contacts");
 }
 
 <form action="/contacts/new" method="post">
@@ -19,22 +19,22 @@ if (Context.request.method === "POST") {
         <p>
             <label for="email">Email</label>
             <input name="email" id="email" type="email" placeholder="Email" value="">
-            <span class="error"></span>
+            <span class="error" />
         </p>
         <p>
             <label for="first">First Name</label>
             <input name="first" id="first" type="text" placeholder="First Name" value="">
-            <span class="error"></span>
+            <span class="error" />
         </p>
         <p>
             <label for="last">Last Name</label>
             <input name="last" id="last" type="text" placeholder="Last Name" value="">
-            <span class="error"></span>
+            <span class="error" />
         </p>
         <p>
             <label for="phone">Phone</label>
             <input name="phone" id="phone" type="text" placeholder="Phone" value="">
-            <span class="error"></span>
+            <span class="error" />
         </p>
         <button>Save</button>
     </fieldset>
