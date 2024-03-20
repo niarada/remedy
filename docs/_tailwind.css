@@ -964,8 +964,8 @@ video {
                     .gap-4 {
   gap: 1rem;
 }
-                    .overflow-scroll {
-  overflow: scroll;
+                    .overflow-y-scroll {
+  overflow-y: scroll;
 }
                     .border-t {
   border-top-width: 1px;

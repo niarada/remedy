@@ -73,7 +73,7 @@ const nextArticle = articles[articleIndex + 1] || null;
                 </li>
             </ul>
         </nav>
-        <div class="relative overflow-scroll pt-6 flex-auto">
+        <div class="relative overflow-y-scroll pt-6 flex-auto">
             <article class="prose w-full absolute">
                 <slot>
                     <introduction />
