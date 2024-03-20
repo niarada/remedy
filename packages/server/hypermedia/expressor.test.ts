@@ -47,7 +47,7 @@ describe("expressor", () => {
     });
 
     it("should express class name variables", () => {
-        const { ast } = parseSource(`<div class="¢foo bar ¢baz">`);
+        const { ast } = parseSource(`<div class="¢foo bar ¢baz" />`);
         ast.scope.foo = true;
         ast.scope.baz = false;
         transformExpressionsIntoStrings(ast);

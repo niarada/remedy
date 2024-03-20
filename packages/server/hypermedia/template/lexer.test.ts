@@ -312,7 +312,7 @@ describe("lexer", () => {
         ]);
     });
 
-    it("", () => {
+    it("should lex newlines in code blocks", () => {
         const { tokens } = lex(`
             <pre><code>bunx @niarada/remedy
             </code></pre>
@@ -330,6 +330,37 @@ describe("lexer", () => {
             ["Identifier", "pre"],
             ["CloseAngleBracket", ">"],
             ["Text", "\n\n        "],
+        ]);
+    });
+
+    it("should lex this properly", () => {
+        const { tokens } = lex(`
+            <div>
+                <slot><div /></slot>
+            </div>
+        `);
+        expect(tokens.map((t) => [t.tokenType.name, t.image])).toEqual([
+            ["Text", "\n            "],
+            ["OpenAngleBracket", "<"],
+            ["Identifier", "div"],
+            ["CloseAngleBracket", ">"],
+            ["Text", "\n                "],
+            ["OpenAngleBracket", "<"],
+            ["Identifier", "slot"],
+            ["CloseAngleBracket", ">"],
+            ["OpenAngleBracket", "<"],
+            ["Identifier", "div"],
+            ["WhiteSpace", " "],
+            ["Slash", "/"],
+            ["CloseAngleBracket", ">"],
+            ["OpenAngleBracketSlash", "</"],
+            ["Identifier", "slot"],
+            ["CloseAngleBracket", ">"],
+            ["Text", "\n            "],
+            ["OpenAngleBracketSlash", "</"],
+            ["Identifier", "div"],
+            ["CloseAngleBracket", ">"],
+            ["Text", "\n        "],
         ]);
     });
 });

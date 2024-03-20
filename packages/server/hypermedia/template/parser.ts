@@ -28,6 +28,7 @@ import {
     lex,
 } from "./lexer";
 import { htmlVoidTags } from "./tags";
+import { getTokenImage } from "./util";
 
 class TemplateParser<F> extends CstParser {
     lastTagStartWasSelfClosing = false;
@@ -91,13 +92,14 @@ class TemplateParser<F> extends CstParser {
     });
 
     private element = this.RULE("element", () => {
-        this.SUBRULE(this.tagStart);
-        if (!this.lastTagStartWasSelfClosing) {
+        const tagStart = this.SUBRULE(this.tagStart);
+        const tagStartIdentifier = getTokenImage(tagStart, "Identifier")!;
+        if (!(this.lastTagStartWasSelfClosing || htmlVoidTags.includes(tagStartIdentifier))) {
             this.OPTION(() => {
                 this.SUBRULE(this.fragment);
             });
+            this.SUBRULE(this.tagEnd);
         }
-        this.OPTION1(() => this.SUBRULE(this.tagEnd));
     });
 
     private tagStart = this.RULE("tagStart", () => {
@@ -188,7 +190,7 @@ class TemplateParser<F> extends CstParser {
     });
 
     private text = this.RULE("text", () => {
-        this.CONSUME(Text);
+        const token = this.CONSUME(Text);
     });
 }
 

@@ -1,8 +1,9 @@
 import { CstChildrenDictionary, CstNode, IToken } from "chevrotain";
 import { parse } from "./parser";
 import { htmlVoidTags } from "./tags";
+import { BaseTemplateVisitorWithDefaults, visit, visitEach } from "./visitor";
+
 import {
-    BaseTemplateVisitorWithDefaults,
     getNode,
     getNodes,
     getToken,
@@ -10,9 +11,7 @@ import {
     getTokens,
     orderedFlatChildren,
     orderedFlatNodeChildren,
-    visit,
-    visitEach,
-} from "./visitor";
+} from "./util";
 
 export type Scope = Record<string, unknown>;
 

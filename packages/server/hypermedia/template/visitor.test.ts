@@ -2,8 +2,9 @@ import { describe, expect, it } from "bun:test";
 import { CstChildrenDictionary, CstNode, IToken } from "chevrotain";
 import { htmlVoidTags } from ".";
 import { parse } from "./parser";
+import { BaseTemplateVisitorWithDefaults, visit, visitEach } from "./visitor";
+
 import {
-    BaseTemplateVisitorWithDefaults,
     getNode,
     getNodes,
     getToken,
@@ -11,9 +12,7 @@ import {
     getTokens,
     orderedFlatChildren,
     orderedFlatNodeChildren,
-    visit,
-    visitEach,
-} from "./visitor";
+} from "./util";
 
 describe("visitor", () => {
     it("should parse an empty document", () => {

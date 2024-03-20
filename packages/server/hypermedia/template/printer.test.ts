@@ -17,4 +17,10 @@ describe("printer", () => {
         `);
         expect(printHtml(ast, { trim: true })).toBe("<div><pre><code>a {code} block</code></pre></div>");
     });
+
+    it("should not change this code", () => {
+        const source = ["<div>", "    <slot><div /></slot>", "</div>\n"].join("\n");
+        const { ast } = parseSource(source);
+        expect(printHtml(ast, { expandSelfClosing: false })).toBe(source);
+    });
 });
