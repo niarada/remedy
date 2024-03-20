@@ -48,7 +48,7 @@ export const BracketedText = createToken({
 
 export const CodeStart = createToken({
     name: "CodeStart",
-    pattern: /<code[^>]+>/,
+    pattern: /<code[^>]*>/,
     push_mode: "Code",
 });
 
