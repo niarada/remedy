@@ -4,7 +4,7 @@ Partials are the *language* of **remedy**.  A partial can be divided into two se
 
 ### An Example
 
-```
+```part
 /**
  * public/hello.part
  */
@@ -20,7 +20,7 @@ Partials are so-called because they are re-usable.  This example file is called 
 
 You can then use it in another partial like this:
 
-```
+```part
 /**
  * public/salutation.part
  */
@@ -32,7 +32,7 @@ You can then use it in another partial like this:
 
 You can also pass in attributes.
 
-```
+```part
 /**
  * public/hello.part
  */
@@ -42,7 +42,7 @@ You can also pass in attributes.
 </div>
 ```
 
-```
+```part
 /**
  * public/salutation.part
  */
@@ -54,7 +54,7 @@ You can also pass in attributes.
 
 Or contents:
 
-```
+```part
 /**
  * public/hello.part
  */
@@ -64,7 +64,7 @@ Or contents:
 </div>
 ```
 
-```
+```part
 /**
  * public/salutation.part
  */
@@ -76,7 +76,7 @@ Or contents:
 
 If you use TypeScript, you can be clear about your attributes, and type them.
 
-```
+```part
 /**
  * public/hello.part
  */

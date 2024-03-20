@@ -4,7 +4,7 @@ To add special configuration to **remedy**, drop an `options.ts` file in your pr
 
 Have it follow this structure, all fields are optional, defaults are given:
 
-```
+```ts
 export default {
     port: 4321,
     features: {

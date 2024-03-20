@@ -20,7 +20,7 @@ Any variable that is in the scope of the code above the template will be availab
 
 For example:
 
-```
+```part
 const name = "niarada";
 
 <h1>Hello, {name}</h1>
@@ -28,7 +28,7 @@ const name = "niarada";
 
 will result in:
 
-```
+```part
 <h1>Hello, niarada</h1>
 ```
 
@@ -46,7 +46,7 @@ Use these to repeat an element for each item in the provided array.  `rx-as` is 
 
 For example:
 
-```
+```part
 const items = [
     { name: "love" },
     { name: "joy" },
@@ -58,7 +58,7 @@ const items = [
 
 will result in:
 
-```
+```part
 <li>love</li>
 <li>joy</li>
 <li>peace</li>
@@ -70,7 +70,7 @@ Use this to only render the element if the provided expression evaluates to trut
 
 For example:
 
-```
+```part
 const truthy = true;
 const falsy = false;
 
@@ -80,7 +80,7 @@ const falsy = false;
 
 will result in:
 
-```
+```part
 <li>love</li>
 ```
 
@@ -90,7 +90,7 @@ There is a small helper for rendering class names, to free one from using trinar
 
 For example:
 
-```
+```part
 const goodness = true;
 const kindness = false;
 
@@ -99,6 +99,6 @@ const kindness = false;
 
 will result in:
 
-```
+```part
 <p class="goodness" />
 ```

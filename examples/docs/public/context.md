@@ -4,7 +4,7 @@ Your partials have access to a `$context` object that provides information about
 
 It looks like this:
 
-```
+```ts
 interface Context<Attributes> {
     readonly attributes: Attributes;
     readonly request: Request;

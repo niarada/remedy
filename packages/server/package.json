@@ -17,6 +17,7 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^6.5.1",
+        "@shikijs/markdown-it": "^1.2.0",
         "@tailwindcss/typography": "^0.5.10",
         "@types/markdown-it": "^13.0.7",
         "@types/ramda": "^0.29.11",

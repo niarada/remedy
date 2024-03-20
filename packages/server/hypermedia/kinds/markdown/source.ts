@@ -1,3 +1,4 @@
+import Shiki from "@shikijs/markdown-it";
 import Markdown from "markdown-it";
 import { Source } from "~/hypermedia";
 import markdownRegexp from "./regexp";
@@ -39,3 +40,15 @@ markdownRegexp(markdown, {
         return `<i class="fa fa-${match}"></i>`;
     },
 });
+
+// XXX: Theme stuff should be done in user apps.
+
+markdown.use(
+    await Shiki({
+        themes: {
+            light: require("./themes/monochrome-red.json"),
+            dark: require("./themes/monochrome-red.json"),
+        },
+        langs: ["ts", "sh", require("./langs/remedy-partial.json")],
+    }),
+);

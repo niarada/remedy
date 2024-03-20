@@ -6,7 +6,7 @@
 
 Find a cozy spot and run:
 
-```
+```sh
 bunx @niarada/remedy
 ```
 

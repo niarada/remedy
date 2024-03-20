@@ -32,7 +32,7 @@ Route                   Composition
 
 As the root index is a layout, and not a page, the way you would get content such as the home page into it is by using a slot with a default.
 
-```
+```part
 /**
  * public/index.part
  */
