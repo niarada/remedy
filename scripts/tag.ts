@@ -1,6 +1,6 @@
 import { simpleGit } from "simple-git";
 
-const currentVersion = require("../package.json").version;
+const currentVersion = `v${require("../package.json").version}`;
 
 const git = simpleGit();
 
