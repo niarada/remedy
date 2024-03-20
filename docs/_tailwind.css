@@ -910,8 +910,14 @@ video {
                     .static {
   position: static;
 }
-                    .mt-6 {
-  margin-top: 1.5rem;
+                    .absolute {
+  position: absolute;
+}
+                    .relative {
+  position: relative;
+}
+                    .inset-0 {
+  inset: 0px;
 }
                     .mt-8 {
   margin-top: 2rem;
@@ -930,6 +936,12 @@ video {
 }
                     .w-full {
   width: 100%;
+}
+                    .flex-auto {
+  flex: 1 1 auto;
+}
+                    .flex-none {
+  flex: none;
 }
                     .cursor-pointer {
   cursor: pointer;
@@ -951,6 +963,9 @@ video {
 }
                     .gap-4 {
   gap: 1rem;
+}
+                    .overflow-scroll {
+  overflow: scroll;
 }
                     .border-t {
   border-top-width: 1px;
@@ -978,8 +993,14 @@ video {
                     .pb-10 {
   padding-bottom: 2.5rem;
 }
+                    .pl-4 {
+  padding-left: 1rem;
+}
                     .pt-4 {
   padding-top: 1rem;
+}
+                    .pt-6 {
+  padding-top: 1.5rem;
 }
                     .text-2xl {
   font-size: 1.5rem;

@@ -8,8 +8,8 @@
     <link rel="icon" type="image/png" href="assets/cross-both.png">
 <link rel="stylesheet" href="_fontawesome.css"><link rel="stylesheet" href="_tailwind.css"></head>
 
-<body class="flex flex-col bg-gray-50 text-black">
-    <header class="flex justify-between items-center gap-4 bg-red-700 px-4 py-2 text-white">
+<body class="flex flex-col bg-gray-50 text-black absolute inset-0">
+    <header class="flex flex-none justify-between items-center gap-4 bg-red-700 px-4 py-2 text-white">
         <a class="flex items-center gap-3" href="index.html">
             <img src="assets/cross-dark.png" class="h-6 w-6">
             <div class="text-2xl">remedy</div>
@@ -18,8 +18,8 @@
             <i class="text-2xl fa-brands fa-github"></i>
         </a>
     </header>
-    <main class="flex mt-6 px-4" hx-boost="article">
-        <nav class="w-48">
+    <main class="flex flex-auto" hx-boost="article">
+        <nav class="w-48 pl-4 pt-6">
             <ul class="flex flex-col gap-1 cursor-pointer">
                 <li
                     class="">
@@ -54,39 +54,40 @@
                 </li>
             </ul>
         </nav>
-        <article class="prose w-full">
-            <h1>Options</h1>
+        <div class="relative overflow-scroll pt-6 flex-auto">
+            <article class="prose w-full absolute">
+                <h1>Options</h1>
 <p>To add special configuration to <strong>remedy</strong>, drop an <code>options.ts</code> file in your project root.</p>
 <p>Have it follow this structure, all fields are optional, defaults are given:</p>
-<pre><code>export default {
-    port: 4321,
-    features: {
-        fontawesome: false,
-        tailwind: false,
-        # Enable htmx, this can be set to false
-        htmx: {
-            # Enable htmx debug output
-            debug: false,
-        },
-        # Enable htmx server-side events
-        sse: true,
-        # Serve static files
-        static: true,
-        # Dev mode allows hot refresh
-        dev: import.meta.env.NODE_ENV === &quot;development&quot;,
-    },
-}
-</code></pre>
+<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code><span class="line"><span style="color:#F44336;--shiki-dark:#F44336">export</span><span style="color:#F44336;--shiki-dark:#F44336"> default</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> {</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    port: 4321,</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    features: {</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        fontawesome: false,</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        tailwind: false,</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        # Enable htmx, this can be set to false</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        htmx: {</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">            # Enable htmx debug output</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">            debug: false,</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        },</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        # Enable htmx server-side events</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        sse: true,</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        # Serve static files</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        static: true,</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        # Dev mode allows hot refresh</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        dev: </span><span style="color:#F44336;--shiki-dark:#F44336">import</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">.meta.env.</span><span style="color:#FF504D;--shiki-dark:#FF504D">NODE_ENV</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> === </span><span style="color:#E06767;--shiki-dark:#E06767">"development"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">,</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    },</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">}</span></span></code></pre>
 
-            <footer class="mt-8 flex justify-between border-t border-t-slate-500 pt-4 pb-10">
-                <div>
-                    <a href="integrations.html">← Integrations</a>
-                </div>
-                <div>
-                    <a href="editorsupport.html">Editor Support →</a>
-                </div>
-            </footer>
-        </article>
+                <footer class="mt-8 flex justify-between border-t border-t-slate-500 pt-4 pb-10">
+                    <div>
+                        <a href="integrations.html">← Integrations</a>
+                    </div>
+                    <div>
+                        <a href="editorsupport.html">Editor Support →</a>
+                    </div>
+                </footer>
+            </article>
+        </div>
     </main>
 </body>
 

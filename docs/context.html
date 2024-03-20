@@ -8,8 +8,8 @@
     <link rel="icon" type="image/png" href="assets/cross-both.png">
 <link rel="stylesheet" href="_fontawesome.css"><link rel="stylesheet" href="_tailwind.css"></head>
 
-<body class="flex flex-col bg-gray-50 text-black">
-    <header class="flex justify-between items-center gap-4 bg-red-700 px-4 py-2 text-white">
+<body class="flex flex-col bg-gray-50 text-black absolute inset-0">
+    <header class="flex flex-none justify-between items-center gap-4 bg-red-700 px-4 py-2 text-white">
         <a class="flex items-center gap-3" href="index.html">
             <img src="assets/cross-dark.png" class="h-6 w-6">
             <div class="text-2xl">remedy</div>
@@ -18,8 +18,8 @@
             <i class="text-2xl fa-brands fa-github"></i>
         </a>
     </header>
-    <main class="flex mt-6 px-4" hx-boost="article">
-        <nav class="w-48">
+    <main class="flex flex-auto" hx-boost="article">
+        <nav class="w-48 pl-4 pt-6">
             <ul class="flex flex-col gap-1 cursor-pointer">
                 <li
                     class="">
@@ -54,26 +54,26 @@
                 </li>
             </ul>
         </nav>
-        <article class="prose w-full">
-            <h1>Context</h1>
+        <div class="relative overflow-scroll pt-6 flex-auto">
+            <article class="prose w-full absolute">
+                <h1>Context</h1>
 <p>Your partials have access to a <code>$context</code> object that provides information about the request, and let's you manipulate the response.</p>
 <p>It looks like this:</p>
-<pre><code>interface Context&lt;Attributes&gt; {
-    readonly attributes: Attributes;
-    readonly request: Request;
-    readonly url: URL;
-    readonly cookie: Record&lt;string, string&gt;;
-    readonly form: Record&lt;string, string&gt;;
-
-    response?: Response;
-    flash: string;
-
-    redirect(href: string, status?: number);
-    status(status: number, message?: string);
-    oob(tag: string, attributes: Record&lt;string, unknown&gt; = {});
-    cancelRender();
-}
-</code></pre>
+<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code><span class="line"><span style="color:#F44336;--shiki-dark:#F44336">interface</span><span style="color:#FF504D;--shiki-dark:#FF504D"> Context</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#FF504D;--shiki-dark:#FF504D">Attributes</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">> {</span></span>
+<span class="line"><span style="color:#F44336;--shiki-dark:#F44336">    readonly</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> attributes: </span><span style="color:#FF504D;--shiki-dark:#FF504D">Attributes</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">;</span></span>
+<span class="line"><span style="color:#F44336;--shiki-dark:#F44336">    readonly</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> request: </span><span style="color:#FF504D;--shiki-dark:#FF504D">Request</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">;</span></span>
+<span class="line"><span style="color:#F44336;--shiki-dark:#F44336">    readonly</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> url: </span><span style="color:#FF504D;--shiki-dark:#FF504D">URL</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">;</span></span>
+<span class="line"><span style="color:#F44336;--shiki-dark:#F44336">    readonly</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> cookie: </span><span style="color:#FF504D;--shiki-dark:#FF504D">Record</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#FF504D;--shiki-dark:#FF504D">string</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">, </span><span style="color:#FF504D;--shiki-dark:#FF504D">string</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">>;</span></span>
+<span class="line"><span style="color:#F44336;--shiki-dark:#F44336">    readonly</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> form: </span><span style="color:#FF504D;--shiki-dark:#FF504D">Record</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#FF504D;--shiki-dark:#FF504D">string</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">, </span><span style="color:#FF504D;--shiki-dark:#FF504D">string</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">>;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    response</span><span style="color:#F44336;--shiki-dark:#F44336">?</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">: </span><span style="color:#FF504D;--shiki-dark:#FF504D">Response</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">;</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    flash: </span><span style="color:#FF504D;--shiki-dark:#FF504D">string</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FB1E1E;--shiki-dark:#FB1E1E">    redirect</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">(</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF;font-style:italic;--shiki-dark-font-style:italic">href</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">: </span><span style="color:#FF504D;--shiki-dark:#FF504D">string</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">, </span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF;font-style:italic;--shiki-dark-font-style:italic">status</span><span style="color:#F44336;--shiki-dark:#F44336">?</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">: </span><span style="color:#FF504D;--shiki-dark:#FF504D">number</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">);</span></span>
+<span class="line"><span style="color:#FB1E1E;--shiki-dark:#FB1E1E">    status</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">(</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF;font-style:italic;--shiki-dark-font-style:italic">status</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">: </span><span style="color:#FF504D;--shiki-dark:#FF504D">number</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">, </span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF;font-style:italic;--shiki-dark-font-style:italic">message</span><span style="color:#F44336;--shiki-dark:#F44336">?</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">: </span><span style="color:#FF504D;--shiki-dark:#FF504D">string</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">);</span></span>
+<span class="line"><span style="color:#FB1E1E;--shiki-dark:#FB1E1E">    oob</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">(</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF;font-style:italic;--shiki-dark-font-style:italic">tag</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">: </span><span style="color:#FF504D;--shiki-dark:#FF504D">string</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">, </span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF;font-style:italic;--shiki-dark-font-style:italic">attributes</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">: </span><span style="color:#FF504D;--shiki-dark:#FF504D">Record</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#FF504D;--shiki-dark:#FF504D">string</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">, </span><span style="color:#FF504D;--shiki-dark:#FF504D">unknown</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">> = {});</span></span>
+<span class="line"><span style="color:#FB1E1E;--shiki-dark:#FB1E1E">    cancelRender</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">();</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">}</span></span></code></pre>
 <h2>attributes</h2>
 <p>Any attributes passed in via tag, or variable path part.</p>
 <h3>request</h3>
@@ -98,15 +98,16 @@ Make sure to set <code>COOKIE_SECRET</code> in your environment if you want the 
 <h3>cancelRender</h3>
 <p>Cancels rendering the template for the current partial.  It will, however, still render any out-of-bands that have been specified.</p>
 
-            <footer class="mt-8 flex justify-between border-t border-t-slate-500 pt-4 pb-10">
-                <div>
-                    <a href="markdown.html">← Markdown</a>
-                </div>
-                <div>
-                    <a href="integrations.html">Integrations →</a>
-                </div>
-            </footer>
-        </article>
+                <footer class="mt-8 flex justify-between border-t border-t-slate-500 pt-4 pb-10">
+                    <div>
+                        <a href="markdown.html">← Markdown</a>
+                    </div>
+                    <div>
+                        <a href="integrations.html">Integrations →</a>
+                    </div>
+                </footer>
+            </article>
+        </div>
     </main>
 </body>
 

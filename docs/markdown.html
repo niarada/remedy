@@ -8,8 +8,8 @@
     <link rel="icon" type="image/png" href="assets/cross-both.png">
 <link rel="stylesheet" href="_fontawesome.css"><link rel="stylesheet" href="_tailwind.css"></head>
 
-<body class="flex flex-col bg-gray-50 text-black">
-    <header class="flex justify-between items-center gap-4 bg-red-700 px-4 py-2 text-white">
+<body class="flex flex-col bg-gray-50 text-black absolute inset-0">
+    <header class="flex flex-none justify-between items-center gap-4 bg-red-700 px-4 py-2 text-white">
         <a class="flex items-center gap-3" href="index.html">
             <img src="assets/cross-dark.png" class="h-6 w-6">
             <div class="text-2xl">remedy</div>
@@ -18,8 +18,8 @@
             <i class="text-2xl fa-brands fa-github"></i>
         </a>
     </header>
-    <main class="flex mt-6 px-4" hx-boost="article">
-        <nav class="w-48">
+    <main class="flex flex-auto" hx-boost="article">
+        <nav class="w-48 pl-4 pt-6">
             <ul class="flex flex-col gap-1 cursor-pointer">
                 <li
                     class="">
@@ -54,19 +54,21 @@
                 </li>
             </ul>
         </nav>
-        <article class="prose w-full">
-            <h1>Markdown</h1>
+        <div class="relative overflow-scroll pt-6 flex-auto">
+            <article class="prose w-full absolute">
+                <h1>Markdown</h1>
 <p>Markdown files <code>.md</code> are treated like partials.  They can be used by other partials by their resolved tag, or browsed directly.  However they do not make use of attributes or forms, or have any script.  They are converted to html at compile time.</p>
 
-            <footer class="mt-8 flex justify-between border-t border-t-slate-500 pt-4 pb-10">
-                <div>
-                    <a href="templates.html">← Templates</a>
-                </div>
-                <div>
-                    <a href="context.html">Context →</a>
-                </div>
-            </footer>
-        </article>
+                <footer class="mt-8 flex justify-between border-t border-t-slate-500 pt-4 pb-10">
+                    <div>
+                        <a href="templates.html">← Templates</a>
+                    </div>
+                    <div>
+                        <a href="context.html">Context →</a>
+                    </div>
+                </footer>
+            </article>
+        </div>
     </main>
 </body>
 

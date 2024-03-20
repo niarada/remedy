@@ -54,8 +54,8 @@ const nextArticle = articles[articleIndex + 1] || null;
     <link rel="icon" type="image/png" href="/assets/cross-both.png">
 </head>
 
-<body class="flex flex-col bg-gray-50 text-black">
-    <header class="flex justify-between items-center gap-4 bg-red-700 px-4 py-2 text-white">
+<body class="flex flex-col bg-gray-50 text-black absolute inset-0">
+    <header class="flex flex-none justify-between items-center gap-4 bg-red-700 px-4 py-2 text-white">
         <a class="flex items-center gap-3" href="/">
             <img src="/assets/cross-dark.png" class="h-6 w-6">
             <div class="text-2xl">remedy</div>
@@ -64,8 +64,8 @@ const nextArticle = articles[articleIndex + 1] || null;
             <i class="text-2xl fa-brands fa-github" />
         </a>
     </header>
-    <main class="flex mt-6 px-4" hx-boost="article">
-        <nav class="w-48">
+    <main class="flex flex-auto" hx-boost="article">
+        <nav class="w-48 pl-4 pt-6">
             <ul class="flex flex-col gap-1 cursor-pointer">
                 <li mx-each={articles} mx-as="article"
                     class={article.href === $context.url.pathname ? 'font-bold' : ''}>
@@ -73,19 +73,21 @@ const nextArticle = articles[articleIndex + 1] || null;
                 </li>
             </ul>
         </nav>
-        <article class="prose w-full">
-            <slot>
-                <introduction />
-            </slot>
-            <footer class="mt-8 flex justify-between border-t border-t-slate-500 pt-4 pb-10">
-                <div>
-                    <a mx-when={previousArticle} href={previousArticle?.href}>← {previousArticle?.title}</a>
-                </div>
-                <div>
-                    <a mx-when={nextArticle} href={nextArticle?.href}>{nextArticle?.title} →</a>
-                </div>
-            </footer>
-        </article>
+        <div class="relative overflow-scroll pt-6 flex-auto">
+            <article class="prose w-full absolute">
+                <slot>
+                    <introduction />
+                </slot>
+                <footer class="mt-8 flex justify-between border-t border-t-slate-500 pt-4 pb-10">
+                    <div>
+                        <a mx-when={previousArticle} href={previousArticle?.href}>← {previousArticle?.title}</a>
+                    </div>
+                    <div>
+                        <a mx-when={nextArticle} href={nextArticle?.href}>{nextArticle?.title} →</a>
+                    </div>
+                </footer>
+            </article>
+        </div>
     </main>
 </body>
 

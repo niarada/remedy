@@ -8,8 +8,8 @@
     <link rel="icon" type="image/png" href="assets/cross-both.png">
 <link rel="stylesheet" href="_fontawesome.css"><link rel="stylesheet" href="_tailwind.css"></head>
 
-<body class="flex flex-col bg-gray-50 text-black">
-    <header class="flex justify-between items-center gap-4 bg-red-700 px-4 py-2 text-white">
+<body class="flex flex-col bg-gray-50 text-black absolute inset-0">
+    <header class="flex flex-none justify-between items-center gap-4 bg-red-700 px-4 py-2 text-white">
         <a class="flex items-center gap-3" href="index.html">
             <img src="assets/cross-dark.png" class="h-6 w-6">
             <div class="text-2xl">remedy</div>
@@ -18,8 +18,8 @@
             <i class="text-2xl fa-brands fa-github"></i>
         </a>
     </header>
-    <main class="flex mt-6 px-4" hx-boost="article">
-        <nav class="w-48">
+    <main class="flex flex-auto" hx-boost="article">
+        <nav class="w-48 pl-4 pt-6">
             <ul class="flex flex-col gap-1 cursor-pointer">
                 <li
                     class="font-bold">
@@ -54,26 +54,27 @@
                 </li>
             </ul>
         </nav>
-        <article class="prose w-full">
-            <slot>
-                <h1>Introduction</h1>
+        <div class="relative overflow-scroll pt-6 flex-auto">
+            <article class="prose w-full absolute">
+                <slot>
+                    <h1>Introduction</h1>
 <p><strong>remedy</strong> is a <em>Hypermedia Server</em> hosted on the <a href="https://bun.sh">bun</a> runtime with <a href="https://htmx.org">htmx</a> as a first-class integration.</p>
 <h2>Get started</h2>
 <p>Find a cozy spot and run:</p>
-<pre><code>bunx @niarada/remedy
-</code></pre>
+<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code><span class="line"><span style="color:#FB1E1E;--shiki-dark:#FB1E1E">bunx</span><span style="color:#E06767;--shiki-dark:#E06767"> @niarada/remedy</span></span></code></pre>
 <p>A <code>public</code> folder will be created for you, and anything in it will be served by <strong>remedy</strong>.</p>
 
-            </slot>
-            <footer class="mt-8 flex justify-between border-t border-t-slate-500 pt-4 pb-10">
-                <div>
-                    
-                </div>
-                <div>
-                    <a href="partials.html">Partials →</a>
-                </div>
-            </footer>
-        </article>
+                </slot>
+                <footer class="mt-8 flex justify-between border-t border-t-slate-500 pt-4 pb-10">
+                    <div>
+                        
+                    </div>
+                    <div>
+                        <a href="partials.html">Partials →</a>
+                    </div>
+                </footer>
+            </article>
+        </div>
     </main>
 </body>
 
