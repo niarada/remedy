@@ -37,9 +37,9 @@ As the root index is a layout, and not a page, the way you would get content suc
  * public/index.part
  */
 
- <div>
-    <slot><my-home /></slot>
- </div>
+<div>
+   <slot><my-home /></slot>
+</div>
 ```
 
  Loading any other route will slot the appropriate content for that page.  For example, loading `/alpha` will place `<alpha />` as the slot content for the index.
