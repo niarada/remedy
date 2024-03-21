@@ -90,6 +90,7 @@ export async function buildFetch(options: ServerOptions) {
     async function renderFull(context: Context) {
         const pathway = context.url.pathname.slice(1).split("/").filter(Boolean);
         let presentation: Presentation | undefined;
+        const scripts: string[] = [];
 
         for (let i = 0; i < pathway.length; i++) {
             const tag = pathway.slice(i, pathway.length + 1 - 1).join("-");
@@ -100,6 +101,7 @@ export async function buildFetch(options: ServerOptions) {
                 if (!presentation) {
                     return;
                 }
+                scripts.unshift(presentation.script);
                 await presentation.activate();
                 await presentation.compose();
                 if (context.response) {
@@ -110,12 +112,21 @@ export async function buildFetch(options: ServerOptions) {
                 if (context.response) {
                     return;
                 }
+                if (presentation) {
+                    scripts.unshift(presentation.script);
+                }
             }
         }
 
         // XXX: If the path /index had been specifically requested, it will be wrapped in itself,
-        //      so fix that are throw an error.
+        //      so fix that or throw an error.
         presentation = await composePresentation(context, "index", presentation);
+
+        if (presentation) {
+            scripts.unshift(presentation.script);
+        }
+
+        // console.log(scripts);
 
         if (context.response) {
             return;

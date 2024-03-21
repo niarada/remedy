@@ -28,6 +28,10 @@ export class Presentation {
         readonly context: Context,
     ) {}
 
+    get script() {
+        return this.representation.artifact.script;
+    }
+
     /**
      * Execute the action tied to this presentation with the contained server context
      * and the attributes passed into this presentation instance.
