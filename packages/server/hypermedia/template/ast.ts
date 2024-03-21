@@ -316,9 +316,9 @@ class AstBuilder extends BaseTemplateVisitorWithDefaults {
     }
 }
 
-export function parseSource(source: string, scope: Scope = {}) {
+export function parseSource(source: string, scope: Scope = {}, path?: string) {
     const htmlIndex = htmlStartIndex(source);
-    const { document, errors } = parse(source.slice(htmlIndex));
+    const { document, errors } = parse(source.slice(htmlIndex), path);
     if (errors.length) {
         throw errors[0];
     }

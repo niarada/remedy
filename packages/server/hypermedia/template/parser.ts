@@ -193,8 +193,8 @@ class TemplateParser<F> extends CstParser {
 
 export const parser = new TemplateParser();
 
-export function parse(source: string) {
-    const { tokens } = lex(source);
+export function parse(source: string, path?: string) {
+    const { tokens } = lex(source, path);
     parser.input = tokens;
     return { document: parser.document(), errors: parser.errors };
 }

@@ -28,7 +28,7 @@ export class PartialSource extends Source {
      */
     compile() {
         const htmlIndex = htmlStartIndex(this.text);
-        const { ast, errors } = parseSource(this.text);
+        const { ast, errors } = parseSource(this.text, {}, this.path);
         if (errors.length) {
             error("partial", `failed to parse '${this.path}'`);
             error("partial", errors[0].message);

@@ -107,11 +107,11 @@ const lexer = new Lexer({
     defaultMode: "fragment",
 });
 
-export function lex(input: string) {
+export function lex(input: string, path?: string) {
     const result = lexer.tokenize(input);
     if (result.errors.length > 0) {
-        console.warn("Lexer errors:");
         for (const error of result.errors) {
+            console.warn(`Syntax error in '${path}' on line ${error.line}, column ${error.column}:`);
             console.warn(error.message);
         }
     }
