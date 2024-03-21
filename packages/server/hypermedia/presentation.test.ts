@@ -41,7 +41,7 @@ describe("presentation", async () => {
     });
 
     it("flow each", async () => {
-        await director.prepare("delta", new PartialSource(`<a mx-each={[1,2]} mx-as="i">{i}</a>`));
+        await director.prepare("delta", new PartialSource(`<a rx-each={[1,2]} rx-as="i">{i}</a>`));
         expect(await director.render("delta", fakeContext(), { trim: true })).toBe("<a>1</a><a>2</a>");
     });
 
@@ -55,7 +55,7 @@ describe("presentation", async () => {
             ];
 
             <ul>
-                <todo-item mx-each={items} mx-as="item" id={item.id} name={item.name} />
+                <todo-item rx-each={items} rx-as="item" id={item.id} name={item.name} />
             </ul>
         `),
     );

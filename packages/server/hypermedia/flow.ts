@@ -3,25 +3,25 @@ import { expressAttributeFirstValue } from "./expressor";
 import { HtmlElement, HtmlNode, cloneHtml, simpleTransformHtml } from "./template";
 
 /**
- * Transforms an html ast by looking for `mx-each` attributes,
+ * Transforms an html ast by looking for `rx-each` attributes,
  * evaluating that attribute, and duplicating the element by
- * its array length.  If `mx-as` is present, each item will be
+ * its array length.  If `rx-as` is present, each item will be
  * passed to the childrens scope under that name.
  * @param node The ast to apply the each transform on.
  */
 export function transformFlowEach(node: HtmlNode) {
     simpleTransformHtml(node, (node) => {
         if (node.type === "element") {
-            const each = expressAttributeFirstValue(node, "mx-each") as unknown[];
+            const each = expressAttributeFirstValue(node, "rx-each") as unknown[];
             if (!each) {
                 return node;
             }
-            const as = expressAttributeFirstValue(node, "mx-as") as string;
+            const as = expressAttributeFirstValue(node, "rx-as") as string;
             if (!Array.isArray(each)) {
-                warn("flow", `Invalid 'mx-each' attribute for ${node.tag}, not an Array`);
+                warn("flow", `Invalid 'rx-each' attribute for ${node.tag}, not an Array`);
                 return;
             }
-            node.attrs = node.attrs.filter((attr) => !["mx-each", "mx-as"].includes(attr.name));
+            node.attrs = node.attrs.filter((attr) => !["rx-each", "rx-as"].includes(attr.name));
             const children = [];
             for (const item of each) {
                 const child = cloneHtml(node) as HtmlElement;
@@ -37,18 +37,18 @@ export function transformFlowEach(node: HtmlNode) {
 }
 
 /**
- * Removes a node if `mx-when` evaluates not undefined and falsy.
+ * Removes a node if `rx-when` evaluates not undefined and falsy.
  *
  * @param {HtmlNode} node - The ast.
  */
 export function transformFlowWhen(node: HtmlNode) {
     simpleTransformHtml(node, (node) => {
         if (node.type === "element") {
-            const when = expressAttributeFirstValue(node, "mx-when");
+            const when = expressAttributeFirstValue(node, "rx-when");
             if (when !== undefined && !when) {
                 return [];
             }
-            node.attrs = node.attrs.filter((attr) => !["mx-when"].includes(attr.name));
+            node.attrs = node.attrs.filter((attr) => !["rx-when"].includes(attr.name));
         }
         return node;
     });

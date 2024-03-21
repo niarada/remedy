@@ -4,7 +4,7 @@ import { transformFlowEach } from "./flow";
 import { parseSource, printHtml } from "./template";
 
 const source1 = `
-<hr mx-each={[1,2,3,4]}>
+<hr rx-each={[1,2,3,4]}>
 `;
 
 test("simple each", () => {
@@ -14,7 +14,7 @@ test("simple each", () => {
 });
 
 const source2 = `
-<a mx-each={[1,2]} mx-as="i">{$scope.i}</a>
+<a rx-each={[1,2]} rx-as="i">{$scope.i}</a>
 `;
 
 test("each that passes additional scope", () => {
