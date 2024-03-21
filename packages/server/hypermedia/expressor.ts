@@ -1,6 +1,17 @@
-import { error } from "~/lib/log";
 import { AttributeTypes, Attributes } from ".";
 import { HtmlElement, HtmlNode, Scope, createHtmlText, simpleTransformHtml } from "./template";
+
+class ExpressionError extends Error {
+    constructor(
+        message: string,
+        public expression: string,
+        public wrappedError: Error,
+    ) {
+        super(message);
+        this.name = "ExpressionError";
+        this.expression = expression;
+    }
+}
 
 /**
  * Evaluates an expression with a given scope.
@@ -14,10 +25,8 @@ export function express(scope: Scope, expression: string): unknown {
     try {
         return expressFn(scope);
     } catch (e) {
-        error("expressor", `Error evaluating expression ${expression}`);
-        console.log("$scope:", scope);
-        console.log(e);
-        return undefined;
+        expression = expression.replace(/\$scope\./g, "");
+        throw new ExpressionError(`Error evaluating expression ${expression}`, expression, e as Error);
     }
 }
 
@@ -31,14 +40,27 @@ export function transformExpressionsIntoStrings(node: HtmlNode) {
     simpleTransformHtml(node, (node) => {
         if (node.type === "element") {
             node.attrs = node.attrs.map((attr) => {
-                attr.value = attr.value.map((value) =>
-                    value.type === "text"
-                        ? value
-                        : {
-                              type: "text",
-                              content: String(express(node.scope, value.content)),
-                          },
-                );
+                attr.value = attr.value.map((value) => {
+                    if (value.type === "text") {
+                        return value;
+                    }
+                    try {
+                        const result = express(node.scope, value.content);
+                        return {
+                            type: "text",
+                            content: String(result),
+                        };
+                    } catch (error) {
+                        if (error instanceof ExpressionError) {
+                            console.error(error.message);
+                            return {
+                                type: "text",
+                                content: error.expression,
+                            };
+                        }
+                        throw error;
+                    }
+                });
                 if (attr.name === "class") {
                     for (const value of attr.value) {
                         value.content = value.content
@@ -55,7 +77,16 @@ export function transformExpressionsIntoStrings(node: HtmlNode) {
             });
         }
         if (node.type === "expression") {
-            return createHtmlText(node.parent, String(express(node.scope, node.content)));
+            try {
+                const result = express(node.scope, node.content);
+                return createHtmlText(node.parent, String(result));
+            } catch (error) {
+                if (error instanceof ExpressionError) {
+                    console.error(error.message);
+                    return createHtmlText(node.parent, error.expression);
+                }
+                throw error;
+            }
         }
         return node;
     });
