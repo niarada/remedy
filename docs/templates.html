@@ -21,35 +21,25 @@
     <main class="flex flex-auto" hx-boost="article">
         <nav class="w-48 pl-4 pt-6">
             <ul class="flex flex-col gap-1 cursor-pointer">
-                <li
-                    class="">
+                <li class="">
                     <a href="index.html">Introduction</a>
-                </li><li
-                    class="">
+                </li><li class="">
                     <a href="partials.html">Partials</a>
-                </li><li
-                    class="">
+                </li><li class="">
                     <a href="routes.html">Routes</a>
-                </li><li
-                    class="font-bold">
+                </li><li class="font-bold">
                     <a href="templates.html">Templates</a>
-                </li><li
-                    class="">
+                </li><li class="">
                     <a href="markdown.html">Markdown</a>
-                </li><li
-                    class="">
+                </li><li class="">
                     <a href="context.html">Context</a>
-                </li><li
-                    class="">
+                </li><li class="">
                     <a href="integrations.html">Integrations</a>
-                </li><li
-                    class="">
+                </li><li class="">
                     <a href="options.html">Options</a>
-                </li><li
-                    class="">
+                </li><li class="">
                     <a href="editorsupport.html">Editor Support</a>
-                </li><li
-                    class="">
+                </li><li class="">
                     <a href="roadmap.html">Roadmap</a>
                 </li>
             </ul>
@@ -67,11 +57,11 @@
 <p>Anything between a <code>{</code> and <code>}</code> is considered an expression.  Expressions are written in TypeScript or JavaScript, and whatever they evaluate to will be converted to a string and rendered with the rest of the template.</p>
 <p>Any variable that is in the scope of the code above the template will be available to expressions.</p>
 <p>For example:</p>
-<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code><span class="line"><span style="color:#F44336;--shiki-dark:#F44336">const</span><span style="color:#FF504D;--shiki-dark:#FF504D"> name</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> = </span><span style="color:#E06767;--shiki-dark:#E06767">"niarada"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">;</span></span>
+<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code class="language-part"><span class="line"><span style="color:#F44336;--shiki-dark:#F44336">const</span><span style="color:#FF504D;--shiki-dark:#FF504D"> name</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> = </span><span style="color:#E06767;--shiki-dark:#E06767">"niarada"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">;</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;h1>Hello, {name}&#x3C;/h1></span></span></code></pre>
 <p>will result in:</p>
-<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code><span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;h1>Hello, niarada&#x3C;/h1></span></span></code></pre>
+<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code class="language-part"><span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;h1>Hello, niarada&#x3C;/h1></span></span></code></pre>
 <h3>Code blocks</h3>
 <p>Any section of the template bounded by <code>&lt;code&gt; ... &lt;/code&gt;</code> tags will be ignored by the template engine so as to allow for complex content that <strong>remedy</strong> may not understand.</p>
 <h3>Flow control</h3>
@@ -79,7 +69,7 @@
 <h4>rx-each & rx-as</h4>
 <p>Use these to repeat an element for each item in the provided array.  <code>rx-as</code> is optional for when you don't need to use the value and simply want to repeat the element.</p>
 <p>For example:</p>
-<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code><span class="line"><span style="color:#F44336;--shiki-dark:#F44336">const</span><span style="color:#FF504D;--shiki-dark:#FF504D"> items</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> = [</span></span>
+<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code class="language-part"><span class="line"><span style="color:#F44336;--shiki-dark:#F44336">const</span><span style="color:#FF504D;--shiki-dark:#FF504D"> items</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> = [</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    { name: </span><span style="color:#E06767;--shiki-dark:#E06767">"love"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> },</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    { name: </span><span style="color:#E06767;--shiki-dark:#E06767">"joy"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> },</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    { name: </span><span style="color:#E06767;--shiki-dark:#E06767">"peace"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> },</span></span>
@@ -87,35 +77,35 @@
 <span class="line"></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;li rx-each={items} rx-as=</span><span style="color:#E06767;--shiki-dark:#E06767">"item"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">>{item.name}&#x3C;/li></span></span></code></pre>
 <p>will result in:</p>
-<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code><span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;li>love&#x3C;/li></span></span>
+<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code class="language-part"><span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;li>love&#x3C;/li></span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;li>joy&#x3C;/li></span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;li>peace&#x3C;/li></span></span></code></pre>
 <h4>rx-when</h4>
 <p>Use this to only render the element if the provided expression evaluates to truthy.</p>
 <p>For example:</p>
-<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code><span class="line"><span style="color:#F44336;--shiki-dark:#F44336">const</span><span style="color:#FF504D;--shiki-dark:#FF504D"> truthy</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> = true;</span></span>
+<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code class="language-part"><span class="line"><span style="color:#F44336;--shiki-dark:#F44336">const</span><span style="color:#FF504D;--shiki-dark:#FF504D"> truthy</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> = true;</span></span>
 <span class="line"><span style="color:#F44336;--shiki-dark:#F44336">const</span><span style="color:#FF504D;--shiki-dark:#FF504D"> falsy</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> = false;</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;li rx-when={truthy}>love&#x3C;/li></span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;li rx-when={falsy}>peace&#x3C;/li></span></span></code></pre>
 <p>will result in:</p>
-<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code><span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;li>love&#x3C;/li></span></span></code></pre>
+<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code class="language-part"><span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;li>love&#x3C;/li></span></span></code></pre>
 <h3>Class name helper</h3>
 <p>There is a small helper for rendering class names, to free one from using trinaries in the class attribute.  In the class attribute, prefix a name with the ¢ symbol (Option-4 on MacOS) to have it resolve if the scoped value is truthy.</p>
 <p>For example:</p>
-<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code><span class="line"><span style="color:#F44336;--shiki-dark:#F44336">const</span><span style="color:#FF504D;--shiki-dark:#FF504D"> goodness</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> = true;</span></span>
+<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code class="language-part"><span class="line"><span style="color:#F44336;--shiki-dark:#F44336">const</span><span style="color:#FF504D;--shiki-dark:#FF504D"> goodness</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> = true;</span></span>
 <span class="line"><span style="color:#F44336;--shiki-dark:#F44336">const</span><span style="color:#FF504D;--shiki-dark:#FF504D"> kindness</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> = false;</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;p class=</span><span style="color:#E06767;--shiki-dark:#E06767">"¢goodness ¢kindness"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> /></span></span></code></pre>
 <p>will result in:</p>
-<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code><span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;p class=</span><span style="color:#E06767;--shiki-dark:#E06767">"goodness"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> /></span></span></code></pre>
+<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code class="language-part"><span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;p class=</span><span style="color:#E06767;--shiki-dark:#E06767">"goodness"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> /></span></span></code></pre>
 
                 <footer class="mt-8 flex justify-between border-t border-t-slate-500 pt-4 pb-10">
                     <div>
-                        <a href="routes.html">← Routes</a>
+                        <a mx-when="[object Object]" href="routes.html">← Routes</a>
                     </div>
                     <div>
-                        <a href="markdown.html">Markdown →</a>
+                        <a mx-when="[object Object]" href="markdown.html">Markdown →</a>
                     </div>
                 </footer>
             </article>

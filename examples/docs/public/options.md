@@ -10,13 +10,14 @@ export default {
     features: {
         fontawesome: false,
         tailwind: false,
+        alpine: false,
+        # Enable htmx server-side events
+        sse: false,
         # Enable htmx, this can be set to false
         htmx: {
             # Enable htmx debug output
             debug: false,
         },
-        # Enable htmx server-side events
-        sse: true,
         # Serve static files
         static: true,
         # Dev mode allows hot refresh

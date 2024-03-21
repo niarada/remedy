@@ -67,8 +67,7 @@ const nextArticle = articles[articleIndex + 1] || null;
     <main class="flex flex-auto" hx-boost="article">
         <nav class="w-48 pl-4 pt-6">
             <ul class="flex flex-col gap-1 cursor-pointer">
-                <li mx-each={articles} mx-as="article"
-                    class={article.href === $context.url.pathname ? 'font-bold' : ''}>
+                <li rx-each={articles} rx-as="article" class={article.href===$context.url.pathname ? 'font-bold' : '' }>
                     <a href={article.href}>{article.title}</a>
                 </li>
             </ul>

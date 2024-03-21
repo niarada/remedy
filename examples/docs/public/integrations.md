@@ -26,6 +26,10 @@ HTMX support.
 
 HTMX server-sent events support.
 
+#### alpine
+
+Alpine support.
+
 #### tailwind
 
 Tailwind support.

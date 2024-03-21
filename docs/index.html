@@ -21,35 +21,25 @@
     <main class="flex flex-auto" hx-boost="article">
         <nav class="w-48 pl-4 pt-6">
             <ul class="flex flex-col gap-1 cursor-pointer">
-                <li
-                    class="font-bold">
+                <li class="font-bold">
                     <a href="index.html">Introduction</a>
-                </li><li
-                    class="">
+                </li><li class="">
                     <a href="partials.html">Partials</a>
-                </li><li
-                    class="">
+                </li><li class="">
                     <a href="routes.html">Routes</a>
-                </li><li
-                    class="">
+                </li><li class="">
                     <a href="templates.html">Templates</a>
-                </li><li
-                    class="">
+                </li><li class="">
                     <a href="markdown.html">Markdown</a>
-                </li><li
-                    class="">
+                </li><li class="">
                     <a href="context.html">Context</a>
-                </li><li
-                    class="">
+                </li><li class="">
                     <a href="integrations.html">Integrations</a>
-                </li><li
-                    class="">
+                </li><li class="">
                     <a href="options.html">Options</a>
-                </li><li
-                    class="">
+                </li><li class="">
                     <a href="editorsupport.html">Editor Support</a>
-                </li><li
-                    class="">
+                </li><li class="">
                     <a href="roadmap.html">Roadmap</a>
                 </li>
             </ul>
@@ -61,16 +51,16 @@
 <p><strong>remedy</strong> is a <em>Hypermedia Server</em> hosted on the <a href="https://bun.sh">bun</a> runtime with <a href="https://htmx.org">htmx</a> as a first-class integration.</p>
 <h2>Get started</h2>
 <p>Find a cozy spot and run:</p>
-<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code><span class="line"><span style="color:#FB1E1E;--shiki-dark:#FB1E1E">bunx</span><span style="color:#E06767;--shiki-dark:#E06767"> @niarada/remedy</span></span></code></pre>
+<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code class="language-sh"><span class="line"><span style="color:#FB1E1E;--shiki-dark:#FB1E1E">bunx</span><span style="color:#E06767;--shiki-dark:#E06767"> @niarada/remedy</span></span></code></pre>
 <p>A <code>public</code> folder will be created for you, and anything in it will be served by <strong>remedy</strong>.</p>
 
                 </slot>
                 <footer class="mt-8 flex justify-between border-t border-t-slate-500 pt-4 pb-10">
                     <div>
-                        
+                        <a mx-when="null" href="http://localhost:5678/undefined">← undefined</a>
                     </div>
                     <div>
-                        <a href="partials.html">Partials →</a>
+                        <a mx-when="[object Object]" href="partials.html">Partials →</a>
                     </div>
                 </footer>
             </article>

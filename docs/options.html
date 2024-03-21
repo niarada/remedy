@@ -21,35 +21,25 @@
     <main class="flex flex-auto" hx-boost="article">
         <nav class="w-48 pl-4 pt-6">
             <ul class="flex flex-col gap-1 cursor-pointer">
-                <li
-                    class="">
+                <li class="">
                     <a href="index.html">Introduction</a>
-                </li><li
-                    class="">
+                </li><li class="">
                     <a href="partials.html">Partials</a>
-                </li><li
-                    class="">
+                </li><li class="">
                     <a href="routes.html">Routes</a>
-                </li><li
-                    class="">
+                </li><li class="">
                     <a href="templates.html">Templates</a>
-                </li><li
-                    class="">
+                </li><li class="">
                     <a href="markdown.html">Markdown</a>
-                </li><li
-                    class="">
+                </li><li class="">
                     <a href="context.html">Context</a>
-                </li><li
-                    class="">
+                </li><li class="">
                     <a href="integrations.html">Integrations</a>
-                </li><li
-                    class="font-bold">
+                </li><li class="font-bold">
                     <a href="options.html">Options</a>
-                </li><li
-                    class="">
+                </li><li class="">
                     <a href="editorsupport.html">Editor Support</a>
-                </li><li
-                    class="">
+                </li><li class="">
                     <a href="roadmap.html">Roadmap</a>
                 </li>
             </ul>
@@ -59,18 +49,19 @@
                 <h1>Options</h1>
 <p>To add special configuration to <strong>remedy</strong>, drop an <code>options.ts</code> file in your project root.</p>
 <p>Have it follow this structure, all fields are optional, defaults are given:</p>
-<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code><span class="line"><span style="color:#F44336;--shiki-dark:#F44336">export</span><span style="color:#F44336;--shiki-dark:#F44336"> default</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> {</span></span>
+<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code class="language-ts"><span class="line"><span style="color:#F44336;--shiki-dark:#F44336">export</span><span style="color:#F44336;--shiki-dark:#F44336"> default</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> {</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    port: 4321,</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    features: {</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        fontawesome: false,</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        tailwind: false,</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        alpine: false,</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        # Enable htmx server-side events</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        sse: false,</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        # Enable htmx, this can be set to false</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        htmx: {</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">            # Enable htmx debug output</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">            debug: false,</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        },</span></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        # Enable htmx server-side events</span></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        sse: true,</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        # Serve static files</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        static: true,</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        # Dev mode allows hot refresh</span></span>
@@ -80,10 +71,10 @@
 
                 <footer class="mt-8 flex justify-between border-t border-t-slate-500 pt-4 pb-10">
                     <div>
-                        <a href="integrations.html">← Integrations</a>
+                        <a mx-when="[object Object]" href="integrations.html">← Integrations</a>
                     </div>
                     <div>
-                        <a href="editorsupport.html">Editor Support →</a>
+                        <a mx-when="[object Object]" href="editorsupport.html">Editor Support →</a>
                     </div>
                 </footer>
             </article>

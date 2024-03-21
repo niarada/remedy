@@ -22,7 +22,7 @@ const options = {
     features: {
         fontawesome: false,
         tailwind: false,
-        alpine: true,
+        alpine: false,
         htmx: {
             debug: false,
         },

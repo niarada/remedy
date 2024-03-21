@@ -21,35 +21,25 @@
     <main class="flex flex-auto" hx-boost="article">
         <nav class="w-48 pl-4 pt-6">
             <ul class="flex flex-col gap-1 cursor-pointer">
-                <li
-                    class="">
+                <li class="">
                     <a href="index.html">Introduction</a>
-                </li><li
-                    class="">
+                </li><li class="">
                     <a href="partials.html">Partials</a>
-                </li><li
-                    class="font-bold">
+                </li><li class="font-bold">
                     <a href="routes.html">Routes</a>
-                </li><li
-                    class="">
+                </li><li class="">
                     <a href="templates.html">Templates</a>
-                </li><li
-                    class="">
+                </li><li class="">
                     <a href="markdown.html">Markdown</a>
-                </li><li
-                    class="">
+                </li><li class="">
                     <a href="context.html">Context</a>
-                </li><li
-                    class="">
+                </li><li class="">
                     <a href="integrations.html">Integrations</a>
-                </li><li
-                    class="">
+                </li><li class="">
                     <a href="options.html">Options</a>
-                </li><li
-                    class="">
+                </li><li class="">
                     <a href="editorsupport.html">Editor Support</a>
-                </li><li
-                    class="">
+                </li><li class="">
                     <a href="roadmap.html">Roadmap</a>
                 </li>
             </ul>
@@ -59,7 +49,7 @@
                 <h1>Routes</h1>
 <p>Routing in <strong>remedy</strong> is file based.  Every partial that is not a layout (i.e. an index) generates a tag and <em>a routable path.</em></p>
 <p>Consider this directory structure, and the tags it generates:</p>
-<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code><span class="line"><span>Path                        Tag</span></span>
+<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code class="language-"><span class="line"><span>Path                        Tag</span></span>
 <span class="line"><span>------------------------    --------------------</span></span>
 <span class="line"><span>public/</span></span>
 <span class="line"><span>    index.part              (root-layout)</span></span>
@@ -71,14 +61,14 @@
 <span class="line"><span>            zeta.part       alpha-nu-zeta</span></span></code></pre>
 <p>The directory structure also determines layout composition.  Each directory can specify an <code>index.part</code> that will be used as the layout at that level.  Layouts nest.  Notice that partials at the same level, and with the same name as a directory, are laid out under that directory.</p>
 <p>The above structure sets up the following routes, and their layout composition:</p>
-<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code><span class="line"><span>Route                   Composition</span></span>
+<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code class="language-"><span class="line"><span>Route                   Composition</span></span>
 <span class="line"><span>--------------------    ------------------------------------</span></span>
 <span class="line"><span>/                       (root-layout) -> (no content)</span></span>
 <span class="line"><span>/alpha                  (root-layout) -> (alpha-layout) -> alpha</span></span>
 <span class="line"><span>/alpha/one              (root-layout) -> (alpha-layout) -> alpha-one</span></span>
 <span class="line"><span>/alpha/nu/zeta          (root-layout) -> (alpha-layout) -> alpha-nu-zeta</span></span></code></pre>
 <p>As the root index is a layout, and not a page, the way you would get content such as the home page into it is by using a slot with a default.</p>
-<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code><span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">/**</span></span>
+<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code class="language-part"><span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">/**</span></span>
 <span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic"> * public/index.part</span></span>
 <span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic"> */</span></span>
 <span class="line"></span>
@@ -104,10 +94,10 @@
 
                 <footer class="mt-8 flex justify-between border-t border-t-slate-500 pt-4 pb-10">
                     <div>
-                        <a href="partials.html">← Partials</a>
+                        <a mx-when="[object Object]" href="partials.html">← Partials</a>
                     </div>
                     <div>
-                        <a href="templates.html">Templates →</a>
+                        <a mx-when="[object Object]" href="templates.html">Templates →</a>
                     </div>
                 </footer>
             </article>
