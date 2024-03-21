@@ -1,0 +1,11 @@
+$schema: 'https://moonrepo.dev/schemas/project.json'
+
+stack: infrastructure
+type: configuration
+
+tasks:
+  fix:
+    description: fix package.json files
+    options:
+      cache: false
+    command: bun scripts/fix-packages.ts

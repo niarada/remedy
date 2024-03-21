@@ -1,14 +1,12 @@
 {
-    "compilerOptions": {
-        "lib": ["ESNext"],
-        "module": "ESNext",
-        "target": "ESNext",
-        "moduleResolution": "bundler",
-        "noEmit": true,
-        "allowImportingTsExtensions": true,
-        "moduleDetection": "force",
-        "strict": true,
-        "forceConsistentCasingInFileNames": true
-    },
-    "include": ["./scripts/**/*.ts"]
+    "extends": "./tsconfig.options.json",
+    "files": [],
+    "references": [
+        {
+            "path": "packages/server"
+        },
+        {
+            "path": "packages/vscode"
+        }
+    ]
 }

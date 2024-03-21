@@ -1,0 +1,8 @@
+$schema: 'https://moonrepo.dev/schemas/tasks.json'
+
+
+tasks:
+  foo:
+    command: >
+      echo 'hello world';
+      echo 'goodbye world'

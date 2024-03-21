@@ -1,0 +1,7 @@
+{
+  "name": "root",
+  "private": true,
+  "dependencies": {
+    "@moonrepo/runtime": "^0.0.15"
+  }
+}

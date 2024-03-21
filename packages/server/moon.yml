@@ -1,0 +1,12 @@
+$schema: 'https://moonrepo.dev/schemas/project.json'
+
+platform: bun
+language: typescript
+stack: backend
+type: application
+
+tasks:
+  build:
+    command: >
+      echo 'hello world';
+      echo 'goodbye world'
