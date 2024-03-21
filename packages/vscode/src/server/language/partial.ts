@@ -1,11 +1,10 @@
 import type { LanguagePlugin } from "@volar/language-core";
 import type { ServicePlugin } from "@volar/language-service";
 import { ScriptKind } from "typescript";
+import { TextDocument, getLanguageService as getHtmlLanguageService } from "vscode-html-languageservice";
 import { parseSource, printHtml } from "../../template";
 import { PartialVirtualCode } from "../virtual-code/partial";
-
-// import { getLanguageService as getHtmlLanguageService } from "vscode-html-languageservice";
-// const htmlLanguageService = getHtmlLanguageService();
+const htmlLanguageService = getHtmlLanguageService();
 
 export const partialLanguage: LanguagePlugin = {
     createVirtualCode(id, languageId, snapshot) {
@@ -88,12 +87,13 @@ export const partialService: ServicePlugin = {
                     return [];
                 }
                 const newText = printHtml(ast, { expandSelfClosing: false });
-                const edit = {
-                    range,
-                    newText,
+                const newDocument = TextDocument.create(document.uri, document.languageId, document.version, newText);
+                const newEndPosition = newDocument.positionAt(newText.length - 1);
+                const newRange = {
+                    start: { line: 0, character: 0 },
+                    end: { line: newEndPosition.line, character: newEndPosition.character },
                 };
-                return [edit];
-                // return htmlLanguageService.format(document, range, options);
+                return htmlLanguageService.format(newDocument, newRange, options);
             },
             // provideOnTypeFormattingEdits: () => {
             //     console.log("provideOnTypeFormattingEdits");
