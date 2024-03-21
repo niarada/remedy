@@ -3,6 +3,7 @@ import { info } from "~/lib/log";
 import { Context } from "~/server/context";
 import { ServerOptions } from "~/server/options";
 
+import alpineFeature from "./alpine";
 import devFeature from "./dev";
 import fontAwesomeFeature from "./fontawesome";
 import htmxFeature from "./htmx";
@@ -13,6 +14,7 @@ import tailwindFeature from "./tailwind";
 const factories: Record<string, FeatureFactory> = {
     dev: devFeature,
     fontawesome: fontAwesomeFeature,
+    alpine: alpineFeature,
     htmx: htmxFeature,
     sse: sseFeature,
     static: staticFeature,
