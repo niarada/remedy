@@ -1,6 +1,6 @@
 {
     "name": "@niarada/remedy",
-    "version": "0.2.10",
+    "version": "0.2.11",
     "bin": {
         "remedy": "bin/remedy"
     },
@@ -9,6 +9,7 @@
         "bin",
         "tsconfig.json",
         "{lib,server,hypermedia}/**/*.ts",
+        "{lib,server,hypermedia}/**/*.json",
         "!**/*.test.ts"
     ],
     "repository": {
