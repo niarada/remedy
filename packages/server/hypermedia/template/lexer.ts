@@ -1,11 +1,12 @@
 import { createToken, Lexer } from "chevrotain";
 
 export const Comment = createToken({ name: "Comment", pattern: /<!--[\s\S]*?-->/ });
-export const Slash = createToken({ name: "Slash", pattern: /\// });
-export const Identifier = createToken({ name: "Identifier", pattern: /[a-z][\w\-:]*/ });
+export const Text = createToken({ name: "Text", pattern: /[^<{]+/ });
+
+// export const Slash = createToken({ name: "Slash", pattern: /\// });
+export const AttributeName = createToken({ name: "AttributeName", pattern: /[a-z][\w\-:]*/ });
 export const Equals = createToken({ name: "Equals", pattern: /=/ });
 export const WhiteSpace = createToken({ name: "WhiteSpace", pattern: /\s+/ });
-export const Text = createToken({ name: "Text", pattern: /[^<{]+/ });
 
 export const OpenSingleQuote = createToken({ name: "OpenSingleQuote", pattern: /'/, push_mode: "SingleQuoted" });
 export const OpenDoubleQuote = createToken({ name: "OpenDoubleQuote", pattern: /"/, push_mode: "DoubleQuoted" });
@@ -17,69 +18,91 @@ export const CloseSingleQuote = createToken({ name: "CloseSingleQuote", pattern:
 export const CloseDoubleQuote = createToken({ name: "CloseDoubleQuote", pattern: /"/, pop_mode: true });
 export const CloseBacktickQuote = createToken({ name: "CloseBacktickQuote", pattern: /`/, pop_mode: true });
 
-export const OpenAngleBracket = createToken({ name: "OpenAngleBracket", pattern: /</, push_mode: "TagStart" });
-
-export const OpenAngleBracketSlash = createToken({
-    name: "OpenAngleBracketSlash",
-    pattern: /<\//,
-    push_mode: "TagEnd",
+export const OpaqueTagStart = createToken({
+    name: "OpaqueTagStart",
+    pattern: /<(code|script|style)/,
+    push_mode: "OpaqueTagStart",
 });
 
-export const CloseAngleBracket = createToken({ name: "CloseAngleBracket", pattern: />/, pop_mode: true });
+export const OpaqueTagStartClose = createToken({
+    name: "OpaqueTagStartClose",
+    pattern: />/,
+    pop_mode: true,
+    push_mode: "OpaqueContent",
+});
+
+export const OpaqueTagStartSelfClose = createToken({
+    name: "OpaqueTagStartSelfClose",
+    pattern: /\/>/,
+    pop_mode: true,
+});
+
+export const OpaqueText = createToken({
+    name: "OpaqueText",
+    pattern: /(.|\s|\S)+?(?=<\/(code|script|style)>)/,
+});
+
+export const OpaqueTagEnd = createToken({
+    name: "OpaqueTagEnd",
+    pattern: /<\/(code|script|style)>/,
+    pop_mode: true,
+});
+
+export const TagStart = createToken({ name: "TagStart", pattern: /<[a-z][\w\-]*/, push_mode: "TagStart" });
+export const TagStartClose = createToken({ name: "TagStartClose", pattern: />/, pop_mode: true });
+export const TagStartSelfClose = createToken({ name: "TagStartSelfClose", pattern: /\/>/, pop_mode: true });
+export const TagEnd = createToken({ name: "TagEnd", pattern: /<\/[a-z][\w\-]*>/ });
 
 export const ExpressionPart = createToken({ name: "ExpressionPart", pattern: Lexer.NA });
-export const OpenBracket = createToken({
-    name: "OpenBracket",
+export const ExpressionStart = createToken({
+    name: "ExpressionStart",
     pattern: /{/,
-    push_mode: "Bracketed",
+    push_mode: "Expression",
     categories: [ExpressionPart],
 });
-export const CloseBracket = createToken({
-    name: "CloseBracket",
+export const ExpressionEnd = createToken({
+    name: "ExpressionEnd",
     pattern: /}/,
     pop_mode: true,
     categories: [ExpressionPart],
 });
-export const BracketedText = createToken({
-    name: "BracketedText",
+// TODO: Need to be able to handle object literals, and nested  brackets
+export const ExpressionText = createToken({
+    name: "ExpressionText",
     pattern: /[^{}]+/,
     categories: [ExpressionPart],
 });
 
-export const CodeStart = createToken({
-    name: "CodeStart",
-    pattern: /<code[^>]*>/,
-    push_mode: "Code",
-});
-
-export const CodeText = createToken({ name: "CodeText", pattern: /(.|\s|\S)+?(?=<\/code>)/ });
-
-export const CodeEnd = createToken({
-    name: "CodeEnd",
-    pattern: /<\/code>/,
-    pop_mode: true,
-});
-
 const lexer = new Lexer({
     modes: {
-        fragment: [Comment, CodeStart, OpenAngleBracketSlash, OpenAngleBracket, OpenBracket, Text],
+        fragment: [Comment, TagEnd, OpaqueTagStart, TagStart, ExpressionStart, Text],
         TagStart: [
-            Identifier,
+            AttributeName,
             Equals,
-            OpenBracket,
-            Slash,
-            CloseAngleBracket,
+            ExpressionStart,
+            TagStartClose,
+            TagStartSelfClose,
             OpenSingleQuote,
             OpenDoubleQuote,
             OpenBacktickQuote,
             WhiteSpace,
         ],
-        Code: [CodeEnd, CodeText],
-        TagEnd: [Identifier, CloseAngleBracket],
-        Bracketed: [OpenBracket, CloseBracket, BracketedText],
-        SingleQuoted: [OpenBracket, CloseSingleQuote, SingleQuoteText],
-        DoubleQuoted: [OpenBracket, CloseDoubleQuote, DoubleQuoteText],
-        BacktickQuoted: [OpenBracket, CloseBacktickQuote, BacktickQuoteText],
+        OpaqueTagStart: [
+            AttributeName,
+            Equals,
+            ExpressionStart,
+            OpaqueTagStartClose,
+            OpaqueTagStartSelfClose,
+            OpenSingleQuote,
+            OpenDoubleQuote,
+            OpenBacktickQuote,
+            WhiteSpace,
+        ],
+        OpaqueContent: [OpaqueTagEnd, OpaqueText],
+        Expression: [ExpressionStart, ExpressionEnd, ExpressionText],
+        SingleQuoted: [ExpressionStart, CloseSingleQuote, SingleQuoteText],
+        DoubleQuoted: [ExpressionStart, CloseDoubleQuote, DoubleQuoteText],
+        BacktickQuoted: [ExpressionStart, CloseBacktickQuote, BacktickQuoteText],
     },
     defaultMode: "fragment",
 });

@@ -1,5 +1,30 @@
 import { describe, expect, it } from "bun:test";
-import { lex } from "./lexer";
+import {
+    AttributeName,
+    CloseDoubleQuote,
+    CloseSingleQuote,
+    Comment,
+    DoubleQuoteText,
+    Equals,
+    ExpressionEnd,
+    ExpressionStart,
+    ExpressionText,
+    OpaqueTagEnd,
+    OpaqueTagStart,
+    OpaqueTagStartClose,
+    OpaqueTagStartSelfClose,
+    OpaqueText,
+    OpenDoubleQuote,
+    OpenSingleQuote,
+    SingleQuoteText,
+    TagEnd,
+    TagStart,
+    TagStartClose,
+    TagStartSelfClose,
+    Text,
+    WhiteSpace,
+    lex,
+} from "./lexer";
 
 describe("lexer", () => {
     it("should correctly lex empty document", () => {
@@ -16,123 +41,97 @@ describe("lexer", () => {
 
     it("should lex simple HTML tags", () => {
         const { tokens } = lex("<div></div>");
-        expect(tokens.map((t) => [t.tokenType.name, t.image])).toEqual([
-            ["OpenAngleBracket", "<"],
-            ["Identifier", "div"],
-            ["CloseAngleBracket", ">"],
-            ["OpenAngleBracketSlash", "</"],
-            ["Identifier", "div"],
-            ["CloseAngleBracket", ">"],
+        expect(tokens.map((t) => [t.tokenType, t.image])).toEqual([
+            [TagStart, "<div"],
+            [TagStartClose, ">"],
+            [TagEnd, "</div>"],
         ]);
     });
 
     it("should lex simple HTML tags with digits in them", () => {
         const { tokens } = lex("<h1></h1>");
-        expect(tokens.map((t) => [t.tokenType.name, t.image])).toEqual([
-            ["OpenAngleBracket", "<"],
-            ["Identifier", "h1"],
-            ["CloseAngleBracket", ">"],
-            ["OpenAngleBracketSlash", "</"],
-            ["Identifier", "h1"],
-            ["CloseAngleBracket", ">"],
+        expect(tokens.map((t) => [t.tokenType, t.image])).toEqual([
+            [TagStart, "<h1"],
+            [TagStartClose, ">"],
+            [TagEnd, "</h1>"],
         ]);
     });
 
     it("should lex HTML tags with attributes", () => {
         const { tokens } = lex('<div class="test" id="main"></div>');
-        expect(tokens.map((t) => [t.tokenType.name, t.image])).toEqual([
-            ["OpenAngleBracket", "<"],
-            ["Identifier", "div"],
-            ["WhiteSpace", " "],
-            ["Identifier", "class"],
-            ["Equals", "="],
-            ["OpenDoubleQuote", '"'],
-            ["DoubleQuoteText", "test"],
-            ["CloseDoubleQuote", '"'],
-            ["WhiteSpace", " "],
-            ["Identifier", "id"],
-            ["Equals", "="],
-            ["OpenDoubleQuote", '"'],
-            ["DoubleQuoteText", "main"],
-            ["CloseDoubleQuote", '"'],
-            ["CloseAngleBracket", ">"],
-            ["OpenAngleBracketSlash", "</"],
-            ["Identifier", "div"],
-            ["CloseAngleBracket", ">"],
+        expect(tokens.map((t) => [t.tokenType, t.image])).toEqual([
+            [TagStart, "<div"],
+            [WhiteSpace, " "],
+            [AttributeName, "class"],
+            [Equals, "="],
+            [OpenDoubleQuote, '"'],
+            [DoubleQuoteText, "test"],
+            [CloseDoubleQuote, '"'],
+            [WhiteSpace, " "],
+            [AttributeName, "id"],
+            [Equals, "="],
+            [OpenDoubleQuote, '"'],
+            [DoubleQuoteText, "main"],
+            [CloseDoubleQuote, '"'],
+            [TagStartClose, ">"],
+            [TagEnd, "</div>"],
         ]);
     });
 
     it("should lex self-closing tags", () => {
         const { tokens } = lex("<img src='test.jpg' />");
-        expect(tokens.map((t) => [t.tokenType.name, t.image])).toEqual([
-            ["OpenAngleBracket", "<"],
-            ["Identifier", "img"],
-            ["WhiteSpace", " "],
-            ["Identifier", "src"],
-            ["Equals", "="],
-            ["OpenSingleQuote", "'"],
-            ["SingleQuoteText", "test.jpg"],
-            ["CloseSingleQuote", "'"],
-            ["WhiteSpace", " "],
-            ["Slash", "/"],
-            ["CloseAngleBracket", ">"],
+        expect(tokens.map((t) => [t.tokenType, t.image])).toEqual([
+            [TagStart, "<img"],
+            [WhiteSpace, " "],
+            [AttributeName, "src"],
+            [Equals, "="],
+            [OpenSingleQuote, "'"],
+            [SingleQuoteText, "test.jpg"],
+            [CloseSingleQuote, "'"],
+            [WhiteSpace, " "],
+            [TagStartSelfClose, "/>"],
         ]);
     });
 
     it("should lex comments", () => {
         const { tokens } = lex("<!-- This is a comment -->");
-        expect(tokens.map((t) => [t.tokenType.name, t.image])).toEqual([["Comment", "<!-- This is a comment -->"]]);
+        expect(tokens.map((t) => [t.tokenType, t.image])).toEqual([[Comment, "<!-- This is a comment -->"]]);
     });
 
     it("should lex nested HTML tags", () => {
         const { tokens } = lex("<div><span>Content</span></div>");
-        expect(tokens.map((t) => [t.tokenType.name, t.image])).toEqual([
-            ["OpenAngleBracket", "<"],
-            ["Identifier", "div"],
-            ["CloseAngleBracket", ">"],
-            ["OpenAngleBracket", "<"],
-            ["Identifier", "span"],
-            ["CloseAngleBracket", ">"],
-            ["Text", "Content"],
-            ["OpenAngleBracketSlash", "</"],
-            ["Identifier", "span"],
-            ["CloseAngleBracket", ">"],
-            ["OpenAngleBracketSlash", "</"],
-            ["Identifier", "div"],
-            ["CloseAngleBracket", ">"],
+        expect(tokens.map((t) => [t.tokenType, t.image])).toEqual([
+            [TagStart, "<div"],
+            [TagStartClose, ">"],
+            [TagStart, "<span"],
+            [TagStartClose, ">"],
+            [Text, "Content"],
+            [TagEnd, "</span>"],
+            [TagEnd, "</div>"],
         ]);
     });
 
     it("should lex HTML with comments", () => {
         const { tokens } = lex("<div><!-- Comment --><span>Content</span></div>");
-        expect(tokens.map((t) => [t.tokenType.name, t.image])).toEqual([
-            ["OpenAngleBracket", "<"],
-            ["Identifier", "div"],
-            ["CloseAngleBracket", ">"],
-            ["Comment", "<!-- Comment -->"],
-            ["OpenAngleBracket", "<"],
-            ["Identifier", "span"],
-            ["CloseAngleBracket", ">"],
-            ["Text", "Content"],
-            ["OpenAngleBracketSlash", "</"],
-            ["Identifier", "span"],
-            ["CloseAngleBracket", ">"],
-            ["OpenAngleBracketSlash", "</"],
-            ["Identifier", "div"],
-            ["CloseAngleBracket", ">"],
+        expect(tokens.map((t) => [t.tokenType, t.image])).toEqual([
+            [TagStart, "<div"],
+            [TagStartClose, ">"],
+            [Comment, "<!-- Comment -->"],
+            [TagStart, "<span"],
+            [TagStartClose, ">"],
+            [Text, "Content"],
+            [TagEnd, "</span>"],
+            [TagEnd, "</div>"],
         ]);
     });
 
     it("should lex text nodes", () => {
         const { tokens } = lex("<div>Hello, World!</div>");
-        expect(tokens.map((t) => [t.tokenType.name, t.image])).toEqual([
-            ["OpenAngleBracket", "<"],
-            ["Identifier", "div"],
-            ["CloseAngleBracket", ">"],
-            ["Text", "Hello, World!"],
-            ["OpenAngleBracketSlash", "</"],
-            ["Identifier", "div"],
-            ["CloseAngleBracket", ">"],
+        expect(tokens.map((t) => [t.tokenType, t.image])).toEqual([
+            [TagStart, "<div"],
+            [TagStartClose, ">"],
+            [Text, "Hello, World!"],
+            [TagEnd, "</div>"],
         ]);
     });
 
@@ -149,166 +148,152 @@ describe("lexer", () => {
             </body>
             </html>
         `);
-        expect(tokens.map((t) => [t.tokenType.name, t.image])).toEqual([
-            ["Text", "\n            "],
-            ["OpenAngleBracket", "<"],
-            ["Identifier", "html"],
-            ["CloseAngleBracket", ">"],
-            ["Text", "\n            "],
-            ["OpenAngleBracket", "<"],
-            ["Identifier", "head"],
-            ["CloseAngleBracket", ">"],
-            ["Text", "\n                "],
-            ["OpenAngleBracket", "<"],
-            ["Identifier", "title"],
-            ["CloseAngleBracket", ">"],
-            ["Text", "Page Title"],
-            ["OpenAngleBracketSlash", "</"],
-            ["Identifier", "title"],
-            ["CloseAngleBracket", ">"],
-            ["Text", "\n            "],
-            ["OpenAngleBracketSlash", "</"],
-            ["Identifier", "head"],
-            ["CloseAngleBracket", ">"],
-            ["Text", "\n            "],
-            ["OpenAngleBracket", "<"],
-            ["Identifier", "body"],
-            ["CloseAngleBracket", ">"],
-            ["Text", "\n                "],
-            ["OpenAngleBracket", "<"],
-            ["Identifier", "h1"],
-            ["CloseAngleBracket", ">"],
-            ["Text", "This is a Heading"],
-            ["OpenAngleBracketSlash", "</"],
-            ["Identifier", "h1"],
-            ["CloseAngleBracket", ">"],
-            ["Text", "\n                "],
-            ["OpenAngleBracket", "<"],
-            ["Identifier", "p"],
-            ["CloseAngleBracket", ">"],
-            ["Text", "This is a paragraph."],
-            ["OpenAngleBracketSlash", "</"],
-            ["Identifier", "p"],
-            ["CloseAngleBracket", ">"],
-            ["Text", "\n                "],
-            ["OpenAngleBracket", "<"],
-            ["Identifier", "a"],
-            ["WhiteSpace", " "],
-            ["Identifier", "href"],
-            ["Equals", "="],
-            ["OpenDoubleQuote", '"'],
-            ["DoubleQuoteText", "#"],
-            ["CloseDoubleQuote", '"'],
-            ["CloseAngleBracket", ">"],
-            ["Text", "This is a link"],
-            ["OpenAngleBracketSlash", "</"],
-            ["Identifier", "a"],
-            ["CloseAngleBracket", ">"],
-            ["Text", "\n            "],
-            ["OpenAngleBracketSlash", "</"],
-            ["Identifier", "body"],
-            ["CloseAngleBracket", ">"],
-            ["Text", "\n            "],
-            ["OpenAngleBracketSlash", "</"],
-            ["Identifier", "html"],
-            ["CloseAngleBracket", ">"],
-            ["Text", "\n        "],
+        expect(tokens.map((t) => [t.tokenType, t.image])).toEqual([
+            [Text, "\n            "],
+            [TagStart, "<html"],
+            [TagStartClose, ">"],
+            [Text, "\n            "],
+            [TagStart, "<head"],
+            [TagStartClose, ">"],
+            [Text, "\n                "],
+            [TagStart, "<title"],
+            [TagStartClose, ">"],
+            [Text, "Page Title"],
+            [TagEnd, "</title>"],
+            [Text, "\n            "],
+            [TagEnd, "</head>"],
+            [Text, "\n            "],
+            [TagStart, "<body"],
+            [TagStartClose, ">"],
+            [Text, "\n                "],
+            [TagStart, "<h1"],
+            [TagStartClose, ">"],
+            [Text, "This is a Heading"],
+            [TagEnd, "</h1>"],
+            [Text, "\n                "],
+            [TagStart, "<p"],
+            [TagStartClose, ">"],
+            [Text, "This is a paragraph."],
+            [TagEnd, "</p>"],
+            [Text, "\n                "],
+            [TagStart, "<a"],
+            [WhiteSpace, " "],
+            [AttributeName, "href"],
+            [Equals, "="],
+            [OpenDoubleQuote, '"'],
+            [DoubleQuoteText, "#"],
+            [CloseDoubleQuote, '"'],
+            [TagStartClose, ">"],
+            [Text, "This is a link"],
+            [TagEnd, "</a>"],
+            [Text, "\n            "],
+            [TagEnd, "</body>"],
+            [Text, "\n            "],
+            [TagEnd, "</html>"],
+            [Text, "\n        "],
         ]);
     });
 
     it("should lex expression in attributes", () => {
         // XXX: This will not parse, however.
         const { tokens } = lex("<div {expression}></div>");
-        expect(tokens.map((t) => [t.tokenType.name, t.image])).toEqual([
-            ["OpenAngleBracket", "<"],
-            ["Identifier", "div"],
-            ["WhiteSpace", " "],
-            ["OpenBracket", "{"],
-            ["BracketedText", "expression"],
-            ["CloseBracket", "}"],
-            ["CloseAngleBracket", ">"],
-            ["OpenAngleBracketSlash", "</"],
-            ["Identifier", "div"],
-            ["CloseAngleBracket", ">"],
+        expect(tokens.map((t) => [t.tokenType, t.image])).toEqual([
+            [TagStart, "<div"],
+            [WhiteSpace, " "],
+            [ExpressionStart, "{"],
+            [ExpressionText, "expression"],
+            [ExpressionEnd, "}"],
+            [TagStartClose, ">"],
+            [TagEnd, "</div>"],
         ]);
     });
 
     it("should lex expression within attribute value", () => {
         const { tokens } = lex('<a href="url/{expression}/page"></a>');
-        expect(tokens.map((t) => [t.tokenType.name, t.image])).toEqual([
-            ["OpenAngleBracket", "<"],
-            ["Identifier", "a"],
-            ["WhiteSpace", " "],
-            ["Identifier", "href"],
-            ["Equals", "="],
-            ["OpenDoubleQuote", '"'],
-            ["DoubleQuoteText", "url/"],
-            ["OpenBracket", "{"],
-            ["BracketedText", "expression"],
-            ["CloseBracket", "}"],
-            ["DoubleQuoteText", "/page"],
-            ["CloseDoubleQuote", '"'],
-            ["CloseAngleBracket", ">"],
-            ["OpenAngleBracketSlash", "</"],
-            ["Identifier", "a"],
-            ["CloseAngleBracket", ">"],
+        expect(tokens.map((t) => [t.tokenType, t.image])).toEqual([
+            [TagStart, "<a"],
+            [WhiteSpace, " "],
+            [AttributeName, "href"],
+            [Equals, "="],
+            [OpenDoubleQuote, '"'],
+            [DoubleQuoteText, "url/"],
+            [ExpressionStart, "{"],
+            [ExpressionText, "expression"],
+            [ExpressionEnd, "}"],
+            [DoubleQuoteText, "/page"],
+            [CloseDoubleQuote, '"'],
+            [TagStartClose, ">"],
+            [TagEnd, "</a>"],
         ]);
     });
 
     it("should lex expression in text content", () => {
         const { tokens } = lex("<p>Text before {expression} text after</p>");
-        expect(tokens.map((t) => [t.tokenType.name, t.image])).toEqual([
-            ["OpenAngleBracket", "<"],
-            ["Identifier", "p"],
-            ["CloseAngleBracket", ">"],
-            ["Text", "Text before "],
-            ["OpenBracket", "{"],
-            ["BracketedText", "expression"],
-            ["CloseBracket", "}"],
-            ["Text", " text after"],
-            ["OpenAngleBracketSlash", "</"],
-            ["Identifier", "p"],
-            ["CloseAngleBracket", ">"],
+        expect(tokens.map((t) => [t.tokenType, t.image])).toEqual([
+            [TagStart, "<p"],
+            [TagStartClose, ">"],
+            [Text, "Text before "],
+            [ExpressionStart, "{"],
+            [ExpressionText, "expression"],
+            [ExpressionEnd, "}"],
+            [Text, " text after"],
+            [TagEnd, "</p>"],
         ]);
     });
 
     it("should lex multiple expressions in different positions", () => {
         const { tokens } = lex('<div id={id} class="{class}">Text {expression} more text</div>');
-        expect(tokens.map((t) => [t.tokenType.name, t.image])).toEqual([
-            ["OpenAngleBracket", "<"],
-            ["Identifier", "div"],
-            ["WhiteSpace", " "],
-            ["Identifier", "id"],
-            ["Equals", "="],
-            ["OpenBracket", "{"],
-            ["BracketedText", "id"],
-            ["CloseBracket", "}"],
-            ["WhiteSpace", " "],
-            ["Identifier", "class"],
-            ["Equals", "="],
-            ["OpenDoubleQuote", '"'],
-            ["OpenBracket", "{"],
-            ["BracketedText", "class"],
-            ["CloseBracket", "}"],
-            ["CloseDoubleQuote", '"'],
-            ["CloseAngleBracket", ">"],
-            ["Text", "Text "],
-            ["OpenBracket", "{"],
-            ["BracketedText", "expression"],
-            ["CloseBracket", "}"],
-            ["Text", " more text"],
-            ["OpenAngleBracketSlash", "</"],
-            ["Identifier", "div"],
-            ["CloseAngleBracket", ">"],
+        expect(tokens.map((t) => [t.tokenType, t.image])).toEqual([
+            [TagStart, "<div"],
+            [WhiteSpace, " "],
+            [AttributeName, "id"],
+            [Equals, "="],
+            [ExpressionStart, "{"],
+            [ExpressionText, "id"],
+            [ExpressionEnd, "}"],
+            [WhiteSpace, " "],
+            [AttributeName, "class"],
+            [Equals, "="],
+            [OpenDoubleQuote, '"'],
+            [ExpressionStart, "{"],
+            [ExpressionText, "class"],
+            [ExpressionEnd, "}"],
+            [CloseDoubleQuote, '"'],
+            [TagStartClose, ">"],
+            [Text, "Text "],
+            [ExpressionStart, "{"],
+            [ExpressionText, "expression"],
+            [ExpressionEnd, "}"],
+            [Text, " more text"],
+            [TagEnd, "</div>"],
+        ]);
+    });
+
+    it("should lex nested expressions", () => {
+        const { tokens } = lex("<p>{{ a: 1, b: (x: number) => { return x; }}['b']()}</p>");
+        expect(tokens.map((t) => [t.tokenType, t.image])).toEqual([
+            [TagStart, "<p"],
+            [TagStartClose, ">"],
+            [ExpressionStart, "{"],
+            [ExpressionStart, "{"],
+            [ExpressionText, " a: 1, b: (x: number) => "],
+            [ExpressionStart, "{"],
+            [ExpressionText, " return x; "],
+            [ExpressionEnd, "}"],
+            [ExpressionEnd, "}"],
+            [ExpressionText, "['b']()"],
+            [ExpressionEnd, "}"],
+            [TagEnd, "</p>"],
         ]);
     });
 
     it("should lex code blocks", () => {
         const { tokens } = lex("<code>{code}</code>");
-        expect(tokens.map((t) => [t.tokenType.name, t.image])).toEqual([
-            ["CodeStart", "<code>"],
-            ["CodeText", "{code}"],
-            ["CodeEnd", "</code>"],
+        expect(tokens.map((t) => [t.tokenType, t.image])).toEqual([
+            [OpaqueTagStart, "<code"],
+            [OpaqueTagStartClose, ">"],
+            [OpaqueText, "{code}"],
+            [OpaqueTagEnd, "</code>"],
         ]);
     });
 
@@ -316,51 +301,65 @@ describe("lexer", () => {
         const { tokens } = lex(`
             <pre><code>bunx @niarada/remedy
             </code></pre>
-
         `);
-        expect(tokens.map((t) => [t.tokenType.name, t.image])).toEqual([
-            ["Text", "\n            "],
-            ["OpenAngleBracket", "<"],
-            ["Identifier", "pre"],
-            ["CloseAngleBracket", ">"],
-            ["CodeStart", "<code>"],
-            ["CodeText", "bunx @niarada/remedy\n            "],
-            ["CodeEnd", "</code>"],
-            ["OpenAngleBracketSlash", "</"],
-            ["Identifier", "pre"],
-            ["CloseAngleBracket", ">"],
-            ["Text", "\n\n        "],
+        expect(tokens.map((t) => [t.tokenType, t.image])).toEqual([
+            [Text, "\n            "],
+            [TagStart, "<pre"],
+            [TagStartClose, ">"],
+            [OpaqueTagStart, "<code"],
+            [OpaqueTagStartClose, ">"],
+            [OpaqueText, "bunx @niarada/remedy\n            "],
+            [OpaqueTagEnd, "</code>"],
+            [TagEnd, "</pre>"],
+            [Text, "\n        "],
         ]);
     });
 
-    it("should lex this properly", () => {
+    it("should lex script blocks", () => {
+        const { tokens } = lex("<script>function foo() {}</script>");
+        expect(tokens.map((t) => [t.tokenType, t.image])).toEqual([
+            [OpaqueTagStart, "<script"],
+            [OpaqueTagStartClose, ">"],
+            [OpaqueText, "function foo() {}"],
+            [OpaqueTagEnd, "</script>"],
+        ]);
+    });
+
+    it("should lex script with attribute", () => {
+        const { tokens } = lex(`<script src="foo.js" />`);
+        expect(tokens.map((t) => [t.tokenType, t.image])).toEqual([
+            [OpaqueTagStart, "<script"],
+            [WhiteSpace, " "],
+            [AttributeName, "src"],
+            [Equals, "="],
+            [OpenDoubleQuote, '"'],
+            [DoubleQuoteText, "foo.js"],
+            [CloseDoubleQuote, '"'],
+            [WhiteSpace, " "],
+            [OpaqueTagStartSelfClose, "/>"],
+        ]);
+    });
+
+    it("should lex self-closing tag properly", () => {
         const { tokens } = lex(`
             <div>
                 <slot><div /></slot>
             </div>
         `);
-        expect(tokens.map((t) => [t.tokenType.name, t.image])).toEqual([
-            ["Text", "\n            "],
-            ["OpenAngleBracket", "<"],
-            ["Identifier", "div"],
-            ["CloseAngleBracket", ">"],
-            ["Text", "\n                "],
-            ["OpenAngleBracket", "<"],
-            ["Identifier", "slot"],
-            ["CloseAngleBracket", ">"],
-            ["OpenAngleBracket", "<"],
-            ["Identifier", "div"],
-            ["WhiteSpace", " "],
-            ["Slash", "/"],
-            ["CloseAngleBracket", ">"],
-            ["OpenAngleBracketSlash", "</"],
-            ["Identifier", "slot"],
-            ["CloseAngleBracket", ">"],
-            ["Text", "\n            "],
-            ["OpenAngleBracketSlash", "</"],
-            ["Identifier", "div"],
-            ["CloseAngleBracket", ">"],
-            ["Text", "\n        "],
+        expect(tokens.map((t) => [t.tokenType, t.image])).toEqual([
+            [Text, "\n            "],
+            [TagStart, "<div"],
+            [TagStartClose, ">"],
+            [Text, "\n                "],
+            [TagStart, "<slot"],
+            [TagStartClose, ">"],
+            [TagStart, "<div"],
+            [WhiteSpace, " "],
+            [TagStartSelfClose, "/>"],
+            [TagEnd, "</slot>"],
+            [Text, "\n            "],
+            [TagEnd, "</div>"],
+            [Text, "\n        "],
         ]);
     });
 });

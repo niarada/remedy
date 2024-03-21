@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 import { parse } from "./parser";
-import { getNode, getTokenImage } from "./util";
+import { getNode, getSimpleAst } from "./util";
 
 describe("parser", () => {
     it("should parse an empty document", () => {
@@ -9,10 +9,35 @@ describe("parser", () => {
     });
 
     it("should parse code contents as text", () => {
-        const { document } = parse("<div><code>{foo}</code></div>");
-        const node = getNode(document, "fragment", "element", "fragment", "code");
-        const text = getTokenImage(node, "CodeText");
-        expect(text).toBe("{foo}");
+        const { document, errors } = parse("<div><code>{foo}</code></div>");
+        expect(errors).toEqual([]);
+        expect(getSimpleAst(document)).toEqual({
+            v: "document",
+            c: [
+                {
+                    v: "fragment",
+                    c: [
+                        {
+                            v: "element",
+                            c: [
+                                { v: "<div" },
+                                { v: ">" },
+                                {
+                                    v: "fragment",
+                                    c: [
+                                        {
+                                            v: "opaque",
+                                            c: [{ v: "<code" }, { v: ">" }, { v: "{foo}" }, { v: "</code>" }],
+                                        },
+                                    ],
+                                },
+                                { v: "</div>" },
+                            ],
+                        },
+                    ],
+                },
+            ],
+        });
     });
 
     it("should properly parse void tags", () => {

@@ -5,6 +5,19 @@ import { parse } from "./parser";
 import { BaseTemplateVisitorWithDefaults, visit, visitEach } from "./visitor";
 
 import {
+    AttributeName,
+    Comment,
+    Equals,
+    OpaqueTagEnd,
+    OpaqueTagStart,
+    OpaqueTagStartSelfClose,
+    OpaqueText,
+    TagEnd,
+    TagStart,
+    TagStartSelfClose,
+    WhiteSpace,
+} from "./lexer";
+import {
     getNode,
     getNodes,
     getToken,
@@ -76,6 +89,10 @@ describe("visitor", () => {
         parseAndCompare('<div id={id} class="{class}">Text {expression} more text</div>');
     });
 
+    it("should parse nested expressions", () => {
+        parseAndCompare(`"<p>{{ a: 1, b: (x: number) => { return x; }}['b']()}</p>"`);
+    });
+
     it("should parse void tags", () => {
         parseAndCompare(`
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -86,17 +103,21 @@ describe("visitor", () => {
         parseAndCompare(`<input hx-get="/todo/add" hx-swap="none" hx-on::before-request="this.value = ''" class="new-todo"
         placeholder="What needs to be done?" autofocus autocomplete="off" name="text">`);
     });
+
+    it("should parse opaque tags", () => {
+        parseAndCompare(`<script src="https://example.com/script.js" />`);
+    });
 });
 
 function parseAndCompare(source: string) {
     const { document, errors } = parse(source);
     expect(errors).toEqual([]);
-    const visitor = new PrintVisitor();
+    const visitor = new TestVisitor();
     visitor.visit(document);
     expect(visitor.output).toEqual(source);
 }
 
-class PrintVisitor extends BaseTemplateVisitorWithDefaults {
+class TestVisitor extends BaseTemplateVisitorWithDefaults {
     #output: string[] = [];
 
     constructor() {
@@ -113,42 +134,74 @@ class PrintVisitor extends BaseTemplateVisitorWithDefaults {
     }
 
     comment(context: CstChildrenDictionary) {
-        this.#output.push(getTokenImage(context, "Comment")!);
+        this.#output.push(getTokenImage(context, Comment)!);
     }
 
-    element(context: CstChildrenDictionary) {
-        const tagStart = context.tagStart[0];
-        const tagStartIdentifier = getTokenImage(tagStart, "Identifier");
-        const tagEnd = context.tagEnd?.[0];
-        const tagEndIdentifier = tagEnd && getTokenImage(tagEnd, "Identifier");
-        if (getToken(tagStart, "Slash") && tagEnd) {
-            console.error(`Unexpected closing tag: ${tagEndIdentifier}`);
+    opaque(context: CstChildrenDictionary) {
+        const tagStart = getToken(context, OpaqueTagStart);
+        const tag = tagStart.image.slice(1);
+        const tagEnd = getToken(context, OpaqueTagEnd);
+        const isVoid = htmlVoidTags.includes(tag);
+        const isSelfClosing = !!getToken(context, OpaqueTagStartSelfClose);
+        if (tagEnd && (isVoid || isSelfClosing)) {
+            console.error(`Unexpected closing tag: ${tagEnd.image}`);
         }
-        this.#output.push(`<${tagStartIdentifier}`);
-        for (const attribute of getNodes(tagStart, "attribute")) {
+        this.#output.push(tagStart.image);
+        for (const attribute of getNodes(context, "attribute")) {
             this.visit(attribute as CstNode);
         }
-        const whitespace = getToken(tagStart, "WhiteSpace");
+        const whitespace = getToken(context, WhiteSpace);
         if (whitespace) {
             this.#output.push(whitespace.image);
         }
-        if (getToken(tagStart, "Slash")) {
+        if (isSelfClosing) {
             this.#output.push("/>");
-        } else if (htmlVoidTags.includes(tagStartIdentifier)) {
+        } else if (isVoid) {
+            this.#output.push(">");
+        } else {
+            this.#output.push(">");
+            const text = getToken(context, OpaqueText);
+            if (text) {
+                this.#output.push(text.image);
+            }
+            this.#output.push(tagEnd.image);
+        }
+    }
+
+    element(context: CstChildrenDictionary) {
+        const tagStart = getToken(context, TagStart);
+        const tag = tagStart.image.slice(1);
+        const tagEnd = getToken(context, TagEnd);
+        const isVoid = htmlVoidTags.includes(tag);
+        const isSelfClosing = !!getToken(context, TagStartSelfClose);
+        if (tagEnd && (isVoid || isSelfClosing)) {
+            console.error(`Unexpected closing tag: ${tagEnd.image}`);
+        }
+        this.#output.push(tagStart.image);
+        for (const attribute of getNodes(context, "attribute")) {
+            this.visit(attribute as CstNode);
+        }
+        const whitespace = getToken(context, WhiteSpace);
+        if (whitespace) {
+            this.#output.push(whitespace.image);
+        }
+        if (isSelfClosing) {
+            this.#output.push("/>");
+        } else if (isVoid) {
             this.#output.push(">");
         } else {
             this.#output.push(">");
             if (context.fragment) {
                 this.visit(context.fragment as CstNode[]);
             }
-            this.#output.push(`</${tagEndIdentifier}>`);
+            this.#output.push(tagEnd.image);
         }
     }
 
     attribute(context: CstChildrenDictionary) {
-        this.#output.push(getTokenImage(context, "WhiteSpace")!);
-        this.#output.push(getTokenImage(context, "Identifier")!);
-        this.#output.push(getTokenImage(context, "Equals")!);
+        this.#output.push(getTokenImage(context, WhiteSpace));
+        this.#output.push(getTokenImage(context, AttributeName));
+        this.#output.push(getTokenImage(context, Equals));
         visit(this, context.attributeValue);
     }
 

@@ -4,6 +4,17 @@ import { htmlVoidTags } from "./tags";
 import { BaseTemplateVisitorWithDefaults, visit, visitEach } from "./visitor";
 
 import {
+    AttributeName,
+    OpaqueTagEnd,
+    OpaqueTagStart,
+    OpaqueTagStartSelfClose,
+    OpaqueText,
+    TagEnd,
+    TagStart,
+    TagStartSelfClose,
+    WhiteSpace,
+} from "./lexer";
+import {
     getNode,
     getNodes,
     getToken,
@@ -171,7 +182,7 @@ class AstBuilder extends BaseTemplateVisitorWithDefaults {
         }
     }
 
-    element(context: CstChildrenDictionary) {
+    xelement(context: CstChildrenDictionary) {
         const tagStart = context.tagStart[0];
         const tagStartIdentifier = getTokenImage(tagStart, "Identifier");
         const tagEnd = context.tagEnd?.[0];
@@ -194,13 +205,62 @@ class AstBuilder extends BaseTemplateVisitorWithDefaults {
         this.#stack.pop();
     }
 
+    opaque(context: CstChildrenDictionary) {
+        const tagStart = getToken(context, OpaqueTagStart);
+        const tag = tagStart.image.slice(1);
+        const tagEnd = getToken(context, OpaqueTagEnd);
+        const isVoid = htmlVoidTags.includes(tag);
+        const isSelfClosing = !!getToken(context, OpaqueTagStartSelfClose);
+        if (tagEnd && (isVoid || isSelfClosing)) {
+            console.error(`Unexpected closing tag: ${tagEnd.image}`);
+        }
+        const element = this.append(createHtmlElement(this.top, tag)) as HtmlElement;
+        this.#stack.push(element);
+        for (const attribute of getNodes(context, "attribute")) {
+            this.visit(attribute as CstNode);
+        }
+        const whitespace = getToken(context, WhiteSpace);
+        if (whitespace) {
+            element.postAttributeSpace = whitespace.image;
+        }
+        const text = getToken(context, OpaqueText);
+        if (!isSelfClosing && !isVoid && text) {
+            element.children.push(createHtmlText(element, text.image));
+        }
+        this.#stack.pop();
+    }
+
+    element(context: CstChildrenDictionary) {
+        const tagStart = getToken(context, TagStart);
+        const tag = tagStart.image.slice(1);
+        const tagEnd = getToken(context, TagEnd);
+        const isVoid = htmlVoidTags.includes(tag);
+        const isSelfClosing = !!getToken(context, TagStartSelfClose);
+        if (tagEnd && (isVoid || isSelfClosing)) {
+            console.error(`Unexpected closing tag: ${tagEnd.image}`);
+        }
+        const element = this.append(createHtmlElement(this.top, tag)) as HtmlElement;
+        this.#stack.push(element);
+        for (const attribute of getNodes(context, "attribute")) {
+            this.visit(attribute as CstNode);
+        }
+        const whitespace = getToken(context, WhiteSpace);
+        if (whitespace) {
+            element.postAttributeSpace = whitespace.image;
+        }
+        if (!isSelfClosing && !isVoid && context.fragment) {
+            this.visit(context.fragment as CstNode[]);
+        }
+        this.#stack.pop();
+    }
+
     attribute(context: CstChildrenDictionary) {
         const element = this.top as HtmlElement;
         element.attrs.push({
-            name: getTokenImage(context, "Identifier"),
+            name: getTokenImage(context, AttributeName),
             value: [],
             quote: '"',
-            preSpace: getTokenImage(context, "WhiteSpace"),
+            preSpace: getTokenImage(context, WhiteSpace),
         });
         visit(this, context.attributeValue);
     }

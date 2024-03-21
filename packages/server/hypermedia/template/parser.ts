@@ -1,64 +1,62 @@
 import { CstParser } from "chevrotain";
 import {
+    AttributeName,
     BacktickQuoteText,
-    BracketedText,
-    CloseAngleBracket,
     CloseBacktickQuote,
-    CloseBracket,
     CloseDoubleQuote,
     CloseSingleQuote,
-    CodeEnd,
-    CodeStart,
-    CodeText,
     Comment,
     DoubleQuoteText,
     Equals,
+    ExpressionEnd,
     ExpressionPart,
-    Identifier,
-    OpenAngleBracket,
-    OpenAngleBracketSlash,
+    ExpressionStart,
+    ExpressionText,
+    OpaqueTagEnd,
+    OpaqueTagStart,
+    OpaqueTagStartClose,
+    OpaqueTagStartSelfClose,
+    OpaqueText,
     OpenBacktickQuote,
-    OpenBracket,
     OpenDoubleQuote,
     OpenSingleQuote,
     SingleQuoteText,
-    Slash,
+    TagEnd,
+    TagStart,
+    TagStartClose,
+    TagStartSelfClose,
     Text,
     WhiteSpace,
     lex,
 } from "./lexer";
 import { htmlVoidTags } from "./tags";
-import { getTokenImage } from "./util";
 
 class TemplateParser<F> extends CstParser {
-    lastTagStartWasSelfClosing = false;
-
     constructor() {
         super(
             [
+                AttributeName,
                 BacktickQuoteText,
-                BracketedText,
-                CloseAngleBracket,
+                TagStartClose,
                 CloseBacktickQuote,
-                CloseBracket,
                 CloseDoubleQuote,
                 CloseSingleQuote,
-                CodeEnd,
-                CodeStart,
-                CodeText,
                 Comment,
                 DoubleQuoteText,
                 Equals,
+                ExpressionText,
+                ExpressionEnd,
                 ExpressionPart,
-                Identifier,
-                OpenAngleBracket,
-                OpenAngleBracketSlash,
+                ExpressionStart,
+                OpaqueText,
+                OpaqueTagEnd,
+                OpaqueTagStart,
                 OpenBacktickQuote,
-                OpenBracket,
                 OpenDoubleQuote,
                 OpenSingleQuote,
                 SingleQuoteText,
-                Slash,
+                TagEnd,
+                TagStart,
                 Text,
                 WhiteSpace,
             ],
@@ -77,60 +75,59 @@ class TemplateParser<F> extends CstParser {
         this.AT_LEAST_ONE(() => {
             this.OR([
                 { ALT: () => this.SUBRULE(this.comment) },
-                { ALT: () => this.SUBRULE(this.code) },
+                { ALT: () => this.SUBRULE(this.opaque) },
                 { ALT: () => this.SUBRULE(this.element) },
-                { ALT: () => this.SUBRULE(this.text) },
                 { ALT: () => this.SUBRULE(this.expression) },
+                { ALT: () => this.SUBRULE(this.text) },
             ]);
         });
     });
 
-    private code = this.RULE("code", () => {
-        this.CONSUME(CodeStart);
-        this.CONSUME(CodeText);
-        this.CONSUME(CodeEnd);
-    });
-
-    private element = this.RULE("element", () => {
-        const tagStart = this.SUBRULE(this.tagStart);
-        const tagStartIdentifier = getTokenImage(tagStart, "Identifier")!;
-        if (!(this.lastTagStartWasSelfClosing || htmlVoidTags.includes(tagStartIdentifier))) {
-            this.OPTION(() => {
-                this.SUBRULE(this.fragment);
-            });
-            this.SUBRULE(this.tagEnd);
-        }
-    });
-
-    private tagStart = this.RULE("tagStart", () => {
-        this.lastTagStartWasSelfClosing = false;
-        this.CONSUME(OpenAngleBracket);
-        const identifier = this.CONSUME(Identifier);
-        if (htmlVoidTags.includes(identifier.image)) {
-            this.lastTagStartWasSelfClosing = true;
-        }
+    private opaque = this.RULE("opaque", () => {
+        const tagStart = this.CONSUME(OpaqueTagStart);
+        const tag = tagStart.image.slice(1);
         this.MANY(() => {
             this.SUBRULE(this.attribute);
         });
         this.OPTION(() => {
             this.CONSUME(WhiteSpace);
         });
-        this.OPTION1(() => {
-            this.CONSUME(Slash);
-            this.lastTagStartWasSelfClosing = true;
-        });
-        this.CONSUME(CloseAngleBracket);
+        const tagStartClose = this.OR([
+            { ALT: () => this.CONSUME(OpaqueTagStartSelfClose) },
+            { ALT: () => this.CONSUME(OpaqueTagStartClose) },
+        ]);
+        if (!(htmlVoidTags.includes(tag) || tagStartClose.image === "/>")) {
+            this.OPTION1(() => {
+                this.CONSUME(OpaqueText);
+            });
+            this.CONSUME(OpaqueTagEnd);
+        }
     });
 
-    private tagEnd = this.RULE("tagEnd", () => {
-        this.CONSUME(OpenAngleBracketSlash);
-        this.CONSUME(Identifier);
-        this.CONSUME(CloseAngleBracket);
+    private element = this.RULE("element", () => {
+        const tagStart = this.CONSUME(TagStart);
+        const tag = tagStart.image.slice(1);
+        this.MANY(() => {
+            this.SUBRULE(this.attribute);
+        });
+        this.OPTION(() => {
+            this.CONSUME(WhiteSpace);
+        });
+        const tagStartClose = this.OR([
+            { ALT: () => this.CONSUME(TagStartSelfClose) },
+            { ALT: () => this.CONSUME(TagStartClose) },
+        ]);
+        if (!(htmlVoidTags.includes(tag) || tagStartClose.image === "/>")) {
+            this.OPTION1(() => {
+                this.SUBRULE(this.fragment);
+            });
+            this.CONSUME(TagEnd);
+        }
     });
 
     private attribute = this.RULE("attribute", () => {
         this.CONSUME(WhiteSpace);
-        this.CONSUME(Identifier);
+        this.CONSUME(AttributeName);
         this.OPTION(() => {
             this.CONSUME(Equals);
             this.SUBRULE(this.attributeValue);

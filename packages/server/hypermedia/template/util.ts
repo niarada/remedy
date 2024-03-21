@@ -1,4 +1,4 @@
-import { CstChildrenDictionary, CstNode, IToken } from "chevrotain";
+import { CstChildrenDictionary, CstNode, IToken, TokenType } from "chevrotain";
 
 export function orderedFlatNodeChildren(context: CstChildrenDictionary) {
     return (Object.values(context).flat() as CstNode[]).sort((a, b) => {
@@ -25,8 +25,11 @@ export function getNodes(element: unknown, name: string) {
     return (getChildren(element)[name] || []) as CstNode[];
 }
 
-export function getTokens(element: unknown, name: string) {
-    return (getChildren(element)[name] || []) as IToken[];
+export function getTokens(element: unknown, type: string | TokenType) {
+    if (typeof type === "string") {
+        return (getChildren(element)[type] || []) as IToken[];
+    }
+    return (getChildren(element)[type.name] || []) as IToken[];
 }
 
 export function getNode(element: unknown, name: string, ...rest: string[]) {
@@ -37,35 +40,38 @@ export function getNode(element: unknown, name: string, ...rest: string[]) {
     return node;
 }
 
-export function getToken(element: unknown, name: string) {
-    return getTokens(element, name)[0] || undefined;
+export function getToken(element: unknown, type: string | TokenType) {
+    if (typeof type === "string") {
+        return getTokens(element, type)[0] || undefined;
+    }
+    return getTokens(element, type.name)[0] || undefined;
 }
 
-export function getTokenImage(element: unknown, name: string) {
-    return getToken(element, name)?.image;
+export function getTokenImage(element: unknown, type: string | TokenType) {
+    return getToken(element, type)?.image;
 }
 
 interface SimpleAstNode {
-    value: string;
-    children?: SimpleAstNode[];
+    v: string;
+    c?: SimpleAstNode[];
 }
 
 export function getSimpleAst(node: CstNode, parent?: SimpleAstNode) {
-    const snode = { value: node.name } as SimpleAstNode;
+    const snode = { v: node.name } as SimpleAstNode;
     if (parent) {
-        if (!parent.children) {
-            parent.children = [];
+        if (!parent.c) {
+            parent.c = [];
         }
-        parent.children.push(snode);
+        parent.c.push(snode);
     }
     for (const child of orderedFlatChildren(node)) {
         if (Object.hasOwn(child, "children")) {
             getSimpleAst(child as CstNode, snode);
         } else {
-            if (!snode.children) {
-                snode.children = [];
+            if (!snode.c) {
+                snode.c = [];
             }
-            snode.children.push({ value: JSON.stringify((child as IToken).image) });
+            snode.c.push({ v: (child as IToken).image });
         }
     }
     return snode;
@@ -73,8 +79,8 @@ export function getSimpleAst(node: CstNode, parent?: SimpleAstNode) {
 
 export function printSimpleAst(node: CstNode | SimpleAstNode, indent = 0) {
     const ast = Object.hasOwn(node, "name") ? getSimpleAst(node as CstNode) : (node as SimpleAstNode);
-    console.log(" ".repeat(indent), ast.value);
-    for (const child of ast.children ?? []) {
+    console.log(" ".repeat(indent), JSON.stringify(ast.v));
+    for (const child of ast.c ?? []) {
         printSimpleAst(child, indent + 2);
     }
 }
