@@ -1,4 +1,4 @@
-import { AttributeTypes, Attributes } from ".";
+import { AttributeTypes, Attributes } from "./artifact";
 import { HtmlElement, HtmlNode, Scope, createHtmlText, simpleTransformHtml } from "./template";
 
 class ExpressionError extends Error {

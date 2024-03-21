@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test";
-import { AttributeTypes } from ".";
+import { AttributeTypes } from "./artifact";
 import {
     express,
     expressAttributeFirstValue,

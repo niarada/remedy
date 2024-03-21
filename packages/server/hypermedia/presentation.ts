@@ -1,9 +1,9 @@
 import { warn } from "~/lib/log";
 import { Context } from "~/server/context";
-import { Representation } from ".";
 import { Director } from "./director";
 import { expressDefinedAttributesToStrings, transformExpressionsIntoStrings } from "./expressor";
 import { transformFlowEach, transformFlowWhen } from "./flow";
+import { Representation } from "./representation";
 import {
     HtmlElement,
     HtmlFragment,

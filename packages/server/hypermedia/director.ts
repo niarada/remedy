@@ -3,10 +3,12 @@ import { readFileSync } from "node:fs";
 import { error, info, warn } from "~/lib/log";
 import { watch } from "~/lib/watch";
 import { Context } from "~/server/context";
-import { Artifact, Representation, Source, VariableRepresentation } from ".";
+import { Artifact } from "./artifact";
 import { MarkdownSource } from "./kinds/markdown/source";
 import { PartialSource } from "./kinds/partial/source";
+import { Representation, VariableRepresentation } from "./representation";
 import { resolveTag } from "./resolve";
+import { Source } from "./source";
 import { PrintHtmlOptions, htmlTags } from "./template";
 
 /**
@@ -46,6 +48,7 @@ export class Director {
             artifact = (await import(tag)) as Artifact;
         } catch (err) {
             error("director", `failed to import '${tag}'`);
+            // console.log(err);
         }
         if (!artifact) {
             return;

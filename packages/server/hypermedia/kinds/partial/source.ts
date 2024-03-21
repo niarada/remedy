@@ -1,6 +1,13 @@
 import * as ts from "typescript";
-import { Source } from "~/hypermedia";
-import { HtmlFragment, htmlStartIndex, parseSource, printHtml, walkHtml } from "~/hypermedia/template";
+import { Source } from "~/hypermedia/source";
+import {
+    HtmlFragment,
+    HtmlText,
+    htmlStartIndex,
+    parseSource,
+    printHtml,
+    simpleTransformHtml,
+} from "~/hypermedia/template";
 import { error } from "~/lib/log";
 
 /**
@@ -10,6 +17,7 @@ import { error } from "~/lib/log";
 export class PartialSource extends Source {
     readonly kind = "partial";
 
+    #script: string[] = [];
     #template!: HtmlFragment;
     #action!: ts.SourceFile;
     #attributes: Record<string, ts.TypeNode> = {};
@@ -33,7 +41,7 @@ export class PartialSource extends Source {
         }
         this.#template = ast;
         this.#action = ts.createSourceFile("", this.text.slice(0, htmlIndex), ts.ScriptTarget.Latest, true);
-        this.transformExpressions();
+        this.transformTemplate();
         this.tranformAction();
     }
 
@@ -49,12 +57,14 @@ export class PartialSource extends Source {
         return JSON.stringify(printHtml(this.#template));
     }
 
-    private transformExpressions() {
-        walkHtml(this.#template, (node, { visitEachChild }) => {
-            if (node.type === "fragment") {
-                visitEachChild(node);
-                return;
-            }
+    get script() {
+        const source = ts.createSourceFile("", this.#script.join("\n"), ts.ScriptTarget.Latest, true);
+        const target = ts.createPrinter().printFile(source);
+        return JSON.stringify(target);
+    }
+
+    private transformTemplate() {
+        simpleTransformHtml(this.#template, (node) => {
             if (node.type === "element") {
                 for (const attr of node.attrs) {
                     for (const value of attr.value) {
@@ -63,13 +73,14 @@ export class PartialSource extends Source {
                         }
                     }
                 }
-                visitEachChild(node);
-                return;
-            }
-            if (node.type === "expression") {
+                if (node.tag === "script" && node.children.length) {
+                    this.#script.push((node.children[0] as HtmlText).content);
+                    return;
+                }
+            } else if (node.type === "expression") {
                 node.content = this.transformExpression(node.content);
-                return;
             }
+            return node;
         });
     }
 

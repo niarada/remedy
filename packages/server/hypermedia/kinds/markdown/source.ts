@@ -1,6 +1,6 @@
 import Shiki from "@shikijs/markdown-it";
 import Markdown from "markdown-it";
-import { Source } from "~/hypermedia";
+import { Source } from "~/hypermedia/source";
 import markdownRegexp from "./regexp";
 
 export class MarkdownSource extends Source {
