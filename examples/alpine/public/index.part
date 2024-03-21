@@ -1,0 +1,11 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+</head>
+
+<body x-data={ foo: 'bar' }>
+    <button x-on:click="console.log(foo)">Click</button>
+</body>
+
+</html>

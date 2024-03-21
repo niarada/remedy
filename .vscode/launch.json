@@ -12,6 +12,10 @@
         {
             "name": "Extension + LS: Contact",
             "configurations": ["Extension: Contact", "Language Server: Attach"]
+        },
+        {
+            "name": "Extension + LS: Alpine",
+            "configurations": ["Extension: Alpine", "Language Server: Attach"]
         }
     ],
     "configurations": [
@@ -57,6 +61,17 @@
             "autoAttachChildProcesses": true
         },
         {
+            "type": "extensionHost",
+            "request": "launch",
+            "name": "Extension: Alpine",
+            "runtimeExecutable": "${execPath}",
+            "args": [
+                "--extensionDevelopmentPath=${workspaceRoot}/packages/vscode",
+                "--folder-uri=${workspaceRoot}/examples/alpine"
+            ],
+            "autoAttachChildProcesses": true
+        },
+        {
             "type": "bun",
             "request": "launch",
             "name": "Server: Todo",
@@ -76,6 +91,13 @@
             "name": "Server: Contact",
             "program": "${workspaceRoot}/packages/htmx-bun/server/index.ts",
             "cwd": "${workspaceRoot}/examples/contact"
+        },
+        {
+            "type": "bun",
+            "request": "launch",
+            "name": "Server: Alpine",
+            "program": "${workspaceRoot}/packages/htmx-bun/server/index.ts",
+            "cwd": "${workspaceRoot}/examples/alpine"
         },
         {
             "name": "Language Server: Attach",
