@@ -40,6 +40,18 @@ export function transformExpressionsIntoStrings(node: HtmlNode) {
     simpleTransformHtml(node, (node) => {
         if (node.type === "element") {
             node.attrs = node.attrs.map((attr) => {
+                if (attr.name.startsWith("x-")) {
+                    attr.value = attr.value.map((value) => {
+                        if (value.type === "text") {
+                            return value;
+                        }
+                        return {
+                            type: "text",
+                            content: value.content,
+                        };
+                    });
+                    return attr;
+                }
                 attr.value = attr.value.map((value) => {
                     if (value.type === "text") {
                         return value;
