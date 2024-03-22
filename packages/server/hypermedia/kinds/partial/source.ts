@@ -1,13 +1,6 @@
 import * as ts from "typescript";
 import { Source } from "~/hypermedia/source";
-import {
-    HtmlFragment,
-    HtmlText,
-    htmlStartIndex,
-    parseSource,
-    printHtml,
-    simpleTransformHtml,
-} from "~/hypermedia/template";
+import { HtmlFragment, htmlStartIndex, parseSource, printHtml, simpleTransformHtml } from "~/hypermedia/template";
 import { error } from "~/lib/log";
 
 /**
@@ -17,7 +10,6 @@ import { error } from "~/lib/log";
 export class PartialSource extends Source {
     readonly kind = "partial";
 
-    #script: string[] = [];
     #template!: HtmlFragment;
     #action!: ts.SourceFile;
     #attributes: Record<string, ts.TypeNode> = {};
@@ -57,12 +49,6 @@ export class PartialSource extends Source {
         return JSON.stringify(printHtml(this.#template));
     }
 
-    get script() {
-        const source = ts.createSourceFile("", this.#script.join("\n"), ts.ScriptTarget.Latest, true);
-        const target = ts.createPrinter().printFile(source);
-        return JSON.stringify(target);
-    }
-
     private transformTemplate() {
         simpleTransformHtml(this.#template, (node) => {
             if (node.type === "element") {
@@ -72,10 +58,6 @@ export class PartialSource extends Source {
                             value.content = this.transformExpression(value.content);
                         }
                     }
-                }
-                if (node.tag === "script" && node.children.length) {
-                    this.#script.push((node.children[0] as HtmlText).content);
-                    return;
                 }
             } else if (node.type === "expression") {
                 node.content = this.transformExpression(node.content);

@@ -37,13 +37,6 @@ export abstract class Source {
     }
 
     /**
-     * The script as an empty string.
-     */
-    get script() {
-        return '""';
-    }
-
-    /**
      * Implementors will fullfill whatever they needs here to be able to present their
      * action, attributes, and template to the code getter.
      */
@@ -57,7 +50,6 @@ export abstract class Source {
         return [
             `export const attributes = ${this.attributes};`,
             `export const template = ${this.template};`,
-            `export const script = ${this.script};`,
             this.action,
         ].join("\n");
     }

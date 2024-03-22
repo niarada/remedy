@@ -15,5 +15,4 @@ export interface Artifact {
     attributes: AttributeTypes;
     action($context: Context, ...rest: AttributeType[]): Promise<Scope>;
     template: string;
-    script: string;
 }

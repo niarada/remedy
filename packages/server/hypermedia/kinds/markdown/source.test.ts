@@ -11,7 +11,6 @@ describe("markdown/source", () => {
             [
                 "export const attributes = {};",
                 `export const template = "<h1>Hello</h1>\\n";`,
-                `export const script = "";`,
                 "export async function action() { return {}; }\n",
             ].join("\n"),
         );

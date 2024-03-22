@@ -7,20 +7,11 @@ interface Attributes {
 }
 const name = 'Alpha';
 
-<script>
-    const a = 1;
-</script>
-
-<script>
-    const b = 2;
-</script>
-
 <div>{id} {name}</div>
 `;
 
 const target1 = `export const attributes = {"id":"number"};
 export const template = "<div>{$scope.id} {$scope.name}</div>\\n";
-export const script = "const a = 1;\\nconst b = 2;\\n";
 interface Attributes {
     id: number;
 }
