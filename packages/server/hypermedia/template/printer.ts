@@ -42,7 +42,11 @@ export function printHtml(htmlOrNode: string | HtmlNode, options: Partial<PrintH
                             text.push("checked");
                         }
                     } else {
-                        text.push(`${attr.name}=${attr.quote}${value}${attr.quote}`);
+                        if (value) {
+                            text.push(`${attr.name}=${attr.quote}${value}${attr.quote}`);
+                        } else {
+                            text.push(attr.name);
+                        }
                     }
                 }
             }

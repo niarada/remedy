@@ -1,7 +1,8 @@
 import { createHtmlElementAttribute } from "~/hypermedia/template";
 import { ServerFeature } from ".";
+import { ServerOptions } from "../options";
 
-export default function (): ServerFeature {
+export default function (options: ServerOptions): ServerFeature {
     return {
         name: "typescript",
         async intercede(context) {
@@ -9,7 +10,7 @@ export default function (): ServerFeature {
                 return;
             }
             const result = await Bun.build({
-                entrypoints: [`public${context.url.pathname}`],
+                entrypoints: [`${options.base}${context.url.pathname}`],
                 sourcemap: "inline",
             });
             const file = result.outputs[0];

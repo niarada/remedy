@@ -140,3 +140,19 @@ export function expressDefinedAttributesToStrings(node: HtmlElement, types: Attr
     }
     return attributes;
 }
+
+export function expressFlattenedAttributes(node: HtmlElement) {
+    const attributes: Record<string, string> = {};
+    for (const attr of node.attrs) {
+        const values = [];
+        for (const v of attr.value) {
+            if (v.type === "expression") {
+                values.push(String(express(node.scope, v.content)));
+            } else {
+                values.push(v.content);
+            }
+        }
+        attributes[attr.name] = values.join("");
+    }
+    return attributes;
+}

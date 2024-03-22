@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.16] - 2024-03-22
+### Added
+- Server: Added image feature for image optimization.
+- Server: Async transformations.
+
+### Fixed
+- Features: Fixed some hardcoded references to `public` directory.
+- Templates: Empty attributes will have their value part removed.
 
 ## [0.2.15] - 2024-03-22
 ### Added

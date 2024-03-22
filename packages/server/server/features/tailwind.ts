@@ -6,14 +6,15 @@ import { mergeDeepWith } from "ramda";
 import tailwind, { Config as TailwindConfig } from "tailwindcss";
 import { createHtmlElement } from "~/hypermedia/template";
 import { ServerFeature } from ".";
+import { ServerOptions } from "../options";
 
-export default function (): ServerFeature {
+export default function (options: ServerOptions): ServerFeature {
     return {
         name: "tailwind",
         async intercede(context) {
             if (context.url.pathname === "/_tailwind") {
                 let config: TailwindConfig = {
-                    content: ["./public/**/*.part"],
+                    content: [`${options.base}/**/*.part`],
                     plugins: [typography],
                 };
                 if (existsSync("tailwind.config.ts")) {

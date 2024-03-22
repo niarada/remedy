@@ -23,4 +23,9 @@ describe("printer", () => {
         const { ast } = parseSource(source);
         expect(printHtml(ast, { expandSelfClosing: false })).toBe(source);
     });
+
+    it("should remove value part of empty attributes", () => {
+        const { ast } = parseSource('<div attr="" />');
+        expect(printHtml(ast, { trim: true, expandSelfClosing: false })).toBe("<div attr />");
+    });
 });

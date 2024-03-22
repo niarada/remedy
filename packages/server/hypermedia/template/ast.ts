@@ -144,6 +144,14 @@ export const createHtmlElementAttribute = (name: string, value: string): HtmlEle
     value: [{ type: "text", content: value }],
 });
 
+export const createHtmlElementAttributesFromObject = (obj: Record<string, unknown>): HtmlElementAttribute[] =>
+    Object.entries(obj).map(([name, value]) => ({
+        name,
+        quote: '"',
+        preSpace: " ",
+        value: [{ type: "text", content: String(value) }],
+    }));
+
 class AstBuilder extends BaseTemplateVisitorWithDefaults {
     #stack: HtmlNode[] = [];
     #scope: Scope = {};

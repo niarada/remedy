@@ -22,6 +22,10 @@ Typescript bundling for `<script src="...">` tags in the head.
 
 ### Disabled by default
 
+### image
+
+Image optimization.
+
 #### htmx
 
 HTMX support.

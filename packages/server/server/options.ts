@@ -12,6 +12,7 @@ interface ServerOptionsFeatures {
     alpine?: boolean;
     htmx?: HtmxOptions;
     sse?: boolean;
+    image?: boolean;
     typescript?: boolean;
     static?: boolean;
     dev?: boolean;
@@ -28,6 +29,7 @@ const options = {
             debug: false,
         },
         sse: false,
+        image: false,
         typescript: true,
         static: true,
         dev: import.meta.env.NODE_ENV === "development",

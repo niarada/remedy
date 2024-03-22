@@ -8,10 +8,12 @@ import {
     HtmlElement,
     HtmlFragment,
     HtmlNode,
+    HtmlSimpleAsyncTransformVisitor,
     HtmlSimpleTransformVisitor,
     PrintHtmlOptions,
     htmlTags,
     printHtml,
+    simpleAsyncTransformHtml,
     simpleTransformHtml,
     simpleWalkHtml,
 } from "./template";
@@ -62,8 +64,8 @@ export class Presentation {
      * Transforms the template with the supplied visitor function.
      * @param visit The supplied visitor function.
      */
-    transform(visit: HtmlSimpleTransformVisitor) {
-        simpleTransformHtml(this.template, visit);
+    async transform(visit: HtmlSimpleTransformVisitor | HtmlSimpleAsyncTransformVisitor) {
+        await simpleAsyncTransformHtml(this.template, visit as HtmlSimpleAsyncTransformVisitor);
     }
 
     /**

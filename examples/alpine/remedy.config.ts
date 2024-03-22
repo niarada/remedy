@@ -7,6 +7,7 @@ export default {
         alpine: true,
         htmx: false,
         sse: false,
+        image: true,
         typescript: true,
         static: true,
         dev: import.meta.env.NODE_ENV === "development",

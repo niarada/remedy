@@ -9,7 +9,8 @@ import { LanguageClient, TransportKind } from "vscode-languageclient/node";
 let client: LanguageClient;
 
 export async function activate(context: vscode.ExtensionContext) {
-    await initializeExtension(context);
+    console.log("STARTING");
+    initializeExtension(context);
     const serverPath = `${context.extensionPath}/dist/server/index.js`;
     client = new LanguageClient(
         "partial",
@@ -47,7 +48,7 @@ export function deactivate() {
     return client?.stop();
 }
 
-async function initializeExtension(context) {
+function initializeExtension(context) {
     const config = getWorkspaceConfig();
     if (config.features?.tailwind) {
         vscode.workspace.getConfiguration("tailwindCSS").update("includeLanguages", {

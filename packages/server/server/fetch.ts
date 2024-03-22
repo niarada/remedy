@@ -153,7 +153,7 @@ export async function buildFetch(options: ServerOptions) {
     async function featureTransforms(presentation: Presentation) {
         for (const feature of features) {
             if (feature.transform) {
-                presentation.transform(feature.transform);
+                await presentation.transform(feature.transform);
             }
         }
     }

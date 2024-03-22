@@ -1,10 +1,11 @@
 import { ServerFeature } from ".";
+import { ServerOptions } from "../options";
 
-export default function (): ServerFeature {
+export default function (options: ServerOptions): ServerFeature {
     return {
         name: "static",
         async intercede(context) {
-            const file = Bun.file(`public${context.url.pathname}`);
+            const file = Bun.file(`${options.base}${context.url.pathname}`);
             if (await file.exists()) {
                 return new Response(file, {
                     headers: {

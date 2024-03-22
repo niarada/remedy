@@ -1,4 +1,4 @@
-import { HtmlSimpleTransformVisitor } from "~/hypermedia/template";
+import { HtmlSimpleAsyncTransformVisitor, HtmlSimpleTransformVisitor } from "~/hypermedia/template";
 import { info } from "~/lib/log";
 import { Context } from "~/server/context";
 import { ServerOptions } from "~/server/options";
@@ -7,6 +7,7 @@ import alpineFeature from "./alpine";
 import devFeature from "./dev";
 import fontAwesomeFeature from "./fontawesome";
 import htmxFeature from "./htmx";
+import imageFeature from "./image";
 import sseFeature from "./sse";
 import staticFeature from "./static";
 import tailwindFeature from "./tailwind";
@@ -19,6 +20,7 @@ const factories: Record<string, FeatureFactory> = {
     htmx: htmxFeature,
     sse: sseFeature,
     typescript: typescriptFeature,
+    image: imageFeature,
     static: staticFeature,
     tailwind: tailwindFeature,
 };
@@ -28,7 +30,7 @@ export type FeatureFactory = (options: ServerOptions) => Promise<ServerFeature> 
 export interface ServerFeature {
     name: string;
     intercede?: (context: Context) => Promise<Response | undefined> | Response | undefined;
-    transform?: HtmlSimpleTransformVisitor;
+    transform?: HtmlSimpleTransformVisitor | HtmlSimpleAsyncTransformVisitor;
 }
 
 type FeaturesKey = keyof ServerOptions["features"];
