@@ -1,6 +1,6 @@
 import typography from "@tailwindcss/typography";
 import autoprefixer from "autoprefixer";
-import { existsSync } from "fs";
+import { existsSync } from "node:fs";
 import postcss from "postcss";
 import { mergeDeepWith } from "ramda";
 import tailwind, { Config as TailwindConfig } from "tailwindcss";
