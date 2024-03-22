@@ -10,6 +10,7 @@ import htmxFeature from "./htmx";
 import sseFeature from "./sse";
 import staticFeature from "./static";
 import tailwindFeature from "./tailwind";
+import typescriptFeature from "./typescript";
 
 const factories: Record<string, FeatureFactory> = {
     dev: devFeature,
@@ -17,6 +18,7 @@ const factories: Record<string, FeatureFactory> = {
     alpine: alpineFeature,
     htmx: htmxFeature,
     sse: sseFeature,
+    typescript: typescriptFeature,
     static: staticFeature,
     tailwind: tailwindFeature,
 };

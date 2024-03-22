@@ -20,8 +20,7 @@ export default function (): ServerFeature {
                     config = mergeDeepWith(
                         (_, b) => b,
                         config,
-                        (await import(`${process.cwd()}/tailwind.config.ts`))
-                            .default,
+                        (await import(`${process.cwd()}/tailwind.config.ts`)).default,
                     );
                 }
                 const css = `

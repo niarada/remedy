@@ -1,12 +1,14 @@
-# Options
+# Configuration
 
-To add special configuration to **remedy**, drop an `options.ts` file in your project root.
+When you first start **remedy** a `remedy.config.ts` file will be created in your project root.
 
-Have it follow this structure, all fields are optional, defaults are given:
+It takes the following structure, all fields are optional, defaults are given:
 
 ```ts
 export default {
     port: 4321,
+    # The base public folder
+    base: "public",
     features: {
         fontawesome: false,
         tailwind: false,
@@ -18,6 +20,8 @@ export default {
             # Enable htmx debug output
             debug: false,
         },
+        # Bundle typescript endpoints
+        typescript: true,
         # Serve static files
         static: true,
         # Dev mode allows hot refresh

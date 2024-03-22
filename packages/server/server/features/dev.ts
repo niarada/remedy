@@ -15,7 +15,10 @@ export default function (options: ServerOptions): ServerFeature {
     }
 
     info("dev", "watching for changes...");
-    watch(options.base!, () => {
+    watch(".", (_, path) => {
+        if (path?.endsWith("config.ts")) {
+            return;
+        }
         info("dev", "sending refresh...");
         emitter.emit("refresh");
     });

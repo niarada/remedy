@@ -1,7 +1,7 @@
 import { afterAll } from "bun:test";
 import { mkdtempSync, rmdirSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { AttributeTypes, Attributes } from "~/hypermedia";
+import { AttributeTypes, Attributes } from "~/hypermedia/artifact";
 import { Context, coerceAttributes, definedAttributeValues } from "~/server/context";
 
 export function makeTemporaryDirectory() {

@@ -24,11 +24,13 @@ interface ResolvedPathInfo {
  *
  * @param tag - The tag to resolve.
  * @param basePath - The base path to start the resolution from.
+ * @param validExtensions - File extensions to consider.
  * @returns The resolved path, amended tag, and resolved variables.
  */
-export function resolveTag(tag: string, basePath: string): ResolvedTagInfo {
+export function resolveTag(tag: string, basePath: string, validExtensions: string[]): ResolvedTagInfo {
+    validExtensions = validExtensions.map((x) => (x[0] === "." ? x : `.${x}`));
     const segments = tag.split("-");
-    const { path: resolvedPath, resolvedVariables } = resolvePath(segments, basePath, {});
+    const { path: resolvedPath, resolvedVariables } = resolvePath(segments, basePath, {}, validExtensions);
     return {
         path: resolvedPath,
         amendedTag:
@@ -43,11 +45,13 @@ export function resolveTag(tag: string, basePath: string): ResolvedTagInfo {
  * @param segments - The remaining path segments to resolve.
  * @param currentPath - The current path being resolved.
  * @param resolvedVariables - The currently resolved variables.
+ * @param validExtensions - File extensions to consider.
  */
 function resolvePath(
     segments: string[],
     currentPath: string,
     resolvedVariables: Record<string, string>,
+    validExtensions: string[],
 ): ResolvedPathInfo {
     const currentPathWithoutExtension = dropExtension(currentPath);
 
@@ -62,52 +66,78 @@ function resolvePath(
     }
 
     currentPath = currentPathWithoutExtension;
-
     const [first, ...rest] = segments;
-
     const entries = fs.readdirSync(currentPath, { withFileTypes: true });
 
+    /**
+     * Find a file with the same name as the first segment and a valid extension.
+     */
     for (const entry of entries) {
-        const nameWithoutExtension = path.parse(entry.name).name;
-        const entryPath = path.join(currentPath, entry.name);
-
-        if (entry.isFile() && nameWithoutExtension === first) {
-            return resolvePath(rest, entryPath, resolvedVariables);
+        if (entry.isFile()) {
+            const parsed = path.parse(entry.name);
+            if (!validExtensions.includes(parsed.ext)) {
+                continue;
+            }
+            if (parsed.name === first) {
+                return resolvePath(rest, path.join(currentPath, entry.name), resolvedVariables, validExtensions);
+            }
         }
     }
 
+    /**
+     * Otherwise, find a directory with the same name as the first segment.
+     */
     for (const entry of entries) {
-        const name = path.parse(entry.name).name;
-        const entryPath = path.join(currentPath, entry.name);
-
-        if (entry.isDirectory() && name === first) {
-            return resolvePath(rest, entryPath, resolvedVariables);
+        if (entry.isDirectory()) {
+            const parsed = path.parse(entry.name);
+            if (parsed.name === first) {
+                return resolvePath(rest, path.join(currentPath, entry.name), resolvedVariables, validExtensions);
+            }
         }
     }
 
+    /**
+     * Otherwise, find a variable file with a valid extension.
+     */
     for (const entry of entries) {
-        const nameWithoutExtension = path.parse(entry.name).name;
-        const entryPath = path.join(currentPath, entry.name);
-
-        if (entry.isFile() && nameWithoutExtension.startsWith("[") && nameWithoutExtension.endsWith("]")) {
-            const variableName = nameWithoutExtension.slice(1, -1);
-            return resolvePath(rest, entryPath, {
-                ...resolvedVariables,
-                [variableName]: first,
-            });
+        if (entry.isFile()) {
+            const parsed = path.parse(entry.name);
+            if (!validExtensions.includes(parsed.ext)) {
+                continue;
+            }
+            if (parsed.name.startsWith("[") && parsed.name.endsWith("]")) {
+                const variable = parsed.name.slice(1, -1);
+                return resolvePath(
+                    rest,
+                    path.join(currentPath, entry.name),
+                    {
+                        ...resolvedVariables,
+                        [variable]: first,
+                    },
+                    validExtensions,
+                );
+            }
         }
     }
 
+    /**
+     * Otherwise, find a variable directory
+     */
     for (const entry of entries) {
-        const name = path.parse(entry.name).name;
-        const entryPath = path.join(currentPath, entry.name);
-
-        if (entry.isDirectory() && name.startsWith("[") && name.endsWith("]")) {
-            const variableName = name.slice(1, -1);
-            return resolvePath(rest, entryPath, {
-                ...resolvedVariables,
-                [variableName]: first,
-            });
+        if (entry.isDirectory()) {
+            const parsed = path.parse(entry.name);
+            if (parsed.name.startsWith("[") && parsed.name.endsWith("]")) {
+                const variable = parsed.name.slice(1, -1);
+                return resolvePath(
+                    rest,
+                    path.join(currentPath, entry.name),
+                    {
+                        ...resolvedVariables,
+                        [variable]: first,
+                    },
+                    validExtensions,
+                );
+            }
         }
     }
     return { path: undefined, resolvedVariables: {} };

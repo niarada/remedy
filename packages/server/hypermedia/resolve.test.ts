@@ -34,7 +34,7 @@ describe("resolveTag", () => {
             amendedTag: "joy-patience-[id]-kindness",
             resolvedVariables: { id: "2" },
         };
-        expect(resolveTag(tag, basePath)).toEqual(expected);
+        expect(resolveTag(tag, basePath, [".part"])).toEqual(expected);
     });
 
     it("should resolve a tag with two variable paths", () => {
@@ -44,7 +44,7 @@ describe("resolveTag", () => {
             amendedTag: "joy-[virtue]-[id]-kindness",
             resolvedVariables: { virtue: "peace", id: "3" },
         };
-        expect(resolveTag(tag, basePath)).toEqual(expected);
+        expect(resolveTag(tag, basePath, [".part"])).toEqual(expected);
     });
 
     it("should resolve a tag with three variables, last of them a file", () => {
@@ -58,7 +58,7 @@ describe("resolveTag", () => {
                 other: "faithfulness",
             },
         };
-        expect(resolveTag(tag, basePath)).toEqual(expected);
+        expect(resolveTag(tag, basePath, [".part"])).toEqual(expected);
     });
 
     it("should resolve a file over a directory", () => {
@@ -68,7 +68,7 @@ describe("resolveTag", () => {
             amendedTag: "joy",
             resolvedVariables: {},
         };
-        expect(resolveTag(tag, basePath)).toEqual(expected);
+        expect(resolveTag(tag, basePath, [".part"])).toEqual(expected);
     });
 
     it("should return undefined for a path one segment longer than an existing path that doesn't exist", () => {
@@ -78,7 +78,7 @@ describe("resolveTag", () => {
             amendedTag: undefined,
             resolvedVariables: { id: "3" },
         };
-        expect(resolveTag(tag, basePath)).toEqual(expected);
+        expect(resolveTag(tag, basePath, [".part"])).toEqual(expected);
     });
 
     it("should return when variable file on end", () => {
@@ -88,7 +88,7 @@ describe("resolveTag", () => {
             amendedTag: "love-[id]",
             resolvedVariables: { id: "3" },
         };
-        expect(resolveTag(tag, basePath)).toEqual(expected);
+        expect(resolveTag(tag, basePath, [".part"])).toEqual(expected);
     });
 
     it("should return undefined path and amendedTag if tag does not match any file", () => {
@@ -98,6 +98,6 @@ describe("resolveTag", () => {
             amendedTag: undefined,
             resolvedVariables: {},
         };
-        expect(resolveTag(tag, basePath)).toEqual(expected);
+        expect(resolveTag(tag, basePath, [".part"])).toEqual(expected);
     });
 });

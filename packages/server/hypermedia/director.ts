@@ -66,7 +66,6 @@ export class Director {
         if (!this.base) {
             return;
         }
-        info("director", `watching for changes in '${this.base}'`);
         watch(this.base, async (_, path) => {
             if (/\.(part|md)$/.test(path ?? "")) {
                 const rep = Array.from(this.representations.values()).find((r) => r.path === path);
@@ -91,7 +90,7 @@ export class Director {
      */
     async represent(tag: string): Promise<Representation | undefined> {
         if (!this.representations.has(tag) && this.base) {
-            const { path, amendedTag, resolvedVariables } = resolveTag(tag, this.base);
+            const { path, amendedTag, resolvedVariables } = resolveTag(tag, this.base, [".md", ".part"]);
             if (!path) {
                 warn("director", `No representation found for '${tag}'`);
                 return;

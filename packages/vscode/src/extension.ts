@@ -1,5 +1,8 @@
 import * as serverProtocol from "@volar/language-server/protocol";
 import { createLabsInfo, getTsdk } from "@volar/vscode";
+import { spawnSync } from "node:child_process";
+import * as fs from "node:fs";
+import * as os from "node:os";
 import * as vscode from "vscode";
 import { LanguageClient, TransportKind } from "vscode-languageclient/node";
 
@@ -44,28 +47,45 @@ export function deactivate() {
     return client?.stop();
 }
 
-function initializeExtension(context) {
-    // const workspaceOptions = getWorkspaceOptions(context);
-    // vscode.workspace
-    //     .getConfiguration("tailwindCSS")
-    //     .update("experimental.configFile", `${context.extensionPath}/assets/tailwind.js`);
-    vscode.workspace.getConfiguration("tailwindCSS").update("includeLanguages", {
-        partial: "html",
-    });
+async function initializeExtension(context) {
+    const config = getWorkspaceConfig();
+    if (config.features?.tailwind) {
+        vscode.workspace.getConfiguration("tailwindCSS").update("includeLanguages", {
+            partial: "html",
+        });
+    }
 }
 
-function getWorkspaceOptions(context) {
-    // TODO: At some point we'd like to see if tailwind is actually turned on in the
-    //       users `options.ts`, before messing with their workspace .vscode/settings.json.
-    // if (!fs.existsSync(`${context.workspaceFolder.uri.fsPath}/options.ts`)) {
-    //     return {};
-    // }
-    // const program = ts.createProgram([`${context.workspaceFolder.uri.fsPath}/options.ts`], {
-    //     target: ts.ScriptTarget.ES2015,
-    //     module: ts.ModuleKind.CommonJS,
-    // });
-    // const emitResult = program.emit();
-    // const diagnostics = ts.getPreEmitDiagnostics(program);
-    // log(emitResult.toString());
-    // log(diagnostics.toString());
+function getWorkspaceConfig() {
+    const workspacePath = vscode.workspace.workspaceFolders[0]?.uri.fsPath;
+    if (!workspacePath) {
+        return {};
+    }
+    const configPath = `${workspacePath}/remedy.config.ts`;
+    if (!fs.existsSync(configPath)) {
+        return {};
+    }
+    const dir = makeTemporaryDirectory();
+    const tmp = `${dir}/remedy.config.ts`;
+    fs.writeFileSync(
+        tmp,
+        `
+        import config from "${configPath}";
+        console.log(JSON.stringify(config));
+    `,
+    );
+    const output = spawnSync("bun", [tmp]);
+    fs.rmSync(dir, { recursive: true });
+    if (output.status !== 0) {
+        return {};
+    }
+    try {
+        return JSON.parse(output.stdout.toString("utf-8"));
+    } catch {
+        return {};
+    }
+}
+
+export function makeTemporaryDirectory() {
+    return fs.mkdtempSync(`${os.tmpdir()}/remedy-`);
 }

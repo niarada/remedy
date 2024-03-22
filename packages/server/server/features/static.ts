@@ -5,7 +5,6 @@ export default function (): ServerFeature {
         name: "static",
         async intercede(context) {
             const file = Bun.file(`public${context.url.pathname}`);
-
             if (await file.exists()) {
                 return new Response(file, {
                     headers: {

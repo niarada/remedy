@@ -23,6 +23,8 @@
             <ul class="flex flex-col gap-1 cursor-pointer">
                 <li class="">
                     <a href="index.html">Introduction</a>
+                </li><li class="font-bold">
+                    <a href="configuration.html">Configuration</a>
                 </li><li class="">
                     <a href="partials.html">Partials</a>
                 </li><li class="">
@@ -35,8 +37,6 @@
                     <a href="context.html">Context</a>
                 </li><li class="">
                     <a href="integrations.html">Integrations</a>
-                </li><li class="font-bold">
-                    <a href="options.html">Options</a>
                 </li><li class="">
                     <a href="editorsupport.html">Editor Support</a>
                 </li><li class="">
@@ -46,11 +46,13 @@
         </nav>
         <div class="relative overflow-y-scroll pt-6 flex-auto">
             <article class="prose w-full absolute">
-                <h1>Options</h1>
-<p>To add special configuration to <strong>remedy</strong>, drop an <code>options.ts</code> file in your project root.</p>
-<p>Have it follow this structure, all fields are optional, defaults are given:</p>
+                <h1>Configuration</h1>
+<p>When you first start <strong>remedy</strong> a <code>remedy.config.ts</code> file will be created in your project root.</p>
+<p>It takes the following structure, all fields are optional, defaults are given:</p>
 <pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code class="language-ts"><span class="line"><span style="color:#F44336;--shiki-dark:#F44336">export</span><span style="color:#F44336;--shiki-dark:#F44336"> default</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> {</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    port: 4321,</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    # The base public folder</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    base: </span><span style="color:#E06767;--shiki-dark:#E06767">"public"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">,</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    features: {</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        fontawesome: false,</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        tailwind: false,</span></span>
@@ -62,6 +64,8 @@
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">            # Enable htmx debug output</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">            debug: false,</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        },</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        # Bundle typescript endpoints</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        typescript: true,</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        # Serve static files</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        static: true,</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        # Dev mode allows hot refresh</span></span>
@@ -71,10 +75,10 @@
 
                 <footer class="mt-8 flex justify-between border-t border-t-slate-500 pt-4 pb-10">
                     <div>
-                        <a mx-when="[object Object]" href="integrations.html">← Integrations</a>
+                        <a mx-when="[object Object]" href="index.html">← Introduction</a>
                     </div>
                     <div>
-                        <a mx-when="[object Object]" href="editorsupport.html">Editor Support →</a>
+                        <a mx-when="[object Object]" href="partials.html">Partials →</a>
                     </div>
                 </footer>
             </article>

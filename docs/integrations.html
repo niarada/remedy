@@ -24,6 +24,8 @@
                 <li class="">
                     <a href="index.html">Introduction</a>
                 </li><li class="">
+                    <a href="configuration.html">Configuration</a>
+                </li><li class="">
                     <a href="partials.html">Partials</a>
                 </li><li class="">
                     <a href="routes.html">Routes</a>
@@ -36,8 +38,6 @@
                 </li><li class="font-bold">
                     <a href="integrations.html">Integrations</a>
                 </li><li class="">
-                    <a href="options.html">Options</a>
-                </li><li class="">
                     <a href="editorsupport.html">Editor Support</a>
                 </li><li class="">
                     <a href="roadmap.html">Roadmap</a>
@@ -49,15 +49,17 @@
                 <h1>Integrations</h1>
 <p>Also known as plugins or features.</p>
 <p><strong>remedy</strong> is designed to allow for easy integration with 3rd party libraries or custom plugins.  A process for community contributed integrations will be established at some point in the future.</p>
-<p>All integrations can be configured in <a href="options.html">Options</a>.</p>
+<p>All integrations can be enabled or disabled in <a href="configuration.html">Configuration</a>.</p>
 <h3>Enabled by default</h3>
 <h4>dev</h4>
 <p>File watching and hot refresh.</p>
 <h4>static</h4>
 <p>Static asset delivery.</p>
+<h4>typescript</h4>
+<p>Typescript bundling for <code>&lt;script src=&quot;...&quot;&gt;</code> tags in the head.</p>
+<h3>Disabled by default</h3>
 <h4>htmx</h4>
 <p>HTMX support.</p>
-<h3>Disabled by default</h3>
 <h4>sse</h4>
 <p>HTMX server-sent events support.</p>
 <h4>alpine</h4>
@@ -74,7 +76,7 @@
                         <a mx-when="[object Object]" href="context.html">← Context</a>
                     </div>
                     <div>
-                        <a mx-when="[object Object]" href="options.html">Options →</a>
+                        <a mx-when="[object Object]" href="editorsupport.html">Editor Support →</a>
                     </div>
                 </footer>
             </article>

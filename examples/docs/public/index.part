@@ -4,6 +4,10 @@ const articles = [
         href: "/",
     },
     {
+        title: "Configuration",
+        href: "/configuration",
+    },
+    {
         title: "Partials",
         href: "/partials",
     },
@@ -26,10 +30,6 @@ const articles = [
     {
         title: "Integrations",
         href: "/integrations",
-    },
-    {
-        title: "Options",
-        href: "/options",
     },
     {
         title: "Editor Support",

@@ -137,6 +137,13 @@ export const createHtmlExpression = (parent: HtmlParent, content: string): HtmlE
     scope: Object.create(parent.scope),
 });
 
+export const createHtmlElementAttribute = (name: string, value: string): HtmlElementAttribute => ({
+    name,
+    quote: '"',
+    preSpace: " ",
+    value: [{ type: "text", content: value }],
+});
+
 class AstBuilder extends BaseTemplateVisitorWithDefaults {
     #stack: HtmlNode[] = [];
     #scope: Scope = {};

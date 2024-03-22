@@ -7,7 +7,7 @@ fs.rmdirSync("docs", { recursive: true });
 fs.rmdirSync(work, { recursive: true });
 await $`cp -r examples/docs ${work}`;
 await Bun.write(
-    `${work}/options.ts`,
+    `${work}/remedy.config.ts`,
     `
 export default {
     port: 5678,
