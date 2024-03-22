@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.2.17] - 2024-03-22
+### Changed
+- Image: Switched to sharp for image processing.
+
 ## [0.2.16] - 2024-03-22
 ### Added
 - Server: Added image feature for image optimization.

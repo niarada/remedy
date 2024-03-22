@@ -1,9 +1,8 @@
-import photon, { PhotonImage } from "@silvia-odwyer/photon-node";
 import { info as imageInfo } from "fastimage";
 import * as fs from "node:fs";
+import sharp from "sharp";
 import { expressFlattenedAttributes } from "~/hypermedia/expressor";
 import { createHtmlElementAttributesFromObject } from "~/hypermedia/template";
-import { info } from "~/lib/log";
 import { ServerFeature } from ".";
 import { ServerOptions } from "../options";
 
@@ -17,7 +16,6 @@ export default function (options: ServerOptions): ServerFeature {
             if (!(context.form.width || context.form.height)) {
                 return;
             }
-            const time = Bun.nanoseconds();
             const path = `${options.base}${context.url.pathname}`;
             if (!fs.existsSync(path)) {
                 return;
@@ -27,15 +25,7 @@ export default function (options: ServerOptions): ServerFeature {
             if (String(width) === context.form.width) {
                 return;
             }
-            const data = await Bun.file(path).arrayBuffer();
-            let image = PhotonImage.new_from_byteslice(new Uint8Array(data));
-            image = photon.resize(image, Number(context.form.width), Number(context.form.height), 5);
-            const bytes = image.get_bytes();
-            info(
-                "image",
-                `'${context.url.pathname}' optimized in ${Math.round((Bun.nanoseconds() - time) / 1000000)}ms`,
-            );
-            return new Response(bytes, {
+            return new Response(sharp(path).resize(Number(context.form.width), Number(context.form.height)), {
                 headers: {
                     "Content-Type": "image/jpg",
                 },

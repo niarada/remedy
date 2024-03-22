@@ -34,7 +34,10 @@ const toBuffer = (data: unknown, encoding: BufferEncoding) => {
 };
 
 export function applyCompression(request: Request, response: Response) {
-    if (response.headers.get("connection") === "keep-alive") {
+    if (
+        response.headers.get("connection") === "keep-alive" ||
+        response.headers.get("Content-Type")?.startsWith("image")
+    ) {
         return response;
     }
     const accept = request.headers.get("Accept-Encoding") ?? "";

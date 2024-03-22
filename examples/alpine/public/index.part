@@ -8,6 +8,7 @@
 
 <body x-data={ foo: 'bar' }>
     <button x-on:click="console.log(foo)">Click</button>
+    <img src="/test.jpg" optimized width="500">
 </body>
 
 </html>
