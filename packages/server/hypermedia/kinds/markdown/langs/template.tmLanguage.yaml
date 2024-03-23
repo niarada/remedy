@@ -1,0 +1,93 @@
+scopeName: source.remedy.template
+
+patterns:
+  - begin: ^(?=\s*<[a-z])
+    end: ''
+    patterns:
+      - include: "#comment"
+      - include: "#tag-start"
+      - include: "#tag-end"
+      - include: "#custom-tag-start"
+      - include: "#custom-tag-end"
+      - include: "#expression"
+      - include: "#text"
+
+repository:
+  comment:
+    name: comment
+    begin: (<!--)
+    end: (-->)
+
+  tag-start:
+    begin: (<)(a|abbr|address|area|area|article|aside|audio|b|base|base|bdi|bdo|blockquote|body|br|br|button|canvas|caption|cite|code|col|col|colgroup|data|datalist|dd|del|details|dfn|dialog|div|dl|dt|em|embed|embed|fieldset|figcaption|figure|footer|form|h1|h2|h3|h4|h5|h6|head|header|hgroup|hr|hr|html|i|iframe|img|img|input|input|ins|kbd|label|legend|li|link|link|main|map|mark|meta|meta|meter|nav|noscript|object|ol|optgroup|option|output|p|param|param|picture|pre|progress|q|rp|rt|ruby|s|samp|script|section|select|small|source|source|span|strong|style|sub|summary|sup|table|tbody|td|template|textarea|tfoot|th|thead|time|title|tr|track|track|u|ul|var|video|wbr|wbr)(?=\s|/?>)
+    beginCaptures:
+      1: { name: punctuation.definition.tag }
+      2: { name: entity.name.tag }
+    end: ">"
+    endCaptures:
+      0: { name: punctuation.definition.tag }
+    patterns:
+      - include: "#attribute"
+
+  tag-end:
+    match: (</)(a|abbr|address|area|area|article|aside|audio|b|base|base|bdi|bdo|blockquote|body|br|br|button|canvas|caption|cite|code|col|col|colgroup|data|datalist|dd|del|details|dfn|dialog|div|dl|dt|em|embed|embed|fieldset|figcaption|figure|footer|form|h1|h2|h3|h4|h5|h6|head|header|hgroup|hr|hr|html|i|iframe|img|img|input|input|ins|kbd|label|legend|li|link|link|main|map|mark|meta|meta|meter|nav|noscript|object|ol|optgroup|option|output|p|param|param|picture|pre|progress|q|rp|rt|ruby|s|samp|script|section|select|small|source|source|span|strong|style|sub|summary|sup|table|tbody|td|template|textarea|tfoot|th|thead|time|title|tr|track|track|u|ul|var|video|wbr|wbr)(>)
+    captures:
+      1: { name: punctuation.definition.tag }
+      2: { name: entity.name.tag }
+      3: { name: punctuation.definition.tag }
+
+  custom-tag-start:
+    begin: (<)(([a-z]+-?)+)(?=\s|/?>)
+    beginCaptures:
+      1: { name: punctuation.definition.tag }
+      2: { name: entity.name.function }
+    end: ">"
+    endCaptures:
+      0: { name: punctuation.definition.tag }
+    patterns:
+      - include: "#attribute"
+
+  custom-tag-end:
+    match: (</)(([a-z]+-?)+)(>)
+    captures:
+      1: { name: punctuation.definition.tag }
+      2: { name: entity.name.function }
+      4: { name: punctuation.definition.tag }
+
+  attribute:
+    patterns:
+      - include: "#attribute-name"
+      - include: "#single-quoted-string"
+      - include: "#double-quoted-string"
+      - include: "#expression"
+
+  attribute-name:
+    match: (([a-z]+-?)+)(=?)
+    captures:
+      1: {name: entity.other.attribute-name}
+      3: {name: punctuation.separator.key-value}
+
+  single-quoted-string:
+    begin: (')
+    end: (')
+    name: string
+
+  double-quoted-string:
+    begin: (")
+    end: (")
+    name: string
+
+  expression:
+    begin: "{"
+    end: "}"
+    beginCaptures:
+      0: { name: punctuation.definition.block }
+    endCaptures:
+      0: { name: punctuation.definition.block }
+    name: source.remedy.template.expression
+    patterns:
+      - include: source.js
+
+  text:
+    match: ([^<{]+)
+    name: text

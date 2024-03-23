@@ -1,5 +1,8 @@
 import Shiki from "@shikijs/markdown-it";
+import yaml from "js-yaml";
 import Markdown from "markdown-it";
+import { readFileSync } from "node:fs";
+import { LanguageInput, ThemeRegistration } from "shiki";
 import { Source } from "~/hypermedia/source";
 import markdownRegexp from "./regexp";
 
@@ -41,14 +44,20 @@ markdownRegexp(markdown, {
     },
 });
 
-// XXX: Theme stuff should be done in user apps.
+function readYaml(path: string) {
+    return yaml.load(readFileSync(require.resolve(path), "utf-8")) as Record<string, unknown>;
+}
+
+const theme = readYaml("./themes/red.yaml") as ThemeRegistration;
+const remedyLanguage = { name: "part", ...readYaml("./langs/remedy.tmLanguage.yaml") } as LanguageInput;
+const remedyTemplateLanguage = readYaml("./langs/template.tmLanguage.yaml") as LanguageInput;
 
 markdown.use(
     await Shiki({
         themes: {
-            light: require("./themes/monochrome-red.json"),
-            dark: require("./themes/monochrome-red.json"),
+            light: theme,
+            dark: theme,
         },
-        langs: ["ts", "sh", require("./langs/remedy-partial.json")],
+        langs: ["ts", "sh", remedyTemplateLanguage, remedyLanguage],
     }),
 );

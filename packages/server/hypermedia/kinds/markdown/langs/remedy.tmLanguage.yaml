@@ -1,0 +1,5 @@
+scopeName: source.remedy
+
+patterns:
+  - include: source.remedy.template
+  - include: source.ts

@@ -30,6 +30,7 @@
         "fastimage": "^5.0.4",
         "htmx.org": "^1.9.10",
         "http-status-codes": "^2.3.0",
+        "js-yaml": "^4.1.0",
         "markdown-it": "^14.0.0",
         "postcss": "^8.4.35",
         "ramda": "^0.29.1",

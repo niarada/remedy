@@ -1,0 +1,53 @@
+tokenColors:
+    - scope: comment
+      settings:
+        fontStyle: italic
+        foreground: '#646973'
+    - scope: punctuation
+      settings:
+        foreground: '#FFFFFF'
+    - scope: entity.name.tag
+      settings:
+        foreground: '#DE2626'
+    - scope: entity.name.function
+      settings:
+        foreground: '#E86464'
+    - scope: entity.other.attribute-name
+      settings:
+        foreground: '#DE2626'
+    - scope: string
+      settings:
+        foreground: '#F5BDBD'
+    - scope: storage.type
+      settings:
+        foreground: '#FFFFFF'
+    - scope: variable
+      settings:
+        foreground: '#DE2626'
+    - scope: keyword
+      settings:
+        foreground: '#DE2626'
+    - scope: constant
+      settings:
+        foreground: '#DE2626'
+    - scope: support.variable.property
+      settings:
+        foreground: '#DE2626'
+    - scope: meta.object-literal.key
+      settings:
+        foreground: '#FFFFFF'
+    - scope: keyword.operator
+      settings:
+        foreground: '#FFFFFF'
+    - scope: storage.modifier
+      settings:
+        foreground: '#646973'
+    - scope: entity.name.type
+      settings:
+        foreground: '#F5BDBD'
+    - scope: support.type
+      settings:
+        foreground: '#F5BDBD'
+    - scope: source.remedy.template.expression
+      settings:
+        foreground: '#FFFFFF'
