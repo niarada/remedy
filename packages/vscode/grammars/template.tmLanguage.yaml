@@ -9,6 +9,8 @@ patterns:
       - include: "#tag-end"
       - include: "#custom-tag-start"
       - include: "#custom-tag-end"
+      - include: "#expression"
+      - include: "#text"
 
 repository:
   comment:
@@ -78,6 +80,14 @@ repository:
   expression:
     begin: "{"
     end: "}"
+    beginCaptures:
+      0: { name: punctuation.definition.block }
+    endCaptures:
+      0: { name: punctuation.definition.block }
     name: source.remedy.template.expression
     patterns:
       - include: source.js
+
+  text:
+    match: ([^<{]+)
+    name: text
