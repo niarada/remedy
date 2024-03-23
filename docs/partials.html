@@ -49,67 +49,67 @@
                 <h1>Partials</h1>
 <p>Partials are the <em>language</em> of <strong>remedy</strong>.  A partial can be divided into two sections, though neither is strictly required: the <strong>action</strong> and the <strong>template</strong>.  <strong>Actions</strong> are written in TypeScript or JavaScript, and occupy the top section of the partial.  <strong>Templates</strong> are written in HTML, and occupy the bottom section.</p>
 <h3>An Example</h3>
-<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code class="language-part"><span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">/**</span></span>
+<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-part"><span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">/**</span></span>
 <span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic"> * public/hello.part</span></span>
 <span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic"> */</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#F44336;--shiki-dark:#F44336">const</span><span style="color:#FF504D;--shiki-dark:#FF504D"> message</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> = </span><span style="color:#E06767;--shiki-dark:#E06767">"Hello, World!"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">;</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">const</span><span style="color:#DE2626;--shiki-dark:#DE2626"> message</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> =</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> "</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">Hello, World!</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">;</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;div></span></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    {message}</span></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/div></span></span></code></pre>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#DE2626;--shiki-dark:#DE2626">div</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span>
+<span class="line"><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">    {message}</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/</span><span style="color:#DE2626;--shiki-dark:#DE2626">div</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span></code></pre>
 <p>Partials are so-called because they are re-usable.  This example file is called <code>hello.part</code>.  The remedy server will convert this partial into a custom tag for you, called <code>&lt;hello&gt;</code>.</p>
 <p>You can then use it in another partial like this:</p>
-<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code class="language-part"><span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">/**</span></span>
+<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-part"><span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">/**</span></span>
 <span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic"> * public/salutation.part</span></span>
 <span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic"> */</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;div></span></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    &#x3C;hello /></span></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/div></span></span></code></pre>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#DE2626;--shiki-dark:#DE2626">div</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    &#x3C;</span><span style="color:#E86464;--shiki-dark:#E86464">hello</span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB"> /</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/</span><span style="color:#DE2626;--shiki-dark:#DE2626">div</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span></code></pre>
 <p>You can also pass in attributes.</p>
-<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code class="language-part"><span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">/**</span></span>
+<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-part"><span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">/**</span></span>
 <span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic"> * public/hello.part</span></span>
 <span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic"> */</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;div></span></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    Hello, {name}</span></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/div></span></span></code></pre>
-<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code class="language-part"><span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">/**</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#DE2626;--shiki-dark:#DE2626">div</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span>
+<span class="line"><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">    Hello, {name}</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/</span><span style="color:#DE2626;--shiki-dark:#DE2626">div</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span></code></pre>
+<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-part"><span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">/**</span></span>
 <span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic"> * public/salutation.part</span></span>
 <span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic"> */</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;div></span></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    &#x3C;hello name=</span><span style="color:#E06767;--shiki-dark:#E06767">"Niara"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> /></span></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/div></span></span></code></pre>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#DE2626;--shiki-dark:#DE2626">div</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    &#x3C;</span><span style="color:#E86464;--shiki-dark:#E86464">hello</span><span style="color:#DE2626;--shiki-dark:#DE2626"> name</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">=</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">"Niara"</span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB"> /</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/</span><span style="color:#DE2626;--shiki-dark:#DE2626">div</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span></code></pre>
 <p>Or contents:</p>
-<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code class="language-part"><span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">/**</span></span>
+<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-part"><span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">/**</span></span>
 <span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic"> * public/hello.part</span></span>
 <span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic"> */</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;div></span></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    Hello, &#x3C;slot /></span></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/div></span></span></code></pre>
-<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code class="language-part"><span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">/**</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#DE2626;--shiki-dark:#DE2626">div</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span>
+<span class="line"><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">    Hello, </span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#E86464;--shiki-dark:#E86464">slot</span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB"> /</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/</span><span style="color:#DE2626;--shiki-dark:#DE2626">div</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span></code></pre>
+<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-part"><span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">/**</span></span>
 <span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic"> * public/salutation.part</span></span>
 <span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic"> */</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;div></span></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    &#x3C;hello>Niara&#x3C;/hello></span></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/div></span></span></code></pre>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#DE2626;--shiki-dark:#DE2626">div</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    &#x3C;</span><span style="color:#E86464;--shiki-dark:#E86464">hello</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">Niara</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/</span><span style="color:#E86464;--shiki-dark:#E86464">hello</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/</span><span style="color:#DE2626;--shiki-dark:#DE2626">div</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span></code></pre>
 <p>If you use TypeScript, you can be clear about your attributes, and type them.</p>
-<pre class="shiki shiki-themes monored monored" style="background-color:#282c37;--shiki-dark-bg:#282c37;color:#ffffff;--shiki-dark:#ffffff" tabindex="0"><code class="language-part"><span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">/**</span></span>
+<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-part"><span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">/**</span></span>
 <span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic"> * public/hello.part</span></span>
 <span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic"> */</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#F44336;--shiki-dark:#F44336">interface</span><span style="color:#FF504D;--shiki-dark:#FF504D"> Attributes</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> {</span></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    name: </span><span style="color:#FF504D;--shiki-dark:#FF504D">string</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">;</span></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    avidness: </span><span style="color:#FF504D;--shiki-dark:#FF504D">number</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">;</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">interface</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD"> Attributes</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> {</span></span>
+<span class="line"><span style="color:#DE2626;--shiki-dark:#DE2626">    name</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">:</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD"> string</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">;</span></span>
+<span class="line"><span style="color:#DE2626;--shiki-dark:#DE2626">    avidness</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">:</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD"> number</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">;</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">}</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;div></span></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    {</span><span style="color:#E06767;--shiki-dark:#E06767">"Hello "</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">.</span><span style="color:#FB1E1E;--shiki-dark:#FB1E1E">repeat</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">(avidness)}, {name}</span></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/div></span></span></code></pre>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#DE2626;--shiki-dark:#DE2626">div</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span>
+<span class="line"><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">    {"Hello ".repeat(avidness)}, {name}</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/</span><span style="color:#DE2626;--shiki-dark:#DE2626">div</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span></code></pre>
 <p>Tag names are generated from the path of the partial file name.  Essentially, <code>/</code> are turned into <code>-</code>.</p>
 <p>So, for a path such as <code>public/salutation/hello.part</code> the tag would be <code>&lt;salutation-hello&gt;</code>.</p>
 <p>Now, this leads us into routing, so head over to the <a href="routes.html">next section</a>.</p>

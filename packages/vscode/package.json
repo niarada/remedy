@@ -18,7 +18,7 @@
         "javascript"
     ],
     "icon": "./assets/cross-both.png",
-    "version": "0.2.16",
+    "version": "0.2.17",
     "publisher": "niarada",
     "engines": {
         "vscode": "^1.86.0"
