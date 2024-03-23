@@ -6,7 +6,7 @@ import {
 } from "@volar/language-server/node";
 import { create as createHtmlService } from "volar-service-html";
 import { create as createTypeScriptService } from "volar-service-typescript";
-import { partialLanguage, partialService } from "./language/partial";
+import { remedyLanguage, remedyService } from "./language/remedy";
 
 const connection = createConnection();
 const server = createServer(connection);
@@ -20,10 +20,10 @@ connection.onInitialize(async (params) => {
     );
     const result = server.initialize(params, createTypeScriptProjectProviderFactory(typescript, diagnosticMessages), {
         getServicePlugins() {
-            return [createHtmlService(), ...createTypeScriptService(typescript), partialService];
+            return [createHtmlService(), ...createTypeScriptService(typescript), remedyService];
         },
         getLanguagePlugins() {
-            return [partialLanguage];
+            return [remedyLanguage];
         },
     });
     return result;

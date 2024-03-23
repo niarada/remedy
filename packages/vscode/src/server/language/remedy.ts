@@ -3,17 +3,17 @@ import type { ServicePlugin } from "@volar/language-service";
 import { ScriptKind } from "typescript";
 import { TextDocument, getLanguageService as getHtmlLanguageService } from "vscode-html-languageservice";
 import { parseSource, printHtml } from "../../template";
-import { PartialVirtualCode } from "../virtual-code/partial";
+import { RemedyVirtualCode } from "../virtual-code/remedy";
 const htmlLanguageService = getHtmlLanguageService();
 
-export const partialLanguage: LanguagePlugin = {
+export const remedyLanguage: LanguagePlugin = {
     createVirtualCode(id, languageId, snapshot) {
-        if (languageId === "partial") {
-            return new PartialVirtualCode(id, snapshot);
+        if (languageId === "remedy") {
+            return new RemedyVirtualCode(id, snapshot);
         }
     },
-    updateVirtualCode(_id, code: PartialVirtualCode, snapshot) {
-        if (code.languageId === "partial") {
+    updateVirtualCode(_id, code: RemedyVirtualCode, snapshot) {
+        if (code.languageId === "remedy") {
             code.update(snapshot);
             return code;
         }
@@ -41,8 +41,8 @@ export const partialLanguage: LanguagePlugin = {
     },
 };
 
-export const partialService: ServicePlugin = {
-    name: "partial",
+export const remedyService: ServicePlugin = {
+    name: "remedy",
     create(context) {
         return {
             // provideHover: () => {
