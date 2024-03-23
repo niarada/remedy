@@ -3,6 +3,8 @@
 ## [0.2.17] - 2024-03-22
 ### Changed
 - Image: Switched to sharp for image processing.
+- Extension: Rewrote tmLanguage from scratch.
+- Docs: Rewrote syntax highlight theme from scratch.
 
 ## [0.2.16] - 2024-03-22
 ### Added
