@@ -29,6 +29,9 @@
         "url": "https://github.com/niarada/remedy.git"
     },
     "main": "./dist/extension.js",
+    "activationEvents": [
+        "onLanguage:remedy"
+    ],
     "contributes": {
         "languages": [
             {

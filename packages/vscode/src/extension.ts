@@ -9,11 +9,10 @@ import { LanguageClient, TransportKind } from "vscode-languageclient/node";
 let client: LanguageClient;
 
 export async function activate(context: vscode.ExtensionContext) {
-    console.log("STARTING");
     initializeExtension(context);
     const serverPath = `${context.extensionPath}/dist/server/index.js`;
     client = new LanguageClient(
-        "partial",
+        "remedy",
         "remedy language server",
         {
             run: {
@@ -28,7 +27,7 @@ export async function activate(context: vscode.ExtensionContext) {
             },
         },
         {
-            documentSelector: [{ language: "partial" }],
+            documentSelector: [{ language: "remedy" }],
             initializationOptions: {
                 typescript: {
                     tsdk: (await getTsdk(context)).tsdk,
@@ -52,7 +51,7 @@ function initializeExtension(context) {
     const config = getWorkspaceConfig();
     if (config.features?.tailwind) {
         vscode.workspace.getConfiguration("tailwindCSS").update("includeLanguages", {
-            partial: "html",
+            remedy: "html",
         });
     }
 }
