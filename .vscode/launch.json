@@ -23,8 +23,8 @@
             "type": "bun",
             "request": "launch",
             "name": "Debug File",
-            "program": "${workspaceRoot}/packages/htmx-bun/debug.ts",
-            "cwd": "${workspaceRoot}/packages/htmx-bun",
+            "program": "${workspaceRoot}/packages/server/debug.ts",
+            "cwd": "${workspaceRoot}/packages/server",
             "watchMode": "hot"
         },
         {
@@ -75,28 +75,28 @@
             "type": "bun",
             "request": "launch",
             "name": "Server: Todo",
-            "program": "${workspaceRoot}/packages/htmx-bun/server/index.ts",
+            "program": "${workspaceRoot}/packages/server/server/index.ts",
             "cwd": "${workspaceRoot}/examples/todo"
         },
         {
             "type": "bun",
             "request": "launch",
             "name": "Server: Docs",
-            "program": "${workspaceRoot}/packages/htmx-bun/server/index.ts",
+            "program": "${workspaceRoot}/packages/server/server/index.ts",
             "cwd": "${workspaceRoot}/examples/docs"
         },
         {
             "type": "bun",
             "request": "launch",
             "name": "Server: Contact",
-            "program": "${workspaceRoot}/packages/htmx-bun/server/index.ts",
+            "program": "${workspaceRoot}/packages/server/server/index.ts",
             "cwd": "${workspaceRoot}/examples/contact"
         },
         {
             "type": "bun",
             "request": "launch",
             "name": "Server: Alpine",
-            "program": "${workspaceRoot}/packages/htmx-bun/server/index.ts",
+            "program": "${workspaceRoot}/packages/server/server/index.ts",
             "cwd": "${workspaceRoot}/examples/alpine"
         },
         {
