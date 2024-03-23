@@ -16,10 +16,13 @@ export default {
         // Enable htmx server-side events
         sse: false,
         // Enable htmx, this can be set to false
-        htmx: {
-            // Enable htmx debug output
-            debug: false,
-        },
+        htmx: false,
+        // htmx may be set to an object if you want debugging
+        // htmx: {
+        //    debug: true,
+        // },
+        // Image optimization
+        image: false,
         // Bundle typescript endpoints
         typescript: true,
         // Serve static files
