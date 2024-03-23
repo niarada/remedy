@@ -1,8 +1,4 @@
 tokenColors:
-    - scope: comment
-      settings:
-        fontStyle: italic
-        foreground: '#646973'
     - scope: punctuation
       settings:
         foreground: '#FFFFFF'
@@ -51,3 +47,11 @@ tokenColors:
     - scope: source.remedy.template.expression
       settings:
         foreground: '#FFFFFF'
+    - scope: comment
+      settings:
+        fontStyle: italic
+        foreground: '#646973'
+    - scope: punctuation.definition.comment
+      settings:
+        fontStyle: italic
+        foreground: '#646973'
