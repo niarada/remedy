@@ -7,24 +7,24 @@ It takes the following structure, all fields are optional, defaults are given:
 ```ts
 export default {
     port: 4321,
-    # The base public folder
+    // The base public folder
     base: "public",
     features: {
         fontawesome: false,
         tailwind: false,
         alpine: false,
-        # Enable htmx server-side events
+        // Enable htmx server-side events
         sse: false,
-        # Enable htmx, this can be set to false
+        // Enable htmx, this can be set to false
         htmx: {
-            # Enable htmx debug output
+            // Enable htmx debug output
             debug: false,
         },
-        # Bundle typescript endpoints
+        // Bundle typescript endpoints
         typescript: true,
-        # Serve static files
+        // Serve static files
         static: true,
-        # Dev mode allows hot refresh
+        // Dev mode allows hot refresh
         dev: import.meta.env.NODE_ENV === "development",
     },
 }
