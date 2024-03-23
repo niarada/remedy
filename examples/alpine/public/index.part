@@ -2,13 +2,10 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/index.css">
-    <script src="/index.ts" />
 </head>
 
 <body x-data={ foo: 'bar' }>
-    <button x-on:click="console.log(foo)">Click</button>
-    <img src="/test.jpg" optimized width="500">
+    <button x-on:click={ console.log(foo) }>Click</button>
 </body>
 
 </html>
