@@ -32,74 +32,34 @@
     "contributes": {
         "languages": [
             {
-                "id": "partial",
-                "aliases": [
-                    "remedy"
-                ],
+                "id": "remedy",
                 "extensions": [
                     ".part"
                 ],
-                "configuration": "./grammars/remedy.json",
                 "icon": {
                     "light": "./assets/icon-light.png",
                     "dark": "./assets/icon-dark.png"
                 }
             },
             {
-                "id": "remedy-html",
-                "aliases": [
-                    "remedy-html"
-                ],
-                "extensions": [
-                    ".rhtml"
-                ],
-                "configuration": "./grammars/html.json"
+                "id": "remedy-template"
             }
         ],
         "grammars": [
             {
-                "language": "partial",
-                "scopeName": "source.part",
+                "language": "remedy",
+                "scopeName": "source.remedy",
                 "path": "./dist/remedy.tmLanguage.json",
                 "embeddedLanguages": {
-                    "meta.embedded.block.typescript": "typescript",
-                    "meta.embedded.block.html": "html"
-                },
-                "unbalancedBracketScopes": [
-                    "keyword.operator.relational",
-                    "storage.type.function.arrow",
-                    "keyword.operator.bitwise.shift",
-                    "meta.brace.angle",
-                    "punctuation.definition.tag"
-                ]
+                    "source.remedy.template": "source.remedy.template"
+                }
             },
             {
-                "language": "remedy-html",
-                "scopeName": "text.html.remedy",
-                "path": "./dist/html.tmLanguage.json",
-                "embeddedLanguages": {
-                    "meta.embedded.block.typescript": "typescript",
-                    "meta.embedded.block.html": "html"
-                }
+                "language": "remedy-template",
+                "scopeName": "source.remedy.template",
+                "path": "./dist/template.tmLanguage.json"
             }
-        ],
-        "configuration": {
-            "type": "object",
-            "title": "remedy language server configuration",
-            "properties": {
-                "remedy.trace.server": {
-                    "scope": "window",
-                    "type": "string",
-                    "enum": [
-                        "off",
-                        "messages",
-                        "verbose"
-                    ],
-                    "default": "off",
-                    "description": "Traces the communication between VS Code and the language server."
-                }
-            }
-        }
+        ]
     },
     "dependencies": {
         "@types/node": "^20.11.28",

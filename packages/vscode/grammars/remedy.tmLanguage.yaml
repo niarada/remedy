@@ -1,26 +1,5 @@
-name: remedy partial
-scopeName: source.part
-fileTypes: [part]
+scopeName: source.remedy
 
 patterns:
-  - include: '#html'
-  - include: '#typescript'
-
-repository:
-  typescript:
-    patterns:
-      - begin: \A
-        end: ^(?=<)
-        name: source.ts
-        contentName: meta.embedded.block.typescript
-        patterns:
-          - include: source.ts
-
-  html:
-    patterns:
-      - begin: ^(?=<)
-        end: ''
-        name: text.html.remedy
-        contentName: meta.embedded.block.html
-        patterns:
-          - include: text.html.remedy
+  - include: source.remedy.template
+  - include: source.ts
