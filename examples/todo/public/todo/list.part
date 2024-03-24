@@ -6,5 +6,5 @@ const items = model.items.filter((item) => (
 ));
 
 <ul id="todo-list" hx-swap-oob="true" class="todo-list">
-    <todo-item mx-each={items} mx-as="item" id={item.id} />
+    <todo-item rx-each={items} rx-as="item" id={item.id} />
 </ul>

@@ -1,12 +1,6 @@
 {
-    "extends": "tsconfig-moon/tsconfig.json",
+    "extends": "./tsconfig.options.json",
     "files": [],
     "references": [
-        {
-            "path": "packages/server"
-        },
-        {
-            "path": "packages/vscode"
-        }
     ]
 }

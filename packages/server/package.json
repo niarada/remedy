@@ -7,34 +7,19 @@
     "files": [
         "README.md",
         "bin",
-        "tsconfig.json",
-        "{lib,server,hypermedia}/**/*.{ts,json}",
+        "src/**/*.{ts,json}",
         "!**/*.test.ts"
     ],
+    "main": "src/index.ts",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/niarada/remedy.git"
     },
     "dependencies": {
-        "@fortawesome/fontawesome-free": "^6.5.1",
-        "@shikijs/markdown-it": "^1.2.0",
-        "@tailwindcss/typography": "^0.5.10",
-        "@types/markdown-it": "^13.0.7",
+        "@niarada/remedy-runtime": "workspace:*",
+        "@niarada/remedy-hypermedia": "workspace:*",
+        "@niarada/remedy-template": "workspace:*",
         "@types/ramda": "^0.29.11",
-        "alpinejs": "^3.13.7",
-        "autoprefixer": "^10.4.18",
-        "chalk": "^5.3.0",
-        "chevrotain": "^10.5.0",
-        "fastimage": "^5.0.4",
-        "htmx.org": "^1.9.10",
-        "http-status-codes": "^2.3.0",
-        "js-yaml": "^4.1.0",
-        "markdown-it": "^14.0.0",
-        "postcss": "^8.4.35",
-        "ramda": "^0.29.1",
-        "sharp": "^0.33.2",
-        "tailwindcss": "^3.4.1",
-        "ts-pattern": "^5.0.8",
-        "typescript": "^5.4.2"
+        "ts-pattern": "^5.0.8"
     }
 }
