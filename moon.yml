@@ -9,3 +9,6 @@ tasks:
     options:
       cache: false
     command: bun scripts/fix-packages.ts
+  docs:
+    description: generate documentation
+    command: bun scripts/build-docs.ts

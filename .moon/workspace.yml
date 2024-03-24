@@ -5,4 +5,6 @@ vcs:
   defaultBranch: master
 
 projects:
+  - .
+  - examples
   - packages/*

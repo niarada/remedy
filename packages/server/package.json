@@ -8,8 +8,7 @@
         "README.md",
         "bin",
         "tsconfig.json",
-        "{lib,server,hypermedia}/**/*.ts",
-        "{lib,server,hypermedia}/**/*.json",
+        "{lib,server,hypermedia}/**/*.{ts,json}",
         "!**/*.test.ts"
     ],
     "repository": {
@@ -19,7 +18,6 @@
     "dependencies": {
         "@fortawesome/fontawesome-free": "^6.5.1",
         "@shikijs/markdown-it": "^1.2.0",
-        "@silvia-odwyer/photon-node": "^0.3.3",
         "@tailwindcss/typography": "^0.5.10",
         "@types/markdown-it": "^13.0.7",
         "@types/ramda": "^0.29.11",
@@ -37,7 +35,6 @@
         "sharp": "^0.33.2",
         "tailwindcss": "^3.4.1",
         "ts-pattern": "^5.0.8",
-        "typescript": "^5.4.2",
-        "xregexp": "^5.1.1"
+        "typescript": "^5.4.2"
     }
 }

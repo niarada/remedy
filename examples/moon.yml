@@ -1,0 +1,11 @@
+$schema: 'https://moonrepo.dev/schemas/project.json'
+
+tasks:
+  docs:
+    command: cd docs && ../../packages/server/bin/remedy-hot
+  todo:
+    command: cd todo && ../../packages/server/bin/remedy-hot
+  contact:
+    command: cd contact && ../../packages/server/bin/remedy-hot
+  alpine:
+    command: cd alpine && ../../packages/server/bin/remedy-hot

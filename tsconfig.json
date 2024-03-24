@@ -1,5 +1,5 @@
 {
-    "extends": "./tsconfig.options.json",
+    "extends": "tsconfig-moon/tsconfig.json",
     "files": [],
     "references": [
         {
