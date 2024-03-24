@@ -5,10 +5,12 @@ type: configuration
 
 tasks:
   fix:
-    description: fix package.json files
     options:
       cache: false
+    description: fix package.json files
     command: bun scripts/fix-packages.ts
   docs:
+    options:
+      cache: false
     description: generate documentation
     command: bun scripts/build-docs.ts

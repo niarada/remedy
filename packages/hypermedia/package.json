@@ -1,14 +1,14 @@
 {
-  "name": "@niarada/remedy-hypermedia",
-  "version": "0.2.17",
-  "files": [
-    "src/**/*.{ts,json}",
-    "!**/*.test.ts"
-  ],
-  "main": "./src/index.ts",
-  "dependencies": {
-    "@niarada/remedy-common": "workspace:*",
-    "@niarada/remedy-template": "workspace:*",
-    "@shikijs/markdown-it": "^1.2.0"
-  }
+    "name": "@niarada/remedy-hypermedia",
+    "version": "0.2.17",
+    "files": [
+        "src/**/*.{ts,json}",
+        "!**/*.test.ts"
+    ],
+    "main": "./src/index.ts",
+    "dependencies": {
+        "@niarada/remedy-common": "workspace:*",
+        "@niarada/remedy-template": "workspace:*",
+        "@shikijs/markdown-it": "^1.2.0"
+    }
 }

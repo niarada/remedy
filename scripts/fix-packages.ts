@@ -1,9 +1,12 @@
+import { Glob } from "bun";
 import { writeFileSync } from "node:fs";
 import * as path from "node:path";
 
-const packages = ["package.json", "packages/server/package.json", "packages/vscode/package.json"];
+const glob = new Glob("packages/**/package.json");
+const packages = ["package.json", ...(await Array.fromAsync(glob.scan(".")))];
 
 for (const file of packages) {
+    console.log("Fixing", file);
     const fullPath = path.resolve(file);
     const pkg = require(fullPath);
     writeFileSync(fullPath, `${JSON.stringify(pkg, null, 4)}\n`);

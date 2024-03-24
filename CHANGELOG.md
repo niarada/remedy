@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.0] = 2024-03-24
+### Added
+- Project: Added moonrepo
+
+### Changed
+- Project: Reorganized repository structure.
+- Docs: Updated features install and features informatin.
+
 ## [0.2.17] - 2024-03-22
 ### Changed
 - Image: Switched to sharp for image processing.
