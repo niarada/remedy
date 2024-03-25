@@ -17,7 +17,7 @@ const nextVersion = semver.inc(currentVersion, level as "major" | "minor" | "pat
 console.log(`Bumping version from ${currentVersion} to ${nextVersion}`);
 
 const glob = new Glob("packages/**/package.json");
-const packages = ["package.json", ...(await Array.fromAsync(glob.scan(".")))];
+const packages = ["package.json", "extensions/vscode/package.json", ...(await Array.fromAsync(glob.scan(".")))];
 
 for (let file of packages) {
     console.log("Modifying", file);

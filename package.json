@@ -8,7 +8,6 @@
         "packages/runtime",
         "packages/server",
         "packages/template",
-        "packages/vscode",
         "packages/features/alpine",
         "packages/features/fontawesome",
         "packages/features/htmx",

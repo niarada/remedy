@@ -22,3 +22,9 @@ tasks:
     options:
       cache: false
     command: bun scripts/publish.ts
+
+  unpublish:
+    description: unpublish current version of packages
+    options:
+      cache: false
+    command: bun scripts/unpublish.ts

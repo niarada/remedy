@@ -9,7 +9,7 @@ import { writeFileSync } from "node:fs";
 import * as path from "node:path";
 
 const glob = new Glob("packages/**/package.json");
-const packages = ["package.json", ...(await Array.fromAsync(glob.scan(".")))];
+const packages = ["package.json", "extensions/vscode/package.json", ...(await Array.fromAsync(glob.scan(".")))];
 
 for (const file of packages) {
     console.log("Fixing", file);
