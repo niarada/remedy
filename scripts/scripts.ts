@@ -47,6 +47,10 @@ const sections = [
                 name: "extensions:vscode:publish",
                 summary: "Build and publish vscode extension.",
             },
+            {
+                name: "all:publish",
+                summary: "Build and publish all packages and extensions.",
+            },
         ],
     },
 ];

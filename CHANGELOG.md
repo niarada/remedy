@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.1] = 2024-03-25
+### Added
+- Features: Configurable through factory factory.
+
+### Fixed
+- Features: Image feature was missing some imports.
+- Compression: Added whitelist of mime types to compress.
+
+## [0.3.0] = 2024-03-25
+### Removed
+- Project: Removed moonrepo
+
 ## [0.2.18] = 2024-03-24
 ### Added
 - Project: Added moonrepo

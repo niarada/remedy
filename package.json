@@ -1,7 +1,7 @@
 {
     "name": "@niarada/remedy-repo",
     "private": true,
-    "version": "0.3.0",
+    "version": "0.3.1",
     "workspaces": [
         "packages/common",
         "packages/hypermedia",
@@ -25,10 +25,11 @@
         "docs:build": "bun scripts/build-docs.ts",
         "packages:build": "bun scripts/build-packages.ts",
         "packages:fix": "bun scripts/fix-packages.ts",
-        "packages:publish": "bun scripts/publish-packages.ts",
+        "packages:publish": "bun packages:build && bun scripts/publish-packages.ts",
         "packages:version": "bun scripts/version-packages.ts",
         "extensions:vscode:dev": "cd extensions/vscode && bun scripts/dev.ts",
-        "extensions:vscode:publish": "cd extensions/vscode && bun scripts/publish.ts"
+        "extensions:vscode:publish": "bun packages:build && cd extensions/vscode && bun scripts/publish.ts",
+        "all:publish": "bun packages:build && bun scripts/publish-packages.ts && cd extensions/vscode && bun scripts/publish.ts"
     },
     "repository": {
         "type": "git",

@@ -5,7 +5,7 @@
  */
 
 import { Glob } from "bun";
-import { writeFileSync } from "node:fs";
+import { rmSync, writeFileSync } from "node:fs";
 import * as path from "node:path";
 
 const glob = new Glob("packages/**/package.json");
@@ -17,3 +17,5 @@ for (const file of packages) {
     const pkg = require(fullPath);
     writeFileSync(fullPath, `${JSON.stringify(pkg, null, 4)}\n`);
 }
+
+rmSync("bun.lockb");

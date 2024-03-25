@@ -1,82 +1,83 @@
 {
-    "name": "remedy-vscode",
-    "displayName": "remedy hypermedia server",
-    "description": "Language support for remedy hypermedia server partial files",
-    "categories": [
-        "Programming Languages",
-        "Formatters",
-        "Linters"
-    ],
-    "keywords": [
-        "remedy",
-        "hypermedia",
-        "hypermedia server",
-        "htmx",
-        "bun",
-        "node",
-        "typescript",
-        "javascript"
-    ],
-    "icon": "./assets/cross-both.png",
-    "version": "0.3.0",
-    "publisher": "niarada",
-    "engines": {
-        "vscode": "^1.86.0"
-    },
-    "license": "0BSD",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/niarada/remedy.git"
-    },
-    "main": "./dist/extension.js",
-    "activationEvents": [
-        "onLanguage:remedy"
-    ],
-    "contributes": {
-        "languages": [
-            {
-                "id": "remedy",
-                "extensions": [
-                    ".part"
-                ],
-                "icon": {
-                    "light": "./assets/icon-light.png",
-                    "dark": "./assets/icon-dark.png"
-                }
-            },
-            {
-                "id": "remedy-template"
-            }
+  "name": "remedy-vscode",
+  "displayName": "remedy hypermedia server",
+  "description": "Language support for remedy hypermedia server partial files",
+  "categories": [
+    "Programming Languages",
+    "Formatters",
+    "Linters"
+  ],
+  "keywords": [
+    "remedy",
+    "hypermedia",
+    "hypermedia server",
+    "htmx",
+    "bun",
+    "node",
+    "typescript",
+    "javascript"
+  ],
+  "icon": "./assets/cross-both.png",
+  "version": "0.3.1",
+  "publisher": "niarada",
+  "engines": {
+    "vscode": "^1.86.0"
+  },
+  "license": "0BSD",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/niarada/remedy.git"
+  },
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onLanguage:remedy"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "remedy",
+        "extensions": [
+          ".part"
         ],
-        "grammars": [
-            {
-                "language": "remedy",
-                "scopeName": "source.remedy",
-                "path": "./dist/remedy.tmLanguage.json",
-                "embeddedLanguages": {
-                    "source.remedy.template": "source.remedy.template"
-                }
-            },
-            {
-                "language": "remedy-template",
-                "scopeName": "source.remedy.template",
-                "path": "./dist/template.tmLanguage.json"
-            }
-        ]
-    },
-    "dependencies": {
-        "@niarada/remedy-template": "0.3.0",
-        "@types/node": "^20.11.28",
-        "@types/vscode": "^1.87.0",
-        "@volar/vscode": "^2.1.2",
-        "esbuild": "^0.20.2",
-        "js-yaml": "^4.1.0",
-        "ts-loader": "^9.5.1",
-        "typescript": "^5.4.2",
-        "volar-service-html": "^0.0.34",
-        "volar-service-typescript": "^0.0.34",
-        "vscode-languageclient": "^9.0.1",
-        "webpack": "^5.91.0",
-        "webpack-cli": "^5.1.4"
-    }
+        "icon": {
+          "light": "./assets/icon-light.png",
+          "dark": "./assets/icon-dark.png"
+        }
+      },
+      {
+        "id": "remedy-template"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "remedy",
+        "scopeName": "source.remedy",
+        "path": "./dist/remedy.tmLanguage.json",
+        "embeddedLanguages": {
+          "source.remedy.template": "source.remedy.template"
+        }
+      },
+      {
+        "language": "remedy-template",
+        "scopeName": "source.remedy.template",
+        "path": "./dist/template.tmLanguage.json"
+      }
+    ]
+  },
+  "dependencies": {
+    "@niarada/remedy-template": "0.3.1",
+    "@types/node": "^20.11.28",
+    "@types/vscode": "^1.87.0",
+    "@volar/vscode": "^2.1.2",
+    "@vscode/vsce": "^2.24.0",
+    "esbuild": "^0.20.2",
+    "js-yaml": "^4.1.0",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.4.2",
+    "volar-service-html": "^0.0.34",
+    "volar-service-typescript": "^0.0.34",
+    "vscode-languageclient": "^9.0.1",
+    "webpack": "^5.91.0",
+    "webpack-cli": "^5.1.4"
+  }
 }
