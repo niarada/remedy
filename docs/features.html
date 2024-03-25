@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>remedy: documentation</title>
+    <link rel="stylesheet" href="base.css">
+    <link rel="icon" type="image/png" href="assets/cross-both.png">
+<link rel="stylesheet" href="_fontawesome.css"><link rel="stylesheet" href="_tailwind.css"></head>
+
+<body class="flex flex-col bg-gray-50 text-black absolute inset-0">
+    <header class="flex flex-none justify-between items-center gap-4 bg-red-700 px-4 py-2 text-white">
+        <a class="flex items-center gap-3" href="index.html">
+            <img src="assets/cross-dark.png" class="h-6 w-6">
+            <div class="text-2xl">remedy</div>
+        </a>
+        <a href="https://github.com/niarada/remedy">
+            <i class="text-2xl fa-brands fa-github"></i>
+        </a>
+    </header>
+    <main class="flex flex-auto" hx-boost="article">
+        <nav class="w-48 pl-4 pt-6">
+            <ul class="flex flex-col gap-1 cursor-pointer">
+                <li class>
+                    <a href="index.html">Introduction</a>
+                </li><li class>
+                    <a href="configuration.html">Configuration</a>
+                </li><li class>
+                    <a href="partials.html">Partials</a>
+                </li><li class>
+                    <a href="routes.html">Routes</a>
+                </li><li class>
+                    <a href="templates.html">Templates</a>
+                </li><li class>
+                    <a href="markdown.html">Markdown</a>
+                </li><li class>
+                    <a href="context.html">Context</a>
+                </li><li class="font-bold">
+                    <a href="features.html">Features</a>
+                </li><li class>
+                    <a href="editorsupport.html">Editor Support</a>
+                </li><li class>
+                    <a href="roadmap.html">Roadmap</a>
+                </li>
+            </ul>
+        </nav>
+        <div class="relative overflow-y-scroll pt-6 flex-auto">
+            <article class="prose w-full absolute">
+                <h1>Features</h1>
+<p>Also known as plugins or integrations.</p>
+<p><strong>remedy</strong> is designed to allow for easy integration with 3rd party libraries or custom plugins.</p>
+<p>All integrations can be enabled or disabled in <a href="configuration.html">Configuration</a>.</p>
+<h3>Enabled by default</h3>
+<h4>refresh</h4>
+<p>File watching and hot refresh.</p>
+<h4>typescript</h4>
+<p>Typescript bundling for <code>&lt;script src=&quot;...&quot;&gt;</code> tags in the head.</p>
+<h4>static</h4>
+<p>Static asset delivery.</p>
+<h3>Disabled by default</h3>
+<h3>image</h3>
+<p>Image optimization.</p>
+<h4>htmx</h4>
+<p>HTMX support.</p>
+<h4>sse</h4>
+<p>HTMX server-sent events support.</p>
+<h4>alpine</h4>
+<p>Alpine support.</p>
+<h4>tailwind</h4>
+<p>Tailwind support.</p>
+<p>If this is enabled, a <code>tailwind.config.ts</code> will be created for you.  The <strong>remedy</strong> VSCode extension will automatically associate tailwind with <strong>remedy</strong> partials.</p>
+<h4>fontawesome</h4>
+<p>Fontawesome free library.</p>
+<p>e.g. <code>&lt;i class=&quot;fa-brands fa-github&quot; /&gt;</code></p>
+
+                <footer class="mt-8 flex justify-between border-t border-t-slate-500 pt-4 pb-10">
+                    <div>
+                        <a href="context.html">← Context</a>
+                    </div>
+                    <div>
+                        <a href="editorsupport.html">Editor Support →</a>
+                    </div>
+                </footer>
+            </article>
+        </div>
+    </main>
+</body>
+
+</html>

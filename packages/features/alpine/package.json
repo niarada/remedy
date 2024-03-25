@@ -1,0 +1,12 @@
+{
+    "name": "@niarada/remedy-feature-alpine",
+    "version": "0.2.18",
+    "files": [
+        "index.ts"
+    ],
+    "main": "index.ts",
+    "dependencies": {
+        "@niarada/remedy": "workspace:*",
+        "alpinejs": "^3.13.7"
+    }
+}

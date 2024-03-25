@@ -4,3 +4,5 @@ bun.lockb
 package-lock.json
 .extension-build
 examples/docs/.vscode
+.moon/cache
+.moon/docker

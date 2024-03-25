@@ -1,43 +1,33 @@
 {
     "name": "@niarada/remedy",
-    "version": "0.2.17",
+    "version": "0.2.18",
     "bin": {
         "remedy": "bin/remedy"
     },
     "files": [
         "README.md",
         "bin",
-        "tsconfig.json",
-        "{lib,server,hypermedia}/**/*.ts",
-        "{lib,server,hypermedia}/**/*.json",
+        "src/**/*.{ts,json}",
         "!**/*.test.ts"
     ],
+    "main": "src/index.ts",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/niarada/remedy.git"
     },
     "dependencies": {
-        "@fortawesome/fontawesome-free": "^6.5.1",
-        "@shikijs/markdown-it": "^1.2.0",
-        "@silvia-odwyer/photon-node": "^0.3.3",
-        "@tailwindcss/typography": "^0.5.10",
-        "@types/markdown-it": "^13.0.7",
-        "@types/ramda": "^0.29.11",
-        "alpinejs": "^3.13.7",
-        "autoprefixer": "^10.4.18",
-        "chalk": "^5.3.0",
-        "chevrotain": "^10.5.0",
-        "fastimage": "^5.0.4",
-        "htmx.org": "^1.9.10",
-        "http-status-codes": "^2.3.0",
-        "js-yaml": "^4.1.0",
-        "markdown-it": "^14.0.0",
-        "postcss": "^8.4.35",
-        "ramda": "^0.29.1",
-        "sharp": "^0.33.2",
-        "tailwindcss": "^3.4.1",
-        "ts-pattern": "^5.0.8",
-        "typescript": "^5.4.2",
-        "xregexp": "^5.1.1"
+        "@niarada/remedy-common": "workspace:*",
+        "@niarada/remedy-hypermedia": "workspace:*",
+        "@niarada/remedy-runtime": "workspace:*",
+        "@niarada/remedy-template": "workspace:*",
+        "@niarada/remedy-feature-alpine": "workspace:*",
+        "@niarada/remedy-feature-fontawesome": "workspace:*",
+        "@niarada/remedy-feature-htmx": "workspace:*",
+        "@niarada/remedy-feature-image": "workspace:*",
+        "@niarada/remedy-feature-refresh": "workspace:*",
+        "@niarada/remedy-feature-sse": "workspace:*",
+        "@niarada/remedy-feature-static": "workspace:*",
+        "@niarada/remedy-feature-tailwind": "workspace:*",
+        "@niarada/remedy-feature-typescript": "workspace:*"
     }
 }

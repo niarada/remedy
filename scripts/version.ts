@@ -1,3 +1,4 @@
+import { Glob } from "bun";
 import { writeFileSync } from "node:fs";
 import * as path from "node:path";
 import * as semver from "semver";
@@ -15,7 +16,11 @@ const nextVersion = semver.inc(currentVersion, level as "major" | "minor" | "pat
 
 console.log(`Bumping version from ${currentVersion} to ${nextVersion}`);
 
-for (let file of ["package.json", "packages/server/package.json", "packages/vscode/package.json"]) {
+const glob = new Glob("packages/**/package.json");
+const packages = ["package.json", ...(await Array.fromAsync(glob.scan(".")))];
+
+for (let file of packages) {
+    console.log("Modifying", file);
     file = path.resolve(file);
     const content = require(file);
     content.version = nextVersion;

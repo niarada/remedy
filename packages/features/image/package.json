@@ -1,0 +1,11 @@
+{
+    "name": "@niarada/remedy-feature-image",
+    "version": "0.2.18",
+    "files": [
+        "index.ts"
+    ],
+    "main": "index.ts",
+    "dependencies": {
+        "@niarada/remedy": "workspace:*"
+    }
+}

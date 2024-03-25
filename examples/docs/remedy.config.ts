@@ -1,6 +1,3 @@
 export default {
-    features: {
-        fontawesome: true,
-        tailwind: true,
-    },
+    features: ["fontawesome", "tailwind", "refresh", "static"],
 };
