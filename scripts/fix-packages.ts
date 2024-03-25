@@ -1,3 +1,9 @@
+/**
+ * Fix package.json files.
+ *
+ * As bun thoughtlessly disrespects package.json formatting, this script fixes them.
+ */
+
 import { Glob } from "bun";
 import { writeFileSync } from "node:fs";
 import * as path from "node:path";

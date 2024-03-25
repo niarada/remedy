@@ -3,9 +3,9 @@ const path = require("node:path");
 module.exports = {
     target: "node",
     mode: "development",
-    entry: path.resolve(".extension-build/src/server/index.ts"),
+    entry: path.resolve("src/server/index.ts"),
     output: {
-        path: path.resolve(".extension-build/dist/server"),
+        path: path.resolve("dist/server"),
         filename: "index.js",
         libraryTarget: "commonjs2",
     },

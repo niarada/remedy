@@ -1,15 +1,4 @@
 import {
-    CodeInformation,
-    CodeMapping,
-    Segment,
-    VirtualCode,
-    buildMappings,
-    toString as volarToString,
-} from "@volar/language-core";
-import { CstChildrenDictionary, CstNode, IToken } from "chevrotain";
-import type { IScriptSnapshot } from "typescript";
-import * as ts from "typescript";
-import {
     BaseTemplateVisitorWithDefaults,
     getNode,
     getNodes,
@@ -23,7 +12,18 @@ import {
     parse,
     visit,
     visitEach,
-} from "../../template";
+} from "@niarada/remedy-template";
+import {
+    CodeInformation,
+    CodeMapping,
+    Segment,
+    VirtualCode,
+    buildMappings,
+    toString as volarToString,
+} from "@volar/language-core";
+import { CstChildrenDictionary, CstNode, IToken } from "chevrotain";
+import type { IScriptSnapshot } from "typescript";
+import * as ts from "typescript";
 
 const features = {
     verification: true,

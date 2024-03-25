@@ -79,10 +79,10 @@ const nextArticle = articles[articleIndex + 1] || null;
                 </slot>
                 <footer class="mt-8 flex justify-between border-t border-t-slate-500 pt-4 pb-10">
                     <div>
-                        <a mx-when={previousArticle} href={previousArticle?.href}>← {previousArticle?.title}</a>
+                        <a rx-when={previousArticle} href={previousArticle?.href}>← {previousArticle?.title}</a>
                     </div>
                     <div>
-                        <a mx-when={nextArticle} href={nextArticle?.href}>{nextArticle?.title} →</a>
+                        <a rx-when={nextArticle} href={nextArticle?.href}>{nextArticle?.title} →</a>
                     </div>
                 </footer>
             </article>

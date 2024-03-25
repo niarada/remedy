@@ -8,6 +8,7 @@
         "packages/runtime",
         "packages/server",
         "packages/template",
+        "packages/vscode",
         "packages/features/alpine",
         "packages/features/fontawesome",
         "packages/features/htmx",
@@ -35,17 +36,8 @@
     "dependencies": {
         "@biomejs/biome": "^1.5.3",
         "@types/bun": "^1.0.8",
-        "@types/js-yaml": "^4.0.9",
         "@types/semver": "^7.5.8",
-        "esbuild": "^0.20.1",
-        "fastimage": "^5.0.4",
-        "js-yaml": "^4.1.0",
         "semver": "^7.6.0",
-        "sharp": "^0.33.3",
-        "simple-git": "^3.23.0",
-        "ts-loader": "^9.5.1",
-        "typescript": "^5.4.3",
-        "webpack": "^5.90.3",
-        "webpack-cli": "^5.1.4"
+        "simple-git": "^3.23.0"
     }
 }

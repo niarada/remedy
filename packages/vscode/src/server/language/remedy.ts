@@ -1,8 +1,8 @@
+import { parseSource, printHtml } from "@niarada/remedy-template";
 import type { LanguagePlugin } from "@volar/language-core";
 import type { ServicePlugin } from "@volar/language-service";
 import { ScriptKind } from "typescript";
 import { TextDocument, getLanguageService as getHtmlLanguageService } from "vscode-html-languageservice";
-import { parseSource, printHtml } from "../../template";
 import { RemedyVirtualCode } from "../virtual-code/remedy";
 const htmlLanguageService = getHtmlLanguageService();
 

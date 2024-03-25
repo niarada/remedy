@@ -65,13 +65,18 @@
         ]
     },
     "dependencies": {
+        "@niarada/remedy-template": "workspace:*",
         "@types/node": "^20.11.28",
         "@types/vscode": "^1.87.0",
         "@volar/vscode": "^2.1.2",
-        "chevrotain": "^10.5.0",
+        "esbuild": "^0.20.2",
+        "js-yaml": "^4.1.0",
+        "ts-loader": "^9.5.1",
         "typescript": "^5.4.2",
         "volar-service-html": "^0.0.34",
         "volar-service-typescript": "^0.0.34",
-        "vscode-languageclient": "^9.0.1"
+        "vscode-languageclient": "^9.0.1",
+        "webpack": "^5.91.0",
+        "webpack-cli": "^5.1.4"
     }
 }

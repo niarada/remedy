@@ -1,16 +1,18 @@
-$schema: 'https://moonrepo.dev/schemas/project.json'
-
-stack: infrastructure
-type: configuration
-
 tasks:
   fix:
-    options:
-      cache: false
     description: fix package.json files
-    command: bun scripts/fix-packages.ts
-  docs:
     options:
       cache: false
+    command: bun scripts/fix-packages.ts
+
+  docs:
     description: generate documentation
+    options:
+      cache: false
     command: bun scripts/build-docs.ts
+
+  version:
+    description: bump package.json versions
+    options:
+      cache: false
+    command: bun scripts/version.ts

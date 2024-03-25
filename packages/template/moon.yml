@@ -1,5 +1,4 @@
-$schema: 'https://moonrepo.dev/schemas/project.json'
-
 tasks:
   build:
+    description: build template library
     command: bunx tsc

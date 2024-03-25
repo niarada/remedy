@@ -1,12 +1,6 @@
-$schema: 'https://moonrepo.dev/schemas/project.json'
-
-platform: bun
-language: typescript
-stack: backend
-type: application
-
 tasks:
-  build:
-    command: >
-      echo 'hello world';
-      echo 'goodbye world'
+  publish:
+    description: publish server to npm
+    options:
+      cache: false
+    command: bun scripts/publish.ts

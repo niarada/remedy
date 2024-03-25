@@ -1,7 +1,7 @@
 import type { CodeMapping, VirtualCode } from "@volar/language-core";
 import type { IScriptSnapshot } from "typescript";
 
-import { htmlStartIndex } from "../../template";
+import { htmlStartIndex } from "@niarada/remedy-template";
 import { RemedyCodeVirtualCode } from "./remedy-code";
 import { SimpleVirtualCode } from "./simple";
 

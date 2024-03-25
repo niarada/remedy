@@ -1,5 +1,3 @@
-$schema: 'https://moonrepo.dev/schemas/project.json'
-
 tasks:
   docs:
     command: cd docs && bunx remedy --hot
