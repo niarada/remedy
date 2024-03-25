@@ -1,7 +1,7 @@
 import { RemedyFeatureFactory, createHtmlElement } from "@niarada/remedy";
 
-export const factory: RemedyFeatureFactory = (config) => {
-    return {
+export default function (): RemedyFeatureFactory {
+    return (config) => ({
         async intercede(context) {
             if (context.url.pathname === "/_htmx") {
                 const file = Bun.file(require.resolve("htmx.org"));
@@ -11,6 +11,7 @@ export const factory: RemedyFeatureFactory = (config) => {
                     },
                 });
             }
+            return undefined;
         },
         transform(node) {
             if (node.type === "element" && node.tag === "head") {
@@ -23,5 +24,5 @@ export const factory: RemedyFeatureFactory = (config) => {
             }
             return node;
         },
-    };
-};
+    });
+}

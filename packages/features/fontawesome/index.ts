@@ -1,8 +1,8 @@
 import { RemedyFeatureFactory, createHtmlElement } from "@niarada/remedy";
 import { dirname } from "node:path";
 
-export const factory: RemedyFeatureFactory = (config) => {
-    return {
+export default function (): RemedyFeatureFactory {
+    return (config) => ({
         async intercede(context) {
             if (context.url.pathname === "/_fontawesome") {
                 const file = Bun.file(`${dirname(require.resolve("@fortawesome/fontawesome-free"))}/../css/all.css`);
@@ -22,6 +22,7 @@ export const factory: RemedyFeatureFactory = (config) => {
                     },
                 });
             }
+            return undefined;
         },
         transform(node) {
             if (node.type === "element" && node.tag === "head") {
@@ -34,5 +35,5 @@ export const factory: RemedyFeatureFactory = (config) => {
             }
             return node;
         },
-    };
-};
+    });
+}

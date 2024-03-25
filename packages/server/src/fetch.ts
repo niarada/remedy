@@ -14,16 +14,20 @@ import { applyCompression } from "./compression";
 async function buildFeatures(config: Required<RemedyConfig>) {
     const features: RemedyFeature[] = [];
 
-    for (const name of config.features) {
-        let factory: RemedyFeatureFactory | undefined;
-        try {
-            factory = (await import(`@niarada/remedy-feature-${name}`)).factory as RemedyFeatureFactory | undefined;
-        } catch {}
+    for (const item of config.features) {
+        let factory: RemedyFeatureFactory | undefined = typeof item === "string" ? undefined : item;
         if (!factory) {
-            warn("server", `feature not found: ${name}`);
-            continue;
+            try {
+                factory = (await import(`@niarada/remedy-feature-${item}`))?.default() as
+                    | RemedyFeatureFactory
+                    | undefined;
+            } catch {}
+            if (!factory) {
+                warn("server", `feature not found: ${item}`);
+                continue;
+            }
         }
-        info("server", `feature: ${name}`);
+        info("server", `feature: ${item}`);
         features.push(await factory(config));
     }
     return features;

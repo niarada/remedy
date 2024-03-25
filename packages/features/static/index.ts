@@ -1,7 +1,7 @@
 import { RemedyFeatureFactory } from "@niarada/remedy";
 
-export const factory: RemedyFeatureFactory = (config) => {
-    return {
+export default function (): RemedyFeatureFactory {
+    return (config) => ({
         async intercede(context) {
             const file = Bun.file(`${config.public}${context.url.pathname}`);
             if (await file.exists()) {
@@ -12,5 +12,5 @@ export const factory: RemedyFeatureFactory = (config) => {
                 });
             }
         },
-    };
-};
+    });
+}

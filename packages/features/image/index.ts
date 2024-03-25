@@ -7,8 +7,8 @@ import { info as imageInfo } from "fastimage";
 import { existsSync } from "node:fs";
 import sharp from "sharp";
 
-export const factory: RemedyFeatureFactory = (config) => {
-    return {
+export default function (): RemedyFeatureFactory {
+    return (config) => ({
         async intercede(context) {
             if (!context.request.headers.get("Accept")?.startsWith("image")) {
                 return;
@@ -53,8 +53,8 @@ export const factory: RemedyFeatureFactory = (config) => {
             }
             return node;
         },
-    };
-};
+    });
+}
 
 function scaleDimensions(info: Record<string, string | number>, originalWidth: number, originalHeight: number) {
     if (info.width && info.height) {

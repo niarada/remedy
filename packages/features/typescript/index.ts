@@ -1,7 +1,7 @@
 import { RemedyFeatureFactory, createHtmlElementAttribute } from "@niarada/remedy";
 
-export const factory: RemedyFeatureFactory = (config) => {
-    return {
+export default function (): RemedyFeatureFactory {
+    return (config) => ({
         async intercede(context) {
             if (!context.url.pathname.endsWith(".ts")) {
                 return;
@@ -31,5 +31,5 @@ export const factory: RemedyFeatureFactory = (config) => {
             }
             return node;
         },
-    };
-};
+    });
+}

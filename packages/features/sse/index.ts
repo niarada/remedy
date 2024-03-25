@@ -1,8 +1,8 @@
 import { RemedyFeatureFactory, createHtmlElement } from "@niarada/remedy";
 import { dirname } from "node:path";
 
-export const factory: RemedyFeatureFactory = (config) => {
-    return {
+export default function (): RemedyFeatureFactory {
+    return (config) => ({
         async intercede(context) {
             if (context.url.pathname === "/_sse") {
                 const file = Bun.file(`${dirname(require.resolve("htmx.org"))}/ext/sse.js`);
@@ -25,5 +25,5 @@ export const factory: RemedyFeatureFactory = (config) => {
             }
             return node;
         },
-    };
-};
+    });
+}

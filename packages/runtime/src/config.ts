@@ -1,7 +1,9 @@
+import { RemedyFeatureFactory } from "./feature";
+
 export interface RemedyConfig {
     port?: number;
     public?: string;
-    features?: string[];
+    features?: (string | RemedyFeatureFactory)[];
 }
 
 export function defaultRemedyConfig(): Required<RemedyConfig> {
