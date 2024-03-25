@@ -1,6 +1,6 @@
 {
     "name": "@niarada/remedy-common",
-    "version": "0.2.18",
+    "version": "0.2.23",
     "files": [
         "src/**/*.{ts,json}",
         "!**/*.test.ts"

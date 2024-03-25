@@ -1,14 +1,15 @@
 {
     "name": "@niarada/remedy-hypermedia",
-    "version": "0.2.18",
+    "version": "0.2.23",
     "files": [
-        "src/**/*.{ts,json}",
+        "src/**/*.{ts,yaml}",
         "!**/*.test.ts"
     ],
     "main": "./src/index.ts",
     "dependencies": {
-        "@niarada/remedy-common": "workspace:*",
-        "@niarada/remedy-template": "workspace:*",
-        "@shikijs/markdown-it": "^1.2.0"
+        "@niarada/remedy-common": "0.2.23",
+        "@niarada/remedy-template": "0.2.23",
+        "@shikijs/markdown-it": "^1.2.0",
+        "js-yaml": "^4.1.0"
     }
 }

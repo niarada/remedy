@@ -1,6 +1,6 @@
 {
     "name": "@niarada/remedy",
-    "version": "0.2.18",
+    "version": "0.2.23",
     "bin": {
         "remedy": "bin/remedy"
     },
@@ -16,18 +16,18 @@
         "url": "git+https://github.com/niarada/remedy.git"
     },
     "dependencies": {
-        "@niarada/remedy-common": "workspace:*",
-        "@niarada/remedy-hypermedia": "workspace:*",
-        "@niarada/remedy-runtime": "workspace:*",
-        "@niarada/remedy-template": "workspace:*",
-        "@niarada/remedy-feature-alpine": "workspace:*",
-        "@niarada/remedy-feature-fontawesome": "workspace:*",
-        "@niarada/remedy-feature-htmx": "workspace:*",
-        "@niarada/remedy-feature-image": "workspace:*",
-        "@niarada/remedy-feature-refresh": "workspace:*",
-        "@niarada/remedy-feature-sse": "workspace:*",
-        "@niarada/remedy-feature-static": "workspace:*",
-        "@niarada/remedy-feature-tailwind": "workspace:*",
-        "@niarada/remedy-feature-typescript": "workspace:*"
+        "@niarada/remedy-common": "0.2.23",
+        "@niarada/remedy-hypermedia": "0.2.23",
+        "@niarada/remedy-runtime": "0.2.23",
+        "@niarada/remedy-template": "0.2.23",
+        "@niarada/remedy-feature-alpine": "0.2.23",
+        "@niarada/remedy-feature-fontawesome": "0.2.23",
+        "@niarada/remedy-feature-htmx": "0.2.23",
+        "@niarada/remedy-feature-image": "0.2.23",
+        "@niarada/remedy-feature-refresh": "0.2.23",
+        "@niarada/remedy-feature-sse": "0.2.23",
+        "@niarada/remedy-feature-static": "0.2.23",
+        "@niarada/remedy-feature-tailwind": "0.2.23",
+        "@niarada/remedy-feature-typescript": "0.2.23"
     }
 }

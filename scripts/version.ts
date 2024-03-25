@@ -24,5 +24,10 @@ for (let file of packages) {
     file = path.resolve(file);
     const content = require(file);
     content.version = nextVersion;
+    for (const name of Object.keys(content.dependencies)) {
+        if (name.startsWith("@niarada/remedy")) {
+            content.dependencies[name] = nextVersion;
+        }
+    }
     writeFileSync(file, `${JSON.stringify(content, null, 4)}\n`);
 }
