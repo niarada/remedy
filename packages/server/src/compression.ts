@@ -34,10 +34,7 @@ const toBuffer = (data: unknown, encoding: BufferEncoding) => {
 };
 
 export function applyCompression(request: Request, response: Response) {
-    if (
-        response.headers.get("connection") === "keep-alive" ||
-        response.headers.get("Content-Type")?.startsWith("image")
-    ) {
+    if (response.headers.get("connection") === "keep-alive" || !isCompressible(response.headers.get("Content-Type"))) {
         return response;
     }
     const accept = request.headers.get("Accept-Encoding") ?? "";
@@ -58,3 +55,44 @@ export function applyCompression(request: Request, response: Response) {
         },
     );
 }
+
+function isCompressible(type: string | null) {
+    if (!type) {
+        return false;
+    }
+    for (const compressedType of compressedTypes) {
+        if (type.startsWith(compressedType)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+const compressedTypes = [
+    "text/html",
+    "text/css",
+    "text/plain",
+    "text/xml",
+    "text/x-component",
+    "text/javascript",
+    "application/x-javascript",
+    "application/javascript",
+    "application/json",
+    "application/manifest+json",
+    "application/vnd.api+json",
+    "application/xml",
+    "application/xhtml+xml",
+    "application/rss+xml",
+    "application/atom+xml",
+    "application/vnd.ms-fontobject",
+    "application/x-font-ttf",
+    "application/x-font-opentype",
+    "application/x-font-truetype",
+    "image/svg+xml",
+    "image/x-icon",
+    "image/vnd.microsoft.icon",
+    "font/ttf",
+    "font/eot",
+    "font/otf",
+    "font/opentype",
+];
