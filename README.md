@@ -5,17 +5,7 @@
 
 ### [Documentation](https://remedy.niarada.io)
 
-
-## Run an example
-
-```sh
-git clone https://github.com/niarada/remedy
-cd remedy
-bun i
-bun examples:todo
-```
-
-## Start fresh
+## Getting started
 
 ```sh
 mkdir my-project && cd my-project
