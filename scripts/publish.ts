@@ -11,9 +11,9 @@ const packages = readdirSync("packages", { withFileTypes: true })
     );
 
 await $`cp README.md packages/server`;
-await $`cd packages/server && npm publish --access public --dry-run`;
+await $`cd packages/server && npm publish --access public`;
 await $`rm packages/server/README.md`;
 
-// for (const path of packages) {
-//     await $`cd ${path} && npm publish --access public --dry-run`;
-// }
+for (const path of packages) {
+    await $`cd ${path} && npm publish --access public`;
+}

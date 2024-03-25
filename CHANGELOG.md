@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.3.0] = 2024-03-24
+## [0.2.18] = 2024-03-24
 ### Added
 - Project: Added moonrepo
 
