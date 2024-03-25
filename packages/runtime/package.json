@@ -1,15 +1,15 @@
 {
     "name": "@niarada/remedy-runtime",
-    "version": "0.2.23",
+    "version": "0.3.0",
     "files": [
         "src/**/*.{ts,json}",
         "!**/*.test.ts"
     ],
     "main": "./src/index.ts",
     "dependencies": {
-        "@niarada/remedy-hypermedia": "0.2.23",
-        "@niarada/remedy-template": "0.2.23",
-        "@niarada/remedy-common": "0.2.23",
+        "@niarada/remedy-hypermedia": "0.3.0",
+        "@niarada/remedy-template": "0.3.0",
+        "@niarada/remedy-common": "0.3.0",
         "http-status-codes": "^2.3.0"
     }
 }
