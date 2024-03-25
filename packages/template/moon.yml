@@ -1,4 +1,0 @@
-tasks:
-  build:
-    description: build template library
-    command: bunx tsc

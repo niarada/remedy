@@ -1,9 +1,0 @@
-tasks:
-  docs:
-    command: cd docs && bunx remedy --hot
-  todo:
-    command: cd todo && bunx remedy --hot
-  contact:
-    command: cd contact && bunx remedy --hot
-  alpine:
-    command: cd alpine && bunx remedy --hot
