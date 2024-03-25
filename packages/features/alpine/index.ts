@@ -2,6 +2,7 @@ import { RemedyFeatureFactory, createHtmlElement } from "@niarada/remedy";
 
 export default function (): RemedyFeatureFactory {
     return (config) => ({
+        name: "alpine",
         async intercede(context) {
             if (context.url.pathname === "/_alpine") {
                 const file = Bun.file(require.resolve("alpinejs/dist/cdn"));

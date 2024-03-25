@@ -3,6 +3,7 @@ import { dirname } from "node:path";
 
 export default function (): RemedyFeatureFactory {
     return (config) => ({
+        name: "sse",
         async intercede(context) {
             if (context.url.pathname === "/_sse") {
                 const file = Bun.file(`${dirname(require.resolve("htmx.org"))}/ext/sse.js`);

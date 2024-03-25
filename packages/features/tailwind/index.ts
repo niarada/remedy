@@ -17,6 +17,7 @@ export default function (): RemedyFeatureFactory {
         }
 
         return {
+            name: "tailwind",
             async intercede(context) {
                 if (context.url.pathname === "/_tailwind") {
                     let tailwindConfig = {} as TailwindConfig;

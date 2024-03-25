@@ -1,9 +1,11 @@
 #!/usr/bin/env bun
 
-import { $ } from "bun";
+export type {};
 
 if (process.argv.includes("--hot")) {
-    await $`${process.argv[0]} --hot ${process.argv[1]} --is-hot`;
+    Bun.spawn([process.argv[0], "--hot", process.argv[1], "--is-hot"], {
+        stdio: ["inherit", "inherit", "inherit"],
+    });
 } else {
     const { info, serve } = await import("@niarada/remedy");
     serve();

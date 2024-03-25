@@ -2,6 +2,7 @@ import { RemedyFeatureFactory, createHtmlElementAttribute } from "@niarada/remed
 
 export default function (): RemedyFeatureFactory {
     return (config) => ({
+        name: "typescript",
         async intercede(context) {
             if (!context.url.pathname.endsWith(".ts")) {
                 return;

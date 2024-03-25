@@ -11,7 +11,7 @@ done
 
 if [[ $found -eq 1 ]]; then
   cd ./examples/$1
-  bunx remedy
+  bunx remedy --hot
 else
   echo "Choose from:"
   echo

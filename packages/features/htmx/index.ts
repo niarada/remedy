@@ -1,7 +1,13 @@
 import { RemedyFeatureFactory, createHtmlElement } from "@niarada/remedy";
+import { createHtmlText } from "@niarada/remedy-template";
 
-export default function (): RemedyFeatureFactory {
-    return (config) => ({
+export interface HtmxOptions {
+    debug?: boolean;
+}
+
+export default function (options: HtmxOptions = {}): RemedyFeatureFactory {
+    return () => ({
+        name: "htmx",
         async intercede(context) {
             if (context.url.pathname === "/_htmx") {
                 const file = Bun.file(require.resolve("htmx.org"));
@@ -21,6 +27,24 @@ export default function (): RemedyFeatureFactory {
                         src: "/_htmx",
                     }),
                 );
+                if (options.debug) {
+                    const script = createHtmlElement(node, "script");
+                    node.children.push(script);
+                    script.children.push(
+                        createHtmlText(
+                            script,
+                            `
+                                window.addEventListener("load", () => {
+                                    htmx.logger = (el, event, data) => {
+                                        if (console) {
+                                            console.log(event, el, data);
+                                        }
+                                    };
+                                });
+                            `,
+                        ),
+                    );
+                }
             }
             return node;
         },

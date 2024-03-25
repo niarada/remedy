@@ -24,6 +24,7 @@ export default function (): RemedyFeatureFactory {
         });
 
         return {
+            name: "refresh",
             async intercede(context) {
                 if (context.url.pathname === "/_refresh") {
                     const content = `

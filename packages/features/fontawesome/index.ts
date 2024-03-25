@@ -3,6 +3,7 @@ import { dirname } from "node:path";
 
 export default function (): RemedyFeatureFactory {
     return (config) => ({
+        name: "fontawesome",
         async intercede(context) {
             if (context.url.pathname === "/_fontawesome") {
                 const file = Bun.file(`${dirname(require.resolve("@fortawesome/fontawesome-free"))}/../css/all.css`);

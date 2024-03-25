@@ -9,6 +9,7 @@ import sharp from "sharp";
 
 export default function (): RemedyFeatureFactory {
     return (config) => ({
+        name: "image",
         async intercede(context) {
             if (!context.request.headers.get("Accept")?.startsWith("image")) {
                 return;

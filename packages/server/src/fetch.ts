@@ -27,7 +27,8 @@ async function buildFeatures(config: Required<RemedyConfig>) {
                 continue;
             }
         }
-        info("server", `feature: ${item}`);
+        const feature = await factory(config);
+        info("server", `feature: ${feature.name}`);
         features.push(await factory(config));
     }
     return features;
