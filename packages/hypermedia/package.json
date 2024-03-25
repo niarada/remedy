@@ -10,6 +10,8 @@
         "@niarada/remedy-common": "0.3.0",
         "@niarada/remedy-template": "0.3.0",
         "@shikijs/markdown-it": "^1.2.0",
+        "@types/js-yaml": "^4.0.9",
+        "@types/markdown-it": "^13.0.7",
         "js-yaml": "^4.1.0"
     }
 }
