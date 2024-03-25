@@ -1,6 +1,0 @@
-tasks:
-  publish:
-    description: publish server to npm
-    options:
-      cache: false
-    command: bun scripts/publish.ts

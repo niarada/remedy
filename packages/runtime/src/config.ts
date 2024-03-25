@@ -8,6 +8,6 @@ export function defaultRemedyConfig(): Required<RemedyConfig> {
     return {
         port: 4321,
         public: "public",
-        features: [],
+        features: ["refresh", "typescript", "static"],
     };
 }

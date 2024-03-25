@@ -16,3 +16,9 @@ tasks:
     options:
       cache: false
     command: bun scripts/version.ts
+
+  publish:
+    description: publish packages
+    options:
+      cache: false
+    command: bun scripts/publish.ts

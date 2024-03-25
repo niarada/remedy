@@ -6,7 +6,7 @@
 
 ### Changed
 - Project: Reorganized repository structure.
-- Docs: Updated features install and features informatin.
+- Docs: Updated features install and features information.
 
 ## [0.2.17] - 2024-03-22
 ### Changed

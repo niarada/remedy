@@ -28,8 +28,8 @@ const articles = [
         href: "/context",
     },
     {
-        title: "Integrations",
-        href: "/integrations",
+        title: "Features",
+        href: "/features",
     },
     {
         title: "Editor Support",

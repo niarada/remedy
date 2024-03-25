@@ -19,16 +19,6 @@
         "packages/features/tailwind",
         "packages/features/typescript"
     ],
-    "scripts": {
-        "build:grammar": "bun scripts/build-grammar.ts",
-        "build:extension": "bun scripts/build-extension.ts",
-        "publish:extension": "sh scripts/publish-extension.sh",
-        "publish:server": "sh scripts/publish-server.sh",
-        "publish:all": "bun publish:server && bun publish:extension",
-        "version": "bun scripts/version.ts",
-        "tag": "bun scripts/tag.ts",
-        "fix": "bun scripts/fix-packages.ts"
-    },
     "repository": {
         "type": "git",
         "url": "https://github.com/niarada/remedy.git"

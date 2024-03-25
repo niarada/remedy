@@ -1,24 +1,24 @@
-# Integrations
+# Features
 
-Also known as plugins or features.
+Also known as plugins or integrations.
 
-**remedy** is designed to allow for easy integration with 3rd party libraries or custom plugins.  A process for community contributed integrations will be established at some point in the future.
+**remedy** is designed to allow for easy integration with 3rd party libraries or custom plugins.
 
 All integrations can be enabled or disabled in [Configuration](/configuration).
 
 ### Enabled by default
 
-#### dev
+#### refresh
 
 File watching and hot refresh.
-
-#### static
-
-Static asset delivery.
 
 #### typescript
 
 Typescript bundling for `<script src="...">` tags in the head.
+
+#### static
+
+Static asset delivery.
 
 ### Disabled by default
 

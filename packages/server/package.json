@@ -16,10 +16,18 @@
         "url": "git+https://github.com/niarada/remedy.git"
     },
     "dependencies": {
-        "@niarada/remedy-runtime": "workspace:*",
+        "@niarada/remedy-common": "workspace:*",
         "@niarada/remedy-hypermedia": "workspace:*",
+        "@niarada/remedy-runtime": "workspace:*",
         "@niarada/remedy-template": "workspace:*",
-        "@types/ramda": "^0.29.11",
-        "ts-pattern": "^5.0.8"
+        "@niarada/remedy-feature-alpine": "workspace:*",
+        "@niarada/remedy-feature-fontawesome": "workspace:*",
+        "@niarada/remedy-feature-htmx": "workspace:*",
+        "@niarada/remedy-feature-image": "workspace:*",
+        "@niarada/remedy-feature-refresh": "workspace:*",
+        "@niarada/remedy-feature-sse": "workspace:*",
+        "@niarada/remedy-feature-static": "workspace:*",
+        "@niarada/remedy-feature-tailwind": "workspace:*",
+        "@niarada/remedy-feature-typescript": "workspace:*"
     }
 }
