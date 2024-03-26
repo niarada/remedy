@@ -1,11 +1,9 @@
 import { $ } from "bun";
-import getLatestVersion from "latest-version";
 
-const currentVersion = require("../../package.json").version;
-const latestVersion = await getLatestVersion("@niarada/remedy");
+const response = await (await fetch("https://registry.npmjs.org/@niarada/remedy")).json();
+const publishedVersion = response["dist-tags"].latest;
+const committedVersion = require("../../package.json").version;
 
-if (currentVersion === latestVersion) {
-    process.exit(0);
+if (publishedVersion !== committedVersion) {
+    await $`bun all:publish`;
 }
-
-await $`bun all:publish`;
