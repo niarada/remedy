@@ -1,5 +1,5 @@
+import { Director } from "@niarada/remedy";
 import { describe, expect, it } from "bun:test";
-import { Director } from "~/hypermedia/director";
 import { MarkdownSource } from "./source";
 
 const director = new Director();

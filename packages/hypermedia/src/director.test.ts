@@ -1,10 +1,17 @@
 import { describe, expect, it } from "bun:test";
 import { mkdirSync, writeFileSync } from "node:fs";
+import markdownFeatureFactory from "../../features/markdown";
+import { MarkdownSource } from "../../features/markdown/source";
+import partialFeatureFactory from "../../features/partial";
 import { Director } from "./director";
-import { MarkdownSource } from "./kinds/markdown/source";
 import { fakeContext, makeTemporaryDirectory } from "./test";
 
-const director = new Director(makeTemporaryDirectory());
+const markdownFeature = markdownFeatureFactory();
+const partialFeature = partialFeatureFactory();
+const director = new Director(makeTemporaryDirectory(), [
+    await partialFeature({ port: 0, public: "", features: [] }),
+    await markdownFeature({ port: 0, public: "", features: [] }),
+]);
 
 describe("director", () => {
     it("should error on using html tags", async () => {

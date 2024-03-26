@@ -12,6 +12,14 @@ All integrations can be enabled or disabled in [Configuration](/configuration).
 
 File watching and hot refresh.
 
+#### partial
+
+Partial support.
+
+#### markdown
+
+Markdown support.
+
 #### typescript
 
 Typescript bundling for `<script src="...">` tags in the head.

@@ -1,3 +1,4 @@
+import { Source } from "@niarada/remedy-hypermedia";
 import { HtmlSimpleAsyncTransformVisitor, HtmlSimpleTransformVisitor } from "@niarada/remedy-template";
 import { RemedyConfig } from "./config";
 import { Context } from "./context";
@@ -6,6 +7,8 @@ export type RemedyFeatureFactory = (config: Required<RemedyConfig>) => Promise<R
 
 export interface RemedyFeature {
     name: string;
+    extension?: string;
+    source?: (text: string, path: string) => Source;
     intercede?: (context: Context) => Promise<Response | undefined> | Response | undefined;
     transform?: HtmlSimpleTransformVisitor | HtmlSimpleAsyncTransformVisitor;
 }

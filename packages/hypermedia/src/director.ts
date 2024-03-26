@@ -1,11 +1,10 @@
 import { error, info, warn, watch } from "@niarada/remedy-common";
+import { Context, RemedyFeature } from "@niarada/remedy-runtime";
 import { PrintHtmlOptions, htmlTags } from "@niarada/remedy-template";
 import { plugin } from "bun";
 import { readFileSync } from "node:fs";
-import { Context } from "../../runtime/src/context";
+import { parse as parsePath } from "node:path";
 import { Artifact } from "./artifact";
-import { MarkdownSource } from "./kinds/markdown/source";
-import { PartialSource } from "./kinds/partial/source";
 import { Representation, VariableRepresentation } from "./representation";
 import { resolveTag } from "./resolve";
 import { Source } from "./source";
@@ -14,10 +13,21 @@ import { Source } from "./source";
  * Manages hypermedia representations and their modules.
  */
 export class Director {
+    features: Record<string, RemedyFeature> = {};
+
     /**
      * @param base The base lookup path for representation sources.
      */
-    constructor(readonly base?: string) {}
+    constructor(
+        readonly base?: string,
+        features: RemedyFeature[] = [],
+    ) {
+        for (const feature of features) {
+            if (feature.extension && feature.source) {
+                this.features[feature.extension] = feature;
+            }
+        }
+    }
 
     private readonly representations: Map<string, Representation> = new Map();
 
@@ -65,8 +75,9 @@ export class Director {
         if (!this.base) {
             return;
         }
+        const extensionsRe = new RegExp(`\\.(${Object.keys(this.features).join("|")})$`);
         watch(this.base, async (_, path) => {
-            if (/\.(part|md)$/.test(path ?? "")) {
+            if (extensionsRe.test(path ?? "")) {
                 const rep = Array.from(this.representations.values()).find((r) => r.path === path);
                 if (rep) {
                     this.revert(rep.tag);
@@ -89,7 +100,7 @@ export class Director {
      */
     async represent(tag: string): Promise<Representation | undefined> {
         if (!this.representations.has(tag) && this.base) {
-            const { path, amendedTag, resolvedVariables } = resolveTag(tag, this.base, [".md", ".part"]);
+            const { path, amendedTag, resolvedVariables } = resolveTag(tag, this.base, Object.keys(this.features));
             if (!path) {
                 warn("director", `No representation found for '${tag}'`);
                 return;
@@ -98,11 +109,8 @@ export class Director {
                 if (!this.representations.has(amendedTag)) {
                     const text = readFileSync(path, "utf8");
                     const shortpath = path.replace(new RegExp(`^${this.base}/`), "");
-                    if (path.endsWith(".part")) {
-                        await this.prepare(amendedTag, new PartialSource(text, shortpath));
-                    } else if (path.endsWith(".md")) {
-                        await this.prepare(amendedTag, new MarkdownSource(text, shortpath));
-                    }
+                    const { ext } = parsePath(shortpath);
+                    await this.prepare(amendedTag, this.features[ext.slice(1)].source!(text, shortpath.toString()));
                 }
                 let representation = this.representations.get(amendedTag);
                 if (representation && Object.keys(resolvedVariables).length > 0) {
@@ -110,17 +118,6 @@ export class Director {
                 }
                 return representation;
             }
-            // } catch (e) {
-            //     error("director", `Failed to load '${path}'`);
-            //     // @ts-ignore
-            //     const cause = e.cause?.toString();
-            //     if (cause) {
-            //         console.log(cause);
-            //     } else {
-            //         console.log(e);
-            //     }
-            //     return;
-            // }
         }
         return this.representations.get(tag);
     }

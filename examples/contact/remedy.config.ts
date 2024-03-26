@@ -1,3 +1,3 @@
 export default {
-    features: ["refresh", "static"],
+    features: ["refresh", "static", "partial"],
 };

@@ -35,13 +35,13 @@ async function buildFeatures(config: Required<RemedyConfig>) {
 }
 
 export async function buildFetch(config: Required<RemedyConfig>) {
-    const director = new Director(config.public);
+    const features = await buildFeatures(config);
+
+    const director = new Director(config.public, features);
 
     if (process.env.NODE_ENV === "development") {
         director.watch();
     }
-
-    const features = await buildFeatures(config);
 
     return async (request: Request): Promise<Response> => {
         const time = Bun.nanoseconds();

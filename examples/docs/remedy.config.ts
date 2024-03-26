@@ -1,3 +1,3 @@
 export default {
-    features: ["fontawesome", "tailwind", "refresh", "static"],
+    features: ["fontawesome", "tailwind", "refresh", "static", "partial", "markdown"],
 };

@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.3.2] = 2024-03-25
+### Changed
+- Features: Partials and Markdowns now implemented as features.
+
 ## [0.3.1] = 2024-03-25
 ### Added
 - Features: Configurable through factory factory.

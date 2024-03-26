@@ -1,9 +1,9 @@
+import { Source } from "@niarada/remedy";
 import Shiki from "@shikijs/markdown-it";
 import yaml from "js-yaml";
 import Markdown from "markdown-it";
 import { readFileSync } from "node:fs";
 import { LanguageInput, ThemeRegistration } from "shiki";
-import { Source } from "../../source";
 import markdownRegexp from "./regexp";
 
 export class MarkdownSource extends Source {

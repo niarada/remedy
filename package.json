@@ -12,6 +12,8 @@
         "packages/features/fontawesome",
         "packages/features/htmx",
         "packages/features/image",
+        "packages/features/markdown",
+        "packages/features/partial",
         "packages/features/refresh",
         "packages/features/sse",
         "packages/features/static",

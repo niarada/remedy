@@ -1,4 +1,4 @@
 {
     "extends": "../../tsconfig.options.json",
-    "include": ["src/**/*.ts"]
+    "include": ["src/**/*.ts", "../features/partial/source.ts", "../features/partial/source.test.ts"]
 }

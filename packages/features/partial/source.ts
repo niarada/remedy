@@ -1,7 +1,13 @@
-import { error } from "@niarada/remedy-common";
-import { HtmlFragment, htmlStartIndex, parseSource, printHtml, simpleTransformHtml } from "@niarada/remedy-template";
+import {
+    error,
+    HtmlFragment,
+    htmlStartIndex,
+    parseSource,
+    printHtml,
+    simpleTransformHtml,
+    Source,
+} from "@niarada/remedy";
 import * as ts from "typescript";
-import { Source } from "../../source";
 
 /**
  * A `.part` source file composed of an upper code section (action) and

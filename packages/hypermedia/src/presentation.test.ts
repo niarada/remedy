@@ -1,7 +1,7 @@
 import { describe, expect, it } from "bun:test";
+import { MarkdownSource } from "../../features/markdown/source";
+import { PartialSource } from "../../features/partial/source";
 import { Director } from "./director";
-import { MarkdownSource } from "./kinds/markdown/source";
-import { PartialSource } from "./kinds/partial/source";
 import { fakeContext } from "./test";
 
 const director = new Director();
