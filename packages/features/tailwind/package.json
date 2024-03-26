@@ -1,12 +1,12 @@
 {
     "name": "@niarada/remedy-feature-tailwind",
-    "version": "0.3.2",
+    "version": "0.3.3",
     "files": [
         "index.ts"
     ],
     "main": "index.ts",
     "dependencies": {
-        "@niarada/remedy": "0.3.2",
+        "@niarada/remedy": "0.3.3",
         "@tailwindcss/typography": "^0.5.10",
         "autoprefixer": "^10.4.19",
         "postcss": "^8.4.38",

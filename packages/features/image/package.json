@@ -1,12 +1,12 @@
 {
     "name": "@niarada/remedy-feature-image",
-    "version": "0.3.2",
+    "version": "0.3.3",
     "files": [
         "index.ts"
     ],
     "main": "index.ts",
     "dependencies": {
-        "@niarada/remedy": "0.3.2",
+        "@niarada/remedy": "0.3.3",
         "fastimage": "^5.0.4",
         "sharp": "^0.33.3"
     }

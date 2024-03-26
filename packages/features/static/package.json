@@ -1,11 +1,11 @@
 {
     "name": "@niarada/remedy-feature-static",
-    "version": "0.3.2",
+    "version": "0.3.3",
     "files": [
         "index.ts"
     ],
     "main": "index.ts",
     "dependencies": {
-        "@niarada/remedy": "0.3.2"
+        "@niarada/remedy": "0.3.3"
     }
 }
