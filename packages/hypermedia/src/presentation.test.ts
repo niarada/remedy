@@ -1,14 +1,16 @@
 import { describe, expect, it } from "bun:test";
-import { MarkdownSource } from "../../features/markdown/source";
+import markdownFeatureFactory from "../../features/markdown";
 import { PartialSource } from "../../features/partial/source";
 import { Director } from "./director";
 import { fakeContext } from "./test";
+
+const markdownFeature = await markdownFeatureFactory()({ port: 0, public: "", features: [] });
 
 const director = new Director();
 
 describe("presentation", async () => {
     it("representation present", async () => {
-        await director.prepare("alpha", new MarkdownSource("# Hello"));
+        await director.prepare("alpha", markdownFeature.source!("# Hello"));
         const alphaR = await director.represent("alpha");
         const alphaP = alphaR!.present(fakeContext());
         expect(alphaP).toBeDefined();

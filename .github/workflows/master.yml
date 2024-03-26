@@ -23,5 +23,4 @@ jobs:
           echo "@niarada:registry=https://registry.npmjs.org/" >> .npmrc
       - run: bun scripts/ci/publish.ts
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}

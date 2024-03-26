@@ -8,7 +8,7 @@ export type RemedyFeatureFactory = (config: Required<RemedyConfig>) => Promise<R
 export interface RemedyFeature {
     name: string;
     extension?: string;
-    source?: (text: string, path: string) => Source;
+    source?: (text: string, path?: string) => Source;
     intercede?: (context: Context) => Promise<Response | undefined> | Response | undefined;
     transform?: HtmlSimpleTransformVisitor | HtmlSimpleAsyncTransformVisitor;
 }

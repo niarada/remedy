@@ -1,18 +1,19 @@
 {
-    "name": "@niarada/remedy-feature-markdown",
-    "version": "0.3.3",
-    "files": [
-        "langs",
-        "index.ts",
-        "regexp.ts",
-        "source.ts"
-    ],
-    "main": "index.ts",
-    "dependencies": {
-        "@niarada/remedy": "0.3.3",
-        "@shikijs/markdown-it": "^1.2.0",
-        "@types/js-yaml": "^4.0.9",
-        "js-yaml": "^4.1.0",
-        "markdown-it": "^14.1.0"
-    }
+  "name": "@niarada/remedy-feature-markdown",
+  "version": "0.3.3",
+  "files": [
+    "langs",
+    "index.ts",
+    "regexp.ts",
+    "source.ts"
+  ],
+  "main": "index.ts",
+  "dependencies": {
+    "@niarada/remedy": "0.3.3",
+    "@shikijs/markdown-it": "^1.2.0",
+    "@types/js-yaml": "^4.0.9",
+    "@types/markdown-it": "^13.0.7",
+    "js-yaml": "^4.1.0",
+    "markdown-it": "^14.1.0"
+  }
 }

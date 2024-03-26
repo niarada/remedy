@@ -1,12 +1,13 @@
 import { Director } from "@niarada/remedy";
 import { describe, expect, it } from "bun:test";
-import { MarkdownSource } from "./source";
+import markdownFeatureFactory from ".";
 
+const markdownFeature = await markdownFeatureFactory()({ port: 0, public: "", features: [] });
 const director = new Director();
 
 describe("markdown/source", () => {
     it("compile", () => {
-        const source = new MarkdownSource("# Hello");
+        const source = markdownFeature.source!("# Hello");
         expect(source.code).toBe(
             [
                 "export const attributes = {};",
@@ -17,7 +18,7 @@ describe("markdown/source", () => {
     });
 
     it("should present", async () => {
-        await director.prepare("joy", new MarkdownSource("# Joy"));
+        await director.prepare("joy", markdownFeature.source!("# Joy"));
         const rep = await director.represent("joy");
         expect(rep!.artifact.template).toBe("<h1>Joy</h1>\n");
     });

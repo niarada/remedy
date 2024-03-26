@@ -1,26 +1,23 @@
 import { describe, expect, it } from "bun:test";
 import { mkdirSync, writeFileSync } from "node:fs";
 import markdownFeatureFactory from "../../features/markdown";
-import { MarkdownSource } from "../../features/markdown/source";
 import partialFeatureFactory from "../../features/partial";
 import { Director } from "./director";
 import { fakeContext, makeTemporaryDirectory } from "./test";
 
-const markdownFeature = markdownFeatureFactory();
-const partialFeature = partialFeatureFactory();
-const director = new Director(makeTemporaryDirectory(), [
-    await partialFeature({ port: 0, public: "", features: [] }),
-    await markdownFeature({ port: 0, public: "", features: [] }),
-]);
+const markdownFeature = await markdownFeatureFactory()({ port: 0, public: "", features: [] });
+const partialFeature = await partialFeatureFactory()({ port: 0, public: "", features: [] });
+const director = new Director(makeTemporaryDirectory(), [markdownFeature, partialFeature]);
 
 describe("director", () => {
     it("should error on using html tags", async () => {
-        await director.prepare("table", new MarkdownSource("# Ignored"));
+        await director.prepare("table", markdownFeature.source!("# Ignored"));
+        // new MarkdownSource("# Ignored"));
         expect(await director.represent("table")).toBeUndefined();
     });
 
     it("should manually prepare", async () => {
-        await director.prepare("joy", new MarkdownSource("# Joy"));
+        await director.prepare("joy", markdownFeature.source!("# Joy"));
         const rep = await director.represent("joy");
         expect(rep!.artifact.template).toBe("<h1>Joy</h1>\n");
     });
