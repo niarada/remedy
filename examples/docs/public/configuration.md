@@ -1,3 +1,5 @@
+${toc}
+
 # Configuration
 
 When you first start **remedy** a `remedy.config.ts` file will be created in your project root.

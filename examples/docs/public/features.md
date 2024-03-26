@@ -1,3 +1,5 @@
+${toc}
+
 # Features
 
 Also known as plugins or integrations.

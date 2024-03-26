@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.3.4] = 2024-03-26
+### Changed
+- Markdown: Configurable theme and code highlight languages.
+- Markdown: Added attrs, anchors, and toc plugins.
+- Tailwind: Remove the empty default css embed, user must provide their own css.
+- Tailwind: Added nesting plugin.
+- Extension: Update workspace settings to use tailwindcss in css files.
+
+## [0.3.3] = 2024-03-26
+
 ## [0.3.2] = 2024-03-25
 ### Changed
 - Features: Partials and Markdowns now implemented as features.

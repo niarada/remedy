@@ -1,3 +1,5 @@
+${toc}
+
 # Introduction
 
 **remedy** is a *Hypermedia Server*.

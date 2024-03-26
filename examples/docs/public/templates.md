@@ -1,3 +1,5 @@
+${toc}
+
 # Templates
 
 The bottom section of a **partial** is called the *template*.

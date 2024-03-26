@@ -1,3 +1,5 @@
+${toc}
+
 # Context
 
 Your partials have access to a `$context` object that provides information about the request, and let's you manipulate the response.

@@ -2,6 +2,9 @@ import { RemedyFeatureFactory } from "@niarada/remedy";
 import Shiki from "@shikijs/markdown-it";
 import yaml from "js-yaml";
 import Markdown from "markdown-it";
+import markdownAnchor from "markdown-it-anchor";
+import markdownAttrs from "markdown-it-attrs";
+import markdownToc from "markdown-it-toc-done-right";
 import { existsSync, readFileSync } from "node:fs";
 import { BundledLanguage, LanguageInput, ThemeRegistration } from "shiki";
 import markdownRegexp from "./regexp";
@@ -59,6 +62,10 @@ export default function (options: MarkdownOptions = {}): RemedyFeatureFactory {
                 langs: [...languages, remedyTemplateLanguage, remedyLanguage],
             }),
         );
+
+        markdown.use(markdownAttrs);
+        markdown.use(markdownAnchor);
+        markdown.use(markdownToc);
 
         return {
             name: "markdown",

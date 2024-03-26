@@ -1,0 +1,66 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+ul.roadmap {
+    list-style-type: none;
+    margin: 0;
+    padding-left: 1rem;
+
+    li {
+        margin: 0;
+        padding: 0;
+    }
+
+    li:before {
+        font-family: 'Font Awesome 6 Free';
+        content: "\f111";
+        font-weight: 500;
+        margin-right: 0.5rem;
+    }
+
+    li.done:before {
+        font-weight: 900;
+    }
+}
+
+.table-of-contents {
+    @apply fixed right-0 mr-6 bg-gray-50 rounded p-4 border border-gray-200 drop-shadow-sm;
+
+    a {
+        text-decoration: none;
+        @apply text-gray-500;
+    }
+
+    ol {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        @apply pl-2;
+    }
+
+    li {
+        margin: 0;
+        padding: 0;
+    }
+}
+
+.table-of-contents > ol > li > a {
+    @apply hidden;
+}
+
+.table-of-contents > ol {
+    @apply pl-0;
+}
+
+.table-of-contents > ol > li > ol {
+    @apply text-base pl-0;
+}
+
+.table-of-contents > ol > li > ol > li > ol {
+    @apply text-sm;
+}
+
+.table-of-contents > ol > li > ol > li > ol > li > ol {
+    @apply text-xs;
+}

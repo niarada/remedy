@@ -1,3 +1,5 @@
+${toc}
+
 # Routes
 
 Routing in **remedy** is file based.  Every partial that is not a layout (i.e. an index) generates a tag and *a routable path.*

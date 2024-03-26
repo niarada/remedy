@@ -36,10 +36,8 @@ export async function activate(context: vscode.ExtensionContext) {
         },
     );
     await client.start();
-
     const labs = createLabsInfo(serverProtocol);
     labs.addLanguageClient(client);
-
     return labs.extensionExports;
 }
 
@@ -49,10 +47,19 @@ export function deactivate() {
 
 function initializeExtension(context) {
     const config = getWorkspaceConfig();
-    if (config.features?.tailwind) {
-        vscode.workspace.getConfiguration("tailwindCSS").update("includeLanguages", {
-            remedy: "html",
-        });
+    if (config.features.includes("tailwind")) {
+        const tailwind = vscode.workspace.getConfiguration("tailwindCSS");
+        if (tailwind) {
+            tailwind.update("includeLanguages", {
+                remedy: "html",
+            });
+            const files = vscode.workspace.getConfiguration("files");
+            if (files) {
+                const associations = files.get("associations") || {};
+                associations["*.css"] = "tailwindcss";
+                files.update("associations", associations);
+            }
+        }
     }
 }
 

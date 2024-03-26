@@ -1,3 +1,5 @@
+${toc}
+
 # Partials
 
 Partials are the *language* of **remedy**.  A partial can be divided into two sections, though neither is strictly required: the **action** and the **template**.  **Actions** are written in TypeScript or JavaScript, and occupy the top section of the partial.  **Templates** are written in HTML, and occupy the bottom section.

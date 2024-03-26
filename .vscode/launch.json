@@ -33,7 +33,7 @@
             "name": "Extension: Todo",
             "runtimeExecutable": "${execPath}",
             "args": [
-                "--extensionDevelopmentPath=${workspaceRoot}/packages/vscode",
+                "--extensionDevelopmentPath=${workspaceRoot}/extensions/vscode",
                 "--folder-uri=${workspaceRoot}/examples/todo"
             ],
             "autoAttachChildProcesses": true
@@ -44,7 +44,7 @@
             "name": "Extension: Docs",
             "runtimeExecutable": "${execPath}",
             "args": [
-                "--extensionDevelopmentPath=${workspaceRoot}/packages/vscode",
+                "--extensionDevelopmentPath=${workspaceRoot}/extensions/vscode",
                 "--folder-uri=${workspaceRoot}/examples/docs"
             ],
             "autoAttachChildProcesses": true
@@ -55,7 +55,7 @@
             "name": "Extension: Contact",
             "runtimeExecutable": "${execPath}",
             "args": [
-                "--extensionDevelopmentPath=${workspaceRoot}/packages/vscode",
+                "--extensionDevelopmentPath=${workspaceRoot}/extensions/vscode",
                 "--folder-uri=${workspaceRoot}/examples/contact"
             ],
             "autoAttachChildProcesses": true
@@ -66,7 +66,7 @@
             "name": "Extension: Alpine",
             "runtimeExecutable": "${execPath}",
             "args": [
-                "--extensionDevelopmentPath=${workspaceRoot}/packages/vscode",
+                "--extensionDevelopmentPath=${workspaceRoot}/extensions/vscode",
                 "--folder-uri=${workspaceRoot}/examples/alpine"
             ],
             "autoAttachChildProcesses": true
@@ -75,28 +75,32 @@
             "type": "bun",
             "request": "launch",
             "name": "Server: Todo",
-            "program": "${workspaceRoot}/packages/server/server/index.ts",
+            "program": "${workspaceRoot}/packages/server/bin/remedy",
+            "args": ["--hot"],
             "cwd": "${workspaceRoot}/examples/todo"
         },
         {
             "type": "bun",
             "request": "launch",
             "name": "Server: Docs",
-            "program": "${workspaceRoot}/packages/server/server/index.ts",
+            "program": "${workspaceRoot}/packages/server/bin/remedy",
+            "args": ["--hot"],
             "cwd": "${workspaceRoot}/examples/docs"
         },
         {
             "type": "bun",
             "request": "launch",
             "name": "Server: Contact",
-            "program": "${workspaceRoot}/packages/server/server/index.ts",
+            "program": "${workspaceRoot}/packages/server/bin/remedy",
+            "args": ["--hot"],
             "cwd": "${workspaceRoot}/examples/contact"
         },
         {
             "type": "bun",
             "request": "launch",
             "name": "Server: Alpine",
-            "program": "${workspaceRoot}/packages/server/server/index.ts",
+            "program": "${workspaceRoot}/packages/server/bin/remedy",
+            "args": ["--hot"],
             "cwd": "${workspaceRoot}/examples/alpine"
         },
         {
@@ -105,7 +109,7 @@
             "request": "attach",
             "port": 6009,
             "restart": true,
-            "outFiles": ["${workspaceRoot}/packages/vscode/dist/**/*.js"]
+            "outFiles": ["${workspaceRoot}/extensions/vscode/dist/**/*.js"]
         }
     ]
 }
