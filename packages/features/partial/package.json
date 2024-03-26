@@ -1,12 +1,12 @@
 {
     "name": "@niarada/remedy-feature-partial",
-    "version": "0.3.3",
+    "version": "0.3.4",
     "files": [
         "index.ts",
         "source.ts"
     ],
     "main": "index.ts",
     "dependencies": {
-        "@niarada/remedy": "0.3.3"
+        "@niarada/remedy": "0.3.4"
     }
 }

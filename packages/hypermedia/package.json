@@ -1,13 +1,13 @@
 {
     "name": "@niarada/remedy-hypermedia",
-    "version": "0.3.3",
+    "version": "0.3.4",
     "files": [
         "src/**/*.{ts,yaml}",
         "!**/*.test.ts"
     ],
     "main": "./src/index.ts",
     "dependencies": {
-        "@niarada/remedy-runtime": "0.3.3",
-        "@niarada/remedy-template": "0.3.3"
+        "@niarada/remedy-runtime": "0.3.4",
+        "@niarada/remedy-template": "0.3.4"
     }
 }

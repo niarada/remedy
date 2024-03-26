@@ -1,11 +1,11 @@
 {
     "name": "@niarada/remedy-feature-sse",
-    "version": "0.3.3",
+    "version": "0.3.4",
     "files": [
         "index.ts"
     ],
     "main": "index.ts",
     "dependencies": {
-        "@niarada/remedy": "0.3.3"
+        "@niarada/remedy": "0.3.4"
     }
 }

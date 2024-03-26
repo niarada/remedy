@@ -7,19 +7,19 @@ const director = new Director();
 
 describe("markdown/source", () => {
     it("compile", () => {
-        const source = markdownFeature.source!("# Hello");
+        const source = markdownFeature.source!("*Hello*");
         expect(source.code).toBe(
             [
                 "export const attributes = {};",
-                `export const template = "<h1>Hello</h1>\\n";`,
+                `export const template = "<p><em>Hello</em></p>\\n";`,
                 "export async function action() { return {}; }\n",
             ].join("\n"),
         );
     });
 
     it("should present", async () => {
-        await director.prepare("joy", markdownFeature.source!("# Joy"));
+        await director.prepare("joy", markdownFeature.source!("*Joy*"));
         const rep = await director.represent("joy");
-        expect(rep!.artifact.template).toBe("<h1>Joy</h1>\n");
+        expect(rep!.artifact.template).toBe("<p><em>Joy</em></p>\n");
     });
 });
