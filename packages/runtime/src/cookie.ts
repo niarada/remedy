@@ -3,12 +3,16 @@ import crypto from "node:crypto";
 
 const cookieSecret = process.env.COOKIE_SECRET;
 
+let cookieIntroduced = false;
 let cookieWarningGiven = false;
 
 export type Cookie = Record<string, unknown>;
 
 export async function writeCookie(response: Response, cookie: Cookie) {
-    if (!cookieSecret && !cookieWarningGiven) {
+    if (!cookieIntroduced && Object.keys(cookie).length === 0) {
+        return;
+    }
+    if (!cookieSecret && !cookieWarningGiven && cookieIntroduced) {
         warn("cookie", "No COOKIE_SECRET environment variable set.  Cookie will not be encrypted.");
         cookieWarningGiven = true;
     }
@@ -24,10 +28,14 @@ export async function writeCookie(response: Response, cookie: Cookie) {
 }
 
 export function readCookie(request: Request) {
+    const cookie = request.headers.get("Cookie");
+    if (!cookie) {
+        return {} as Cookie;
+    }
+    cookieIntroduced = true;
     const value = (
-        request.headers
-            .get("Cookie")
-            ?.split(";")
+        cookie
+            .split(";")
             .map((c) => c.trim())
             .find((c) => c.startsWith("mx=")) ?? "mx={}"
     ).split("=")[1];
