@@ -1,37 +1,37 @@
 {
-  "name": "@niarada/remedy",
-  "version": "0.3.4",
-  "bin": {
-    "remedy": "bin/remedy"
-  },
-  "files": [
-    "README.md",
-    "bin",
-    "src/**/*.{ts,json}",
-    "!**/*.test.ts"
-  ],
-  "main": "src/index.ts",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/niarada/remedy.git"
-  },
-  "dependencies": {
-    "@niarada/remedy-common": "0.3.4",
-    "@niarada/remedy-feature-alpine": "0.3.4",
-    "@niarada/remedy-feature-compress": "0.3.4",
-    "@niarada/remedy-feature-fontawesome": "0.3.4",
-    "@niarada/remedy-feature-htmx": "0.3.4",
-    "@niarada/remedy-feature-image": "0.3.4",
-    "@niarada/remedy-feature-markdown": "0.3.4",
-    "@niarada/remedy-feature-partial": "0.3.4",
-    "@niarada/remedy-feature-refresh": "0.3.4",
-    "@niarada/remedy-feature-sse": "0.3.4",
-    "@niarada/remedy-feature-static": "0.3.4",
-    "@niarada/remedy-feature-tailwind": "0.3.4",
-    "@niarada/remedy-feature-typescript": "0.3.4",
-    "@niarada/remedy-hypermedia": "0.3.4",
-    "@niarada/remedy-runtime": "0.3.4",
-    "@niarada/remedy-template": "0.3.4",
-    "commander": "^12.0.0"
-  }
+    "name": "@niarada/remedy",
+    "version": "0.3.5",
+    "bin": {
+        "remedy": "bin/remedy"
+    },
+    "files": [
+        "README.md",
+        "bin",
+        "src/**/*.{ts,json}",
+        "!**/*.test.ts"
+    ],
+    "main": "src/index.ts",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/niarada/remedy.git"
+    },
+    "dependencies": {
+        "@niarada/remedy-common": "0.3.5",
+        "@niarada/remedy-feature-alpine": "0.3.5",
+        "@niarada/remedy-feature-compress": "0.3.5",
+        "@niarada/remedy-feature-fontawesome": "0.3.5",
+        "@niarada/remedy-feature-htmx": "0.3.5",
+        "@niarada/remedy-feature-image": "0.3.5",
+        "@niarada/remedy-feature-markdown": "0.3.5",
+        "@niarada/remedy-feature-partial": "0.3.5",
+        "@niarada/remedy-feature-refresh": "0.3.5",
+        "@niarada/remedy-feature-sse": "0.3.5",
+        "@niarada/remedy-feature-static": "0.3.5",
+        "@niarada/remedy-feature-tailwind": "0.3.5",
+        "@niarada/remedy-feature-typescript": "0.3.5",
+        "@niarada/remedy-hypermedia": "0.3.5",
+        "@niarada/remedy-runtime": "0.3.5",
+        "@niarada/remedy-template": "0.3.5",
+        "commander": "^12.0.0"
+    }
 }

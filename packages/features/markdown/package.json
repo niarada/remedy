@@ -1,6 +1,6 @@
 {
     "name": "@niarada/remedy-feature-markdown",
-    "version": "0.3.4",
+    "version": "0.3.5",
     "files": [
         "langs",
         "index.ts",
@@ -9,7 +9,7 @@
     ],
     "main": "index.ts",
     "dependencies": {
-        "@niarada/remedy": "0.3.4",
+        "@niarada/remedy": "0.3.5",
         "@shikijs/markdown-it": "^1.2.0",
         "@types/js-yaml": "^4.0.9",
         "@types/markdown-it": "^13.0.7",
