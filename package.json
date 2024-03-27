@@ -9,6 +9,7 @@
         "packages/server",
         "packages/template",
         "packages/features/alpine",
+        "packages/features/compress",
         "packages/features/fontawesome",
         "packages/features/htmx",
         "packages/features/image",

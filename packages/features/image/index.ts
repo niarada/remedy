@@ -26,11 +26,14 @@ export default function (): RemedyFeatureFactory {
             if (String(width) === context.form.width) {
                 return;
             }
-            return new Response(sharp(path).resize(Number(context.form.width), Number(context.form.height)), {
-                headers: {
-                    "Content-Type": "image/jpg",
+            context.response = new Response(
+                sharp(path).resize(Number(context.form.width), Number(context.form.height)),
+                {
+                    headers: {
+                        "Content-Type": "image/jpg",
+                    },
                 },
-            });
+            );
         },
 
         async transform(node) {

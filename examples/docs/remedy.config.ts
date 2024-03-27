@@ -2,6 +2,7 @@ import markdown from "@niarada/remedy-feature-markdown";
 
 export default {
     features: [
+        "compress",
         "fontawesome",
         "tailwind",
         "refresh",

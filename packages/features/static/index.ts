@@ -6,13 +6,12 @@ export default function (): RemedyFeatureFactory {
         async intercede(context) {
             const file = Bun.file(`${config.public}${context.url.pathname}`);
             if (await file.exists()) {
-                return new Response(file, {
+                context.response = new Response(file, {
                     headers: {
                         "Content-Type": file.type,
                     },
                 });
             }
-            return undefined;
         },
     });
 }

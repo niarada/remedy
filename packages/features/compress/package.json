@@ -1,0 +1,11 @@
+{
+    "name": "@niarada/remedy-feature-compress",
+    "version": "0.3.4",
+    "files": [
+        "index.ts"
+    ],
+    "main": "index.ts",
+    "dependencies": {
+        "@niarada/remedy": "0.3.4"
+    }
+}

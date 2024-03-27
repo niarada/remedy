@@ -37,13 +37,12 @@ export default function (): RemedyFeatureFactory {
                         // from: "<builtin>",
                         from: context.url.pathname,
                     });
-                    return new Response(result.css, {
+                    context.response = new Response(result.css, {
                         headers: {
                             "Content-Type": "text/css;charset=utf-8",
                         },
                     });
                 }
-                return undefined;
             },
         };
     };

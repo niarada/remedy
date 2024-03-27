@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.3.5] = 2024-03-27
+### Changed
+- Compress: Moved to feature
+
 ## [0.3.4] = 2024-03-26
 ### Changed
 - Markdown: Configurable theme and code highlight languages.

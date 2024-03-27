@@ -9,7 +9,6 @@ import {
     info,
     warn,
 } from "@niarada/remedy-runtime";
-import { applyCompression } from "./compression";
 
 async function buildFeatures(config: Required<RemedyConfig>) {
     const features: RemedyFeature[] = [];
@@ -56,11 +55,9 @@ export async function buildFetch(config: Required<RemedyConfig>) {
         await context.loadForm();
 
         for (const feature of features) {
-            if (feature.intercede) {
-                context.response = await feature.intercede(context);
-                if (context.response) {
-                    break;
-                }
+            await feature.intercede?.(context);
+            if (context.response) {
+                break;
             }
         }
 
@@ -72,15 +69,16 @@ export async function buildFetch(config: Required<RemedyConfig>) {
             }
         }
 
+        for (let i = features.length - 1; i >= 0; i--) {
+            await features[i].conclude?.(context);
+        }
+
         if (!context.response) {
-            context.response = new Response(null, {
-                status: 404,
-                statusText: "Not Found",
-            });
+            context.status(404);
         }
 
         log(context, Math.floor((Bun.nanoseconds() - time) / 1000000));
-        return applyCompression(request, context.response);
+        return context.response!;
     };
 
     async function renderPartial(context: Context) {
@@ -140,8 +138,6 @@ export async function buildFetch(config: Required<RemedyConfig>) {
         }
 
         presentation = await composePresentation(context, "index", presentation);
-
-        // console.log(scripts);
 
         if (context.response) {
             return;

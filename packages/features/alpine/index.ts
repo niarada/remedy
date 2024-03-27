@@ -1,18 +1,17 @@
 import { RemedyFeatureFactory, createHtmlElement } from "@niarada/remedy";
 
 export default function (): RemedyFeatureFactory {
-    return (config) => ({
+    return () => ({
         name: "alpine",
         async intercede(context) {
             if (context.url.pathname === "/_alpine") {
                 const file = Bun.file(require.resolve("alpinejs/dist/cdn"));
-                return new Response(file, {
+                context.response = new Response(file, {
                     headers: {
                         "Content-Type": file.type,
                     },
                 });
             }
-            return undefined;
         },
         transform(node) {
             if (node.type === "element" && node.tag === "head") {

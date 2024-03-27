@@ -1,5 +1,40 @@
+import { RemedyFeatureFactory } from "@niarada/remedy";
 import { deflateSync, gzipSync } from "bun";
 import { createDeflate, createGzip } from "node:zlib";
+
+export default function (): RemedyFeatureFactory {
+    return () => ({
+        name: "compress",
+        async conclude(context) {
+            if (!context.response) {
+                return;
+            }
+            if (
+                context.response.headers.get("connection") === "keep-alive" ||
+                !isCompressible(context.response.headers.get("Content-Type"))
+            ) {
+                return;
+            }
+            const accept = context.request.headers.get("Accept-Encoding") ?? "";
+            const format = (accept.includes("gzip") && "gzip") || (accept.includes("deflate") && "deflate");
+            if (!format) {
+                return;
+            }
+            context.response = new Response(
+                context.response.body instanceof ReadableStream
+                    ? context.response.body.pipeThrough(new CompressionStream(format))
+                    : format === "gzip"
+                      ? gzipSync(toBuffer(context.response.body, "utf-8"))
+                      : deflateSync(toBuffer(context.response.body, "utf-8")),
+                {
+                    headers: { ...Object.fromEntries(context.response.headers.entries()), "Content-Encoding": format },
+                    status: context.response.status,
+                    statusText: context.response.statusText,
+                },
+            );
+        },
+    });
+}
 
 class CompressionStream {
     readable: ReadableStream;
@@ -32,29 +67,6 @@ const toBuffer = (data: unknown, encoding: BufferEncoding) => {
         encoding,
     );
 };
-
-export function applyCompression(request: Request, response: Response) {
-    if (response.headers.get("connection") === "keep-alive" || !isCompressible(response.headers.get("Content-Type"))) {
-        return response;
-    }
-    const accept = request.headers.get("Accept-Encoding") ?? "";
-    const format = (accept.includes("gzip") && "gzip") || (accept.includes("deflate") && "deflate");
-    if (!format) {
-        return response;
-    }
-    return new Response(
-        response.body instanceof ReadableStream
-            ? response.body.pipeThrough(new CompressionStream(format))
-            : format === "gzip"
-              ? gzipSync(toBuffer(response.body, "utf-8"))
-              : deflateSync(toBuffer(response.body, "utf-8")),
-        {
-            headers: { ...Object.fromEntries(response.headers.entries()), "Content-Encoding": format },
-            status: response.status,
-            statusText: response.statusText,
-        },
-    );
-}
 
 function isCompressible(type: string | null) {
     if (!type) {

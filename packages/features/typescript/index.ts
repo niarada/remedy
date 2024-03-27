@@ -12,7 +12,7 @@ export default function (): RemedyFeatureFactory {
                 sourcemap: "inline",
             });
             const file = result.outputs[0];
-            return new Response(file, {
+            context.response = new Response(file, {
                 headers: {
                     "Content-Type": file.type,
                 },

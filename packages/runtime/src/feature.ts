@@ -9,6 +9,7 @@ export interface RemedyFeature {
     name: string;
     extension?: string;
     source?: (text: string, path?: string) => Source;
-    intercede?: (context: Context) => Promise<Response | undefined> | Response | undefined;
+    intercede?: (context: Context) => Promise<void> | void;
     transform?: HtmlSimpleTransformVisitor | HtmlSimpleAsyncTransformVisitor;
+    conclude?: (context: Context) => Promise<void> | void;
 }

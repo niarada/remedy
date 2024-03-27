@@ -32,7 +32,7 @@ export default function (): RemedyFeatureFactory {
                         location.reload();
                     });
                 `;
-                    return new Response(formatTypeScript(content), {
+                    context.response = new Response(formatTypeScript(content), {
                         headers: {
                             "Content-Type": "application/javascript; charset=utf-8",
                         },
@@ -40,7 +40,7 @@ export default function (): RemedyFeatureFactory {
                 }
 
                 if (context.url.pathname === "/_refresh_stream") {
-                    return new Response(
+                    context.response = new Response(
                         new ReadableStream({
                             type: "direct",
                             async pull(controller: ReadableStreamDirectController) {
@@ -65,8 +65,6 @@ export default function (): RemedyFeatureFactory {
                         },
                     );
                 }
-
-                return undefined;
             },
 
             transform(node) {

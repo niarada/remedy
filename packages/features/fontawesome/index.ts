@@ -7,7 +7,7 @@ export default function (): RemedyFeatureFactory {
         async intercede(context) {
             if (context.url.pathname === "/_fontawesome") {
                 const file = Bun.file(`${dirname(require.resolve("@fortawesome/fontawesome-free"))}/../css/all.css`);
-                return new Response(file, {
+                context.response = new Response(file, {
                     headers: {
                         "Content-Type": file.type,
                     },
@@ -17,13 +17,12 @@ export default function (): RemedyFeatureFactory {
                 const file = Bun.file(
                     `${dirname(require.resolve("@fortawesome/fontawesome-free"))}/..${context.url.pathname}`,
                 );
-                return new Response(file, {
+                context.response = new Response(file, {
                     headers: {
                         "Content-Type": file.type,
                     },
                 });
             }
-            return undefined;
         },
         transform(node) {
             if (node.type === "element" && node.tag === "head") {
