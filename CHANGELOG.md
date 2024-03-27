@@ -1,6 +1,8 @@
 # Changelog
 
 ## [0.3.5] = 2024-03-27
+### Added
+- CLI: Added cli, with initial commands 'serve' and 'new'
 ### Changed
 - Compress: Moved to feature
 

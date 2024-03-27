@@ -13,9 +13,6 @@ import path from "node:path";
 console.log("Cleaning out node_modules...");
 await $`find . -name node_modules | xargs rm -rf`;
 
-rmSync("bun.lockb", { force: true });
-await $`bun install --no-save`;
-
 const glob = new Glob("packages/**/package.json");
 const packages = ["package.json", "extensions/vscode/package.json", ...glob.scanSync(".")];
 
@@ -25,3 +22,6 @@ for (const file of packages) {
     const pkg = require(fullPath);
     writeFileSync(fullPath, `${JSON.stringify(pkg, null, 4)}\n`);
 }
+
+rmSync("bun.lockb", { force: true });
+await $`bun install`;

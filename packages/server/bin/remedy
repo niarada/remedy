@@ -1,15 +1,16 @@
 #!/usr/bin/env bun
 
-export type {};
+export type { };
 
 if (process.argv.includes("--hot")) {
-    Bun.spawn([process.argv[0], "--hot", process.argv[1], "--is-hot"], {
+    const argv = structuredClone(process.argv);
+    const bun = argv.shift();
+    const script = argv.shift();
+    argv.splice(argv.indexOf("--hot"), 1);
+    Bun.spawn([bun, "--hot", script, "--is-hot", ...argv], {
         stdio: ["inherit", "inherit", "inherit"],
     });
 } else {
-    const { info, serve } = await import("@niarada/remedy");
-    serve();
-    if (process.argv.includes("--is-hot")) {
-        info("server", "running hot");
-    }
+    const { cli } = await import("@niarada/remedy");
+    cli();
 }

@@ -3,13 +3,15 @@ import crypto from "node:crypto";
 
 const cookieSecret = process.env.COOKIE_SECRET;
 
-if (!cookieSecret) {
-    warn("cookie", "No COOKIE_SECRET environment variable set.  Cookie will not be encrypted.");
-}
+let cookieWarningGiven = false;
 
 export type Cookie = Record<string, unknown>;
 
 export async function writeCookie(response: Response, cookie: Cookie) {
+    if (!cookieSecret && !cookieWarningGiven) {
+        warn("cookie", "No COOKIE_SECRET environment variable set.  Cookie will not be encrypted.");
+        cookieWarningGiven = true;
+    }
     let value = JSON.stringify(cookie);
     if (cookieSecret) {
         const iv = crypto.randomBytes(16);
