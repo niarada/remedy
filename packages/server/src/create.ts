@@ -42,7 +42,7 @@ export async function create(options: CreateOptions = {}) {
     console.info(`Run '${command}' to start the server.`);
     console.info();
     console.info("Be sure to check the docs for details on configuration and more.");
-    console.info(chalk.white.bold.underline("https://remedy.niarada.dev"));
+    console.info(chalk.white.bold.underline("https://remedy.niarada.io"));
 }
 
 const remedyConfig = `export default {
