@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.6] = 2024-03-27
+### Changed
+- Runtime: Repress cookie warning even further if not relevant.
+- Director: Resolve index files for directory routes.
+- Static: Deliver html files for missing extensions or directories.
+- Docs: Post-process docs to clean up their urls.
+
 ## [0.3.5] = 2024-03-27
 ### Added
 - CLI: Added cli, with initial commands 'serve' and 'new'

@@ -1,49 +1,49 @@
 {
-    "name": "@niarada/remedy-repo",
-    "private": true,
-    "version": "0.3.5",
-    "workspaces": [
-        "packages/common",
-        "packages/hypermedia",
-        "packages/runtime",
-        "packages/server",
-        "packages/template",
-        "packages/features/alpine",
-        "packages/features/compress",
-        "packages/features/fontawesome",
-        "packages/features/htmx",
-        "packages/features/image",
-        "packages/features/markdown",
-        "packages/features/partial",
-        "packages/features/refresh",
-        "packages/features/sse",
-        "packages/features/static",
-        "packages/features/tailwind",
-        "packages/features/typescript",
-        "extensions/vscode"
-    ],
-    "scripts": {
-        "scripts": "bun scripts/scripts.ts",
-        "example": "bash scripts/example.sh",
-        "docs:build": "bun scripts/build-docs.ts",
-        "packages:build": "bun scripts/build-packages.ts",
-        "packages:fix": "bun scripts/fix-packages.ts",
-        "packages:publish": "bun packages:build && bun scripts/publish-packages.ts",
-        "packages:version": "bun scripts/version-packages.ts",
-        "extensions:vscode:dev": "cd extensions/vscode && bun scripts/dev.ts",
-        "extensions:vscode:publish": "bun packages:build && cd extensions/vscode && bun scripts/publish.ts",
-        "all:publish": "bun packages:build && bun scripts/publish-packages.ts && cd extensions/vscode && bun scripts/publish.ts"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/niarada/remedy.git"
-    },
-    "dependencies": {
-        "@biomejs/biome": "^1.5.3",
-        "@types/bun": "^1.0.8",
-        "@types/semver": "^7.5.8",
-        "command-line-usage": "^7.0.1",
-        "semver": "^7.6.0",
-        "simple-git": "^3.23.0"
-    }
+  "name": "@niarada/remedy-repo",
+  "private": true,
+  "version": "0.3.5",
+  "workspaces": [
+    "packages/common",
+    "packages/hypermedia",
+    "packages/runtime",
+    "packages/server",
+    "packages/template",
+    "packages/features/alpine",
+    "packages/features/compress",
+    "packages/features/fontawesome",
+    "packages/features/htmx",
+    "packages/features/image",
+    "packages/features/markdown",
+    "packages/features/partial",
+    "packages/features/refresh",
+    "packages/features/sse",
+    "packages/features/static",
+    "packages/features/tailwind",
+    "packages/features/typescript",
+    "extensions/vscode"
+  ],
+  "scripts": {
+    "scripts": "bun scripts/scripts.ts",
+    "example": "bash scripts/example.sh",
+    "docs:build": "bun scripts/build-docs.ts",
+    "packages:build": "bun scripts/build-packages.ts",
+    "packages:fix": "bun scripts/fix-packages.ts",
+    "packages:publish": "bun packages:build && bun scripts/publish-packages.ts",
+    "packages:version": "bun scripts/version-packages.ts",
+    "extensions:vscode:dev": "cd extensions/vscode && bun scripts/dev.ts",
+    "extensions:vscode:publish": "bun packages:build && cd extensions/vscode && bun scripts/publish.ts",
+    "all:publish": "bun packages:build && bun scripts/publish-packages.ts && cd extensions/vscode && bun scripts/publish.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/niarada/remedy.git"
+  },
+  "dependencies": {
+    "@biomejs/biome": "^1.5.3",
+    "@types/bun": "^1.0.8",
+    "@types/semver": "^7.5.8",
+    "command-line-usage": "^7.0.1",
+    "semver": "^7.6.0",
+    "simple-git": "^3.23.0"
+  }
 }

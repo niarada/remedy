@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <title>remedy: documentation</title>
-    <link rel="stylesheet" href="base.css">
-    <link rel="icon" type="image/png" href="assets/cross-both.png">
-<link rel="stylesheet" href="_fontawesome.css"><link rel="stylesheet" href="_tailwind.css"></head>
+    <link rel="stylesheet" href="/index.css">
+    <link rel="icon" type="image/png" href="/assets/cross-both.png">
+<link rel="stylesheet" href="/_fontawesome.css"></head>
 
 <body class="flex flex-col bg-gray-50 text-black absolute inset-0">
     <header class="flex flex-none justify-between items-center gap-4 bg-red-700 px-4 py-2 text-white">
-        <a class="flex items-center gap-3" href="index.html">
-            <img src="assets/cross-dark.png" class="h-6 w-6">
+        <a class="flex items-center gap-3" href="/">
+            <img src="/assets/cross-dark.png" class="h-6 w-6">
             <div class="text-2xl">remedy</div>
         </a>
         <a href="https://github.com/niarada/remedy">
@@ -22,31 +22,31 @@
         <nav class="w-48 pl-4 pt-6">
             <ul class="flex flex-col gap-1 cursor-pointer">
                 <li class>
-                    <a href="index.html">Introduction</a>
+                    <a href="/">Introduction</a>
                 </li><li class>
-                    <a href="configuration.html">Configuration</a>
+                    <a href="/configuration">Configuration</a>
                 </li><li class>
-                    <a href="partials.html">Partials</a>
+                    <a href="/partials">Partials</a>
                 </li><li class>
-                    <a href="routes.html">Routes</a>
+                    <a href="/routes">Routes</a>
                 </li><li class>
-                    <a href="templates.html">Templates</a>
+                    <a href="/templates">Templates</a>
                 </li><li class>
-                    <a href="markdown.html">Markdown</a>
+                    <a href="/markdown">Markdown</a>
                 </li><li class="font-bold">
-                    <a href="context.html">Context</a>
+                    <a href="/context">Context</a>
                 </li><li class>
-                    <a href="features.html">Features</a>
+                    <a href="/features">Features</a>
                 </li><li class>
-                    <a href="editorsupport.html">Editor Support</a>
+                    <a href="/editorsupport">Editor Support</a>
                 </li><li class>
-                    <a href="roadmap.html">Roadmap</a>
+                    <a href="/roadmap">Roadmap</a>
                 </li>
             </ul>
         </nav>
         <div class="relative overflow-y-scroll pt-6 flex-auto">
             <article class="prose w-full absolute">
-                <h1>Context</h1>
+                <nav class="table-of-contents"><ol><li><a href="/context#context">Context</a><ol><li><a href="/context#attributes">attributes</a><ol><li><a href="/context#request">request</a></li><li><a href="/context#url">url</a></li><li><a href="/context#cookie">cookie</a></li><li><a href="/context#form">form</a></li><li><a href="/context#response(%3D)">response(=)</a></li><li><a href="/context#flash(%3D)">flash(=)</a></li><li><a href="/context#redirect(href%2C-status%3F)">redirect(href, status?)</a></li><li><a href="/context#status(status%2C-message%3F)">status(status, message?)</a></li><li><a href="/context#oob(tag%2C-attributes)">oob(tag, attributes)</a></li><li><a href="/context#cancelrender">cancelRender</a></li></ol></li></ol></li></ol></nav><h1 id="context" tabindex="-1">Context</h1>
 <p>Your partials have access to a <code>$context</code> object that provides information about the request, and let's you manipulate the response.</p>
 <p>It looks like this:</p>
 <pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-ts"><span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">interface</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD"> Context</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">Attributes</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> {</span></span>
@@ -64,36 +64,36 @@
 <span class="line"><span style="color:#E86464;--shiki-dark:#E86464">    oob</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">(</span><span style="color:#DE2626;--shiki-dark:#DE2626">tag</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">:</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD"> string</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">,</span><span style="color:#DE2626;--shiki-dark:#DE2626"> attributes</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">:</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD"> Record</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">string</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">,</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD"> unknown</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> =</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> {});</span></span>
 <span class="line"><span style="color:#E86464;--shiki-dark:#E86464">    cancelRender</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">();</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">}</span></span></code></pre>
-<h2>attributes</h2>
+<h2 id="attributes" tabindex="-1">attributes</h2>
 <p>Any attributes passed in via tag, or variable path part.</p>
-<h3>request</h3>
+<h3 id="request" tabindex="-1">request</h3>
 <p>A standard <a href="https://developer.mozilla.org/en-US/docs/Web/API/Request">request</a> object.</p>
-<h3>url</h3>
+<h3 id="url" tabindex="-1">url</h3>
 <p>The parsed <a href="https://developer.mozilla.org/en-US/docs/Web/API/URL">URL</a> object.</p>
-<h3>cookie</h3>
+<h3 id="cookie" tabindex="-1">cookie</h3>
 <p>An object that you may freely set/get properties on.  It will be passed back and forth to the client.
 Make sure to set <code>COOKIE_SECRET</code> in your environment if you want the cookie encrypted.</p>
-<h3>form</h3>
+<h3 id="form" tabindex="-1">form</h3>
 <p>An object populated by both form submission fields and query string parameters.</p>
-<h3>response(=)</h3>
+<h3 id="response(%3D)" tabindex="-1">response(=)</h3>
 <p>May be set to an instance of <a href="https://developer.mozilla.org/en-US/docs/Web/API/Response">Response</a> to more directly control the response.  The template, if any, will be ignored if this is set.</p>
-<h3>flash(=)</h3>
+<h3 id="flash(%3D)" tabindex="-1">flash(=)</h3>
 <p>Shortcut to place a flash message in the cookie, or to read it from the cookie.  If read, it will be deleted from the cookie.</p>
-<h3>redirect(href, status?)</h3>
+<h3 id="redirect(href%2C-status%3F)" tabindex="-1">redirect(href, status?)</h3>
 <p>Shortcut to redirect.  If <code>status</code> is not specified, it defaults to 302.</p>
-<h3>status(status, message?)</h3>
+<h3 id="status(status%2C-message%3F)" tabindex="-1">status(status, message?)</h3>
 <p>Shortcut to set the status code and message.  This creates a response, so templating will be bypassed.  If <code>message</code> is not specified, it defaults the standard message for the code.</p>
-<h3>oob(tag, attributes)</h3>
+<h3 id="oob(tag%2C-attributes)" tabindex="-1">oob(tag, attributes)</h3>
 <p>Renders an <a href="https://htmx.org/docs/#oob_swaps">out-of-band</a> partial to the response.</p>
-<h3>cancelRender</h3>
+<h3 id="cancelrender" tabindex="-1">cancelRender</h3>
 <p>Cancels rendering the template for the current partial.  It will, however, still render any out-of-bands that have been specified.</p>
 
                 <footer class="mt-8 flex justify-between border-t border-t-slate-500 pt-4 pb-10">
                     <div>
-                        <a href="markdown.html">← Markdown</a>
+                        <a href="/markdown">← Markdown</a>
                     </div>
                     <div>
-                        <a href="features.html">Features →</a>
+                        <a href="/features">Features →</a>
                     </div>
                 </footer>
             </article>

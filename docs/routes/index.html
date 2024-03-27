@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <title>remedy: documentation</title>
-    <link rel="stylesheet" href="base.css">
-    <link rel="icon" type="image/png" href="assets/cross-both.png">
-<link rel="stylesheet" href="_fontawesome.css"><link rel="stylesheet" href="_tailwind.css"></head>
+    <link rel="stylesheet" href="/index.css">
+    <link rel="icon" type="image/png" href="/assets/cross-both.png">
+<link rel="stylesheet" href="/_fontawesome.css"></head>
 
 <body class="flex flex-col bg-gray-50 text-black absolute inset-0">
     <header class="flex flex-none justify-between items-center gap-4 bg-red-700 px-4 py-2 text-white">
-        <a class="flex items-center gap-3" href="index.html">
-            <img src="assets/cross-dark.png" class="h-6 w-6">
+        <a class="flex items-center gap-3" href="/">
+            <img src="/assets/cross-dark.png" class="h-6 w-6">
             <div class="text-2xl">remedy</div>
         </a>
         <a href="https://github.com/niarada/remedy">
@@ -22,31 +22,31 @@
         <nav class="w-48 pl-4 pt-6">
             <ul class="flex flex-col gap-1 cursor-pointer">
                 <li class>
-                    <a href="index.html">Introduction</a>
+                    <a href="/">Introduction</a>
                 </li><li class>
-                    <a href="configuration.html">Configuration</a>
+                    <a href="/configuration">Configuration</a>
                 </li><li class>
-                    <a href="partials.html">Partials</a>
+                    <a href="/partials">Partials</a>
                 </li><li class="font-bold">
-                    <a href="routes.html">Routes</a>
+                    <a href="/routes">Routes</a>
                 </li><li class>
-                    <a href="templates.html">Templates</a>
+                    <a href="/templates">Templates</a>
                 </li><li class>
-                    <a href="markdown.html">Markdown</a>
+                    <a href="/markdown">Markdown</a>
                 </li><li class>
-                    <a href="context.html">Context</a>
+                    <a href="/context">Context</a>
                 </li><li class>
-                    <a href="features.html">Features</a>
+                    <a href="/features">Features</a>
                 </li><li class>
-                    <a href="editorsupport.html">Editor Support</a>
+                    <a href="/editorsupport">Editor Support</a>
                 </li><li class>
-                    <a href="roadmap.html">Roadmap</a>
+                    <a href="/roadmap">Roadmap</a>
                 </li>
             </ul>
         </nav>
         <div class="relative overflow-y-scroll pt-6 flex-auto">
             <article class="prose w-full absolute">
-                <h1>Routes</h1>
+                <nav class="table-of-contents"><ol><li><a href="/routes#routes">Routes</a><ol><li><a href="/routes#endpoints">Endpoints</a></li><li><a href="/routes#dynamic-routes">Dynamic Routes</a></li></ol></li></ol></nav><h1 id="routes" tabindex="-1">Routes</h1>
 <p>Routing in <strong>remedy</strong> is file based.  Every partial that is not a layout (i.e. an index) generates a tag and <em>a routable path.</em></p>
 <p>Consider this directory structure, and the tags it generates:</p>
 <pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-"><span class="line"><span>Path                        Tag</span></span>
@@ -76,13 +76,13 @@
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">   &#x3C;</span><span style="color:#E86464;--shiki-dark:#E86464">slot</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">>&#x3C;</span><span style="color:#E86464;--shiki-dark:#E86464">my-home</span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB"> /</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">>&#x3C;/</span><span style="color:#E86464;--shiki-dark:#E86464">slot</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/</span><span style="color:#DE2626;--shiki-dark:#DE2626">div</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span></code></pre>
 <p>Loading any other route will slot the appropriate content for that page.  For example, loading <code>/alpha</code> will place <code>&lt;alpha /&gt;</code> as the slot content for the index.</p>
-<h2>Endpoints</h2>
+<h2 id="endpoints" tabindex="-1">Endpoints</h2>
 <p>Most partials are accessible from an HTTP client by their route.  The only exceptions are layouts other than the root layout.</p>
 <p>For example:</p>
 <p><code>public/hello/world.part</code> is accessible vi <code>GET /hello/world</code> (or POST, PATCH, etc);</p>
 <p>If you pass a query string, or post a form, that data will be available in a special object called <code>$context.form</code></p>
-<p>(For more on the <code>$context</code> object, see <a href="context.html">Context</a>)</p>
-<h2>Dynamic Routes</h2>
+<p>(For more on the <code>$context</code> object, see <a href="/context">Context</a>)</p>
+<h2 id="dynamic-routes" tabindex="-1">Dynamic Routes</h2>
 <p>Dynamic routes are made possible by naming any directory or partial with brackets.</p>
 <p>Some examples:</p>
 <ul>
@@ -94,10 +94,10 @@
 
                 <footer class="mt-8 flex justify-between border-t border-t-slate-500 pt-4 pb-10">
                     <div>
-                        <a href="partials.html">← Partials</a>
+                        <a href="/partials">← Partials</a>
                     </div>
                     <div>
-                        <a href="templates.html">Templates →</a>
+                        <a href="/templates">Templates →</a>
                     </div>
                 </footer>
             </article>
