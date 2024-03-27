@@ -59,6 +59,7 @@ function resolvePath(
         if (segments.length > 0) {
             return { path: undefined, resolvedVariables };
         }
+
         return {
             path: currentPath,
             resolvedVariables,
@@ -91,7 +92,12 @@ function resolvePath(
         if (entry.isDirectory()) {
             const parsed = path.parse(entry.name);
             if (parsed.name === first) {
-                return resolvePath(rest, path.join(currentPath, entry.name), resolvedVariables, validExtensions);
+                return resolvePath(
+                    rest.length === 0 ? ["index"] : rest,
+                    path.join(currentPath, entry.name),
+                    resolvedVariables,
+                    validExtensions,
+                );
             }
         }
     }
@@ -129,7 +135,7 @@ function resolvePath(
             if (parsed.name.startsWith("[") && parsed.name.endsWith("]")) {
                 const variable = parsed.name.slice(1, -1);
                 return resolvePath(
-                    rest,
+                    rest.length === 0 ? ["index"] : rest,
                     path.join(currentPath, entry.name),
                     {
                         ...resolvedVariables,
