@@ -2,41 +2,42 @@ ${toc}
 
 # Introduction
 
-**remedy** is a *Hypermedia Server*.
+**Remedy** is a *Hypermedia Server*.
 
-## Installation
+## Summary
 
-**remedy** requires a [bun](https://bun.sh), so make sure that's installed first.
+Remedy aims to provide the most straight-forward server implementation for hypermedia systems, as described in the
+book [Hypermedia Systems](https://hypermedia.systems).
 
-### Quick start
+If you want to get started right away, please head over to the [Quickstart](/quickstart).
 
-If you want to quickly test out **remedy**, find a cozy spot and run:
+## Motivation
 
-```sh
-bunx @niarada/remedy
-```
+Remedy was born out of a desire to establish a web development pattern that is centered around
+[HATEOAS](https://htmx.org/essays/hateoas/).
 
-This will create a `public` folder, and a `remedy.config.ts` file at your location.
+Remedy's primary purpose in life is to spit out state-rich chunks of HTML, and those artificts that support it.
 
-Anything you place in the `public` folder will be served by **remedy**.
+Additionally, we want to provide the lowest possible barrier to entry for *just getting moving* on any hypermedia project, following through with fast iteration and progressive enhancement.
 
-### Official install
+## Design Principles
 
-For a more lasting and typical project setup, see here:
+Remedy is designed around a few main concepts that compose the core of the architecture.
 
-```sh
-mkdir my-project
-cd my-project
-echo "{}" > package.json
-bun add @niarada/remedy
-```
+### Features
 
-Start the server:
+Remedy *features* are an amalgamation of what other products call plugins, middleware, or integrations.  The Remedy core server does very little, handing off most of the work to activated features.  It is consequently very easy to extend Remedy by third parties.
 
-```sh
-bunx remedy
-```
+These features can progressively add support for a variety of technologies as your project grows.  Please see the [Features](/features) section for more details.
 
-This will, as in the quickstart, create a `remedy.config.ts` file, and a `public` folder.
+### Partials & Presenters
 
-You may elect to stop the server and make whatever changes you need to the config file before continuing.
+In hypermedia systems, a common pattern is to load a complete page once, followed by loading or reloading smaller sections as the user begins to interact with it.
+
+A *partial* is common term for a re-usable chunk of HTML.  Typically, they're just handy snippets that can be composed into larger pages.  Remedy elevates the concept a bit, by making them *routable*.
+
+A supporting concept to partials is that of a *presenter*.  A presenter is any feature that produces HTML and elects to be part of the routing system.  When the router takes a request for a resource, it will examine the public directory for source files associated to the registered presenters, and have the resolved presenter render it.
+
+This same process is used to look up partials from within the source documents of presenters, to enable composition.
+
+Please see [Routing](/routing), [Partials](/partials), and [Presenters](/presenters) for more details.

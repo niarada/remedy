@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 import markdownFeatureFactory from "../../features/markdown";
-import { PartialSource } from "../../features/partial/source";
+import { TemplateSource } from "../../features/template/source";
 import { Director } from "./director";
 import { fakeContext } from "./test";
 
@@ -21,7 +21,7 @@ describe("presentation", async () => {
         <h1>{gift}</h1>
     `;
     it("render simple", async () => {
-        await director.prepare("beta", new PartialSource(source1));
+        await director.prepare("beta", new TemplateSource(source1));
         expect(await director.render("beta", fakeContext(), { trim: true })).toBe("<h1>Joy</h1>");
     });
 
@@ -36,20 +36,20 @@ describe("presentation", async () => {
         </p>
     `;
     it("render attributes", async () => {
-        await director.prepare("gamma", new PartialSource(source2));
+        await director.prepare("gamma", new TemplateSource(source2));
         expect(await director.render("gamma", fakeContext({ gift: "Temperance", chapter: 5 }), { trim: true })).toBe(
             `<p><a chapter="number 5">Temperance</a></p>`,
         );
     });
 
     it("flow each", async () => {
-        await director.prepare("delta", new PartialSource(`<a rx-each={[1,2]} rx-as="i">{i}</a>`));
+        await director.prepare("delta", new TemplateSource(`<a rx-each={[1,2]} rx-as="i">{i}</a>`));
         expect(await director.render("delta", fakeContext(), { trim: true })).toBe("<a>1</a><a>2</a>");
     });
 
     await director.prepare(
         "todo-list",
-        new PartialSource(`
+        new TemplateSource(`
             const items = [
                 { id: 1, name: "Love" },
                 { id: 2, name: "Joy" },
@@ -64,7 +64,7 @@ describe("presentation", async () => {
 
     await director.prepare(
         "todo-item",
-        new PartialSource(`
+        new TemplateSource(`
             interface Attributes {
                 id: number;
                 name: string;
@@ -85,7 +85,7 @@ describe("presentation", async () => {
 
     await director.prepare(
         "slot-outer",
-        new PartialSource(`
+        new TemplateSource(`
             const gift = "Joy";
 
             <main>
@@ -98,7 +98,7 @@ describe("presentation", async () => {
 
     await director.prepare(
         "slot-middle",
-        new PartialSource(`
+        new TemplateSource(`
             <div class="outer">
                 <slot />
             </div>
@@ -107,7 +107,7 @@ describe("presentation", async () => {
 
     await director.prepare(
         "slot-inner",
-        new PartialSource(`
+        new TemplateSource(`
             interface Attributes {
                 gift: string;
             }

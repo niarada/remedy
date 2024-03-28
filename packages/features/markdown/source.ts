@@ -1,8 +1,7 @@
-import { Source } from "@niarada/remedy";
+import { Source, error } from "@niarada/remedy";
 import Markdown from "markdown-it";
 
 export class MarkdownSource extends Source {
-    readonly kind = "markdown";
     #html!: string;
 
     constructor(
@@ -18,6 +17,10 @@ export class MarkdownSource extends Source {
     }
 
     compile() {
-        this.#html = this.markdown.render(this.text);
+        try {
+            this.#html = this.markdown.render(this.text);
+        } catch (e) {
+            error("markdown", (e as Error).message);
+        }
     }
 }

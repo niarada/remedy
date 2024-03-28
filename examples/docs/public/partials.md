@@ -2,11 +2,46 @@ ${toc}
 
 # Partials
 
-Partials are the *language* of **remedy**.  A partial can be divided into two sections, though neither is strictly required: the **action** and the **template**.  **Actions** are written in TypeScript or JavaScript, and occupy the top section of the partial.  **Templates** are written in HTML, and occupy the bottom section.
+## Summary
+
+Partials are composable and routeable generators of hypermedia, that is HTML.
+
+They are implemented by features.  There are currently two built-in features that implement partials:
+
+- [Remedy Templates](/features#templates)
+- [Markdown](/features#markdown)
+
+
+<!-- The server exposes partials through two mechanisms:
+
+- [Routing](/routing)
+- [Composition](/composition)
+
+Please take a look at those pages for details on each feature or concept. -->
+
+## Usage
+
+Let's say we have enabled the [template](/features#templates) feature (on by default), and placed a file called `user/status.rx` in our public directory.  (`rx` is the extension for Remedy templates.)
+
+### Route
+
+A route is now mapped to `/user/status` which will invoke the template feature with the source of that file.  If one passes query parameters, or posts a form to that route, those values will be made available to the partial through the [$context](/context) object.
+
+### Composition
+
+This has also made available a tag called `<user-status>`.  This tag may be used from other partials to include that partial within it.  For example, you might have a `user.rx` that looks like this:
+
+```rx
+<div>
+    <user-status id="1"/>
+</div>
+```
+
+
 
 ### An Example
 
-```part
+```rx
 /**
  * public/hello.part
  */
@@ -22,7 +57,7 @@ Partials are so-called because they are re-usable.  This example file is called 
 
 You can then use it in another partial like this:
 
-```part
+```rx
 /**
  * public/salutation.part
  */
@@ -34,7 +69,7 @@ You can then use it in another partial like this:
 
 You can also pass in attributes.
 
-```part
+```rx
 /**
  * public/hello.part
  */
@@ -44,7 +79,7 @@ You can also pass in attributes.
 </div>
 ```
 
-```part
+```rx
 /**
  * public/salutation.part
  */
@@ -56,7 +91,7 @@ You can also pass in attributes.
 
 Or contents:
 
-```part
+```rx
 /**
  * public/hello.part
  */
@@ -66,7 +101,7 @@ Or contents:
 </div>
 ```
 
-```part
+```rx
 /**
  * public/salutation.part
  */
@@ -78,7 +113,7 @@ Or contents:
 
 If you use TypeScript, you can be clear about your attributes, and type them.
 
-```part
+```rx
 /**
  * public/hello.part
  */

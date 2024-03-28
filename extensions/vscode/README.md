@@ -1,4 +1,4 @@
-# Language support for remedy partial (`.part`) files.
+# Language support for remedy template (`.rx`) files.
 
 Supports:
   - Syntax highlighting and all language services for both HTML and TypeScript sections.

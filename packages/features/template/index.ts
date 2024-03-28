@@ -1,12 +1,12 @@
 import { RemedyFeatureFactory } from "@niarada/remedy";
-import { PartialSource } from "./source";
+import { TemplateSource } from "./source";
 
 export default function (): RemedyFeatureFactory {
     return () => ({
-        name: "partial",
-        extension: "part",
+        name: "template",
+        extension: "rx",
         source(text: string, path?: string) {
-            return new PartialSource(text, path);
+            return new TemplateSource(text, path);
         },
     });
 }

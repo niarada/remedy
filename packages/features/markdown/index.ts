@@ -48,7 +48,7 @@ export default function (options: MarkdownOptions = {}): RemedyFeatureFactory {
         }
 
         const remedyLanguage = {
-            name: "part",
+            name: "rx",
             ...readYaml(require.resolve("./langs/remedy.tmLanguage.yaml")),
         } as LanguageInput;
         const remedyTemplateLanguage = readYaml(require.resolve("./langs/template.tmLanguage.yaml")) as LanguageInput;

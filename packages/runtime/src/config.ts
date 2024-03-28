@@ -10,6 +10,6 @@ export function defaultRemedyConfig(): Required<RemedyConfig> {
     return {
         port: 4321,
         public: "public",
-        features: ["refresh", "static", "partial"],
+        features: ["refresh", "static", "template"],
     };
 }

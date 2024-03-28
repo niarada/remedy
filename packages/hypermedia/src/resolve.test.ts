@@ -12,15 +12,15 @@ describe("resolveTag", () => {
         fs.mkdirSync(path.join(basePath, "joy/patience/[id]"), {
             recursive: true,
         });
-        fs.writeFileSync(path.join(basePath, "joy/patience/[id]/kindness.part"), "");
+        fs.writeFileSync(path.join(basePath, "joy/patience/[id]/kindness.rx"), "");
         fs.mkdirSync(path.join(basePath, "joy/[virtue]/[id]"), {
             recursive: true,
         });
-        fs.writeFileSync(path.join(basePath, "joy/[virtue]/[id]/kindness.part"), "");
-        fs.writeFileSync(path.join(basePath, "joy/[virtue]/[id]/[other].part"), "");
-        fs.writeFileSync(path.join(basePath, "joy.part"), "");
+        fs.writeFileSync(path.join(basePath, "joy/[virtue]/[id]/kindness.rx"), "");
+        fs.writeFileSync(path.join(basePath, "joy/[virtue]/[id]/[other].rx"), "");
+        fs.writeFileSync(path.join(basePath, "joy.rx"), "");
         fs.mkdirSync(path.join(basePath, "love"), { recursive: true });
-        fs.writeFileSync(path.join(basePath, "love/[id].part"), "");
+        fs.writeFileSync(path.join(basePath, "love/[id].rx"), "");
     });
 
     afterAll(() => {
@@ -30,27 +30,27 @@ describe("resolveTag", () => {
     it("should resolve a tag with a fixed path and a variable path", () => {
         const tag = "joy-patience-2-kindness";
         const expected = {
-            path: path.join(basePath, "joy/patience/[id]/kindness.part"),
+            path: path.join(basePath, "joy/patience/[id]/kindness.rx"),
             amendedTag: "joy-patience-[id]-kindness",
             resolvedVariables: { id: "2" },
         };
-        expect(resolveTag(tag, basePath, [".part"])).toEqual(expected);
+        expect(resolveTag(tag, basePath, [".rx"])).toEqual(expected);
     });
 
     it("should resolve a tag with two variable paths", () => {
         const tag = "joy-peace-3-kindness";
         const expected = {
-            path: path.join(basePath, "joy/[virtue]/[id]/kindness.part"),
+            path: path.join(basePath, "joy/[virtue]/[id]/kindness.rx"),
             amendedTag: "joy-[virtue]-[id]-kindness",
             resolvedVariables: { virtue: "peace", id: "3" },
         };
-        expect(resolveTag(tag, basePath, [".part"])).toEqual(expected);
+        expect(resolveTag(tag, basePath, [".rx"])).toEqual(expected);
     });
 
     it("should resolve a tag with three variables, last of them a file", () => {
         const tag = "joy-gentleness-3-faithfulness";
         const expected = {
-            path: path.join(basePath, "joy/[virtue]/[id]/[other].part"),
+            path: path.join(basePath, "joy/[virtue]/[id]/[other].rx"),
             amendedTag: "joy-[virtue]-[id]-[other]",
             resolvedVariables: {
                 virtue: "gentleness",
@@ -58,17 +58,17 @@ describe("resolveTag", () => {
                 other: "faithfulness",
             },
         };
-        expect(resolveTag(tag, basePath, [".part"])).toEqual(expected);
+        expect(resolveTag(tag, basePath, [".rx"])).toEqual(expected);
     });
 
     it("should resolve a file over a directory", () => {
         const tag = "joy";
         const expected = {
-            path: path.join(basePath, "joy.part"),
+            path: path.join(basePath, "joy.rx"),
             amendedTag: "joy",
             resolvedVariables: {},
         };
-        expect(resolveTag(tag, basePath, [".part"])).toEqual(expected);
+        expect(resolveTag(tag, basePath, [".rx"])).toEqual(expected);
     });
 
     it("should return undefined for a path one segment longer than an existing path that doesn't exist", () => {
@@ -78,17 +78,17 @@ describe("resolveTag", () => {
             amendedTag: undefined,
             resolvedVariables: { id: "3" },
         };
-        expect(resolveTag(tag, basePath, [".part"])).toEqual(expected);
+        expect(resolveTag(tag, basePath, [".rx"])).toEqual(expected);
     });
 
     it("should return when variable file on end", () => {
         const tag = "love-3";
         const expected = {
-            path: path.join(basePath, "/love/[id].part"),
+            path: path.join(basePath, "/love/[id].rx"),
             amendedTag: "love-[id]",
             resolvedVariables: { id: "3" },
         };
-        expect(resolveTag(tag, basePath, [".part"])).toEqual(expected);
+        expect(resolveTag(tag, basePath, [".rx"])).toEqual(expected);
     });
 
     it("should return undefined path and amendedTag if tag does not match any file", () => {
@@ -98,6 +98,6 @@ describe("resolveTag", () => {
             amendedTag: undefined,
             resolvedVariables: {},
         };
-        expect(resolveTag(tag, basePath, [".part"])).toEqual(expected);
+        expect(resolveTag(tag, basePath, [".rx"])).toEqual(expected);
     });
 });

@@ -40,10 +40,14 @@ export async function serve(options: ServeOptions = {}) {
 
     const fetch = await buildFetch(config);
 
-    Bun.serve({
-        port: config.port!,
-        fetch,
-    });
+    try {
+        Bun.serve({
+            port: config.port!,
+            fetch,
+        });
 
-    info("server", `listening on port ${config.port}`);
+        info("server", `listening on port ${config.port}`);
+    } catch (e) {
+        console.log(e);
+    }
 }

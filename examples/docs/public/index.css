@@ -46,7 +46,8 @@ ul.roadmap {
 }
 
 .table-of-contents > ol > li > a {
-    @apply hidden;
+    /* @apply hidden; */
+    @apply font-bold underline
 }
 
 .table-of-contents > ol {

@@ -13,9 +13,7 @@ import * as ts from "typescript";
  * A `.part` source file composed of an upper code section (action) and
  * a subsequent html section (template).  Both are optional.
  */
-export class PartialSource extends Source {
-    readonly kind = "partial";
-
+export class TemplateSource extends Source {
     #template!: HtmlFragment;
     #action!: ts.SourceFile;
     #attributes: Record<string, ts.TypeNode> = {};

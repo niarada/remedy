@@ -6,6 +6,8 @@
 - Director: Resolve index files for directory routes.
 - Static: Deliver html files for missing extensions or directories.
 - Docs: Post-process docs to clean up their urls.
+- Partials: Renamed template extension from `.part` to `.rx`.
+- Cli: Default command is now 'serve'.
 
 ## [0.3.5] = 2024-03-27
 ### Added

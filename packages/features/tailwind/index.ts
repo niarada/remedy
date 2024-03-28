@@ -7,7 +7,7 @@ import tailwind, { Config as TailwindConfig } from "tailwindcss";
 import nesting from "tailwindcss/nesting";
 
 const defaultTailwindConfig = `export default {
-    content: ["./**/*.part"],
+    content: ["./**/*.rx"],
 }`;
 
 export default function (): RemedyFeatureFactory {

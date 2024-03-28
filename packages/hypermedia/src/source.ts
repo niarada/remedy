@@ -1,5 +1,3 @@
-import { ArtifactKind } from "./artifact";
-
 /**
  * The representation's source code.
  */
@@ -13,7 +11,6 @@ export abstract class Source {
         protected readonly text: string,
         readonly path?: string,
     ) {}
-    abstract readonly kind: ArtifactKind;
 
     /**
      * The source code for the action function.

@@ -1,12 +1,12 @@
 import { describe, expect, it } from "bun:test";
 import { mkdirSync, writeFileSync } from "node:fs";
 import markdownFeatureFactory from "../../features/markdown";
-import partialFeatureFactory from "../../features/partial";
+import templateFeatureFactory from "../../features/template";
 import { Director } from "./director";
 import { fakeContext, makeTemporaryDirectory } from "./test";
 
 const markdownFeature = await markdownFeatureFactory()({ port: 0, public: "", features: [] });
-const partialFeature = await partialFeatureFactory()({ port: 0, public: "", features: [] });
+const partialFeature = await templateFeatureFactory()({ port: 0, public: "", features: [] });
 const director = new Director(makeTemporaryDirectory(), [markdownFeature, partialFeature]);
 
 describe("director", () => {
@@ -55,7 +55,7 @@ describe("director", () => {
 
     it("should test parameter tags", async () => {
         mkdirSync(`${director.base}/param`, { recursive: true });
-        writeFileSync(`${director.base}/param/[id].part`, "<div>{id}</div>");
+        writeFileSync(`${director.base}/param/[id].rx`, "<div>{id}</div>");
         const html = await director.render("param-1", fakeContext());
         expect(html).toBe("<div>1</div>\n");
     });

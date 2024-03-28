@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test";
-import { PartialSource } from "./source";
+import { TemplateSource } from "./source";
 
 const source1 = `
 interface Attributes {
@@ -23,7 +23,7 @@ export async function action($context: Context, id: number) {
 
 describe("partial/source", () => {
     it("compile", () => {
-        const source = new PartialSource(source1);
+        const source = new TemplateSource(source1);
         expect(source.code).toBe(target1);
     });
 });

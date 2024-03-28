@@ -37,7 +37,7 @@
             {
                 "id": "remedy",
                 "extensions": [
-                    ".part"
+                    ".rx"
                 ],
                 "icon": {
                     "light": "./assets/icon-light.png",

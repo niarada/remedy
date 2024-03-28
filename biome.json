@@ -19,7 +19,8 @@
             },
             "suspicious": {
                 "noUnsafeDeclarationMerging": "off",
-                "noAssignInExpressions": "off"
+                "noAssignInExpressions": "off",
+                "noCatchAssign": "off"
             },
             "performance": {
                 "noDelete": "off"

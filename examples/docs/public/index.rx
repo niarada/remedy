@@ -4,6 +4,10 @@ const articles = [
         href: "/",
     },
     {
+        title: "Quickstart",
+        href: "/quickstart",
+    },
+    {
         title: "Configuration",
         href: "/configuration",
     },
@@ -49,7 +53,7 @@ const nextArticle = articles[articleIndex + 1] || null;
 
 <head>
     <meta charset="UTF-8">
-    <title>remedy: documentation</title>
+    <title>Remedy Hypermedia Server</title>
     <link rel="stylesheet" href="/index.css">
     <link rel="icon" type="image/png" href="/assets/cross-both.png">
 </head>
@@ -58,7 +62,7 @@ const nextArticle = articles[articleIndex + 1] || null;
     <header class="flex flex-none justify-between items-center gap-4 bg-red-700 px-4 py-2 text-white">
         <a class="flex items-center gap-3" href="/">
             <img src="/assets/cross-dark.png" class="h-6 w-6">
-            <div class="text-2xl">remedy</div>
+            <div class="text-2xl">Remedy</div>
         </a>
         <a href="https://github.com/niarada/remedy">
             <i class="text-2xl fa-brands fa-github" />
