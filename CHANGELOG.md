@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.3.6] = 2024-03-27
+## [0.4.0] = 2024-03-28
 ### Changed
 - Runtime: Repress cookie warning even further if not relevant.
 - Director: Resolve index files for directory routes.
