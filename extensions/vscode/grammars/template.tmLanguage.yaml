@@ -3,6 +3,7 @@ scopeName: source.remedy.template
 patterns:
   - begin: ^(?=\s*<[a-z])
     end: ''
+    name: source.remedy.template
     patterns:
       - include: "#comment"
       - include: "#tag-start"

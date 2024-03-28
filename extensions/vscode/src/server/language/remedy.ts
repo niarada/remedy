@@ -21,7 +21,7 @@ export const remedyLanguage: LanguagePlugin = {
     typescript: {
         extraFileExtensions: [
             {
-                extension: "part",
+                extension: "rx",
                 isMixedContent: true,
                 scriptKind: ScriptKind.Deferred,
             },

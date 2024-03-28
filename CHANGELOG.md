@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.4.1] = 2024-03-28
+### Fixed
+- Extension: Fix loading syntax for `.rx` files.
+- Extension: Fixed language configuration for brackets and comments.
+
 ## [0.4.0] = 2024-03-28
 ### Changed
 - Runtime: Repress cookie warning even further if not relevant.
