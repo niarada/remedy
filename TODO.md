@@ -19,3 +19,4 @@
   - https://orm.drizzle.team/docs/overview
 - Bug: Referring to an uninitialzed var in an mx-each block hangs the extension.
 - See if we can get some default TS config for the user so they can avoid a tsconfig.json file.
+- Remove tailwind/nesting as this is supported by browsers already.
