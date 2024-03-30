@@ -36,7 +36,7 @@ This has also made available a tag called `<user-status>`.  This tag may be used
     <user-status id="1"/>
 </div>
 ```
-
+<!--
 
 
 ### An Example
@@ -132,4 +132,4 @@ Tag names are generated from the path of the partial file name.  Essentially, `/
 
 So, for a path such as `public/salutation/hello.part` the tag would be `<salutation-hello>`.
 
-Now, this leads us into routing, so head over to the [next section](/routes).
+Now, this leads us into routing, so head over to the [next section](/routes). -->
