@@ -1,5 +1,7 @@
-import { info } from "@niarada/remedy-common";
-import { RemedyConfig, defaultRemedyConfig } from "@niarada/remedy-runtime";
+import { info, logger } from "@niarada/remedy-common";
+import { AddressInUseError, RemedyConfig, UnknownError, defaultRemedyConfig } from "@niarada/remedy-runtime";
+import { Server, SystemError } from "bun";
+import { Effect, LogLevel, Logger } from "effect";
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import pkg from "../package.json";
 import { buildFetch } from "./fetch";
@@ -40,14 +42,29 @@ export async function serve(options: ServeOptions = {}) {
 
     const fetch = await buildFetch(config);
 
-    try {
-        Bun.serve({
-            port: config.port!,
-            fetch,
-        });
+    const server = (): Effect.Effect<Server, AddressInUseError | UnknownError> => {
+        try {
+            return Effect.succeed(Bun.serve({ fetch, port: config.port }));
+        } catch (error) {
+            if ((error as SystemError).code === "EADDRINUSE") {
+                return Effect.fail(new AddressInUseError(config.port));
+            }
+            return Effect.fail(new UnknownError(error as Error));
+        }
+    };
 
-        info("server", `listening on port ${config.port}`);
-    } catch (e) {
-        console.log(e);
-    }
+    const program = server().pipe(
+        Effect.tapErrorTag("AddressInUseError", (error) =>
+            Effect.logError(`Failed to start server. Is port ${error.port} in use?`),
+        ),
+        Effect.tapErrorTag("UnknownError", (error) => Effect.logError(error.source.message)),
+        Effect.flatMap((server) => Effect.logInfo(`Server started on port ${server.port}`)),
+    );
+
+    Effect.runPromise(
+        Effect.provide(
+            Logger.withMinimumLogLevel(program, LogLevel.Debug),
+            Logger.replace(Logger.defaultLogger, logger),
+        ),
+    );
 }

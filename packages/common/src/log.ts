@@ -1,4 +1,5 @@
 import chalk from "chalk";
+import { Logger } from "effect";
 
 export function error(...args: unknown[]) {
     log("error", ...args);
@@ -40,3 +41,29 @@ function log(level: Level, ...args: unknown[]) {
 
     console[level](timestamp, `${color(`[${group}]`)}`, ...rest);
 }
+
+//     readonly fiberId: FiberId.FiberId
+//     readonly logLevel: LogLevel.LogLevel
+// export type LogLevel = All | Fatal | Error | Warning | Info | Debug | Trace | None
+//     readonly message: Message
+//     readonly cause: Cause.Cause<unknown>
+//     readonly context: FiberRefs.FiberRefs
+//     readonly spans: List.List<LogSpan.LogSpan>
+//     readonly annotations: HashMap.HashMap<string, unknown>
+//     readonly date: Date
+
+export const logger = Logger.make(({ logLevel, fiberId, date, message }) => {
+    const color = {
+        ALL: chalk.white,
+        FATAL: chalk.red,
+        ERROR: chalk.red,
+        WARN: chalk.yellow,
+        INFO: chalk.blue,
+        DEBUG: chalk.gray,
+        TRACE: chalk.gray,
+        NONE: chalk.white,
+        OFF: chalk.white,
+    }[logLevel.label];
+    const level = color(logLevel.label.padEnd(5, " "));
+    console.log(`${chalk.gray(date.toISOString())} ${level} ${message}`);
+});

@@ -8,6 +8,7 @@
     "main": "./src/index.ts",
     "dependencies": {
         "chalk": "^5.3.0",
+        "effect": "^2.4.15",
         "typescript": "^5.4.3"
     }
 }
