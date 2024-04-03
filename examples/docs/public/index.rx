@@ -16,36 +16,29 @@ const articles = [
         href: "/configuration",
     },
     {
+        title: "Features",
+        href: "/features",
+    },
+    {
         title: "Partials",
         href: "/partials",
+    },
+    {
+        title: "Templates",
+        href: "/templates",
+    },
+    {
+        title: "Routes",
+        href: "/routes",
     },
     {
         title: "Context",
         href: "/context",
     },
     {
-        title: "Features",
+        title: "Roadmap",
+        href: "/roadmap",
     },
-    // {
-    //     title: "Routes",
-    //     href: "/routes",
-    // },
-    {
-        title: "Templates",
-        href: "/templates",
-    },
-    {
-        title: "Markdown",
-        href: "/markdown",
-    },
-    // {
-    //     title: "Features",
-    //     href: "/features",
-    // },
-    // {
-    //     title: "Roadmap",
-    //     href: "/roadmap",
-    // },
 ];
 
 const articleIndex = articles.findIndex((article) => article.href === $context.url.pathname);

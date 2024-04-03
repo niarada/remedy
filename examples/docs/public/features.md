@@ -2,60 +2,118 @@ ${toc}
 
 # Features
 
-Also known as plugins or integrations.
+Features in Remedy are comparable to both plugins and integrations in other frameworks.
 
-**remedy** is designed to allow for easy integration with 3rd party libraries or custom plugins.
+Even some of what might be considered the salient parts of Remedy are implemented as features, and can
+be disabled and configured as features.
 
-All integrations can be enabled or disabled in [Configuration](/configuration).
+All of these may be enabled, disabled, and configured in your [configuration](/configuration).
 
-### Enabled by default
+```ts
+export default {
+    features: [
+        "static",
+        "compress",
+        "template",
+        "markdown",
+        "refresh",
+        "typescript",
+        "image",
+        "htmx",
+        "sse",
+        "alpine",
+        "tailwind",
+        "fontawesome",
+    ]
+};
+```
 
-#### refresh
 
-File watching and hot refresh.
+## "static"
 
-#### partial
+Enable the delivery of any file in your public directory, that isn't otherwise handled by another feature.
 
-Partial support.
+## "compress"
 
-#### markdown
+Enables gzip compression.
 
-Markdown support.
+## "template"
 
-#### typescript
+Remedy templates are *partial* files with the extension `.rx`.  They:
 
-Typescript bundling for `<script src="...">` tags in the head.
+- Are scriptable.
+- Produce HTML.
+- Support form and query input.
+- Are composable with other partials.
 
-#### static
+See [Templates](/templates) for details.
 
-Static asset delivery.
+## "markdown"
 
-### Disabled by default
+Markdown files having the extension `.md` are treated as *partials* in that they are composable by templates.
 
-### image
+This feature is configurable, and here's an example:
 
-Image optimization.
+```ts
+import markdown from "@niarada/remedy-feature-markdown";
 
-#### htmx
+export default {
+    features: [
+        "template",
+        "refresh",
+        markdown({
+            theme: "themes/markdown.yml",
+            languages: ["ts", "sh"],
+        }),
+    ],
+};
+```
 
-HTMX support.
+## "refresh"
 
-#### sse
+This feature enabled so-called "hot refresh" in the browser during development using server-side events.  You may want to enable it depending on the value of `process.env.NODE_ENV` like so:
 
-HTMX server-sent events support.
+```ts
+export default {
+    features: [
+        "template",
+        process.env.NODE_ENV === "development" && "refresh",
+    ],
+};
+```
 
-#### alpine
+## "typescript"
 
-Alpine support.
+Enabling this feature will bundle (via Bun) any `.ts` in your public directory for delivery as JavaScript to the browser.
 
-#### tailwind
+## "image"
 
-Tailwind support.
+This feature uses **spark** to enable some image optimizations to the `<img>` tag:
 
-If this is enabled, a `tailwind.config.ts` will be created for you.  The **remedy** VSCode extension will automatically associate tailwind with **remedy** partials.
+- Examines images for their size and interpolates `width` and `height` attributes.
+- If a void attribute `optimized` is added, along with `width` and/or `height`, it re-sizes images in on the fly.
+- Adds `decoding="async"` and `loading="lazy"` attributes.
 
-#### fontawesome
+## "htmx"
 
-Fontawesome free library.
+Auto-includes the htmx library in any full-page response.
 
-e.g. `<i class="fa-brands fa-github" />`
+## "sse"
+
+Auto-includes the `htmx` server-sent events plugin in any full-page response.
+
+## "alpine"
+
+Auto-includes the Alpine.js library in any full-page response.
+
+## "tailwind"
+
+Run's any `.css` file through the tailwind compiler before delivery to the browser.  If you happen to have the [Remedy VSCode extension](/editorsupport) installed, some configuration will be set up for you if this is enabled.
+
+## "fontawesome"
+
+Provides the fontawesome free library, e.g.:
+
+```rx
+<i class="fa-brands fa-github" />`
+```

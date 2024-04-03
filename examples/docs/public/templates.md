@@ -1,14 +1,16 @@
 ${toc}
 
-# Templates
+# Remedy Templates
 
-The bottom section of a **partial** is called the *template*.
+A Remedy template can contain both TypeScript/JavaScript and HTML, or one or the other.  If both are included, the script must come first, but otherwise there is no syntactic demarcation.  When the first HTML tag is encountered, HTML will be assumed from then on.
 
-Templates are written in HTML mixed with some **remedy** syntax features.
+### Scripting
 
-### Inclusion
+The script section is full-featured TypeScript or JavaScript and you may import modules, access databases, whatever.  You'll want to reference the available [$context](/context) object to access form data, request method, cookies, and other things.
 
-Templates can include other templates, as explained [here](/partials).
+### Composition
+
+Templates can include other paritals by tag, as explained [here](/partials).
 
 ### Tag syntax
 
@@ -18,11 +20,11 @@ Element tags (including partials) without contents may be self closed (`<tag />`
 
 Anything between a `{` and `}` is considered an expression.  Expressions are written in TypeScript or JavaScript, and whatever they evaluate to will be converted to a string and rendered with the rest of the template.
 
-Any variable that is in the scope of the code above the template will be available to expressions.
+**Any variable that is in the scope of the code above the template will be available to expressions.**
 
 For example:
 
-```part
+```rx
 const name = "niarada";
 
 <h1>Hello, {name}</h1>
@@ -30,7 +32,7 @@ const name = "niarada";
 
 will result in:
 
-```part
+```rx
 <h1>Hello, niarada</h1>
 ```
 
@@ -48,7 +50,7 @@ Use these to repeat an element for each item in the provided array.  `rx-as` is 
 
 For example:
 
-```part
+```rx
 const items = [
     { name: "love" },
     { name: "joy" },
@@ -60,7 +62,7 @@ const items = [
 
 will result in:
 
-```part
+```rx
 <li>love</li>
 <li>joy</li>
 <li>peace</li>
@@ -72,7 +74,7 @@ Use this to only render the element if the provided expression evaluates to trut
 
 For example:
 
-```part
+```rx
 const truthy = true;
 const falsy = false;
 
@@ -82,7 +84,7 @@ const falsy = false;
 
 will result in:
 
-```part
+```rx
 <li>love</li>
 ```
 
@@ -92,7 +94,7 @@ There is a small helper for rendering class names, to free one from using trinar
 
 For example:
 
-```part
+```rx
 const goodness = true;
 const kindness = false;
 
@@ -101,6 +103,6 @@ const kindness = false;
 
 will result in:
 
-```part
+```rx
 <p class="goodness" />
 ```

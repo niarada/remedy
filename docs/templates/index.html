@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>remedy: documentation</title>
+    <title>Remedy Hypermedia Server</title>
     <link rel="stylesheet" href="/index.css">
     <link rel="icon" type="image/png" href="/assets/cross-both.png">
 <link rel="stylesheet" href="/_fontawesome.css"></head>
@@ -12,7 +12,7 @@
     <header class="flex flex-none justify-between items-center gap-4 bg-red-700 px-4 py-2 text-white">
         <a class="flex items-center gap-3" href="/">
             <img src="/assets/cross-dark.png" class="h-6 w-6">
-            <div class="text-2xl">remedy</div>
+            <div class="text-2xl">Remedy</div>
         </a>
         <a href="https://github.com/niarada/remedy">
             <i class="text-2xl fa-brands fa-github"></i>
@@ -24,21 +24,21 @@
                 <li class>
                     <a href="/">Introduction</a>
                 </li><li class>
+                    <a href="/quickstart">Quickstart</a>
+                </li><li class>
+                    <a href="/editorsupport">Editor Support</a>
+                </li><li class>
                     <a href="/configuration">Configuration</a>
-                </li><li class>
-                    <a href="/partials">Partials</a>
-                </li><li class>
-                    <a href="/routes">Routes</a>
-                </li><li class="font-bold">
-                    <a href="/templates">Templates</a>
-                </li><li class>
-                    <a href="/markdown">Markdown</a>
-                </li><li class>
-                    <a href="/context">Context</a>
                 </li><li class>
                     <a href="/features">Features</a>
                 </li><li class>
-                    <a href="/editorsupport">Editor Support</a>
+                    <a href="/partials">Partials</a>
+                </li><li class="font-bold">
+                    <a href="/templates">Templates</a>
+                </li><li class>
+                    <a href="/routes">Routes</a>
+                </li><li class>
+                    <a href="/context">Context</a>
                 </li><li class>
                     <a href="/roadmap">Roadmap</a>
                 </li>
@@ -46,22 +46,23 @@
         </nav>
         <div class="relative overflow-y-scroll pt-6 flex-auto">
             <article class="prose w-full absolute">
-                <nav class="table-of-contents"><ol><li><a href="/templates#templates">Templates</a><ol><li><a href="/templates#inclusion">Inclusion</a></li><li><a href="/templates#tag-syntax">Tag syntax</a></li><li><a href="/templates#expressions">Expressions</a></li><li><a href="/templates#code-blocks">Code blocks</a></li><li><a href="/templates#flow-control">Flow control</a><ol><li><a href="/templates#rx-each-%26-rx-as">rx-each &amp; rx-as</a></li><li><a href="/templates#rx-when">rx-when</a></li></ol></li><li><a href="/templates#class-name-helper">Class name helper</a></li></ol></li></ol></nav><h1 id="templates" tabindex="-1">Templates</h1>
-<p>The bottom section of a <strong>partial</strong> is called the <em>template</em>.</p>
-<p>Templates are written in HTML mixed with some <strong>remedy</strong> syntax features.</p>
-<h3 id="inclusion" tabindex="-1">Inclusion</h3>
-<p>Templates can include other templates, as explained <a href="/partials">here</a>.</p>
+                <nav class="table-of-contents"><ol><li><a href="/templates#remedy-templates">Remedy Templates</a><ol><li><a href="/templates#scripting">Scripting</a></li><li><a href="/templates#composition">Composition</a></li><li><a href="/templates#tag-syntax">Tag syntax</a></li><li><a href="/templates#expressions">Expressions</a></li><li><a href="/templates#code-blocks">Code blocks</a></li><li><a href="/templates#flow-control">Flow control</a><ol><li><a href="/templates#rx-each-%26-rx-as">rx-each &amp; rx-as</a></li><li><a href="/templates#rx-when">rx-when</a></li></ol></li><li><a href="/templates#class-name-helper">Class name helper</a></li></ol></li></ol></nav><h1 id="remedy-templates" tabindex="-1">Remedy Templates</h1>
+<p>A Remedy template can contain both TypeScript/JavaScript and HTML, or one or the other.  If both are included, the script must come first, but otherwise there is no syntactic demarcation.  When the first HTML tag is encountered, HTML will be assumed from then on.</p>
+<h3 id="scripting" tabindex="-1">Scripting</h3>
+<p>The script section is full-featured TypeScript or JavaScript and you may import modules, access databases, whatever.  You'll want to reference the available <a href="/context">$context</a> object to access form data, request method, cookies, and other things.</p>
+<h3 id="composition" tabindex="-1">Composition</h3>
+<p>Templates can include other paritals by tag, as explained <a href="/partials">here</a>.</p>
 <h3 id="tag-syntax" tabindex="-1">Tag syntax</h3>
 <p>Element tags (including partials) without contents may be self closed (<code>&lt;tag /&gt;</code>).  Tags that are considered "void" tags by the HTML spec can omit the slash (<code>&lt;link&gt;</code>).</p>
 <h3 id="expressions" tabindex="-1">Expressions</h3>
 <p>Anything between a <code>{</code> and <code>}</code> is considered an expression.  Expressions are written in TypeScript or JavaScript, and whatever they evaluate to will be converted to a string and rendered with the rest of the template.</p>
-<p>Any variable that is in the scope of the code above the template will be available to expressions.</p>
+<p><strong>Any variable that is in the scope of the code above the template will be available to expressions.</strong></p>
 <p>For example:</p>
-<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-part"><span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">const</span><span style="color:#DE2626;--shiki-dark:#DE2626"> name</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> =</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> "</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">niarada</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">;</span></span>
+<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-rx"><span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">const</span><span style="color:#DE2626;--shiki-dark:#DE2626"> name</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> =</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> "</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">niarada</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">;</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#DE2626;--shiki-dark:#DE2626">h1</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">Hello, {name}</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/</span><span style="color:#DE2626;--shiki-dark:#DE2626">h1</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span></code></pre>
 <p>will result in:</p>
-<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-part"><span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#DE2626;--shiki-dark:#DE2626">h1</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">Hello, niarada</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/</span><span style="color:#DE2626;--shiki-dark:#DE2626">h1</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span></code></pre>
+<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-rx"><span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#DE2626;--shiki-dark:#DE2626">h1</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">Hello, niarada</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/</span><span style="color:#DE2626;--shiki-dark:#DE2626">h1</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span></code></pre>
 <h3 id="code-blocks" tabindex="-1">Code blocks</h3>
 <p>Any section of the template bounded by <code>&lt;code&gt; ... &lt;/code&gt;</code> tags will be ignored by the template engine so as to allow for complex content that <strong>remedy</strong> may not understand.</p>
 <h3 id="flow-control" tabindex="-1">Flow control</h3>
@@ -69,7 +70,7 @@
 <h4 id="rx-each-%26-rx-as" tabindex="-1">rx-each & rx-as</h4>
 <p>Use these to repeat an element for each item in the provided array.  <code>rx-as</code> is optional for when you don't need to use the value and simply want to repeat the element.</p>
 <p>For example:</p>
-<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-part"><span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">const</span><span style="color:#DE2626;--shiki-dark:#DE2626"> items</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> =</span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB"> [</span></span>
+<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-rx"><span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">const</span><span style="color:#DE2626;--shiki-dark:#DE2626"> items</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> =</span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB"> [</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    {</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> name:</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> "</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">love</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> },</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    {</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> name:</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> "</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">joy</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> },</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    {</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> name:</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> "</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">peace</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> },</span></span>
@@ -77,35 +78,35 @@
 <span class="line"></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#DE2626;--shiki-dark:#DE2626">li</span><span style="color:#DE2626;--shiki-dark:#DE2626"> rx-each</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">=</span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">{</span><span style="color:#DE2626;--shiki-dark:#DE2626">items</span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">} </span><span style="color:#DE2626;--shiki-dark:#DE2626">rx-as</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">=</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">"item"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">{item.name}</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/</span><span style="color:#DE2626;--shiki-dark:#DE2626">li</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span></code></pre>
 <p>will result in:</p>
-<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-part"><span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#DE2626;--shiki-dark:#DE2626">li</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">love</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/</span><span style="color:#DE2626;--shiki-dark:#DE2626">li</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span>
+<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-rx"><span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#DE2626;--shiki-dark:#DE2626">li</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">love</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/</span><span style="color:#DE2626;--shiki-dark:#DE2626">li</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#DE2626;--shiki-dark:#DE2626">li</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">joy</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/</span><span style="color:#DE2626;--shiki-dark:#DE2626">li</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#DE2626;--shiki-dark:#DE2626">li</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">peace</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/</span><span style="color:#DE2626;--shiki-dark:#DE2626">li</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span></code></pre>
 <h4 id="rx-when" tabindex="-1">rx-when</h4>
 <p>Use this to only render the element if the provided expression evaluates to truthy.</p>
 <p>For example:</p>
-<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-part"><span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">const</span><span style="color:#DE2626;--shiki-dark:#DE2626"> truthy</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> =</span><span style="color:#DE2626;--shiki-dark:#DE2626"> true</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">;</span></span>
+<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-rx"><span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">const</span><span style="color:#DE2626;--shiki-dark:#DE2626"> truthy</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> =</span><span style="color:#DE2626;--shiki-dark:#DE2626"> true</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">;</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">const</span><span style="color:#DE2626;--shiki-dark:#DE2626"> falsy</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> =</span><span style="color:#DE2626;--shiki-dark:#DE2626"> false</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">;</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#DE2626;--shiki-dark:#DE2626">li</span><span style="color:#DE2626;--shiki-dark:#DE2626"> rx-when</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">=</span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">{</span><span style="color:#DE2626;--shiki-dark:#DE2626">truthy</span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">}</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">love</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/</span><span style="color:#DE2626;--shiki-dark:#DE2626">li</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#DE2626;--shiki-dark:#DE2626">li</span><span style="color:#DE2626;--shiki-dark:#DE2626"> rx-when</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">=</span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">{</span><span style="color:#DE2626;--shiki-dark:#DE2626">falsy</span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">}</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">peace</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/</span><span style="color:#DE2626;--shiki-dark:#DE2626">li</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span></code></pre>
 <p>will result in:</p>
-<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-part"><span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#DE2626;--shiki-dark:#DE2626">li</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">love</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/</span><span style="color:#DE2626;--shiki-dark:#DE2626">li</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span></code></pre>
+<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-rx"><span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#DE2626;--shiki-dark:#DE2626">li</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">love</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/</span><span style="color:#DE2626;--shiki-dark:#DE2626">li</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span></code></pre>
 <h3 id="class-name-helper" tabindex="-1">Class name helper</h3>
 <p>There is a small helper for rendering class names, to free one from using trinaries in the class attribute.  In the class attribute, prefix a name with the ¢ symbol (Option-4 on MacOS) to have it resolve if the scoped value is truthy.</p>
 <p>For example:</p>
-<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-part"><span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">const</span><span style="color:#DE2626;--shiki-dark:#DE2626"> goodness</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> =</span><span style="color:#DE2626;--shiki-dark:#DE2626"> true</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">;</span></span>
+<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-rx"><span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">const</span><span style="color:#DE2626;--shiki-dark:#DE2626"> goodness</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> =</span><span style="color:#DE2626;--shiki-dark:#DE2626"> true</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">;</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">const</span><span style="color:#DE2626;--shiki-dark:#DE2626"> kindness</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> =</span><span style="color:#DE2626;--shiki-dark:#DE2626"> false</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">;</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#DE2626;--shiki-dark:#DE2626">p</span><span style="color:#DE2626;--shiki-dark:#DE2626"> class</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">=</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">"¢goodness ¢kindness"</span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB"> /</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span></code></pre>
 <p>will result in:</p>
-<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-part"><span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#DE2626;--shiki-dark:#DE2626">p</span><span style="color:#DE2626;--shiki-dark:#DE2626"> class</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">=</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">"goodness"</span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB"> /</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span></code></pre>
+<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-rx"><span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#DE2626;--shiki-dark:#DE2626">p</span><span style="color:#DE2626;--shiki-dark:#DE2626"> class</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">=</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">"goodness"</span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB"> /</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span></code></pre>
 
                 <footer class="mt-8 flex justify-between border-t border-t-slate-500 pt-4 pb-10">
                     <div>
-                        <a href="/routes">← Routes</a>
+                        <a href="/partials">← Partials</a>
                     </div>
                     <div>
-                        <a href="/markdown">Markdown →</a>
+                        <a href="/routes">Routes →</a>
                     </div>
                 </footer>
             </article>

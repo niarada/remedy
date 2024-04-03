@@ -23,7 +23,7 @@
             <ul class="flex flex-col gap-1 cursor-pointer">
                 <li class>
                     <a href="/">Introduction</a>
-                </li><li class>
+                </li><li class="font-bold">
                     <a href="/quickstart">Quickstart</a>
                 </li><li class>
                     <a href="/editorsupport">Editor Support</a>
@@ -39,30 +39,30 @@
                     <a href="/routes">Routes</a>
                 </li><li class>
                     <a href="/context">Context</a>
-                </li><li class="font-bold">
+                </li><li class>
                     <a href="/roadmap">Roadmap</a>
                 </li>
             </ul>
         </nav>
         <div class="relative overflow-y-scroll pt-6 flex-auto">
             <article class="prose w-full absolute">
-                <h1>Roadmap</h1>
-
-<ul class="roadmap">
-    <li>Attributes schema and validation (zod, valibot)</li>
-    <li>Settable HX-* response headers in context</li>
-    <li>HTMX SSE</li>
-    <li>Production mode</li>
-    <li>Production mode static asset cache</li>
-    <li>Production mode cache feature products</li>
-</ul>
+                <nav class="table-of-contents"><ol><li><a href="/quickstart#quickstart">Quickstart</a><ol><li><a href="/quickstart#install-bun">Install bun</a></li><li><a href="/quickstart#create-a-project">Create a project</a></li></ol></li></ol></nav><h1 id="quickstart" tabindex="-1">Quickstart</h1>
+<h2 id="install-bun" tabindex="-1">Install bun</h2>
+<p><strong>Remedy</strong> requires a <a href="https://bun.sh">bun</a>, so make sure that's installed first.</p>
+<h2 id="create-a-project" tabindex="-1">Create a project</h2>
+<p>Creating a new project is easy.</p>
+<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-sh"><span class="line"><span style="color:#E86464;--shiki-dark:#E86464">bunx</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD"> @niarada/remedy</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD"> new</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD"> your-project-name</span></span></code></pre>
+<p>This will give you a <code>project.json</code>, and <code>remedy.config.ts</code>, and install the remedy base module.  That's it.</p>
+<p>Edit your config file, or not, then follow the instructions to run the server.</p>
+<p>Drop files into your configured public folder, and you're off to the races.</p>
+<p>This base <a href="/configuration">configuration</a> includes support for html <a href="/templates">templates</a>.</p>
 
                 <footer class="mt-8 flex justify-between border-t border-t-slate-500 pt-4 pb-10">
                     <div>
-                        <a href="/context">← Context</a>
+                        <a href="/">← Introduction</a>
                     </div>
                     <div>
-                        
+                        <a href="/editorsupport">Editor Support →</a>
                     </div>
                 </footer>
             </article>

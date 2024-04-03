@@ -21,7 +21,7 @@ export default {
         // "markdown",
         // "typescript",
         "refresh",
-        "partial",
+        "template",
         "static",
     ]
 };

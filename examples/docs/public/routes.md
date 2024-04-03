@@ -2,7 +2,7 @@ ${toc}
 
 # Routes
 
-Routing in **remedy** is file based.  Every partial that is not a layout (i.e. an index) generates a tag and *a routable path.*
+Routing in **Remedy** is file based.  Every partial that is not a layout (i.e. an index) generates a tag and *a routable path.*
 
 Consider this directory structure, and the tags it generates:
 
@@ -10,16 +10,16 @@ Consider this directory structure, and the tags it generates:
 Path                        Tag
 ------------------------    --------------------
 public/
-    index.part              (root-layout)
-    alpha.part              alpha
+    index.rx                (root-layout)
+    alpha.rx                alpha
     alpha/
-        index.part          (alpha-layout)
-        one.part            alpha-one
+        index.rx            (alpha-layout)
+        one.rx              alpha-one
         nu/
-            zeta.part       alpha-nu-zeta
+            zeta.rx         alpha-nu-zeta
 ```
 
-The directory structure also determines layout composition.  Each directory can specify an `index.part` that will be used as the layout at that level.  Layouts nest.  Notice that partials at the same level, and with the same name as a directory, are laid out under that directory.
+The directory structure also determines layout composition.  Each directory can specify an `index.rx` that will be used as the layout at that level.  Layouts nest.  Notice that partials at the same level, and with the same name as a directory, are laid out under that directory.
 
 The above structure sets up the following routes, and their layout composition:
 
@@ -34,9 +34,9 @@ Route                   Composition
 
 As the root index is a layout, and not a page, the way you would get content such as the home page into it is by using a slot with a default.
 
-```part
+```rx
 /**
- * public/index.part
+ * public/index.rx
  */
 
 <div>
@@ -52,7 +52,7 @@ Most partials are accessible from an HTTP client by their route.  The only excep
 
 For example:
 
-`public/hello/world.part` is accessible vi `GET /hello/world` (or POST, PATCH, etc);
+`public/hello/world.rx` is accessible vi `GET /hello/world` (or POST, PATCH, etc);
 
 If you pass a query string, or post a form, that data will be available in a special object called `$context.form`
 
@@ -64,8 +64,8 @@ Dynamic routes are made possible by naming any directory or partial with bracket
 
 Some examples:
 
-- `public/user/[id].part`
-- `public/user/[id]/edit.part`
+- `public/user/[id].rx`
+- `public/user/[id]/edit.rx`
 
 If no specifically named route exists, the url will be matched against any dynamic routes and find the first one that applies.
 

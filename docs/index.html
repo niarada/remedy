@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>remedy: documentation</title>
+    <title>Remedy Hypermedia Server</title>
     <link rel="stylesheet" href="/index.css">
     <link rel="icon" type="image/png" href="/assets/cross-both.png">
 <link rel="stylesheet" href="/_fontawesome.css"></head>
@@ -12,7 +12,7 @@
     <header class="flex flex-none justify-between items-center gap-4 bg-red-700 px-4 py-2 text-white">
         <a class="flex items-center gap-3" href="/">
             <img src="/assets/cross-dark.png" class="h-6 w-6">
-            <div class="text-2xl">remedy</div>
+            <div class="text-2xl">Remedy</div>
         </a>
         <a href="https://github.com/niarada/remedy">
             <i class="text-2xl fa-brands fa-github"></i>
@@ -24,21 +24,21 @@
                 <li class="font-bold">
                     <a href="/">Introduction</a>
                 </li><li class>
+                    <a href="/quickstart">Quickstart</a>
+                </li><li class>
+                    <a href="/editorsupport">Editor Support</a>
+                </li><li class>
                     <a href="/configuration">Configuration</a>
-                </li><li class>
-                    <a href="/partials">Partials</a>
-                </li><li class>
-                    <a href="/routes">Routes</a>
-                </li><li class>
-                    <a href="/templates">Templates</a>
-                </li><li class>
-                    <a href="/markdown">Markdown</a>
-                </li><li class>
-                    <a href="/context">Context</a>
                 </li><li class>
                     <a href="/features">Features</a>
                 </li><li class>
-                    <a href="/editorsupport">Editor Support</a>
+                    <a href="/partials">Partials</a>
+                </li><li class>
+                    <a href="/templates">Templates</a>
+                </li><li class>
+                    <a href="/routes">Routes</a>
+                </li><li class>
+                    <a href="/context">Context</a>
                 </li><li class>
                     <a href="/roadmap">Roadmap</a>
                 </li>
@@ -47,25 +47,29 @@
         <div class="relative overflow-y-scroll pt-6 flex-auto">
             <article class="prose w-full absolute">
                 <slot>
-                    <nav class="table-of-contents"><ol><li><a href="/#introduction">Introduction</a><ol><li><a href="/#installation">Installation</a><ol><li><a href="/#quick-start">Quick start</a></li><li><a href="/#official-install">Official install</a></li></ol></li></ol></li></ol></nav><h1 id="introduction" tabindex="-1">Introduction</h1>
-<p><strong>remedy</strong> is a <em>Hypermedia Server</em>.</p>
-<h2 id="installation" tabindex="-1">Installation</h2>
-<p><strong>remedy</strong> requires a <a href="https://bun.sh">bun</a>, so make sure that's installed first.</p>
-<h3 id="quick-start" tabindex="-1">Quick start</h3>
-<p>If you want to quickly test out <strong>remedy</strong>, find a cozy spot and run:</p>
-<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-sh"><span class="line"><span style="color:#E86464;--shiki-dark:#E86464">bunx</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD"> @niarada/remedy</span></span></code></pre>
-<p>This will create a <code>public</code> folder, and a <code>remedy.config.ts</code> file at your location.</p>
-<p>Anything you place in the <code>public</code> folder will be served by <strong>remedy</strong>.</p>
-<h3 id="official-install" tabindex="-1">Official install</h3>
-<p>For a more lasting and typical project setup, see here:</p>
-<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-sh"><span class="line"><span style="color:#E86464;--shiki-dark:#E86464">mkdir</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD"> my-project</span></span>
-<span class="line"><span style="color:#E86464;--shiki-dark:#E86464">cd</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD"> my-project</span></span>
-<span class="line"><span style="color:#E86464;--shiki-dark:#E86464">echo</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> "</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">{}</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> ></span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD"> package.json</span></span>
-<span class="line"><span style="color:#E86464;--shiki-dark:#E86464">bun</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD"> add</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD"> @niarada/remedy</span></span></code></pre>
-<p>Start the server:</p>
-<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-sh"><span class="line"><span style="color:#E86464;--shiki-dark:#E86464">bunx</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD"> remedy</span></span></code></pre>
-<p>This will, as in the quickstart, create a <code>remedy.config.ts</code> file, and a <code>public</code> folder.</p>
-<p>You may elect to stop the server and make whatever changes you need to the config file before continuing.</p>
+                    <nav class="table-of-contents"><ol><li><a href="/#introduction">Introduction</a><ol><li><a href="/#summary">Summary</a></li><li><a href="/#motivation">Motivation</a></li><li><a href="/#design-principles">Design Principles</a><ol><li><a href="/#features">Features</a></li><li><a href="/#partials-%26-presenters">Partials &amp; Presenters</a></li></ol></li></ol></li></ol></nav><h1 id="introduction" tabindex="-1">Introduction</h1>
+<p><strong>Remedy</strong> is a <em>Hypermedia Server</em>.</p>
+<h2 id="summary" tabindex="-1">Summary</h2>
+<p>Remedy aims to provide a straight-forward server implementation for hypermedia systems, as described in the
+book <a href="https://hypermedia.systems">Hypermedia Systems</a>.</p>
+<p>If you want to get started right away, please head over to the <a href="/quickstart">Quickstart</a>.</p>
+<h2 id="motivation" tabindex="-1">Motivation</h2>
+<p>Remedy was born out of a desire to establish a web development pattern that is centered around
+<a href="https://htmx.org/essays/hateoas/">HATEOAS</a>.</p>
+<p>Remedy's primary purpose in life is to spit out state-rich chunks of HTML, and those artificts that support it.</p>
+<p>Additionally, we want to provide the lowest possible barrier to entry for <em>just getting moving</em> on any hypermedia project, following through with fast iteration and feature progression.</p>
+<h2 id="design-principles" tabindex="-1">Design Principles</h2>
+<p>Remedy is designed around a few main concepts that compose the core of the architecture.</p>
+<h3 id="features" tabindex="-1">Features</h3>
+<p>Remedy <em>features</em> are an amalgamation of what other products call plugins, middleware, or integrations.  The Remedy core server does very little, handing off most of the work to activated features.  It is consequently very easy to extend Remedy by third parties.</p>
+<p>These features can progressively add support for a variety of technologies as your project grows.  Please see the <a href="/features">Features</a> section for more details.</p>
+<h3 id="partials-%26-presenters" tabindex="-1">Partials & Presenters</h3>
+<p>In hypermedia systems, a common pattern is to load a complete page once, followed by loading or reloading smaller sections as the user begins to interact with it.</p>
+<p>A <em>partial</em> is common term for a re-usable chunk of HTML.  Typically, they're just handy snippets that can be composed into larger pages.  Remedy elevates the concept a bit, by making them <em>routable</em>.</p>
+<p>A supporting concept to partials is that of a <em>presenter</em>.  A presenter is any feature that produces HTML and elects to be part of the routing system.  When the router takes a request for a resource, it will examine the public directory for source files associated to the registered presenters, and have the resolved presenter render it.</p>
+<p>This same process is used to look up partials from within the source documents of presenters, to enable composition.</p>
+<p>Currently available presenters are <a href="/templates">Remedy Templates</a> and <a href="/features#markdown">Markdown</a>.</p>
+<p>Please also see <a href="/routes">Routes</a>, <a href="/partials">Partials</a>.</p>
 
                 </slot>
                 <footer class="mt-8 flex justify-between border-t border-t-slate-500 pt-4 pb-10">
@@ -73,7 +77,7 @@
                         
                     </div>
                     <div>
-                        <a href="/configuration">Configuration →</a>
+                        <a href="/quickstart">Quickstart →</a>
                     </div>
                 </footer>
             </article>

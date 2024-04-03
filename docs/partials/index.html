@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>remedy: documentation</title>
+    <title>Remedy Hypermedia Server</title>
     <link rel="stylesheet" href="/index.css">
     <link rel="icon" type="image/png" href="/assets/cross-both.png">
 <link rel="stylesheet" href="/_fontawesome.css"></head>
@@ -12,7 +12,7 @@
     <header class="flex flex-none justify-between items-center gap-4 bg-red-700 px-4 py-2 text-white">
         <a class="flex items-center gap-3" href="/">
             <img src="/assets/cross-dark.png" class="h-6 w-6">
-            <div class="text-2xl">remedy</div>
+            <div class="text-2xl">Remedy</div>
         </a>
         <a href="https://github.com/niarada/remedy">
             <i class="text-2xl fa-brands fa-github"></i>
@@ -24,21 +24,21 @@
                 <li class>
                     <a href="/">Introduction</a>
                 </li><li class>
+                    <a href="/quickstart">Quickstart</a>
+                </li><li class>
+                    <a href="/editorsupport">Editor Support</a>
+                </li><li class>
                     <a href="/configuration">Configuration</a>
+                </li><li class>
+                    <a href="/features">Features</a>
                 </li><li class="font-bold">
                     <a href="/partials">Partials</a>
                 </li><li class>
-                    <a href="/routes">Routes</a>
-                </li><li class>
                     <a href="/templates">Templates</a>
                 </li><li class>
-                    <a href="/markdown">Markdown</a>
+                    <a href="/routes">Routes</a>
                 </li><li class>
                     <a href="/context">Context</a>
-                </li><li class>
-                    <a href="/features">Features</a>
-                </li><li class>
-                    <a href="/editorsupport">Editor Support</a>
                 </li><li class>
                     <a href="/roadmap">Roadmap</a>
                 </li>
@@ -46,80 +46,31 @@
         </nav>
         <div class="relative overflow-y-scroll pt-6 flex-auto">
             <article class="prose w-full absolute">
-                <nav class="table-of-contents"><ol><li><a href="/partials#partials">Partials</a><ol><li><a href="/partials#an-example">An Example</a></li></ol></li></ol></nav><h1 id="partials" tabindex="-1">Partials</h1>
-<p>Partials are the <em>language</em> of <strong>remedy</strong>.  A partial can be divided into two sections, though neither is strictly required: the <strong>action</strong> and the <strong>template</strong>.  <strong>Actions</strong> are written in TypeScript or JavaScript, and occupy the top section of the partial.  <strong>Templates</strong> are written in HTML, and occupy the bottom section.</p>
-<h3 id="an-example" tabindex="-1">An Example</h3>
-<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-part"><span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">/**</span></span>
-<span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic"> * public/hello.part</span></span>
-<span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic"> */</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">const</span><span style="color:#DE2626;--shiki-dark:#DE2626"> message</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> =</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> "</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">Hello, World!</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">;</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#DE2626;--shiki-dark:#DE2626">div</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span>
-<span class="line"><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">    {message}</span></span>
+                <nav class="table-of-contents"><ol><li><a href="/partials#partials">Partials</a><ol><li><a href="/partials#summary">Summary</a></li><li><a href="/partials#usage">Usage</a><ol><li><a href="/partials#route">Route</a></li><li><a href="/partials#composition">Composition</a></li></ol></li></ol></li></ol></nav><h1 id="partials" tabindex="-1">Partials</h1>
+<h2 id="summary" tabindex="-1">Summary</h2>
+<p>Partials are composable and routeable generators of hypermedia, that is HTML.</p>
+<p>They are implemented by features.  There are currently two built-in features that implement partials:</p>
+<ul>
+<li><a href="/templates">Remedy Templates</a></li>
+<li><a href="/features#markdown">Markdown</a></li>
+</ul>
+<p></p>
+<h2 id="usage" tabindex="-1">Usage</h2>
+<p>Let's say we have enabled the <a href="/features#templates">template</a> feature (on by default), and placed a file called <code>user/status.rx</code> in our public directory.  (<code>rx</code> is the extension for Remedy templates.)</p>
+<h3 id="route" tabindex="-1">Route</h3>
+<p>A route is now mapped to <code>/user/status</code> which will invoke the template feature with the source of that file.  If one passes query parameters, or posts a form to that route, those values will be made available to the partial through the <a href="/context">$context</a> object.</p>
+<h3 id="composition" tabindex="-1">Composition</h3>
+<p>This has also made available a tag called <code>&lt;user-status&gt;</code>.  This tag may be used from other partials to include that partial within it.  For example, you might have a <code>user.rx</code> that looks like this:</p>
+<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-rx"><span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#DE2626;--shiki-dark:#DE2626">div</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    &#x3C;</span><span style="color:#E86464;--shiki-dark:#E86464">user-status</span><span style="color:#DE2626;--shiki-dark:#DE2626"> id</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">=</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">"1"</span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">/</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/</span><span style="color:#DE2626;--shiki-dark:#DE2626">div</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span></code></pre>
-<p>Partials are so-called because they are re-usable.  This example file is called <code>hello.part</code>.  The remedy server will convert this partial into a custom tag for you, called <code>&lt;hello&gt;</code>.</p>
-<p>You can then use it in another partial like this:</p>
-<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-part"><span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">/**</span></span>
-<span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic"> * public/salutation.part</span></span>
-<span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic"> */</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#DE2626;--shiki-dark:#DE2626">div</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    &#x3C;</span><span style="color:#E86464;--shiki-dark:#E86464">hello</span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB"> /</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/</span><span style="color:#DE2626;--shiki-dark:#DE2626">div</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span></code></pre>
-<p>You can also pass in attributes.</p>
-<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-part"><span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">/**</span></span>
-<span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic"> * public/hello.part</span></span>
-<span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic"> */</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#DE2626;--shiki-dark:#DE2626">div</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span>
-<span class="line"><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">    Hello, {name}</span></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/</span><span style="color:#DE2626;--shiki-dark:#DE2626">div</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span></code></pre>
-<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-part"><span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">/**</span></span>
-<span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic"> * public/salutation.part</span></span>
-<span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic"> */</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#DE2626;--shiki-dark:#DE2626">div</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    &#x3C;</span><span style="color:#E86464;--shiki-dark:#E86464">hello</span><span style="color:#DE2626;--shiki-dark:#DE2626"> name</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">=</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">"Niara"</span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB"> /</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/</span><span style="color:#DE2626;--shiki-dark:#DE2626">div</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span></code></pre>
-<p>Or contents:</p>
-<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-part"><span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">/**</span></span>
-<span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic"> * public/hello.part</span></span>
-<span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic"> */</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#DE2626;--shiki-dark:#DE2626">div</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span>
-<span class="line"><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">    Hello, </span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#E86464;--shiki-dark:#E86464">slot</span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB"> /</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/</span><span style="color:#DE2626;--shiki-dark:#DE2626">div</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span></code></pre>
-<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-part"><span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">/**</span></span>
-<span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic"> * public/salutation.part</span></span>
-<span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic"> */</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#DE2626;--shiki-dark:#DE2626">div</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    &#x3C;</span><span style="color:#E86464;--shiki-dark:#E86464">hello</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">Niara</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/</span><span style="color:#E86464;--shiki-dark:#E86464">hello</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/</span><span style="color:#DE2626;--shiki-dark:#DE2626">div</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span></code></pre>
-<p>If you use TypeScript, you can be clear about your attributes, and type them.</p>
-<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-part"><span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">/**</span></span>
-<span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic"> * public/hello.part</span></span>
-<span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic"> */</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">interface</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD"> Attributes</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> {</span></span>
-<span class="line"><span style="color:#DE2626;--shiki-dark:#DE2626">    name</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">:</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD"> string</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">;</span></span>
-<span class="line"><span style="color:#DE2626;--shiki-dark:#DE2626">    avidness</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">:</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD"> number</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">;</span></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">}</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#DE2626;--shiki-dark:#DE2626">div</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span>
-<span class="line"><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">    {"Hello ".repeat(avidness)}, {name}</span></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;/</span><span style="color:#DE2626;--shiki-dark:#DE2626">div</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span></code></pre>
-<p>Tag names are generated from the path of the partial file name.  Essentially, <code>/</code> are turned into <code>-</code>.</p>
-<p>So, for a path such as <code>public/salutation/hello.part</code> the tag would be <code>&lt;salutation-hello&gt;</code>.</p>
-<p>Now, this leads us into routing, so head over to the <a href="/routes">next section</a>.</p>
 
                 <footer class="mt-8 flex justify-between border-t border-t-slate-500 pt-4 pb-10">
                     <div>
-                        <a href="/configuration">← Configuration</a>
+                        <a href="/features">← Features</a>
                     </div>
                     <div>
-                        <a href="/routes">Routes →</a>
+                        <a href="/templates">Templates →</a>
                     </div>
                 </footer>
             </article>

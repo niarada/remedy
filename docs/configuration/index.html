@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>remedy: documentation</title>
+    <title>Remedy Hypermedia Server</title>
     <link rel="stylesheet" href="/index.css">
     <link rel="icon" type="image/png" href="/assets/cross-both.png">
 <link rel="stylesheet" href="/_fontawesome.css"></head>
@@ -12,7 +12,7 @@
     <header class="flex flex-none justify-between items-center gap-4 bg-red-700 px-4 py-2 text-white">
         <a class="flex items-center gap-3" href="/">
             <img src="/assets/cross-dark.png" class="h-6 w-6">
-            <div class="text-2xl">remedy</div>
+            <div class="text-2xl">Remedy</div>
         </a>
         <a href="https://github.com/niarada/remedy">
             <i class="text-2xl fa-brands fa-github"></i>
@@ -23,22 +23,22 @@
             <ul class="flex flex-col gap-1 cursor-pointer">
                 <li class>
                     <a href="/">Introduction</a>
+                </li><li class>
+                    <a href="/quickstart">Quickstart</a>
+                </li><li class>
+                    <a href="/editorsupport">Editor Support</a>
                 </li><li class="font-bold">
                     <a href="/configuration">Configuration</a>
                 </li><li class>
-                    <a href="/partials">Partials</a>
+                    <a href="/features">Features</a>
                 </li><li class>
-                    <a href="/routes">Routes</a>
+                    <a href="/partials">Partials</a>
                 </li><li class>
                     <a href="/templates">Templates</a>
                 </li><li class>
-                    <a href="/markdown">Markdown</a>
+                    <a href="/routes">Routes</a>
                 </li><li class>
                     <a href="/context">Context</a>
-                </li><li class>
-                    <a href="/features">Features</a>
-                </li><li class>
-                    <a href="/editorsupport">Editor Support</a>
                 </li><li class>
                     <a href="/roadmap">Roadmap</a>
                 </li>
@@ -47,32 +47,34 @@
         <div class="relative overflow-y-scroll pt-6 flex-auto">
             <article class="prose w-full absolute">
                 <nav class="table-of-contents"><ol><li><a href="/configuration#configuration">Configuration</a></li></ol></nav><h1 id="configuration" tabindex="-1">Configuration</h1>
-<p>When you first start <strong>remedy</strong> a <code>remedy.config.ts</code> file will be created in your project root.</p>
+<p>If you create a project with <code>remedy new</code>, or run the <code>server</code> with the <code>-c</code> option, a configuration file (<code>remedy.config.ts</code>) will be created for you.</p>
 <p>It takes the following structure, all fields are optional, defaults are given:</p>
 <pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-ts"><span class="line"><span style="color:#DE2626;--shiki-dark:#DE2626">export</span><span style="color:#DE2626;--shiki-dark:#DE2626"> default</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> {</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    port:</span><span style="color:#DE2626;--shiki-dark:#DE2626"> 4321</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">,</span></span>
-<span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">    // The base public folder</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    public:</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> "</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">public</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">,</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    features:</span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB"> [</span></span>
+<span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">        // "compress",</span></span>
+<span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">        // "image",</span></span>
+<span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">        // "alpine",</span></span>
 <span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">        // "fontawesome",</span></span>
 <span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">        // "tailwind",</span></span>
-<span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">        // "alpine",</span></span>
 <span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">        // "htmx",</span></span>
 <span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">        // "sse",</span></span>
-<span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">        // "image",</span></span>
+<span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">        // "markdown",</span></span>
+<span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">        // "typescript",</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        "</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">refresh</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">,</span></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        "</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">typescript</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">,</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        "</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">template</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">,</span></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        "</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">static</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">,</span></span>
 <span class="line"><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">    ]</span></span>
-<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">}</span></span></code></pre>
-<p>The <a href="/features">features</a> page offers more information on those.</p>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">};</span></span></code></pre>
+<p>For detailed information about available features, see the <a href="/features">Features</a> page.</p>
 
                 <footer class="mt-8 flex justify-between border-t border-t-slate-500 pt-4 pb-10">
                     <div>
-                        <a href="/">← Introduction</a>
+                        <a href="/editorsupport">← Editor Support</a>
                     </div>
                     <div>
-                        <a href="/partials">Partials →</a>
+                        <a href="/features">Features →</a>
                     </div>
                 </footer>
             </article>

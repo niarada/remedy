@@ -4,8 +4,8 @@ ${toc}
 
 
 ### Visual Studio Code
-#### remedy
-The official [**remedy** extension](https://marketplace.visualstudio.com/items?itemName=niarada.remedy-vscode).
+#### Remedy
+The official [**Remedy** extension](https://marketplace.visualstudio.com/items?itemName=niarada.remedy-vscode).
 
-#### htmx
-[This extension](https://marketplace.visualstudio.com/items?itemName=CraigRBroughton.htmx-attributes) seems to play nicely with **remedy**.
+#### HTMX
+[This extension](https://marketplace.visualstudio.com/items?itemName=CraigRBroughton.htmx-attributes) seems to play nicely with **Remedy**.

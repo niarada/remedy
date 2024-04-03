@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>remedy: documentation</title>
+    <title>Remedy Hypermedia Server</title>
     <link rel="stylesheet" href="/index.css">
     <link rel="icon" type="image/png" href="/assets/cross-both.png">
 <link rel="stylesheet" href="/_fontawesome.css"></head>
@@ -12,7 +12,7 @@
     <header class="flex flex-none justify-between items-center gap-4 bg-red-700 px-4 py-2 text-white">
         <a class="flex items-center gap-3" href="/">
             <img src="/assets/cross-dark.png" class="h-6 w-6">
-            <div class="text-2xl">remedy</div>
+            <div class="text-2xl">Remedy</div>
         </a>
         <a href="https://github.com/niarada/remedy">
             <i class="text-2xl fa-brands fa-github"></i>
@@ -24,21 +24,21 @@
                 <li class>
                     <a href="/">Introduction</a>
                 </li><li class>
+                    <a href="/quickstart">Quickstart</a>
+                </li><li class>
+                    <a href="/editorsupport">Editor Support</a>
+                </li><li class>
                     <a href="/configuration">Configuration</a>
-                </li><li class>
-                    <a href="/partials">Partials</a>
-                </li><li class="font-bold">
-                    <a href="/routes">Routes</a>
-                </li><li class>
-                    <a href="/templates">Templates</a>
-                </li><li class>
-                    <a href="/markdown">Markdown</a>
-                </li><li class>
-                    <a href="/context">Context</a>
                 </li><li class>
                     <a href="/features">Features</a>
                 </li><li class>
-                    <a href="/editorsupport">Editor Support</a>
+                    <a href="/partials">Partials</a>
+                </li><li class>
+                    <a href="/templates">Templates</a>
+                </li><li class="font-bold">
+                    <a href="/routes">Routes</a>
+                </li><li class>
+                    <a href="/context">Context</a>
                 </li><li class>
                     <a href="/roadmap">Roadmap</a>
                 </li>
@@ -47,19 +47,19 @@
         <div class="relative overflow-y-scroll pt-6 flex-auto">
             <article class="prose w-full absolute">
                 <nav class="table-of-contents"><ol><li><a href="/routes#routes">Routes</a><ol><li><a href="/routes#endpoints">Endpoints</a></li><li><a href="/routes#dynamic-routes">Dynamic Routes</a></li></ol></li></ol></nav><h1 id="routes" tabindex="-1">Routes</h1>
-<p>Routing in <strong>remedy</strong> is file based.  Every partial that is not a layout (i.e. an index) generates a tag and <em>a routable path.</em></p>
+<p>Routing in <strong>Remedy</strong> is file based.  Every partial that is not a layout (i.e. an index) generates a tag and <em>a routable path.</em></p>
 <p>Consider this directory structure, and the tags it generates:</p>
 <pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-"><span class="line"><span>Path                        Tag</span></span>
 <span class="line"><span>------------------------    --------------------</span></span>
 <span class="line"><span>public/</span></span>
-<span class="line"><span>    index.part              (root-layout)</span></span>
-<span class="line"><span>    alpha.part              alpha</span></span>
+<span class="line"><span>    index.rx                (root-layout)</span></span>
+<span class="line"><span>    alpha.rx                alpha</span></span>
 <span class="line"><span>    alpha/</span></span>
-<span class="line"><span>        index.part          (alpha-layout)</span></span>
-<span class="line"><span>        one.part            alpha-one</span></span>
+<span class="line"><span>        index.rx            (alpha-layout)</span></span>
+<span class="line"><span>        one.rx              alpha-one</span></span>
 <span class="line"><span>        nu/</span></span>
-<span class="line"><span>            zeta.part       alpha-nu-zeta</span></span></code></pre>
-<p>The directory structure also determines layout composition.  Each directory can specify an <code>index.part</code> that will be used as the layout at that level.  Layouts nest.  Notice that partials at the same level, and with the same name as a directory, are laid out under that directory.</p>
+<span class="line"><span>            zeta.rx         alpha-nu-zeta</span></span></code></pre>
+<p>The directory structure also determines layout composition.  Each directory can specify an <code>index.rx</code> that will be used as the layout at that level.  Layouts nest.  Notice that partials at the same level, and with the same name as a directory, are laid out under that directory.</p>
 <p>The above structure sets up the following routes, and their layout composition:</p>
 <pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-"><span class="line"><span>Route                   Composition</span></span>
 <span class="line"><span>--------------------    ------------------------------------</span></span>
@@ -68,8 +68,8 @@
 <span class="line"><span>/alpha/one              (root-layout) -> (alpha-layout) -> alpha-one</span></span>
 <span class="line"><span>/alpha/nu/zeta          (root-layout) -> (alpha-layout) -> alpha-nu-zeta</span></span></code></pre>
 <p>As the root index is a layout, and not a page, the way you would get content such as the home page into it is by using a slot with a default.</p>
-<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-part"><span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">/**</span></span>
-<span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic"> * public/index.part</span></span>
+<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-rx"><span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic">/**</span></span>
+<span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic"> * public/index.rx</span></span>
 <span class="line"><span style="color:#646973;--shiki-dark:#646973;font-style:italic;--shiki-dark-font-style:italic"> */</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#DE2626;--shiki-dark:#DE2626">div</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span></span>
@@ -79,25 +79,25 @@
 <h2 id="endpoints" tabindex="-1">Endpoints</h2>
 <p>Most partials are accessible from an HTTP client by their route.  The only exceptions are layouts other than the root layout.</p>
 <p>For example:</p>
-<p><code>public/hello/world.part</code> is accessible vi <code>GET /hello/world</code> (or POST, PATCH, etc);</p>
+<p><code>public/hello/world.rx</code> is accessible vi <code>GET /hello/world</code> (or POST, PATCH, etc);</p>
 <p>If you pass a query string, or post a form, that data will be available in a special object called <code>$context.form</code></p>
 <p>(For more on the <code>$context</code> object, see <a href="/context">Context</a>)</p>
 <h2 id="dynamic-routes" tabindex="-1">Dynamic Routes</h2>
 <p>Dynamic routes are made possible by naming any directory or partial with brackets.</p>
 <p>Some examples:</p>
 <ul>
-<li><code>public/user/[id].part</code></li>
-<li><code>public/user/[id]/edit.part</code></li>
+<li><code>public/user/[id].rx</code></li>
+<li><code>public/user/[id]/edit.rx</code></li>
 </ul>
 <p>If no specifically named route exists, the url will be matched against any dynamic routes and find the first one that applies.</p>
 <p>Within your partial, the variable will be made available as an attribute.</p>
 
                 <footer class="mt-8 flex justify-between border-t border-t-slate-500 pt-4 pb-10">
                     <div>
-                        <a href="/partials">← Partials</a>
+                        <a href="/templates">← Templates</a>
                     </div>
                     <div>
-                        <a href="/templates">Templates →</a>
+                        <a href="/context">Context →</a>
                     </div>
                 </footer>
             </article>

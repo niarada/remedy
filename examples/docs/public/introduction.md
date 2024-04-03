@@ -6,7 +6,7 @@ ${toc}
 
 ## Summary
 
-Remedy aims to provide the most straight-forward server implementation for hypermedia systems, as described in the
+Remedy aims to provide a straight-forward server implementation for hypermedia systems, as described in the
 book [Hypermedia Systems](https://hypermedia.systems).
 
 If you want to get started right away, please head over to the [Quickstart](/quickstart).
@@ -18,7 +18,7 @@ Remedy was born out of a desire to establish a web development pattern that is c
 
 Remedy's primary purpose in life is to spit out state-rich chunks of HTML, and those artificts that support it.
 
-Additionally, we want to provide the lowest possible barrier to entry for *just getting moving* on any hypermedia project, following through with fast iteration and progressive enhancement.
+Additionally, we want to provide the lowest possible barrier to entry for *just getting moving* on any hypermedia project, following through with fast iteration and feature progression.
 
 ## Design Principles
 
@@ -40,4 +40,6 @@ A supporting concept to partials is that of a *presenter*.  A presenter is any f
 
 This same process is used to look up partials from within the source documents of presenters, to enable composition.
 
-Please see [Routing](/routing), [Partials](/partials), and [Presenters](/presenters) for more details.
+Currently available presenters are [Remedy Templates](/templates) and [Markdown](/features#markdown).
+
+Please also see [Routes](/routes), [Partials](/partials).

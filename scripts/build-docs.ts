@@ -80,7 +80,7 @@ export default {
         "fontawesome",
         "tailwind",
         "static",
-        "partial",
+        "template",
         markdown({
             theme: "themes/markdown.yml",
             languages: ["ts", "sh"],

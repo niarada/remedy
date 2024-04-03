@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>remedy: documentation</title>
+    <title>Remedy Hypermedia Server</title>
     <link rel="stylesheet" href="/index.css">
     <link rel="icon" type="image/png" href="/assets/cross-both.png">
 <link rel="stylesheet" href="/_fontawesome.css"></head>
@@ -12,7 +12,7 @@
     <header class="flex flex-none justify-between items-center gap-4 bg-red-700 px-4 py-2 text-white">
         <a class="flex items-center gap-3" href="/">
             <img src="/assets/cross-dark.png" class="h-6 w-6">
-            <div class="text-2xl">remedy</div>
+            <div class="text-2xl">Remedy</div>
         </a>
         <a href="https://github.com/niarada/remedy">
             <i class="text-2xl fa-brands fa-github"></i>
@@ -24,21 +24,21 @@
                 <li class>
                     <a href="/">Introduction</a>
                 </li><li class>
+                    <a href="/quickstart">Quickstart</a>
+                </li><li class>
+                    <a href="/editorsupport">Editor Support</a>
+                </li><li class>
                     <a href="/configuration">Configuration</a>
-                </li><li class>
-                    <a href="/partials">Partials</a>
-                </li><li class>
-                    <a href="/routes">Routes</a>
-                </li><li class>
-                    <a href="/templates">Templates</a>
-                </li><li class>
-                    <a href="/markdown">Markdown</a>
-                </li><li class>
-                    <a href="/context">Context</a>
                 </li><li class="font-bold">
                     <a href="/features">Features</a>
                 </li><li class>
-                    <a href="/editorsupport">Editor Support</a>
+                    <a href="/partials">Partials</a>
+                </li><li class>
+                    <a href="/templates">Templates</a>
+                </li><li class>
+                    <a href="/routes">Routes</a>
+                </li><li class>
+                    <a href="/context">Context</a>
                 </li><li class>
                     <a href="/roadmap">Roadmap</a>
                 </li>
@@ -46,43 +46,90 @@
         </nav>
         <div class="relative overflow-y-scroll pt-6 flex-auto">
             <article class="prose w-full absolute">
-                <nav class="table-of-contents"><ol><li><a href="/features#features">Features</a><ol><li><a href="/features#enabled-by-default">Enabled by default</a><ol><li><a href="/features#refresh">refresh</a></li><li><a href="/features#partial">partial</a></li><li><a href="/features#markdown">markdown</a></li><li><a href="/features#typescript">typescript</a></li><li><a href="/features#static">static</a></li></ol></li><li><a href="/features#disabled-by-default">Disabled by default</a></li><li><a href="/features#image">image</a><ol><li><a href="/features#htmx">htmx</a></li><li><a href="/features#sse">sse</a></li><li><a href="/features#alpine">alpine</a></li><li><a href="/features#tailwind">tailwind</a></li><li><a href="/features#fontawesome">fontawesome</a></li></ol></li></ol></li></ol></nav><h1 id="features" tabindex="-1">Features</h1>
-<p>Also known as plugins or integrations.</p>
-<p><strong>remedy</strong> is designed to allow for easy integration with 3rd party libraries or custom plugins.</p>
-<p>All integrations can be enabled or disabled in <a href="/configuration">Configuration</a>.</p>
-<h3 id="enabled-by-default" tabindex="-1">Enabled by default</h3>
-<h4 id="refresh" tabindex="-1">refresh</h4>
-<p>File watching and hot refresh.</p>
-<h4 id="partial" tabindex="-1">partial</h4>
-<p>Partial support.</p>
-<h4 id="markdown" tabindex="-1">markdown</h4>
-<p>Markdown support.</p>
-<h4 id="typescript" tabindex="-1">typescript</h4>
-<p>Typescript bundling for <code>&lt;script src=&quot;...&quot;&gt;</code> tags in the head.</p>
-<h4 id="static" tabindex="-1">static</h4>
-<p>Static asset delivery.</p>
-<h3 id="disabled-by-default" tabindex="-1">Disabled by default</h3>
-<h3 id="image" tabindex="-1">image</h3>
-<p>Image optimization.</p>
-<h4 id="htmx" tabindex="-1">htmx</h4>
-<p>HTMX support.</p>
-<h4 id="sse" tabindex="-1">sse</h4>
-<p>HTMX server-sent events support.</p>
-<h4 id="alpine" tabindex="-1">alpine</h4>
-<p>Alpine support.</p>
-<h4 id="tailwind" tabindex="-1">tailwind</h4>
-<p>Tailwind support.</p>
-<p>If this is enabled, a <code>tailwind.config.ts</code> will be created for you.  The <strong>remedy</strong> VSCode extension will automatically associate tailwind with <strong>remedy</strong> partials.</p>
-<h4 id="fontawesome" tabindex="-1">fontawesome</h4>
-<p>Fontawesome free library.</p>
-<p>e.g. <code>&lt;i class=&quot;fa-brands fa-github&quot; /&gt;</code></p>
+                <nav class="table-of-contents"><ol><li><a href="/features#features">Features</a><ol><li><a href="/features#%22static%22">&quot;static&quot;</a></li><li><a href="/features#%22compress%22">&quot;compress&quot;</a></li><li><a href="/features#%22template%22">&quot;template&quot;</a></li><li><a href="/features#%22markdown%22">&quot;markdown&quot;</a></li><li><a href="/features#%22refresh%22">&quot;refresh&quot;</a></li><li><a href="/features#%22typescript%22">&quot;typescript&quot;</a></li><li><a href="/features#%22image%22">&quot;image&quot;</a></li><li><a href="/features#%22htmx%22">&quot;htmx&quot;</a></li><li><a href="/features#%22sse%22">&quot;sse&quot;</a></li><li><a href="/features#%22alpine%22">&quot;alpine&quot;</a></li><li><a href="/features#%22tailwind%22">&quot;tailwind&quot;</a></li><li><a href="/features#%22fontawesome%22">&quot;fontawesome&quot;</a></li></ol></li></ol></nav><h1 id="features" tabindex="-1">Features</h1>
+<p>Features in Remedy are comparable to both plugins and integrations in other frameworks.</p>
+<p>Even some of what might be considered the salient parts of Remedy are implemented as features, and can
+be disabled and configured as features.</p>
+<p>All of these may be enabled, disabled, and configured in your <a href="/configuration">configuration</a>.</p>
+<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-ts"><span class="line"><span style="color:#DE2626;--shiki-dark:#DE2626">export</span><span style="color:#DE2626;--shiki-dark:#DE2626"> default</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> {</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    features:</span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB"> [</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        "</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">static</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">,</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        "</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">compress</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">,</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        "</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">template</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">,</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        "</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">markdown</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">,</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        "</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">refresh</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">,</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        "</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">typescript</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">,</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        "</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">image</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">,</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        "</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">htmx</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">,</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        "</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">sse</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">,</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        "</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">alpine</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">,</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        "</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">tailwind</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">,</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        "</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">fontawesome</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">,</span></span>
+<span class="line"><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">    ]</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">};</span></span></code></pre>
+<h2 id="%22static%22" tabindex="-1">"static"</h2>
+<p>Enable the delivery of any file in your public directory, that isn't otherwise handled by another feature.</p>
+<h2 id="%22compress%22" tabindex="-1">"compress"</h2>
+<p>Enables gzip compression.</p>
+<h2 id="%22template%22" tabindex="-1">"template"</h2>
+<p>Remedy templates are <em>partial</em> files with the extension <code>.rx</code>.  They:</p>
+<ul>
+<li>Are scriptable.</li>
+<li>Produce HTML.</li>
+<li>Support form and query input.</li>
+<li>Are composable with other partials.</li>
+</ul>
+<p>See <a href="/templates">Templates</a> for details.</p>
+<h2 id="%22markdown%22" tabindex="-1">"markdown"</h2>
+<p>Markdown files having the extension <code>.md</code> are treated as <em>partials</em> in that they are composable by templates.</p>
+<p>This feature is configurable, and here's an example:</p>
+<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-ts"><span class="line"><span style="color:#DE2626;--shiki-dark:#DE2626">import</span><span style="color:#DE2626;--shiki-dark:#DE2626"> markdown</span><span style="color:#DE2626;--shiki-dark:#DE2626"> from</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> "</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">@niarada/remedy-feature-markdown</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#DE2626;--shiki-dark:#DE2626">export</span><span style="color:#DE2626;--shiki-dark:#DE2626"> default</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> {</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    features:</span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB"> [</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        "</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">template</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">,</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        "</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">refresh</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">,</span></span>
+<span class="line"><span style="color:#E86464;--shiki-dark:#E86464">        markdown</span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">(</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">{</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">            theme:</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> "</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">themes/markdown.yml</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">,</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">            languages:</span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB"> [</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">"</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">ts</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">,</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> "</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">sh</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">"</span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">]</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">,</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        }</span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">)</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">,</span></span>
+<span class="line"><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">    ]</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">,</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">};</span></span></code></pre>
+<h2 id="%22refresh%22" tabindex="-1">"refresh"</h2>
+<p>This feature enabled so-called "hot refresh" in the browser during development using server-side events.  You may want to enable it depending on the value of <code>process.env.NODE_ENV</code> like so:</p>
+<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-ts"><span class="line"><span style="color:#DE2626;--shiki-dark:#DE2626">export</span><span style="color:#DE2626;--shiki-dark:#DE2626"> default</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> {</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">    features:</span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB"> [</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">        "</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">template</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">,</span></span>
+<span class="line"><span style="color:#DE2626;--shiki-dark:#DE2626">        process</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">.</span><span style="color:#DE2626;--shiki-dark:#DE2626">env</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">.</span><span style="color:#DE2626;--shiki-dark:#DE2626">NODE_ENV</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> ===</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> "</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">development</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> &#x26;&#x26;</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF"> "</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">refresh</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">"</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">,</span></span>
+<span class="line"><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">    ]</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">,</span></span>
+<span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">};</span></span></code></pre>
+<h2 id="%22typescript%22" tabindex="-1">"typescript"</h2>
+<p>Enabling this feature will bundle (via Bun) any <code>.ts</code> in your public directory for delivery as JavaScript to the browser.</p>
+<h2 id="%22image%22" tabindex="-1">"image"</h2>
+<p>This feature uses <strong>spark</strong> to enable some image optimizations to the <code>&lt;img&gt;</code> tag:</p>
+<ul>
+<li>Examines images for their size and interpolates <code>width</code> and <code>height</code> attributes.</li>
+<li>If a void attribute <code>optimized</code> is added, along with <code>width</code> and/or <code>height</code>, it re-sizes images in on the fly.</li>
+<li>Adds <code>decoding=&quot;async&quot;</code> and <code>loading=&quot;lazy&quot;</code> attributes.</li>
+</ul>
+<h2 id="%22htmx%22" tabindex="-1">"htmx"</h2>
+<p>Auto-includes the htmx library in any full-page response.</p>
+<h2 id="%22sse%22" tabindex="-1">"sse"</h2>
+<p>Auto-includes the <code>htmx</code> server-sent events plugin in any full-page response.</p>
+<h2 id="%22alpine%22" tabindex="-1">"alpine"</h2>
+<p>Auto-includes the Alpine.js library in any full-page response.</p>
+<h2 id="%22tailwind%22" tabindex="-1">"tailwind"</h2>
+<p>Run's any <code>.css</code> file through the tailwind compiler before delivery to the browser.  If you happen to have the <a href="/editorsupport">Remedy VSCode extension</a> installed, some configuration will be set up for you if this is enabled.</p>
+<h2 id="%22fontawesome%22" tabindex="-1">"fontawesome"</h2>
+<p>Provides the fontawesome free library, e.g.:</p>
+<pre class="shiki shiki-themes" style="background-color:#1e1e1e;--shiki-dark-bg:#1e1e1e;color:#bbbbbb;--shiki-dark:#bbbbbb" tabindex="0"><code class="language-rx"><span class="line"><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">&#x3C;</span><span style="color:#DE2626;--shiki-dark:#DE2626">i</span><span style="color:#DE2626;--shiki-dark:#DE2626"> class</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">=</span><span style="color:#F5BDBD;--shiki-dark:#F5BDBD">"fa-brands fa-github"</span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB"> /</span><span style="color:#FFFFFF;--shiki-dark:#FFFFFF">></span><span style="color:#BBBBBB;--shiki-dark:#BBBBBB">`</span></span></code></pre>
 
                 <footer class="mt-8 flex justify-between border-t border-t-slate-500 pt-4 pb-10">
                     <div>
-                        <a href="/context">← Context</a>
+                        <a href="/configuration">← Configuration</a>
                     </div>
                     <div>
-                        <a href="/editorsupport">Editor Support →</a>
+                        <a href="/partials">Partials →</a>
                     </div>
                 </footer>
             </article>
