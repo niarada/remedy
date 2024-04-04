@@ -13,7 +13,7 @@ export async function activate(context: vscode.ExtensionContext) {
     const serverPath = `${context.extensionPath}/dist/server/index.js`;
     client = new LanguageClient(
         "remedy",
-        "remedy language server",
+        "Remedy Language Server",
         {
             run: {
                 module: serverPath,

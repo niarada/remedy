@@ -1,6 +1,6 @@
 {
     "name": "remedy-vscode",
-    "displayName": "remedy hypermedia server",
+    "displayName": "Remedy Hypermedia Server Template Language",
     "description": "Language support for remedy hypermedia server templates",
     "categories": [
         "Programming Languages",

@@ -189,37 +189,6 @@ class AstBuilder extends BaseTemplateVisitorWithDefaults {
         this.append(createHtmlComment(this.top, getTokenImage(context, "Comment")!));
     }
 
-    code(context: CstChildrenDictionary) {
-        const element = this.append(createHtmlElement(this.top, "code")) as HtmlElement;
-        const code = getTokenImage(context, "CodeText");
-        if (code) {
-            element.children.push(createHtmlText(element, code));
-        }
-    }
-
-    xelement(context: CstChildrenDictionary) {
-        const tagStart = context.tagStart[0];
-        const tagStartIdentifier = getTokenImage(tagStart, "Identifier");
-        const tagEnd = context.tagEnd?.[0];
-        const tagEndIdentifier = tagEnd && getTokenImage(tagEnd, "Identifier");
-        if (getToken(tagStart, "Slash") && tagEnd) {
-            console.error(`Unexpected closing tag: ${tagEndIdentifier}`);
-        }
-        const element = this.append(createHtmlElement(this.top, tagStartIdentifier)) as HtmlElement;
-        this.#stack.push(element);
-        for (const attribute of getNodes(tagStart, "attribute")) {
-            this.visit(attribute as CstNode);
-        }
-        const whitespace = getToken(tagStart, "WhiteSpace");
-        if (whitespace) {
-            element.postAttributeSpace = whitespace.image;
-        }
-        if (!getToken(tagStart, "Slash") && !htmlVoidTags.includes(tagStartIdentifier) && context.fragment) {
-            this.visit(context.fragment as CstNode[]);
-        }
-        this.#stack.pop();
-    }
-
     opaque(context: CstChildrenDictionary) {
         const tagStart = getToken(context, OpaqueTagStart);
         const tag = tagStart.image.slice(1);

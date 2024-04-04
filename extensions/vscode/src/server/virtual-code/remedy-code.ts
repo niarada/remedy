@@ -1,5 +1,23 @@
 import {
+    AttributeName,
     BaseTemplateVisitorWithDefaults,
+    CloseBacktickQuote,
+    CloseDoubleQuote,
+    CloseSingleQuote,
+    Comment,
+    Equals,
+    ExpressionPart,
+    OpaqueTagEnd,
+    OpaqueTagStart,
+    OpaqueTagStartSelfClose,
+    OpaqueText,
+    OpenBacktickQuote,
+    OpenDoubleQuote,
+    OpenSingleQuote,
+    TagEnd,
+    TagStart,
+    TagStartSelfClose,
+    WhiteSpace,
     getNode,
     getNodes,
     getToken,
@@ -82,7 +100,7 @@ export class RemedyCodeVirtualCode implements VirtualCode {
             const chunk = body.slice(offset);
             segments.push([chunk, undefined, code.length + offset, features]);
         }
-        segments.push("}\n");
+        segments.push("\n");
 
         const generated = volarToString(segments);
         this.snapshot = {
@@ -128,7 +146,9 @@ function redactHtml(source: string) {
     const visitor = new RedactVisitor();
     try {
         visitor.visit(document);
-    } catch (e) {}
+    } catch (e) {
+        console.log(e);
+    }
     return {
         insertions: visitor.insertions,
         body: visitor.body,
@@ -168,74 +188,105 @@ class RedactVisitor extends BaseTemplateVisitorWithDefaults {
     }
 
     comment(context: CstChildrenDictionary) {
-        this.pushSpaces(getTokenImage(context, "Comment")!);
+        this.pushSpaces(getTokenImage(context, Comment)!);
+    }
+
+    opaque(context: CstChildrenDictionary) {
+        const tagStart = getToken(context, OpaqueTagStart);
+        const tag = tagStart.image.slice(1);
+        const tagEnd = getToken(context, OpaqueTagEnd);
+        const isVoid = htmlVoidTags.includes(tag);
+        const isSelfClosing = !!getToken(context, OpaqueTagStartSelfClose);
+        if (tagEnd && (isVoid || isSelfClosing)) {
+            console.error(`Unexpected closing tag: ${tagEnd.image}`);
+        }
+        this.pushSpaces(`<${tag}`);
+        for (const attribute of getNodes(context, "attribute")) {
+            this.visit(attribute as CstNode);
+        }
+
+        const whitespace = getTokenImage(context, WhiteSpace);
+        if (whitespace) {
+            this.#body.push(whitespace);
+        }
+        if (isSelfClosing) {
+            this.pushSpaces("/>");
+        } else if (isVoid) {
+            this.pushSpaces(">");
+        } else {
+            this.pushSpaces(">");
+            this.pushSpaces(getTokenImage(context, OpaqueText));
+            this.pushSpaces(tagEnd.image);
+        }
     }
 
     element(context: CstChildrenDictionary) {
-        const tagStart = getNode(context, "tagStart");
-        const tagStartIdentifier = getTokenImage(tagStart, "Identifier");
-        const tagEnd = getNode(context, "tagEnd");
-        const tagEndIdentifier = tagEnd && getTokenImage(tagEnd, "Identifier");
-        if (getToken(tagStart, "Slash") && tagEnd) {
-            console.error(`Unexpected closing tag: ${tagEndIdentifier}`);
+        const tagStart = getToken(context, TagStart);
+        const tag = tagStart.image.slice(1);
+        const tagEnd = getToken(context, TagEnd);
+        const isVoid = htmlVoidTags.includes(tag);
+        const isSelfClosing = !!getToken(context, TagStartSelfClose);
+        if (tagEnd && (isVoid || isSelfClosing)) {
+            console.error(`Unexpected closing tag: ${tagEnd.image}`);
         }
-        this.pushSpaces(`<${tagStartIdentifier}`);
-        for (const attribute of getNodes(tagStart, "attribute")) {
+        this.pushSpaces(`<${tag}`);
+        for (const attribute of getNodes(context, "attribute")) {
             this.visit(attribute as CstNode);
         }
-        const whitespace = getToken(tagStart, "WhiteSpace");
+
+        const whitespace = getTokenImage(context, WhiteSpace);
         if (whitespace) {
-            this.#body.push(whitespace.image);
+            this.#body.push(whitespace);
         }
         if (this.lastEach && this.lastAs) {
             this.insertions.push({
-                offset: tagStart.location.startOffset,
+                offset: tagStart.startOffset,
                 text: `{const ${this.lastAs} = ${this.lastEach.slice(1, -1)}[0];`,
             });
             if (tagEnd) {
-                this.insertions.push({ offset: tagEnd.location.endOffset, text: "}" });
+                this.insertions.push({ offset: tagEnd.endOffset, text: "}" });
             } else {
-                const token = getToken(context, "CloseAngleBracket");
+                const token = getToken(context, TagStartSelfClose);
                 this.insertions.push({ offset: token.endOffset, text: "}" });
             }
         }
         this.lastEach = undefined;
         this.lastAs = undefined;
-        if (getToken(tagStart, "Slash")) {
+        if (isSelfClosing) {
             this.pushSpaces("/>");
-        } else if (htmlVoidTags.includes(tagStartIdentifier)) {
+        } else if (isVoid) {
             this.pushSpaces(">");
         } else {
             this.pushSpaces(">");
             if (context.fragment) {
                 this.visit(context.fragment as CstNode[]);
             }
-            this.pushSpaces(`</${tagEndIdentifier}>`);
+            this.pushSpaces(tagEnd.image);
         }
     }
 
     attribute(context: CstChildrenDictionary) {
-        const identifier = getTokenImage(context, "Identifier");
-        this.#body.push(getTokenImage(context, "WhiteSpace"));
-        this.pushSpaces(identifier);
-        const token = getToken(context, "Equals");
-        if (token) {
-            this.pushSpaces(token.image);
+        const name = getTokenImage(context, AttributeName);
+        this.pushSpaces(getTokenImage(context, WhiteSpace));
+        this.pushSpaces(name);
+        const equals = getTokenImage(context, Equals);
+        if (equals) {
+            this.pushSpaces(equals);
         }
         visit(this, context.attributeValue);
-        if (identifier === "mx-each") {
+        if (name === "rx-each") {
             this.lastEach = this.lastExpression;
         }
-        if (identifier === "mx-as") {
+        if (name === "rx-as") {
             this.lastAs = this.lastAttributeString;
         }
     }
 
     attributeValue(context: CstChildrenDictionary) {
         const open =
-            getToken(context, "OpenSingleQuote") ||
-            getToken(context, "OpenDoubleQuote") ||
-            getToken(context, "OpenBacktickQuote");
+            getToken(context, OpenSingleQuote) ||
+            getToken(context, OpenDoubleQuote) ||
+            getToken(context, OpenBacktickQuote);
         if (!open) {
             const expression = getNode(context, "expression");
             visit(this, expression);
@@ -243,9 +294,9 @@ class RedactVisitor extends BaseTemplateVisitorWithDefaults {
             return;
         }
         const close =
-            getToken(context, "CloseSingleQuote") ||
-            getToken(context, "CloseDoubleQuote") ||
-            getToken(context, "CloseBacktickQuote");
+            getToken(context, CloseSingleQuote) ||
+            getToken(context, CloseDoubleQuote) ||
+            getToken(context, CloseBacktickQuote);
         this.pushSpaces(open.image);
         const children = orderedFlatChildren(context);
         children.shift();
@@ -266,7 +317,7 @@ class RedactVisitor extends BaseTemplateVisitorWithDefaults {
     }
 
     expression(context: CstChildrenDictionary) {
-        const tokens = getTokens(context, "ExpressionPart");
+        const tokens = getTokens(context, ExpressionPart);
         tokens.shift();
         tokens.pop();
         for (const part of tokens) {

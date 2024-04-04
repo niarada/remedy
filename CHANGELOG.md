@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.4.2] = 2024-04-04
+### Fixed
+- Extension: Brought up to date with parser.
+
 ## [0.4.1] = 2024-03-28
 ### Fixed
 - Extension: Fix loading syntax for `.rx` files.
