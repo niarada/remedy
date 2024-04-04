@@ -1,12 +1,12 @@
 {
     "name": "@niarada/remedy-feature-template",
-    "version": "0.4.1",
+    "version": "0.4.2",
     "files": [
         "index.ts",
         "source.ts"
     ],
     "main": "index.ts",
     "dependencies": {
-        "@niarada/remedy": "0.4.1"
+        "@niarada/remedy": "0.4.2"
     }
 }
