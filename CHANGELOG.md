@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.4.3] = 2024-04-05
+### Fixed
+- Features: Fixed double-loading of features
+- Refresh: Fixed refresh to invalidate partials on presense of refresh rather than NODE_ENV setting.
+
 ## [0.4.2] = 2024-04-04
 ### Fixed
 - Extension: Brought up to date with parser.

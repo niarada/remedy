@@ -28,7 +28,7 @@ async function buildFeatures(config: Required<RemedyConfig>) {
         }
         const feature = await factory(config);
         info("server", `feature: ${feature.name}`);
-        features.push(await factory(config));
+        features.push(feature);
     }
     return features;
 }
@@ -38,7 +38,7 @@ export async function buildFetch(config: Required<RemedyConfig>) {
 
     const director = new Director(config.public, features);
 
-    if (process.env.NODE_ENV === "development") {
+    if (features.find((it) => it.name === "refresh")) {
         director.watch();
     }
 

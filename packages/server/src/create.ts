@@ -59,7 +59,7 @@ const remedyConfig = `export default {
         // "markdown",
         // "typescript",
         "refresh",
-        "partial",
+        "template",
         "static",
     ]
 };`;

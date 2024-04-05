@@ -28,7 +28,7 @@ await buildGrammar();
 
 watch("grammars", { recursive: true }, buildGrammar);
 watch("src", { recursive: true }, buildSource);
-watch("../../packages/template", { recursive: true }, async () => {
+watch("../../packages/template/src", { recursive: true }, async () => {
     await buildPackages();
     await buildSource();
 });
