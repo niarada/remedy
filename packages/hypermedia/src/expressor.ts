@@ -39,54 +39,60 @@ export function express(scope: Scope, expression: string): unknown {
 export function transformExpressionsIntoStrings(node: HtmlNode) {
     simpleTransformHtml(node, (node) => {
         if (node.type === "element") {
-            node.attrs = node.attrs.map((attr) => {
-                if (attr.name.startsWith("x-")) {
+            node.attrs = node.attrs
+                .map((attr) => {
+                    if (attr.name.startsWith("x-")) {
+                        attr.value = attr.value.map((value) => {
+                            if (value.type === "text") {
+                                return value;
+                            }
+                            return {
+                                type: "text",
+                                content: value.content,
+                            };
+                        });
+                        return attr;
+                    }
                     attr.value = attr.value.map((value) => {
                         if (value.type === "text") {
                             return value;
                         }
-                        return {
-                            type: "text",
-                            content: value.content,
-                        };
-                    });
-                    return attr;
-                }
-                attr.value = attr.value.map((value) => {
-                    if (value.type === "text") {
-                        return value;
-                    }
-                    try {
-                        const result = express(node.scope, value.content);
-                        return {
-                            type: "text",
-                            content: String(result),
-                        };
-                    } catch (error) {
-                        if (error instanceof ExpressionError) {
-                            console.error(error.message);
+                        try {
+                            const result = express(node.scope, value.content);
                             return {
                                 type: "text",
-                                content: error.expression,
+                                content: String(result),
                             };
+                        } catch (error) {
+                            if (error instanceof ExpressionError) {
+                                console.error(error.message);
+                                return {
+                                    type: "text",
+                                    content: error.expression,
+                                };
+                            }
+                            throw error;
                         }
-                        throw error;
+                    });
+                    if (attr.name === "rx-content") {
+                        node.children.push(createHtmlText(node, attr.value[0].content));
+                        return null;
                     }
-                });
-                if (attr.name === "class") {
-                    for (const value of attr.value) {
-                        value.content = value.content
-                            .replace(/¢(\w+)/g, (_, placeholder) => {
-                                if (node.scope[placeholder]) {
-                                    return placeholder;
-                                }
-                                return "";
-                            })
-                            .trim();
+                    if (attr.name === "class") {
+                        for (const value of attr.value) {
+                            value.content = value.content
+                                .replace(/¢(\w+)/g, (_, placeholder) => {
+                                    if (node.scope[placeholder]) {
+                                        return placeholder;
+                                    }
+                                    return "";
+                                })
+                                .trim();
+                        }
                     }
-                }
-                return attr;
-            });
+                    return attr;
+                })
+                .filter((it) => it);
         }
         if (node.type === "expression") {
             try {

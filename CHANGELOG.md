@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.4.4] = 2024-04-05
+### Fixed
+- Template: Better depth for expression evaluation.
+- Template: Added rx-content
+
 ## [0.4.3] = 2024-04-05
 ### Fixed
 - Features: Fixed double-loading of features

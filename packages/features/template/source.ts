@@ -1,12 +1,4 @@
-import {
-    error,
-    HtmlFragment,
-    htmlStartIndex,
-    parseSource,
-    printHtml,
-    simpleTransformHtml,
-    Source,
-} from "@niarada/remedy";
+import { error, HtmlFragment, htmlStartIndex, parseSource, printHtml, Source, transformHtml } from "@niarada/remedy";
 import * as ts from "typescript";
 
 /**
@@ -17,6 +9,7 @@ export class TemplateSource extends Source {
     #template!: HtmlFragment;
     #action!: ts.SourceFile;
     #attributes: Record<string, ts.TypeNode> = {};
+    #locals: string[] = ["$context"];
 
     /**
      * Compile the partial source into TypeScript that can be loaded as a module by the loader plugin.
@@ -37,8 +30,8 @@ export class TemplateSource extends Source {
         }
         this.#template = ast;
         this.#action = ts.createSourceFile("", this.text.slice(0, htmlIndex), ts.ScriptTarget.Latest, true);
-        this.transformTemplate();
         this.tranformAction();
+        this.transformTemplate();
     }
 
     override get action() {
@@ -54,17 +47,34 @@ export class TemplateSource extends Source {
     }
 
     private transformTemplate() {
-        simpleTransformHtml(this.#template, (node) => {
+        const asStack: string[] = [];
+        transformHtml(this.#template, (node, { visitEachChild }) => {
+            if (node.type === "fragment") {
+                visitEachChild(node);
+            }
             if (node.type === "element") {
+                let hasAs = false;
                 for (const attr of node.attrs) {
                     for (const value of attr.value) {
                         if (value.type === "expression") {
-                            value.content = this.transformExpression(value.content);
+                            console.log(value.content, [...this.#locals, ...asStack]);
+                            value.content = this.transformExpression(value.content, [...this.#locals, ...asStack]);
                         }
                     }
+                    if (attr.name === "rx-as") {
+                        // XXX: Couple issues:
+                        //      - If rx-as is expression, it won't be evaluated at this point
+                        //      - Expressions in other attributes on this node won't pick up rx-as
+                        asStack.push(attr.value[0].content);
+                        hasAs = true;
+                    }
+                }
+                visitEachChild(node);
+                if (hasAs) {
+                    asStack.pop();
                 }
             } else if (node.type === "expression") {
-                node.content = this.transformExpression(node.content);
+                node.content = this.transformExpression(node.content, [...this.#locals, ...asStack]);
             }
             return node;
         });
@@ -77,45 +87,17 @@ export class TemplateSource extends Source {
      * @param expression - The expression to transform.
      * @returns The transformed expression.
      */
-    private transformExpression(expression: string) {
+    private transformExpression(expression: string, locals: string[] = []) {
         const source = ts.createSourceFile("", expression.slice(1, -1), ts.ScriptTarget.Latest, true);
 
         const transformer: ts.TransformerFactory<ts.Node> = (context) => {
             return (root) => {
                 const visit: ts.Visitor = (node) => {
-                    if (ts.isIdentifier(node)) {
-                        if (ts.isExpressionStatement(node.parent)) {
-                            return context.factory.createPropertyAccessExpression(
-                                context.factory.createIdentifier("$scope"),
-                                node,
-                            );
-                        }
-                        if (ts.isPropertyAccessExpression(node.parent)) {
-                            if (node.parent.expression === node) {
-                                return context.factory.createPropertyAccessExpression(
-                                    context.factory.createIdentifier("$scope"),
-                                    node,
-                                );
-                            }
-                        }
-                        if (ts.isTypeOfExpression(node.parent)) {
-                            return context.factory.createPropertyAccessExpression(
-                                context.factory.createIdentifier("$scope"),
-                                node,
-                            );
-                        }
-                        if (ts.isBinaryExpression(node.parent)) {
-                            return context.factory.createPropertyAccessExpression(
-                                context.factory.createIdentifier("$scope"),
-                                node,
-                            );
-                        }
-                        if (ts.isConditionalExpression(node.parent)) {
-                            return context.factory.createPropertyAccessExpression(
-                                context.factory.createIdentifier("$scope"),
-                                node,
-                            );
-                        }
+                    if (ts.isIdentifier(node) && locals.includes(node.text.split(".")[0])) {
+                        return context.factory.createPropertyAccessExpression(
+                            context.factory.createIdentifier("$scope"),
+                            node,
+                        );
                     }
                     return ts.visitEachChild(node, visit, context);
                 };
@@ -138,7 +120,7 @@ export class TemplateSource extends Source {
      * to the function that encloses the partial code, as well as any attributes.
      */
     private tranformAction() {
-        const locals: string[] = ["$context"];
+        // const locals: string[] = ["$context"];
         // const attributes: Record<string, string> = {};
         // const attributes: Record<string, ts.TypeNode> = {};
         const transformer: ts.TransformerFactory<ts.SourceFile> = (context) => {
@@ -147,7 +129,7 @@ export class TemplateSource extends Source {
                 const visit: ts.Visitor = (node) => {
                     node = ts.visitEachChild(node, visit, context);
                     if (ts.isImportSpecifier(node) && node.isTypeOnly === false) {
-                        locals.push(node.name.text);
+                        this.#locals.push(node.name.text);
                     }
                     if (ts.isImportDeclaration(node)) {
                         statements.push(node);
@@ -159,7 +141,7 @@ export class TemplateSource extends Source {
                         return;
                     }
                     if (ts.isVariableDeclaration(node) && node.parent.parent.parent === root) {
-                        locals.push(node.name.getText());
+                        this.#locals.push(node.name.getText());
                     }
                     if (
                         ts.isPropertySignature(node) &&
@@ -211,7 +193,7 @@ export class TemplateSource extends Source {
                                 ...root.statements,
                                 ts.factory.createReturnStatement(
                                     ts.factory.createObjectLiteralExpression(
-                                        locals.map((name) =>
+                                        this.#locals.map((name) =>
                                             ts.factory.createShorthandPropertyAssignment(
                                                 ts.factory.createIdentifier(name),
                                             ),

@@ -88,6 +88,12 @@ will result in:
 <li>love</li>
 ```
 
+#### rx-content
+
+Sometimes you may need to evaluate an expression for insertion into an "opaque" tag.  Opaque tags are those that do not render expressions for their contents, they are: `<code>`, `<script>` and `<style>`.
+
+You may use  `rx-content` to do this, and whatever is evaluated here will be appended to the contents of the tag.
+
 ### Class name helper
 
 There is a small helper for rendering class names, to free one from using trinaries in the class attribute.  In the class attribute, prefix a name with the ¢ symbol (Option-4 on MacOS) to have it resolve if the scoped value is truthy.
