@@ -1,4 +1,4 @@
-import { RemedyFeatureFactory, info } from "@niarada/remedy";
+import { RemedyFeatureFactory, createHtmlElement, info } from "@niarada/remedy";
 import typography from "@tailwindcss/typography";
 import autoprefixer from "autoprefixer";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
@@ -12,6 +12,8 @@ const defaultTailwindConfig = `export default {
 
 export default function (): RemedyFeatureFactory {
     return (config) => {
+        const injectedPath = "/_tailwind.css";
+
         if (!existsSync("tailwind.config.js") && !existsSync("tailwind.config.ts")) {
             info("tailwind", "creating 'tailwind.config.ts'");
             writeFileSync("tailwind.config.ts", defaultTailwindConfig);
@@ -19,8 +21,23 @@ export default function (): RemedyFeatureFactory {
 
         return {
             name: "tailwind",
+            transform(node) {
+                if (node.type === "element" && node.tag === "head") {
+                    node.children.push(
+                        createHtmlElement(node, "link", {
+                            rel: "stylesheet",
+                            href: injectedPath,
+                        }),
+                    );
+                }
+                return node;
+            },
             async intercede(context) {
                 if (context.url.pathname.endsWith(".css")) {
+                    if (context.url.pathname !== injectedPath) {
+                        context.status(202);
+                        return;
+                    }
                     let tailwindConfig = {} as TailwindConfig;
                     if (existsSync("tailwind.config.ts")) {
                         tailwindConfig = (await import(`${process.cwd()}/tailwind.config.ts`)).default;
@@ -31,9 +48,19 @@ export default function (): RemedyFeatureFactory {
                     if (!tailwindConfig.plugins?.includes(typography)) {
                         tailwindConfig.plugins?.push(typography);
                     }
-                    const css = readFileSync(`${config.public}${context.url.pathname}`, "utf-8");
+                    const stylesheet = [
+                        `
+                        @import "tailwindcss/base";
+                        @import "tailwindcss/components";
+                        @import "tailwindcss/utilities";
+                    `,
+                    ];
+                    const indexPath = `${config.public}/index.css`;
+                    if (existsSync(indexPath)) {
+                        stylesheet.push(readFileSync(indexPath, "utf-8"));
+                    }
                     const processor = postcss([nesting, autoprefixer, tailwind(tailwindConfig)]);
-                    const result = await processor.process(css, {
+                    const result = await processor.process(stylesheet.join("\n"), {
                         // from: "<builtin>",
                         from: context.url.pathname,
                     });

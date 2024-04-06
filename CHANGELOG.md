@@ -8,6 +8,7 @@
 - Extension: rx-as support in opaques, better scoping.
 - Template/Extension: Preserve comments.
 - Extension: Fixed typescript handling.
+- Tailwind: Revert back to automatic delivery of css, and allow for one index.css file.
 
 ## [0.4.3] = 2024-04-05
 ### Fixed
