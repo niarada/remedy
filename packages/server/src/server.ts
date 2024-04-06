@@ -1,8 +1,17 @@
-import { info } from "@niarada/remedy-common";
+import { error, info } from "@niarada/remedy-common";
 import { RemedyConfig, defaultRemedyConfig } from "@niarada/remedy-runtime";
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { AsyncTask, SimpleIntervalJob, ToadScheduler } from "toad-scheduler";
 import pkg from "../package.json";
 import { buildFetch } from "./fetch";
+
+declare global {
+    var scheduler: ToadScheduler;
+}
+
+if (global.scheduler) {
+    global.scheduler.stop();
+}
 
 interface ServeOptions {
     port?: number;
@@ -49,5 +58,19 @@ export async function serve(options: ServeOptions = {}) {
         info("server", `listening on port ${config.port}`);
     } catch (e) {
         console.log(e);
+    }
+
+    if (config.jobs.length) {
+        global.scheduler = new ToadScheduler();
+        for (const job of config.jobs!) {
+            global.scheduler.addSimpleIntervalJob(
+                new SimpleIntervalJob(
+                    job.schedule,
+                    new AsyncTask(job.description ?? "Anonymous task", job.task, (err: Error) => {
+                        error("scheduler", err.message);
+                    }),
+                ),
+            );
+        }
     }
 }

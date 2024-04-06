@@ -7,9 +7,10 @@
     ],
     "main": "./src/index.ts",
     "dependencies": {
+        "@niarada/remedy-common": "0.4.3",
         "@niarada/remedy-hypermedia": "0.4.3",
         "@niarada/remedy-template": "0.4.3",
-        "@niarada/remedy-common": "0.4.3",
-        "http-status-codes": "^2.3.0"
+        "http-status-codes": "^2.3.0",
+        "toad-scheduler": "^3.0.1"
     }
 }
