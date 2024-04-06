@@ -2,5 +2,5 @@
 node_modules
 bun.lockb
 package-lock.json
-#/.vscode/launch.json
+/.vscode/launch.json
 /launch.yml

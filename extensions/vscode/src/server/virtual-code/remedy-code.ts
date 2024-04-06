@@ -209,6 +209,20 @@ class RedactVisitor extends BaseTemplateVisitorWithDefaults {
         if (whitespace) {
             this.#body.push(whitespace);
         }
+        if (this.lastEach && this.lastAs) {
+            this.insertions.push({
+                offset: tagStart.startOffset,
+                text: `{const ${this.lastAs} = ${this.lastEach.slice(1, -1)}[0]!;`,
+            });
+            if (tagEnd) {
+                this.insertions.push({ offset: tagEnd.endOffset, text: "}" });
+            } else {
+                const token = getToken(context, OpaqueTagStartSelfClose);
+                this.insertions.push({ offset: token.endOffset, text: "}" });
+            }
+        }
+        this.lastEach = undefined;
+        this.lastAs = undefined;
         if (isSelfClosing) {
             this.pushSpaces("/>");
         } else if (isVoid) {
@@ -241,7 +255,7 @@ class RedactVisitor extends BaseTemplateVisitorWithDefaults {
         if (this.lastEach && this.lastAs) {
             this.insertions.push({
                 offset: tagStart.startOffset,
-                text: `{const ${this.lastAs} = ${this.lastEach.slice(1, -1)}[0];`,
+                text: `{const ${this.lastAs} = ${this.lastEach.slice(1, -1)}[0]!;`,
             });
             if (tagEnd) {
                 this.insertions.push({ offset: tagEnd.endOffset, text: "}" });
