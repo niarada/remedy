@@ -25,6 +25,7 @@
     "scripts": {
         "scripts": "bun scripts/scripts.ts",
         "example": "bash scripts/example.sh",
+        "launch:build": "bun scripts/build-launch.ts",
         "docs:build": "bun scripts/build-docs.ts",
         "packages:build": "bun scripts/build-packages.ts",
         "packages:fix": "bun scripts/fix-packages.ts",

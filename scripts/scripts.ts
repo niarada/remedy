@@ -20,6 +20,10 @@ const sections = [
                 summary: "Run an app from the examples directory.",
             },
             {
+                name: "launch:build",
+                summary: "Build launch configuration.",
+            },
+            {
                 name: "docs:build",
                 summary: "Build documentation.",
             },

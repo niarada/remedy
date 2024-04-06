@@ -2,7 +2,5 @@
 node_modules
 bun.lockb
 package-lock.json
-.extension-build
-examples/docs/.vscode
-.moon/cache
-.moon/docker
+#/.vscode/launch.json
+/launch.yml

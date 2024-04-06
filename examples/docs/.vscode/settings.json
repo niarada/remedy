@@ -1,0 +1,8 @@
+{
+    "tailwindCSS.includeLanguages": {
+        "remedy": "html"
+    },
+    "files.associations": {
+        "*.css": "tailwindcss"
+    }
+}

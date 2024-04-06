@@ -57,7 +57,6 @@ export class TemplateSource extends Source {
                 for (const attr of node.attrs) {
                     for (const value of attr.value) {
                         if (value.type === "expression") {
-                            console.log(value.content, [...this.#locals, ...asStack]);
                             value.content = this.transformExpression(value.content, [...this.#locals, ...asStack]);
                         }
                     }
