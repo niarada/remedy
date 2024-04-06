@@ -119,15 +119,16 @@ export class TemplateSource extends Source {
      * to the function that encloses the partial code, as well as any attributes.
      */
     private tranformAction() {
-        // const locals: string[] = ["$context"];
-        // const attributes: Record<string, string> = {};
-        // const attributes: Record<string, ts.TypeNode> = {};
         const transformer: ts.TransformerFactory<ts.SourceFile> = (context) => {
             return (root) => {
                 const statements: ts.Statement[] = [];
                 const visit: ts.Visitor = (node) => {
                     node = ts.visitEachChild(node, visit, context);
-                    if (ts.isImportSpecifier(node) && node.isTypeOnly === false) {
+                    if (
+                        ts.isImportSpecifier(node) &&
+                        node.isTypeOnly === false &&
+                        node.parent.parent.isTypeOnly === false
+                    ) {
                         this.#locals.push(node.name.text);
                     }
                     if (ts.isImportDeclaration(node)) {

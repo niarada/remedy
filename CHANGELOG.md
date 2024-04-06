@@ -9,6 +9,7 @@
 - Template/Extension: Preserve comments.
 - Extension: Fixed typescript handling.
 - Tailwind: Revert back to automatic delivery of css, and allow for one index.css file.
+- Template: Don't try to export type only imports.
 
 ## [0.4.3] = 2024-04-05
 ### Fixed
