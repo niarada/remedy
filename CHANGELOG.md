@@ -4,6 +4,10 @@
 ### Fixed
 - Template: Better depth for expression evaluation.
 - Template: Added rx-content
+- Template: Class expression mixed with text preserves spacing.
+- Extension: rx-as support in opaques, better scoping.
+- Template/Extension: Preserve comments.
+- Extension: Fixed typescript handling.
 
 ## [0.4.3] = 2024-04-05
 ### Fixed

@@ -57,7 +57,7 @@ export class Director {
             artifact = (await import(tag)) as Artifact;
         } catch (err) {
             error("director", `failed to import '${tag}'`);
-            // console.log(err);
+            console.log(err);
         }
         if (!artifact) {
             return;

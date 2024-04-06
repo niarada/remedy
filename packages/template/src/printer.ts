@@ -4,11 +4,13 @@ import { walkHtml } from "./transform";
 export interface PrintHtmlOptions {
     trim: boolean;
     expandSelfClosing: boolean;
+    preserveComments: boolean;
 }
 
 const defaultOptions: PrintHtmlOptions = {
     trim: false,
     expandSelfClosing: true,
+    preserveComments: true,
 };
 
 export function printHtml(htmlOrNode: string | HtmlNode, options: Partial<PrintHtmlOptions> = {}): string {
@@ -69,7 +71,13 @@ export function printHtml(htmlOrNode: string | HtmlNode, options: Partial<PrintH
             return;
         }
         if (node.type === "expression") {
-            text.push(`${node.content}`);
+            text.push(node.content);
+            return;
+        }
+        if (node.type === "comment") {
+            if (options.preserveComments) {
+                text.push(node.content);
+            }
             return;
         }
     });

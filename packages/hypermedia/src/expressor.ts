@@ -1,4 +1,11 @@
-import { HtmlElement, HtmlNode, Scope, createHtmlText, simpleTransformHtml } from "@niarada/remedy-template";
+import {
+    HtmlElement,
+    HtmlElementAttribute,
+    HtmlNode,
+    Scope,
+    createHtmlText,
+    simpleTransformHtml,
+} from "@niarada/remedy-template";
 import { AttributeTypes, Attributes } from "./artifact";
 
 class ExpressionError extends Error {
@@ -80,19 +87,17 @@ export function transformExpressionsIntoStrings(node: HtmlNode) {
                     }
                     if (attr.name === "class") {
                         for (const value of attr.value) {
-                            value.content = value.content
-                                .replace(/¢(\w+)/g, (_, placeholder) => {
-                                    if (node.scope[placeholder]) {
-                                        return placeholder;
-                                    }
-                                    return "";
-                                })
-                                .trim();
+                            value.content = value.content.replace(/¢(\w+)/g, (_, placeholder) => {
+                                if (node.scope[placeholder]) {
+                                    return placeholder;
+                                }
+                                return "";
+                            });
                         }
                     }
                     return attr;
                 })
-                .filter((it) => it);
+                .filter((it) => it) as HtmlElementAttribute[];
         }
         if (node.type === "expression") {
             try {

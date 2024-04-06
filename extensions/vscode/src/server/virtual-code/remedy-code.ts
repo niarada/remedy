@@ -78,12 +78,18 @@ export class RemedyCodeVirtualCode implements VirtualCode {
         } catch (e) {}
         segments.push(codeAdditions.code);
 
-        const lastImportStatementIndex = code.lastIndexOf("import");
-        const nextLineAfterLastImportStatementIndex = code.lastIndexOf("\n", lastImportStatementIndex) + 1;
+        const lastImportStatementIndex = code.lastIndexOf("import") + 6;
+        const nextLineAfterLastImportStatementIndex = code.indexOf("\n", lastImportStatementIndex) + 1;
+        console.log(lastImportStatementIndex, nextLineAfterLastImportStatementIndex);
         if (lastImportStatementIndex !== -1) {
-            segments.push(code.slice(0, nextLineAfterLastImportStatementIndex));
+            segments.push([code.slice(0, nextLineAfterLastImportStatementIndex), undefined, 0, features]);
             segments.push("function() {\n");
-            segments.push(code.slice(nextLineAfterLastImportStatementIndex));
+            segments.push([
+                code.slice(nextLineAfterLastImportStatementIndex),
+                undefined,
+                nextLineAfterLastImportStatementIndex,
+                features,
+            ]);
         } else {
             segments.push([code, undefined, 0, features]);
         }
@@ -100,7 +106,7 @@ export class RemedyCodeVirtualCode implements VirtualCode {
             const chunk = body.slice(offset);
             segments.push([chunk, undefined, code.length + offset, features]);
         }
-        segments.push("\n");
+        segments.push("}\n");
 
         const generated = volarToString(segments);
         this.snapshot = {
