@@ -7,7 +7,7 @@ await $`cp README.md packages/server`;
 for (const workspace of workspaces) {
     console.log(`Publishing ${workspace}...`);
     try {
-        await $`npm publish --access public -w ${workspaces}`;
+        await $`npm publish --access public -w ${workspace}`;
     } catch (e) {
         console.error(e.info.stderr.toString());
     }
