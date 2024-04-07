@@ -21,6 +21,7 @@ jobs:
       - run: |
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
           echo "@niarada:registry=https://registry.npmjs.org/" >> .npmrc
-      - run: bun scripts/ci/publish.ts
+      - run: bun scripts/ci/publish-packages.ts
+      - run: bun scripts/ci/publish-extension.ts
         env:
           VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}

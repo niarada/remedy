@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.4.4] = 2024-04-05
+## [0.4.4] = 2024-04-06
 ### Fixed
 - Template: Better depth for expression evaluation.
 - Template: Added rx-content

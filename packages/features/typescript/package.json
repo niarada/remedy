@@ -1,11 +1,11 @@
 {
     "name": "@niarada/remedy-feature-typescript",
-    "version": "0.4.3",
+    "version": "0.4.4",
     "files": [
         "index.ts"
     ],
     "main": "index.ts",
     "dependencies": {
-        "@niarada/remedy": "0.4.3"
+        "@niarada/remedy": "0.4.4"
     }
 }

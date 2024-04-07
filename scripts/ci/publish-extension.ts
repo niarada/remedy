@@ -5,5 +5,5 @@ const publishedVersion = response["dist-tags"].latest;
 const committedVersion = require("../../package.json").version;
 
 if (publishedVersion !== committedVersion) {
-    await $`bun all:publish`;
+    await $`bun extensions:vscode:publish`;
 }
