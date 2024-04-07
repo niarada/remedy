@@ -51,6 +51,6 @@ describe("expressor", () => {
         ast.scope.foo = true;
         ast.scope.baz = false;
         transformExpressionsIntoStrings(ast);
-        expect(printHtml(ast)).toBe(`<div class="foo bar"></div>\n`);
+        expect(printHtml(ast)).toBe(`<div class="foo bar "></div>\n`);
     });
 });

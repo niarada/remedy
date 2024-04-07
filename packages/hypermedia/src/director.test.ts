@@ -55,8 +55,8 @@ describe("director", () => {
 
     it("should test parameter tags", async () => {
         mkdirSync(`${director.base}/param`, { recursive: true });
-        writeFileSync(`${director.base}/param/[id].rx`, "<div>{id}</div>");
-        const html = await director.render("param-1", fakeContext());
+        writeFileSync(`${director.base}/param/[id].rx`, "<div>{$context.attributes.id}</div>");
+        const html = await director.render("param-1", fakeContext({ id: 1 }));
         expect(html).toBe("<div>1</div>\n");
     });
 });

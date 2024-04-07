@@ -16,6 +16,9 @@ export class TemplateSource extends Source {
      * @returns The TypeScript source code for the partial.
      */
     compile() {
+        // XXX: We will do this elsewhere
+        // Parse route params (i.e. [id]) out of the path into locals
+        // this.#locals.push(...(this.path?.match(/(?<=\[).+?(?=\])/g) || []));
         const htmlIndex = htmlStartIndex(this.text);
         const { ast, errors } = parseSource(this.text, {}, this.path);
         if (errors.length) {
@@ -46,6 +49,10 @@ export class TemplateSource extends Source {
         return JSON.stringify(printHtml(this.#template));
     }
 
+    private scope(others: string[] = []) {
+        return [...Object.keys(this.#attributes), ...this.#locals, ...others];
+    }
+
     private transformTemplate() {
         const asStack: string[] = [];
         transformHtml(this.#template, (node, { visitEachChild }) => {
@@ -57,7 +64,7 @@ export class TemplateSource extends Source {
                 for (const attr of node.attrs) {
                     for (const value of attr.value) {
                         if (value.type === "expression") {
-                            value.content = this.transformExpression(value.content, [...this.#locals, ...asStack]);
+                            value.content = this.transformExpression(value.content, this.scope(asStack));
                         }
                     }
                     if (attr.name === "rx-as") {
@@ -73,7 +80,7 @@ export class TemplateSource extends Source {
                     asStack.pop();
                 }
             } else if (node.type === "expression") {
-                node.content = this.transformExpression(node.content, [...this.#locals, ...asStack]);
+                node.content = this.transformExpression(node.content, this.scope(asStack));
             }
             return node;
         });
