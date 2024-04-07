@@ -1,7 +1,7 @@
 {
     "name": "@niarada/remedy-repo",
     "private": true,
-    "version": "0.4.5",
+    "version": "0.4.6",
     "workspaces": [
         "packages/common",
         "packages/hypermedia",
