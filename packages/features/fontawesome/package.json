@@ -1,12 +1,12 @@
 {
     "name": "@niarada/remedy-feature-fontawesome",
-    "version": "0.4.4",
+    "version": "0.4.5",
     "files": [
         "index.ts"
     ],
     "main": "index.ts",
     "dependencies": {
-        "@niarada/remedy": "0.4.4",
+        "@niarada/remedy": "0.4.5",
         "@fortawesome/fontawesome-free": "^6.5.1"
     }
 }

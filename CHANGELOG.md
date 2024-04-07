@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.4.5] = 2024-04-07
+### Changed
+- Refresh: Always disable if NODE_ENV is set to production.
+### Fixed
+- Template: Fixed package for running with bun.
+
 ## [0.4.4] = 2024-04-06
 ### Fixed
 - Template: Better depth for expression evaluation.

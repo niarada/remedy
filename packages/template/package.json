@@ -1,8 +1,9 @@
 {
     "name": "@niarada/remedy-template",
-    "version": "0.4.4",
+    "version": "0.4.5",
     "files": [
-        "dist/**/*.{js,ts}"
+        "dist/**/*.{js,ts}",
+        "src/**/*.{ts}"
     ],
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",

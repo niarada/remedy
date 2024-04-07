@@ -38,7 +38,7 @@ export async function buildFetch(config: Required<RemedyConfig>) {
 
     const director = new Director(config.public, features);
 
-    if (features.find((it) => it.name === "refresh")) {
+    if (features.find((it) => it.name === "refresh") && process.env.NODE_ENV !== "production") {
         director.watch();
     }
 

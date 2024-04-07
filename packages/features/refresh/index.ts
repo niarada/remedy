@@ -7,6 +7,10 @@ declare global {
 
 export default function (): RemedyFeatureFactory {
     return (config) => {
+        if (process.env.NODE_ENV === "production") {
+            return { name: "refresh (disabled)" };
+        }
+
         if (!global.emitter) {
             global.emitter = new EventEmitter();
         } else {
