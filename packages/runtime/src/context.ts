@@ -88,6 +88,7 @@ export class Context<A extends Attributes = Attributes> {
 
     set response(response: Response | undefined) {
         if (response) {
+            // XXX: We dont' want to send a cookie if it hasn't changed.
             writeCookie(response, this.football.cookie);
         }
         this.football.response = response;

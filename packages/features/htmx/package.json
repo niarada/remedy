@@ -1,12 +1,12 @@
 {
     "name": "@niarada/remedy-feature-htmx",
-    "version": "0.4.6",
+    "version": "0.4.7",
     "files": [
         "index.ts"
     ],
     "main": "index.ts",
     "dependencies": {
-        "@niarada/remedy": "0.4.6",
+        "@niarada/remedy": "0.4.7",
         "htmx.org": "^1.9.11"
     }
 }

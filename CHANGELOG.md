@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.4.7] = 2024-04-08
+### Fixed
+- Fetch: Basic caching for production.
+
 ## [0.4.5] = 2024-04-07
 ### Changed
 - Refresh: Always disable if NODE_ENV is set to production.

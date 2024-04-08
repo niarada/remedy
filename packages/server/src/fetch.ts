@@ -34,6 +34,8 @@ async function buildFeatures(config: Required<RemedyConfig>) {
 }
 
 export async function buildFetch(config: Required<RemedyConfig>) {
+    const cache = new RequestCache();
+
     const features = await buildFeatures(config);
 
     const director = new Director(config.public, features);
@@ -47,8 +49,16 @@ export async function buildFetch(config: Required<RemedyConfig>) {
 
         const context = new Context(request);
 
+        const cached = await cache.getCachedResponse(context.request);
+        if (cached) {
+            context.response = cached;
+            log(context, Math.floor((Bun.nanoseconds() - time) / 1000000));
+            return context.response;
+        }
+
         if (context.url.pathname !== "/" && context.url.pathname.endsWith("/")) {
             context.redirect(context.url.pathname.slice(0, -1));
+            log(context, Math.floor((Bun.nanoseconds() - time) / 1000000));
             return context.response!;
         }
 
@@ -75,6 +85,19 @@ export async function buildFetch(config: Required<RemedyConfig>) {
 
         if (!context.response) {
             context.status(404);
+        }
+
+        if (
+            process.env.NODE_ENV === "production" &&
+            context.response &&
+            context.request.method === "GET" &&
+            !context.url.search
+        ) {
+            await cache.cacheResponse(context.request, context.response);
+            const cached = await cache.getCachedResponse(context.request);
+            if (cached) {
+                context.response = cached;
+            }
         }
 
         log(context, Math.floor((Bun.nanoseconds() - time) / 1000000));
@@ -190,4 +213,69 @@ function log(context: Context, duration: number) {
             context.url.search
         } ${chalk.gray(`${duration}ms`)}`,
     );
+}
+
+interface CacheEntry {
+    timestamp: number; // Cache timestamp to manage TTL
+    ttl: number; // Time to live for the cache entry
+    response: {
+        body: ArrayBuffer; // The response body stored as an ArrayBuffer
+        headers: { [key: string]: string }; // Response headers
+        status: number; // HTTP status code
+        statusText: string; // HTTP status text
+    };
+}
+
+class RequestCache {
+    private cache: Map<string, CacheEntry>;
+
+    constructor() {
+        this.cache = new Map<string, CacheEntry>();
+    }
+
+    private async generateKey(request: Request): Promise<string> {
+        const urlKey = `${request.method}:${request.url}`;
+        const acceptEncoding = request.headers.get("accept-encoding") || "identity";
+        // Normalize and sort accept-encoding to ensure consistent caching
+        const normalizedEncoding = acceptEncoding
+            .split(",")
+            .map((e) => e.trim())
+            .sort()
+            .join(",");
+        return `${urlKey}:${normalizedEncoding}`;
+    }
+
+    public async cacheResponse(request: Request, response: Response, ttl = 60 * 60 * 1000): Promise<void> {
+        const key = await this.generateKey(request);
+        const body = await response.arrayBuffer(); // Read the body and store it as ArrayBuffer
+        const headers: Record<string, string> = {};
+        // Clone headers
+        response.headers.forEach((value, key) => {
+            headers[key] = value;
+        });
+        const entry: CacheEntry = {
+            timestamp: Date.now(),
+            ttl,
+            response: { body, headers, status: response.status, statusText: response.statusText },
+        };
+        this.cache.set(key, entry);
+    }
+
+    public async getCachedResponse(request: Request): Promise<Response | null> {
+        const key = await this.generateKey(request);
+        const entry = this.cache.get(key);
+
+        if (entry && Date.now() - entry.timestamp < entry.ttl) {
+            // Reconstruct the Response with the cached body and headers
+            return new Response(entry.response.body, {
+                headers: entry.response.headers,
+                status: entry.response.status,
+                statusText: entry.response.statusText,
+            });
+        }
+
+        // If the entry is expired or doesn't exist, clean up and return null
+        this.cache.delete(key);
+        return null;
+    }
 }

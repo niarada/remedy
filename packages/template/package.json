@@ -1,6 +1,6 @@
 {
     "name": "@niarada/remedy-template",
-    "version": "0.4.6",
+    "version": "0.4.7",
     "files": [
         "dist/**/*.{js,ts}",
         "src/**/*.ts"

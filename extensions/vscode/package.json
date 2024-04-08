@@ -18,7 +18,7 @@
         "javascript"
     ],
     "icon": "./assets/cross-both.png",
-    "version": "0.4.6",
+    "version": "0.4.7",
     "publisher": "niarada",
     "engines": {
         "vscode": "^1.86.0"
@@ -67,7 +67,7 @@
         ]
     },
     "dependencies": {
-        "@niarada/remedy-template": "0.4.6",
+        "@niarada/remedy-template": "0.4.7",
         "@types/node": "^20.11.28",
         "@types/vscode": "^1.87.0",
         "@volar/vscode": "^2.1.2",
